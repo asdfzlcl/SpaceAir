@@ -2,9 +2,107 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>大气模型软件</title>
+    <link rel="stylesheet" href="css/mdui.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/global.css">
 </head>
-<body>
-Hello world
+<body class="mdui-theme-primary-blue mdui-theme-accent-blue">
+<div class="head-tab mdui-tab mdui-tab-full-width" mdui-tab>
+    <a id="tab1" class="mdui-ripple">统计模型热力图</a>
+    <a id="tab2" class="mdui-ripple">统计模型廓线图</a>
+    <a id="tab3" class="mdui-ripple">标准模型廓线图</a>
+</div>
+<div class="body-panel">
+    <div class="param-panel">
+        <h1>
+            参数选择区
+        </h1>
+        <div class="param-item param-input">
+            <label class="mdui-radio">
+                <input type="radio" name="group1" value="U" checked/>
+                <i class="mdui-radio-icon"></i>
+                U
+            </label>
+            <label class="mdui-radio">
+                <input type="radio" name="group1" value="V"/>
+                <i class="mdui-radio-icon"></i>
+                V
+            </label>
+            <label class="mdui-radio">
+                <input type="radio" name="group1" value="T"/>
+                <i class="mdui-radio-icon"></i>
+                T
+            </label>
+        </div>
+        <div class="param-item">
+            <div class="mdui-textfield">
+                <input class="mdui-textfield-input" type="number" min="0" max="90" placeholder="高度(km)"/>
+                <div class="mdui-textfield-helper">范围为 0-90</div>
+            </div>
+        </div>
+        <div class="param-item">
+            <input type="date" style="width: 100%"/>
+        </div>
+        <div class="param-item param-input">
+            <label class="mdui-radio">
+                <input type="radio" name="group2" value="0:00" checked/>
+                <i class="mdui-radio-icon"></i>
+                0:00
+            </label>
+            <label class="mdui-radio">
+                <input type="radio" name="group2" value="6:00"/>
+                <i class="mdui-radio-icon"></i>
+                6:00
+            </label>
+        </div>
+        <div class="param-item param-input">
+        <label class="mdui-radio">
+            <input type="radio" name="group2" value="12:00"/>
+            <i class="mdui-radio-icon"></i>
+            12:00
+        </label>
+        <label class="mdui-radio">
+            <input type="radio" name="group2" value="18:00"/>
+            <i class="mdui-radio-icon"></i>
+            18:00
+        </label>
+        </div>
+        <div class="param-item">
+            <div class="mdui-textfield">
+                <input class="mdui-textfield-input" type="number" min="0" max="60" placeholder="经度下限(°N)"/>
+                <div class="mdui-textfield-helper">范围为 0-60</div>
+            </div>
+        </div>
+        <div class="param-item">
+            <div class="mdui-textfield">
+                <input class="mdui-textfield-input" type="number" min="0" max="60" placeholder="经度上限(°N)"/>
+                <div class="mdui-textfield-helper">范围为 0-60</div>
+            </div>
+        </div>
+        <div class="param-item">
+            <div class="mdui-textfield">
+                <input class="mdui-textfield-input" type="number" min="60" max="120" placeholder="纬度下限(°E)"/>
+                <div class="mdui-textfield-helper">范围为 60-120</div>
+            </div>
+        </div>
+        <div class="param-item">
+            <div class="mdui-textfield">
+                <input class="mdui-textfield-input" type="number" min="60" max="120" placeholder="纬度上限(°E)"/>
+                <div class="mdui-textfield-helper">范围为 60-120</div>
+            </div>
+        </div>
+        <div class="param-item" style="display: flex;justify-content: center">
+            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">绘制图形</button>
+        </div>
+    </div>
+    <div class="draw-panel"></div>
+</div>
+<div>
+
+</div>
+
+<script src="js/mdui.min.js"></script>
+<script src="js/index.js"></script>
 </body>
 </html>

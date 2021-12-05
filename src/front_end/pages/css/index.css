@@ -1,3 +1,33 @@
-body {
-    color: red;
+.head-tab{
+    height: 5vh;
+    border-bottom: solid gray 1px;
+}
+.body-panel{
+    width: 100vw;
+    height: 95vh;
+    display: flex;
+}
+.param-panel{
+    width: 15%;
+    display: flex;
+    border-right: solid gray 1px;
+    flex-direction: column;
+    align-items:center;
+    justify-content:center;
+    padding-left: 0.5vw;
+    padding-right: 0.5vw;
+}
+.param-input {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.draw-panel{
+    width: 85%;
+}
+
+.param-item{
+    width: 100%;
+    margin-bottom: 1vh;
 }

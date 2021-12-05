@@ -43,7 +43,7 @@ public class WebStage {
         });
         StackPane pane = new StackPane();
         pane.getChildren().add(browserView);
-        Scene scene = new Scene(pane, 1000, 800);
+        Scene scene = new Scene(pane, 1400, 900);
         webStage.setTitle("Webview");
         webStage.setScene(scene);
 
@@ -52,7 +52,10 @@ public class WebStage {
             @Override
             public void onStartLoadingFrame(StartLoadingEvent event) {
                 super.onStartLoadingFrame(event);
+                //CSS文件可以在document加载之前提前载入
                 browser.setCustomStyleSheet(ResInjector.getCss("index.css"));
+                browser.setCustomStyleSheet(ResInjector.getCss("mdui.min.css"));
+                browser.setCustomStyleSheet(ResInjector.getCss("global.css"));
             }
 
             @Override
@@ -66,7 +69,8 @@ public class WebStage {
             @Override
             public void onDocumentLoadedInFrame(FrameLoadEvent event) {
                 super.onDocumentLoadedInFrame(event);
-                browser.executeJavaScript("jsfunc()");
+                //由于一些JS脚本必须在document加载完成后执行，所以必需在这里注册JS文件
+                browser.executeJavaScript(ResInjector.getJs("mdui.min.js"));
             }
 
         });
