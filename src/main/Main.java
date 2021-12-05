@@ -1,5 +1,6 @@
 package main;
 
+import front_end.app.WebStage;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +15,9 @@ public class Main extends Application {
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
+
+        //测试WebStage
+        WebStage.showWebStage();
     }
 
 
