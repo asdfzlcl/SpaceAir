@@ -30,34 +30,6 @@
     //唯一构造函数，用于将JS传入的参数转化为Java对象
     public InputParam(JSObject jsObject)
 ```
-
-### FuncInjector
-该接口内的函数为JS中需要调用的Java函数，目前包括如下三个函数
-1. 获取热力图数据
-2. 获取廓线图数据
-3. 获取所有的type
-
-通常需要后端编写一个类，实现这个接口，然后注入到WebStage中。注入方法见WebStage节。
-
-函数声明如下
-```java
-    public List<List<Double>> GetHeatMapData(JSObject params);
-    public List<Double> GetContourMapData(JSObject params);
-    public List<String> GetTypeList();
-```
-以获取廓线图数据为例，需要在内部将JSObject转换为InputParam，然后进行相应的计算。
-```java
-    @Override
-    public List<Double> GetContourMapData(JSObject params) {
-        //类型转换
-        InputParam inputParam = new InputParam(params);
-        List<Double> data;
-        
-        // 在这里编写代码，储存数据到data中
-        
-        return data;
-    }
-```
 ### WebStage
 该类只提供了两个函数，声明如下
 ```java

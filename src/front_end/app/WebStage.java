@@ -35,7 +35,6 @@ public class WebStage {
         WebStage.funcInjector = funcInjector;
     }
 
-    //TODO 这里可以异步调用该函数，以减少响应时间
     private static void initWebStage(){
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);

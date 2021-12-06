@@ -28,12 +28,14 @@ public class FuncInjectorImpl implements FuncInjector {
     @Override
     public String GetContourMapData(JSObject params) {
         InputParam inputParam = new InputParam(params);
-        List<Float> data = Arrays.asList(1.0f,2.0f);
+        List<Float> data = new ArrayList<>(91);
+        for(int i=0;i<91;i++)
+            data.add((float) (Math.random() * 10.0));
         return data.toString();
     }
 
     @Override
-    public List<String> GetTypeList() {
+    public Object GetFileInfo() {
         return Arrays.asList("U","V","T","O");
     }
 }
