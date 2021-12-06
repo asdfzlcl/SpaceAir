@@ -71,6 +71,8 @@ public class WebStage {
                 super.onDocumentLoadedInFrame(event);
                 //由于一些JS脚本必须在document加载完成后执行，所以必需在这里注册JS文件
                 browser.executeJavaScript(ResInjector.getJs("mdui.min.js"));
+                browser.executeJavaScript(ResInjector.getJs("index.js"));
+                browser.executeJavaScript(ResInjector.getJs("index.databind.js"));
             }
 
         });
