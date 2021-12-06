@@ -1,14 +1,17 @@
 package util;
 
+import ucar.ma2.Array;
+import ucar.ma2.InvalidRangeException;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.channels.FileLock;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @classname FilePathHelper
@@ -28,6 +31,7 @@ public class FileHelper {
     public String O_DIR_PATH = null; // O文件路径
 
     private NetcdfFile currentNetcdfFile;  //当前正在读取的文件，对象会缓存文件信息
+    private List<Integer> levelList; //缓存当前的层数数组
 
     /**
      * function: getInstance()
@@ -48,6 +52,7 @@ public class FileHelper {
      */
     public FileHelper(PathOfDirectory[] paths){
         currentNetcdfFile = null; //init currentNetcdfFile
+        levelList = null;
         for(PathOfDirectory p: paths){
             switch (p.getType()){
                 case T:
@@ -181,7 +186,37 @@ public class FileHelper {
         for(int i:temp){
             levels.add(i);
         }
+        levelList = levels;
         return levels;
+    }
+
+    /**
+     * function: getDataSetFromFile
+     * parameter:NetCDFFile 与 level层数
+     * description: 输入对应层数与内容 返回所有经纬度对应数值
+     * throw: IOException, InvalidRangeException 均是读文件发生的错误
+     * */
+    public List<List<Float>> getDataSetFromFile(NetCDFFile file, int level) throws IOException, InvalidRangeException {
+        List<List<Float>> dataSet = new ArrayList<>();
+        currentNetcdfFile = NetcdfFile.open(getFilePath(file));
+        Variable variable = currentNetcdfFile.findVariable(file.getFileType().attr);
+        if(variable == null){
+            throw new IOException();
+        }
+        int levelIndex = levelList.indexOf(level);
+        int[] shape = variable.getShape();
+        int[] origin = new int[]{levelIndex, 0, 0};
+        int[] size = new int[]{1, shape[1], shape[2]};
+        Array data2D = variable.read(origin, size).reduce(0);
+        float[][] temp = (float[][]) data2D.copyToNDJavaArray();
+        for(float[] list :temp){
+            List<Float> inner = new ArrayList<>();
+            for(float i :list){
+                inner.add(i);
+            }
+            dataSet.add(inner);
+        }
+        return dataSet;
     }
 
     /**
@@ -235,5 +270,4 @@ public class FileHelper {
         // pass
         return new Date();
     }
-
 }

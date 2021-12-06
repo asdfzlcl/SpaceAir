@@ -9,8 +9,13 @@ package util;
  * O文件：即垂直风速
  * */
 public enum FILE_TYPE {
-    T, //temperature
-    U, //Zonal Winds
-    V,  //V component of wind
-    O  //Omega velocity
+    T("t"), //temperature
+    U("u"), //Zonal Winds
+    V("v"),  //V component of wind
+    O("o");  //Omega velocity
+
+    public final String attr; //attr 表示其在文件内的变量名称
+    private FILE_TYPE(String a){
+        this.attr = a;
+    }
 }
