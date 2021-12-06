@@ -12,24 +12,21 @@ params = {
 }
 // 异步获取数据，避免UI阻塞
 async function getData(){
+    t1 = new Date().getTime()
     let rawData = funcInjector.GetHeatMapData(params);
     return JSON.parse(rawData)
 }
 
 // 绑定提交参数事件
 document.querySelector("#submit-param").onclick=()=>{
-    mdui.$("#submit-param").prop('disabled',true)
-    document.querySelector('#submit-spinner').style.visibility = 'visible'
     getData()
         .then(e=> {
-            alert(JSON.stringify(e))
-            mdui.$("#submit-param").prop('disabled',false)
-            document.querySelector('#submit-spinner').style.visibility = 'hidden'
+            t2 = new Date().getTime()
+            mdui.alert(t2-t1)
+            mdui.alert(JSON.stringify(e))
         })
         .catch(e=> {
-            alert(e.toString())
-            mdui.$("#submit-param").prop('disabled',false)
-            document.querySelector('#submit-spinner').style.visibility = 'hidden'
+            mdui.alert(e.toString())
         })
 }
 
@@ -58,6 +55,3 @@ function fetchTypes(){
     mdui.$("#type-selector").append(html)
     mdui.$("#type-selector").mutation()
 }
-
-
-
