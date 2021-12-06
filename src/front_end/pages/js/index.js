@@ -10,11 +10,27 @@ params = {
     lonLb:0,
     lonUb:0
 }
+// 异步获取数据，避免UI阻塞
+async function getData(){
+    let rawData = funcInjector.GetHeatMapData(params);
+    return JSON.parse(rawData)
+}
 
 // 绑定提交参数事件
 document.querySelector("#submit-param").onclick=()=>{
-    let data = funcInjector.GetData(params)
-    mdui.alert(data.toString(),'Debug Message')
+    mdui.$("#submit-param").prop('disabled',true)
+    document.querySelector('#submit-spinner').style.visibility = 'visible'
+    getData()
+        .then(e=> {
+            alert(JSON.stringify(e))
+            mdui.$("#submit-param").prop('disabled',false)
+            document.querySelector('#submit-spinner').style.visibility = 'hidden'
+        })
+        .catch(e=> {
+            alert(e.toString())
+            mdui.$("#submit-param").prop('disabled',false)
+            document.querySelector('#submit-spinner').style.visibility = 'hidden'
+        })
 }
 
 // 通过value动态生成组件
