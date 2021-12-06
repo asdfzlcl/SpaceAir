@@ -1,15 +1,20 @@
 package front_end.app;
 
-import com.teamdev.jxbrowser.chromium.JSValue;
+import com.teamdev.jxbrowser.chromium.JSObject;
+import front_end.app.messages.InputParam;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class FuncInjector {
 
-    public String JTestStr(String str){
-        System.out.println(str);
-        return "  JS 调用Java成功";
-    }
-
-    public void JTestArr(JSValue arr){
-        System.out.println(arr.asArray().toString());
+    public List<List<Double>> GetData(JSObject params){
+        InputParam inputParam = new InputParam(params);
+        System.out.println(inputParam);
+        List<List<Double>> data = new ArrayList<>(2);
+        data.add(Arrays.asList(1.0,2.0));
+        data.add(Arrays.asList(3.0,4.0));
+        return data;
     }
 }

@@ -53,9 +53,9 @@ public class WebStage {
             public void onStartLoadingFrame(StartLoadingEvent event) {
                 super.onStartLoadingFrame(event);
                 //CSS文件可以在document加载之前提前载入
-                browser.setCustomStyleSheet(ResInjector.getCss("index.css"));
                 browser.setCustomStyleSheet(ResInjector.getCss("mdui.min.css"));
                 browser.setCustomStyleSheet(ResInjector.getCss("global.css"));
+                browser.setCustomStyleSheet(ResInjector.getCss("index.css"));
             }
 
             @Override
