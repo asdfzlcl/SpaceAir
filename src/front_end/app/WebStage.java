@@ -14,7 +14,7 @@ import javafx.stage.StageStyle;
 import java.util.Objects;
 
 public class WebStage {
-    static private final Stage webStage = new Stage(StageStyle.UTILITY);
+    static private final Stage webStage = new Stage(StageStyle.DECORATED);
     static private boolean webStageConfigured = false;
     static private FuncInjector funcInjector = new FuncInjectorImpl();
 
@@ -39,7 +39,6 @@ public class WebStage {
     private static void initWebStage(){
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
-        webStage.setOnCloseRequest(we -> webStage.close());
         StackPane pane = new StackPane();
         pane.getChildren().add(browserView);
         Scene scene = new Scene(pane, 1400, 900);
