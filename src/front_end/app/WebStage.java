@@ -6,12 +6,10 @@ import com.teamdev.jxbrowser.chromium.JSValue;
 import com.teamdev.jxbrowser.chromium.events.*;
 import com.teamdev.jxbrowser.chromium.internal.Environment;
 import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
 
 import java.util.Objects;
 
@@ -37,6 +35,7 @@ public class WebStage {
         WebStage.funcInjector = funcInjector;
     }
 
+    //TODO 这里可以异步调用该函数，以减少响应时间
     private static void initWebStage(){
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
@@ -52,7 +51,7 @@ public class WebStage {
             @Override
             public void onStartLoadingFrame(StartLoadingEvent event) {
                 super.onStartLoadingFrame(event);
-                //CSS文件可以在document加载之前提前载入
+//                CSS文件可以在document加载之前提前载入
 //                browser.setCustomStyleSheet(ResInjector.getCss("mdui.min.css"));
 //                browser.setCustomStyleSheet(ResInjector.getCss("global.css"));
 //                browser.setCustomStyleSheet(ResInjector.getCss("index.css"));
@@ -61,7 +60,7 @@ public class WebStage {
             @Override
             public void onDocumentLoadedInFrame(FrameLoadEvent event) {
                 super.onDocumentLoadedInFrame(event);
-                //由于一些JS脚本必须在document加载完成后执行，所以必需在这里注册JS文件
+//                由于一些JS脚本必须在document加载完成后执行，所以必需在这里注册JS文件
 //                browser.executeJavaScript(ResInjector.getJs("mdui.min.js"));
 //                browser.executeJavaScript(ResInjector.getJs("index.js"));
 //                browser.executeJavaScript(ResInjector.getJs("index.databind.js"));

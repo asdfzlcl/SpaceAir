@@ -11,13 +11,20 @@ import java.util.List;
 public class FuncInjectorImpl implements FuncInjector {
 
     @Override
-    public List<List<Double>> GetData(JSObject params){
+    public List<List<Double>> GetHeatMapData(JSObject params){
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
         List<List<Double>> data = new ArrayList<>(2);
         data.add(Arrays.asList(1.0,2.0));
         data.add(Arrays.asList(3.0,4.0));
         return data;
+    }
+
+    @Override
+    public List<Double> GetContourMapData(JSObject params) {
+        InputParam inputParam = new InputParam(params);
+        System.out.println(inputParam);
+        return Arrays.asList(1.0,2.0);
     }
 
     @Override
