@@ -8,7 +8,12 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 
 
-
+/**
+ * GenerateInputTxt类中GenerateInputData方法为算法实现方法
+ * 由用户输入时间、经纬度、起止高度和高度分辨率等信息会生成input.txt文件
+ * 经过fortran算法计算会生成output.txt文件
+ * output.txt中每一行代表一个高度的数据，数据分别为 Temperature(K)    Density(kg/m3)   Mer and Zon Wind(m/s)   Pressure(Pa)
+ */
 public class GenerateInputTxt {
     public interface LgetLib extends Library {
 

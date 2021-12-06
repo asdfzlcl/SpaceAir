@@ -3,7 +3,9 @@
 
 import java.io.File;
 
-
+/**
+ * 该文件主要用来测试GenerateInputTxt类和其中的方法GenerateInputData
+ */
 public class Main {
     public static void main(String[] args) {
 //        try{
