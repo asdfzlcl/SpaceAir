@@ -11,11 +11,8 @@ params = {
     lonUb:0
 }
 
-activePage = 0;
-
-function getData(){
+// 绑定提交参数事件
+document.querySelector("#submit-param").onclick=()=>{
     let data = funcInjector.GetData(params)
     mdui.alert(data.toString(),'Debug Message')
 }
-
-document.querySelector("#submit-param").onclick=getData

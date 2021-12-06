@@ -17,8 +17,9 @@ import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 public class WebStage {
-    static Stage webStage = new Stage(StageStyle.UTILITY);
-    static boolean webStageConfigured = false;
+    static private Stage webStage = new Stage(StageStyle.UTILITY);
+    static private boolean webStageConfigured = false;
+    static private FuncInjector funcInjector = new FuncInjectorImpl();
 
     private static void initWebCore()throws Exception {
         // On Mac OS X Chromium engine must be initialized in non-UI thread.
@@ -31,6 +32,10 @@ public class WebStage {
         if(!webStageConfigured)
             initWebStage();
         webStage.show();
+    }
+
+    public static void setFuncInjector(FuncInjector funcInjector){
+        WebStage.funcInjector = funcInjector;
     }
 
     private static void initWebStage(){
@@ -62,8 +67,7 @@ public class WebStage {
             public void onFinishLoadingFrame(FinishLoadingEvent event) {
                 super.onFinishLoadingFrame(event);
                 JSValue window = browser.executeJavaScriptAndReturnValue("window");
-                FuncInjector funcInjector = new FuncInjector();
-                window.asObject().setProperty("funcInjector",funcInjector);
+                window.asObject().setProperty("funcInjector", WebStage.funcInjector);
             }
 
             @Override
