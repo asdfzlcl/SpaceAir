@@ -5,7 +5,7 @@ import ucar.nc2.Variable;
 import java.io.IOException;
 import java.util.List;
 
-public class NetCADFileHelper {
+public class test {
 
     /**
      * static function: getNCFileVariable()
@@ -14,8 +14,12 @@ public class NetCADFileHelper {
      **/
     public static List<Variable> getNCFileVariable(String path) throws IOException {
         NetcdfFile file = NetcdfFile.open(path);
-        for(Variable v: file.getVariables()){
-            System.out.println(v);
+        Variable a= file.findVariable("latitude");
+        System.out.println(a);
+        float[] b = (float[]) a.read().copyTo1DJavaArray();
+        System.out.println(b.length);
+        for (float c:b){
+            System.out.println(c);
         }
         return file.getVariables();
     }
@@ -28,7 +32,7 @@ public class NetCADFileHelper {
     public static void main(String[] args){
         String path = "C:\\Users\\seu-wxy\\Desktop\\标准大气\\somedata\\v010100_V数据_气候态.nc";
         try {
-            NetCADFileHelper.getNCFileVariable(path);
+            test.getNCFileVariable(path);
         }catch (IOException e){
             e.printStackTrace();
         }
