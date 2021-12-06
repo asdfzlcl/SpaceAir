@@ -1,6 +1,5 @@
-//console.log(document.querySelector("input[name=group1]:checked").value)
-document.querySelector("input[type=date]").value = '2021-12-05'
-let params = {
+params = {
+    task:0,
     type:"",
     time:0,
     height:0,
@@ -12,12 +11,11 @@ let params = {
     lonUb:0
 }
 
-let activePage = 1;
+activePage = 0;
 
 function getData(){
-    alert("Hello world!")
     let data = funcInjector.GetData(params)
-    alert(data.toString())
+    mdui.alert(data.toString(),'Debug Message')
 }
 
 document.querySelector("#submit-param").onclick=getData

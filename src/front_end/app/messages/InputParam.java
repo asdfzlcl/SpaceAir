@@ -4,7 +4,9 @@ import com.teamdev.jxbrowser.chromium.JSObject;
 
 public class InputParam {
 
-    private final String task;
+    //0-统计模型热力图，1-统计模型廓线图，2-标准模型廓线图
+    private final int task;
+
     private final String type;
     private final int time;
     private final int height;
@@ -21,7 +23,7 @@ public class InputParam {
     private final int lonUb;
 
     public InputParam(JSObject jsObject){
-        task = jsObject.getProperty("task").getStringValue();
+        task = (int)jsObject.getProperty("task").getNumberValue();
         type = jsObject.getProperty("type").getStringValue();
         time = (int) jsObject.getProperty("time").getNumberValue();
         height = (int) jsObject.getProperty("height").getNumberValue();
@@ -60,7 +62,7 @@ public class InputParam {
 
     }
 
-    public String getTask() {
+    public int getTask() {
         return task;
     }
 

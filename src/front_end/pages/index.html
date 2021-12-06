@@ -20,76 +20,86 @@
         </h1>
         <div class="param-item param-input">
             <label class="mdui-radio">
-                <input type="radio" name="group1" value="U" checked/>
+                <input type="radio" name="type-selector" value="U" checked/>
                 <i class="mdui-radio-icon"></i>
                 U
             </label>
             <label class="mdui-radio">
-                <input type="radio" name="group1" value="V"/>
+                <input type="radio" name="type-selector" value="V"/>
                 <i class="mdui-radio-icon"></i>
                 V
             </label>
             <label class="mdui-radio">
-                <input type="radio" name="group1" value="T"/>
+                <input type="radio" name="type-selector" value="T"/>
                 <i class="mdui-radio-icon"></i>
                 T
             </label>
         </div>
         <div class="param-item">
             <div class="mdui-textfield">
-                <input class="mdui-textfield-input" type="number" min="0" max="90" placeholder="高度(km)"/>
-                <div class="mdui-textfield-helper">范围为 0-90</div>
+                <input id="height-input" class="mdui-textfield-input"
+                       type="number" min="0" max="90" placeholder="高度(km)"
+                        value="0"/>
+                <div class="mdui-textfield-helper">范围为 0-90(km)</div>
             </div>
         </div>
         <div class="param-item">
-            <input type="date" style="width: 100%"/>
+            <input type="date" id="date-input" style="width: 100%" value = "2021-12-01"/>
         </div>
         <div class="param-item param-input">
             <label class="mdui-radio">
-                <input type="radio" name="group2" value="0:00" checked/>
+                <input type="radio" name="time-selector" value="0" checked/>
                 <i class="mdui-radio-icon"></i>
                 0:00
             </label>
             <label class="mdui-radio">
-                <input type="radio" name="group2" value="6:00"/>
+                <input type="radio" name="time-selector" value="6"/>
                 <i class="mdui-radio-icon"></i>
                 6:00
             </label>
         </div>
         <div class="param-item param-input">
         <label class="mdui-radio">
-            <input type="radio" name="group2" value="12:00"/>
+            <input type="radio" name="time-selector" value="12"/>
             <i class="mdui-radio-icon"></i>
             12:00
         </label>
         <label class="mdui-radio">
-            <input type="radio" name="group2" value="18:00"/>
+            <input type="radio" name="time-selector" value="18"/>
             <i class="mdui-radio-icon"></i>
             18:00
         </label>
         </div>
         <div class="param-item">
             <div class="mdui-textfield">
-                <input class="mdui-textfield-input" type="number" min="0" max="60" placeholder="经度下限(°N)"/>
-                <div class="mdui-textfield-helper">范围为 0-60</div>
+                <input class="mdui-textfield-input" type="number"
+                       min="0" max="60" placeholder="经度下限(°N)"
+                       id="latLb-input" value = "0"/>
+                <div class="mdui-textfield-helper">范围为 0-60(°N)</div>
             </div>
         </div>
         <div class="param-item">
             <div class="mdui-textfield">
-                <input class="mdui-textfield-input" type="number" min="0" max="60" placeholder="经度上限(°N)"/>
-                <div class="mdui-textfield-helper">范围为 0-60</div>
+                <input class="mdui-textfield-input" type="number"
+                       min="0" max="60" placeholder="经度上限(°N)"
+                       id="latUb-input" value = "60"/>
+                <div class="mdui-textfield-helper">范围为 0-60(°N)</div>
             </div>
         </div>
         <div class="param-item">
             <div class="mdui-textfield">
-                <input class="mdui-textfield-input" type="number" min="60" max="120" placeholder="纬度下限(°E)"/>
-                <div class="mdui-textfield-helper">范围为 60-120</div>
+                <input class="mdui-textfield-input" type="number"
+                       min="60" max="120" placeholder="纬度下限(°E)"
+                       id="lonLb-input" value = "60"/>
+                <div class="mdui-textfield-helper">范围为 60-120(°E)</div>
             </div>
         </div>
         <div class="param-item">
             <div class="mdui-textfield">
-                <input class="mdui-textfield-input" type="number" min="60" max="120" placeholder="纬度上限(°E)"/>
-                <div class="mdui-textfield-helper">范围为 60-120</div>
+                <input class="mdui-textfield-input" type="number"
+                       min="60" max="120" placeholder="纬度上限(°E)"
+                       id="lonUb-input" value = "120"/>
+                <div class="mdui-textfield-helper">范围为 60-120(°E)</div>
             </div>
         </div>
         <div class="param-item" style="display: flex;justify-content: center">
@@ -101,5 +111,6 @@
 </div>
 <script src="js/mdui.min.js"></script>
 <script src="js/index.js"></script>
+<script src="js/index.databind.js"></script>
 </body>
 </html>
