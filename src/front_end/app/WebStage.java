@@ -3,10 +3,7 @@ package front_end.app;
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.BrowserCore;
 import com.teamdev.jxbrowser.chromium.JSValue;
-import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
-import com.teamdev.jxbrowser.chromium.events.FrameLoadEvent;
-import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
-import com.teamdev.jxbrowser.chromium.events.StartLoadingEvent;
+import com.teamdev.jxbrowser.chromium.events.*;
 import com.teamdev.jxbrowser.chromium.internal.Environment;
 import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
 import javafx.event.EventHandler;
@@ -73,11 +70,15 @@ public class WebStage {
             @Override
             public void onFinishLoadingFrame(FinishLoadingEvent event) {
                 super.onFinishLoadingFrame(event);
-                JSValue window = browser.executeJavaScriptAndReturnValue("window");
-                window.asObject().setProperty("funcInjector", WebStage.funcInjector);
                 browser.executeJavaScript("fetchTypes()");
             }
-
+        });
+        browser.addScriptContextListener(new ScriptContextAdapter() {
+            @Override
+            public void onScriptContextCreated(ScriptContextEvent event) {
+                JSValue window = browser.executeJavaScriptAndReturnValue("window");
+                window.asObject().setProperty("funcInjector", WebStage.funcInjector);
+            }
         });
         browser.loadURL(url);
         webStageConfigured = true;
