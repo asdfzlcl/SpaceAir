@@ -38,8 +38,8 @@ public class InputParam {
     @Override
     public String toString() {
         return "{\"InputParam\":{"
-                + "\"task\":\""
-                + task + '\"'
+                + "\"task\":"
+                + task
                 + ",\"type\":\""
                 + type + '\"'
                 + ",\"time\":"

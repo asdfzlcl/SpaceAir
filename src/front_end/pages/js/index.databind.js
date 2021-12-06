@@ -23,6 +23,13 @@ bindGetter(params,'year',"",()=>{
         ).value.slice(0,4)
     )
 })
+let taskId = 0
+mdui.$('#head-tab').on('change.mdui.tab',(event)=>{
+    taskId = event._detail.index
+})
+bindGetter(params,'task','',()=>{
+    return taskId
+})
 bindNumberGetter(params,'time',"input[name=time-selector]:checked")
 bindNumberGetter(params,'height',"#height-input")
 bindNumberGetter(params,'latLb',"#latLb-input")
