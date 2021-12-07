@@ -19,24 +19,24 @@ public class test {
     public static List<Variable> getNCFileVariable(String path) throws IOException {
         NetcdfFile file = NetcdfFile.open(path);
         Variable a= file.findVariable("v");
-        try {
-            int[] varShape = a.getShape();
-            int[] origin = new int[3];
-            int[] size = new int[] {1, varShape[1], varShape[2]};
-            for (int i = 0; i < varShape[0]; i++) {
-                origin[0] = i;
-                Array data2D = a.read(origin, size).reduce(0);
-                Float[][] temp = (Float[][]) data2D.copyToNDJavaArray();
-                System.out.println(Ncdump.printArray(data2D, "T", null));
-            }
-        }catch (InvalidRangeException e){
-            e.printStackTrace();
-        }
+//        try {
+//            int[] varShape = a.getShape();
+//            int[] origin = new int[3];
+//            int[] size = new int[] {1, varShape[1], varShape[2]};
+//            for (int i = 0; i < varShape[0]; i++) {
+//                origin[0] = i;
+//                Array data2D = a.read(origin, size).reduce(0);
+//                Float[][] temp = (Float[][]) data2D.copyToNDJavaArray();
+//                System.out.println(Ncdump.printArray(data2D, "T", null));
+//            }
+//        }catch (InvalidRangeException e){
+//            e.printStackTrace();
+//        }
 
 
-//        System.out.println(a);
-//        float[] b = (float[]) a.read().copyTo1DJavaArray();
-//        System.out.println(b.length);
+        System.out.println(a);
+        float[] b = (float[]) a.read().copyTo1DJavaArray();
+        System.out.println(b.length);
         return file.getVariables();
     }
 

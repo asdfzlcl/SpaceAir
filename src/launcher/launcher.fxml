@@ -6,9 +6,36 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<VBox xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@launcher.css"
             fx:controller="launcher.LauncherController"
             prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+    <HBox id="titleBox">
+        <Label>启动参数设定</Label>
+    </HBox>
+    <HBox styleClass="fileBox">
+        <Label>T数据文件夹路径:</Label>
+        <TextField fx:id="T_file_path" editable="false"/>
+        <Button fx:id="T_file_choose" text="浏览" onAction="#chooseT"/>
+    </HBox>
+    <HBox styleClass="fileBox">
+        <Label>U数据文件夹路径:</Label>
+        <TextField fx:id="U_file_path" editable="false"/>
+        <Button fx:id="U_file_choose" text="浏览" onAction="#chooseU"/>
+    </HBox>
+    <HBox styleClass="fileBox">
+        <Label>V数据文件夹路径:</Label>
+        <TextField fx:id="V_file_path" editable="false"/>
+        <Button fx:id="V_file_choose" text="浏览" onAction="#chooseV"/>
+    </HBox>
+    <HBox styleClass="fileBox">
+        <Label>O数据文件夹路径:</Label>
+        <TextField fx:id="O_file_path" editable="false"/>
+        <Button fx:id="O_file_choose" text="浏览" onAction="#chooseO"/>
+    </HBox>
+    <HBox styleClass="buttonBox">
+        <Button text="启动" fx:id="launchButton" onAction="#launch"/>
+        <Button text="关闭" fx:id="exitButton" onAction="#exit"/>
+    </HBox>
+</VBox>

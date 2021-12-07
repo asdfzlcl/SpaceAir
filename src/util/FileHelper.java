@@ -4,14 +4,11 @@ import ucar.ma2.Array;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @classname FilePathHelper
@@ -22,6 +19,8 @@ import java.util.stream.Collectors;
 public class FileHelper {
 
     public static String classBasePath = System.getProperty("user.dir"); //当前工作路径
+    public static String configFileName = ".config"; //config文件名称
+    public static String configFilePath = classBasePath + File.separator + configFileName;
 
     private static FileHelper instance; //唯一实例
 
@@ -47,10 +46,18 @@ public class FileHelper {
     }
 
     /**
+     * init function: setInstance()
+     * parameter: PathOfDirectory[] 存储各个文件类型的文件夹路径
+     */
+    public static void setInstance(PathOfDirectory[] paths){
+        instance = new FileHelper(paths);
+    }
+
+    /**
      * construction function: FilePathHelper()
      * parameter: PathOfDirectory[] 存储各个文件类型的文件夹路径
      */
-    public FileHelper(PathOfDirectory[] paths){
+    private FileHelper(PathOfDirectory[] paths){
         currentNetcdfFile = null; //init currentNetcdfFile
         levelList = null;
         for(PathOfDirectory p: paths){
@@ -194,16 +201,16 @@ public class FileHelper {
      * function: getDataSetFromFile
      * parameter:NetCDFFile 与 level层数
      * description: 输入对应层数与内容 返回所有经纬度对应数值
+     * return: 二维List
      * throw: IOException, InvalidRangeException 均是读文件发生的错误
      * */
-    public List<List<Float>> getDataSetFromFile(NetCDFFile file, int level) throws IOException, InvalidRangeException {
+    public List<List<Float>> getDataSetVarLevel(NetCDFFile file, int levelIndex) throws IOException, InvalidRangeException {
         List<List<Float>> dataSet = new ArrayList<>();
         currentNetcdfFile = NetcdfFile.open(getFilePath(file));
         Variable variable = currentNetcdfFile.findVariable(file.getFileType().attr);
         if(variable == null){
             throw new IOException();
         }
-        int levelIndex = levelList.indexOf(level);
         int[] shape = variable.getShape();
         int[] origin = new int[]{levelIndex, 0, 0};
         int[] size = new int[]{1, shape[1], shape[2]};
@@ -217,6 +224,31 @@ public class FileHelper {
             dataSet.add(inner);
         }
         return dataSet;
+    }
+
+    /**
+     * function: getDataSetVarCoordinate
+     * parameter:NetCDFFile 与 latIndex经度索引 longIndex纬度索引
+     * description: 输入对应层数与内容 返回所有经纬度对应数值
+     * return: 一维List
+     * throw: IOException, InvalidRangeException 均是读文件发生的错误
+     * */
+    public List<Float> getDataSetVarCoordinate(NetCDFFile file, int latIndex, int longIndex)throws IOException, InvalidRangeException{
+        List<Float> dataset = new ArrayList<>();
+        currentNetcdfFile = NetcdfFile.open(getFilePath(file));
+        Variable variable = currentNetcdfFile.findVariable(file.getFileType().attr);
+        if(variable == null){
+            throw new IOException();
+        }
+        int[] shape = variable.getShape();
+        int[] origin = new int[]{0, latIndex, longIndex};
+        int[] size = new int[]{shape[0], 1, 1};
+        Array data = variable.read(origin, size).reduce().reduce();
+        float[] temp = (float[]) data.copyTo1DJavaArray();
+        for(float f : temp){
+            dataset.add(f);
+        }
+        return dataset;
     }
 
     /**
