@@ -99,6 +99,8 @@ function drawHeatMap(rawData){
         visualMap: {
             min: min,
             max: max,
+            type: 'piecewise',
+            splitNumber: 11,
             calculable: true,
             realtime: true,
             inRange: {
