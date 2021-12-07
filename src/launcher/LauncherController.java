@@ -1,18 +1,17 @@
 package launcher;
 
-
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
-import util.ConfigFileHelper;
-import util.FILE_TYPE;
-import util.FileHelper;
-import util.PathOfDirectory;
+import ucar.ma2.InvalidRangeException;
+import util.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author wxy
@@ -24,25 +23,25 @@ public class LauncherController {
     private ConfigFileHelper config;
 
     @FXML
-    public TextField T_file_path;
+    private TextField T_file_path;
     @FXML
-    public Button T_file_choose;
+    private Button T_file_choose;
     @FXML
-    public TextField U_file_path;
+    private TextField U_file_path;
     @FXML
-    public Button U_file_choose;
+    private Button U_file_choose;
     @FXML
-    public TextField V_file_path;
+    private TextField V_file_path;
     @FXML
-    public Button V_file_choose;
+    private Button V_file_choose;
     @FXML
-    public TextField O_file_path;
+    private TextField O_file_path;
     @FXML
-    public Button O_file_choose;
+    private Button O_file_choose;
     @FXML
-    public Button launchButton;
+    private Button launchButton;
     @FXML
-    public Button exitButton;
+    private Button exitButton;
 
     public void init(){
         try {
@@ -73,7 +72,8 @@ public class LauncherController {
         }
     }
 
-    public void chooseT() {
+    @FXML
+    private void chooseT() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(new File(T_file_path.getText()));
         File temp;
@@ -88,7 +88,8 @@ public class LauncherController {
         }
     }
 
-    public void chooseU() {
+    @FXML
+    private void chooseU() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(new File(U_file_path.getText()));
         File temp;
@@ -103,7 +104,8 @@ public class LauncherController {
         }
     }
 
-    public void chooseV() {
+    @FXML
+    private void chooseV() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(new File(V_file_path.getText()));
         File temp;
@@ -118,7 +120,8 @@ public class LauncherController {
         }
     }
 
-    public void chooseO() {
+    @FXML
+    private void chooseO() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(new File(O_file_path.getText()));
         File temp;
@@ -133,7 +136,8 @@ public class LauncherController {
         }
     }
 
-    public void launch() {
+    @FXML
+    private void launch() {
         // 存储config信息
         try {
             config.setTPathToConfig(T_file_path.getText());
@@ -153,9 +157,18 @@ public class LauncherController {
                 new PathOfDirectory(FILE_TYPE.O, O_file_path.getText())
         };
         FileHelper.setInstance(pathInput);
+
+        List<NetCDFFile> list = new ArrayList<>();
+        try {
+            list = FileHelper.getInstance().getAllFileOfDirectory(FILE_TYPE.T);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
     }
 
-    public void exit() {
+    @FXML
+    private void exit() {
         System.exit(0);
     }
 }

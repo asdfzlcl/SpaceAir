@@ -30,7 +30,7 @@ public class FileHelper {
     public String O_DIR_PATH = null; // O文件路径
 
     private NetcdfFile currentNetcdfFile;  //当前正在读取的文件，对象会缓存文件信息
-    private List<Integer> levelList; //缓存当前的层数数组
+    private List<Double> levelList; //缓存当前的层数数组
 
     /**
      * function: getInstance()
@@ -116,16 +116,16 @@ public class FileHelper {
         String returnPath = null;
         switch (file.getFileType()){
             case V:
-                returnPath = V_DIR_PATH + File.separator + "v";
+                returnPath = V_DIR_PATH;
                 break;
             case U:
-                returnPath = U_DIR_PATH + File.separator + "U";
+                returnPath = U_DIR_PATH;
                 break;
             case T:
-                returnPath = T_DIR_PATH + File.separator + "T";
+                returnPath = T_DIR_PATH;
                 break;
             case O:
-                returnPath = O_DIR_PATH + File.separator + "OMEGA";
+                returnPath = O_DIR_PATH;
                 break;
         }
         if(file.getFileName() == null){
@@ -182,16 +182,16 @@ public class FileHelper {
      * throws: IOException 当文件不存在或文件格式有误时
      * @warnning: levels是一个整型数组 且是升序的
      * */
-    public List<Integer> getLevelFromFile(NetCDFFile file) throws IOException{
-        List<Integer> levels = new ArrayList<>();
+    public List<Double> getLevelFromFile(NetCDFFile file) throws IOException{
+        List<Double> levels = new ArrayList<>();
         currentNetcdfFile = NetcdfFile.open(getFilePath(file));
-        Variable level = currentNetcdfFile.findVariable("level");
+        Variable level = currentNetcdfFile.findVariable(file.getFileType().level);
         if(level == null){
             throw new IOException();
         }
-        int[] temp = (int[])level.read().copyTo1DJavaArray();
-        for(int i:temp){
-            levels.add(i);
+        String[] temp = level.read().toString().split("\\s+");
+        for(String i:temp){
+            levels.add(Double.parseDouble(i));
         }
         levelList = levels;
         return levels;
@@ -258,16 +258,16 @@ public class FileHelper {
      * throws: IOException 当文件不存在或文件格式有误时
      * @warnning: 经度是float 数组升序
      * */
-    public List<Float> getLongitudeFromFile(NetCDFFile file) throws IOException{
-        List<Float> longitudes = new ArrayList<>();
+    public List<Double> getLongitudeFromFile(NetCDFFile file) throws IOException{
+        List<Double> longitudes = new ArrayList<>();
         currentNetcdfFile = NetcdfFile.open(getFilePath(file));
-        Variable longitude = currentNetcdfFile.findVariable("longitude");
+        Variable longitude = currentNetcdfFile.findVariable(file.getFileType().longitude);
         if(longitude == null){
             throw new IOException();
         }
-        float[] temp = (float[])longitude.read().copyTo1DJavaArray();
-        for(float f:temp){
-            longitudes.add(f);
+        String[] temp = longitude.read().toString().split("\\s+");
+        for(String s:temp){
+            longitudes.add(Double.parseDouble(s));
         }
         return longitudes;
     }
@@ -279,16 +279,16 @@ public class FileHelper {
      * throws: IOException 当文件不存在或文件格式有误时
      * @warnning: 纬度也是float 数组升序 有正负
      * */
-    public List<Float> getLatitudeFromFile(NetCDFFile file) throws IOException{
-        List<Float> latitudes = new ArrayList<>();
+    public List<Double> getLatitudeFromFile(NetCDFFile file) throws IOException{
+        List<Double> latitudes = new ArrayList<>();
         currentNetcdfFile = NetcdfFile.open(getFilePath(file));
-        Variable latitude = currentNetcdfFile.findVariable("latitude");
+        Variable latitude = currentNetcdfFile.findVariable(file.getFileType().latitude);
         if(latitude == null){
             throw new IOException();
         }
-        float[] temp = (float[])latitude.read().copyTo1DJavaArray();
-        for(float f:temp){
-            latitudes.add(f);
+        String[] temp = latitude.read().toString().split("\\s+");
+        for(String s:temp){
+            latitudes.add(Double.parseDouble(s));
         }
         return latitudes;
     }
