@@ -212,9 +212,18 @@ public class FileHelper {
             throw new IOException();
         }
         int[] shape = variable.getShape();
-        int[] origin = new int[]{levelIndex, 0, 0};
-        int[] size = new int[]{1, shape[1], shape[2]};
-        Array data2D = variable.read(origin, size).reduce(0);
+        int[] origin;
+        int[] size;
+        Array data2D;
+        if(file.getFileType() != FILE_TYPE.O){
+            origin = new int[]{levelIndex, 0, 0};
+            size = new int[]{1, shape[1], shape[2]};
+            data2D = variable.read(origin, size).reduce(0);
+        }else{
+            origin = new int[]{0, levelIndex, 0, 0};
+            size = new int[]{shape[0], 1, shape[2], shape[3]};
+            data2D = variable.read(origin, size).reduce(0).reduce(0);
+        }
         float[][] temp = (float[][]) data2D.copyToNDJavaArray();
         for(float[] list :temp){
             List<Float> inner = new ArrayList<>();

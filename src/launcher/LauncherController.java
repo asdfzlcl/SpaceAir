@@ -1,5 +1,6 @@
 package launcher;
 
+import front_end.app.WebStage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -164,6 +165,8 @@ public class LauncherController {
         }catch (IOException e){
             e.printStackTrace();
         }
+
+        WebStage.showWebStage();
 
     }
 
