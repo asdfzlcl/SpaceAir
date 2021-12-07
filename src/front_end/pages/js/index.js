@@ -74,7 +74,11 @@ function drawHeatMap(rawData){
     let min = rawData[0][0]
     let max = rawData[0][0]
     //采样（为了保证速度）
-    let cx=5,cy=5;
+    let cx=2,cy=2;
+    if(rawData[0].length>1400)
+    {
+        cx=3;cy=3;
+    }
     for(let x=0;x+cx<rawData.length;x=x+cx){
         xData.push(x);
         for(let y=0;y+cy<rawData[0].length;y=y+cy)
