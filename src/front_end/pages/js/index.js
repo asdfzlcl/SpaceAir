@@ -99,10 +99,10 @@ function drawHeatMap(rawData){
         visualMap: {
             min: min,
             max: max,
-            type: 'piecewise',
-            splitNumber: 11,
+            // type: 'piecewise',
+            // splitNumber: 11,
             calculable: true,
-            realtime: true,
+            realtime: false,
             inRange: {
                 color: [
                     '#313695',
@@ -130,7 +130,7 @@ function drawHeatMap(rawData){
                         borderWidth: 1
                     }
                 },
-                progressive: 1000,
+                progressive: 10000,
                 animation: false
             }
         ]

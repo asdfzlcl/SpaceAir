@@ -24,8 +24,6 @@ import java.util.Optional;
  * */
 public class Launcher extends Application {
 
-    private LauncherController controller;
-
     @Override
     public void start(Stage primaryStage) throws Exception{
         URL location = getClass().getResource("launcher.fxml");
@@ -40,7 +38,7 @@ public class Launcher extends Application {
         primaryStage.getIcons().add(new Image("file:" +
                 System.getProperty("user.dir") + File.separator + "icon.png"));
 
-        controller = fxmlLoader.getController();
+        LauncherController controller = fxmlLoader.getController();
         controller.init();
 
         primaryStage.show();
