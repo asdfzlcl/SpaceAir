@@ -73,18 +73,25 @@ function drawHeatMap(rawData){
     let data = []
     let min = rawData[0][0]
     let max = rawData[0][0]
-    for(let x=0;x<rawData.length;x++){
+    //采样（为了保证速度）
+    let cx=5,cy=5;
+    for(let x=0;x+cx<rawData.length;x=x+cx){
         xData.push(x);
-        for(let y=0;y<rawData[0].length;y++)
+        for(let y=0;y+cy<rawData[0].length;y=y+cy)
         {
+            let now=0;
+            for(let i=0;i<cx;i++)
+                for(let j=0;j<cy;j++)
+                    now=now+rawData[x+i][y+j]
+            rawData[x][y]=now/(cx*cy);
             if(min>rawData[x][y])
                 min=rawData[x][y]
             if(max<rawData[x][y])
                 max=rawData[x][y]
-            data.push([x,y,rawData[x][y]])
+            data.push([x/cx,y/cy,rawData[x][y]])
         }
     }
-    for(let y=0;y<rawData[0].length;y++)
+    for(let y=0;y<rawData[0].length;y=y+cy)
         yData.push(y);
     let option = {
         tooltip: {},
@@ -99,8 +106,8 @@ function drawHeatMap(rawData){
         visualMap: {
             min: min,
             max: max,
-            type: 'piecewise',
-            splitNumber: 11,
+            //type: 'piecewise',
+            //splitNumber: 11,
             calculable: true,
             realtime: true,
             inRange: {
@@ -130,7 +137,7 @@ function drawHeatMap(rawData){
                         borderWidth: 1
                     }
                 },
-                progressive: 1000,
+                //progressive: 1000,
                 animation: false
             }
         ]

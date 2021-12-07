@@ -29,7 +29,7 @@ public class FuncInjectorImpl implements FuncInjector {
 //            data.add(row);
 //        }
         // test
-        NetCDFFile file = new NetCDFFile("U010100_大气密度(U)气候态.nc", FILE_TYPE.U, new Date());
+        NetCDFFile file = new NetCDFFile("v010100_V数据_气候态.nc", FILE_TYPE.V, new Date());
         try {
             data = FileHelper.getInstance().getDataSetVarLevel(file, 0);
         } catch (IOException | InvalidRangeException e) {
