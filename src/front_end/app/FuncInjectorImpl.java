@@ -28,6 +28,7 @@ public class FuncInjectorImpl implements FuncInjector {
     @Override
     public String GetContourMapData(JSObject params) {
         InputParam inputParam = new InputParam(params);
+        System.out.println(inputParam);
         List<Float> data = new ArrayList<>(91);
         for(int i=0;i<91;i++)
             data.add((float) (Math.random() * 10.0));

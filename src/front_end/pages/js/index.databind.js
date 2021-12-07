@@ -9,6 +9,7 @@ let bindNumberGetter = (obj,attr,domSelector)=>{
         get: ()=>parseInt(document.querySelector(domSelector).value)
     })
 }
+
 bindGetter(params,'type',"input[name=type-selector]:checked")
 bindGetter(params,'days',"",()=>{
     let timeStr = document.querySelector("#date-input").value
@@ -36,3 +37,4 @@ bindNumberGetter(params,'latLb',"#latLb-input")
 bindNumberGetter(params,'latUb',"#latUb-input")
 bindNumberGetter(params,'lonLb',"#lonLb-input")
 bindNumberGetter(params,'lonUb',"#lonUb-input")
+//TODO 绑定params.task
