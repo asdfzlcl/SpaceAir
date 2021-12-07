@@ -1,0 +1,25 @@
+VBox{
+    -fx-padding: 10;
+    -fx-spacing: 10;
+    -fx-font-size: 16;
+}
+HBox{
+    -fx-spacing: 10;
+}
+
+.fileBox{
+    -fx-spacing: 10;
+}
+
+.buttonBox{
+    -fx-spacing: 50;
+    -fx-alignment: center;
+}
+
+Button{
+    -fx-pref-width: 80;
+}
+
+TextField{
+    -fx-pref-width: 500;
+}
