@@ -32,8 +32,8 @@ public class Main {
         int doy=80;
         double uth=12.0;
         double height_start=0.0;
-        double height_end=100.0;
-        double ratio=2;
+        double height_end=5.0;
+        double ratio=5;
         double lat=60;
         double lon=120;
         double f107p=120;
