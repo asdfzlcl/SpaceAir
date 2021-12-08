@@ -34,34 +34,11 @@
                 <input id="height-input" class="mdui-textfield-input"
                        type="number" min="0" max="90" placeholder="高度(km)"
                         value="0"/>
-                <div class="mdui-textfield-helper">高度: <span class="limit-heightLb"></span>-<span class="limit-heightUb"></span>(km)</div>
+                <div class="mdui-textfield-helper">高度: <span class="limit-heightLb">0</span>-<span class="limit-heightUb">90</span>(km)</div>
             </div>
         </div>
-        <p>时间点选择</p>
-        <div class="param-item param-input">
-            <label class="mdui-radio">
-                <input type="radio" name="time-selector" value="0" checked/>
-                <i class="mdui-radio-icon"></i>
-                0:00
-            </label>
-            <label class="mdui-radio">
-                <input type="radio" name="time-selector" value="6"/>
-                <i class="mdui-radio-icon"></i>
-                6:00
-            </label>
-        </div>
-        <div class="param-item param-input">
-        <label class="mdui-radio">
-            <input type="radio" name="time-selector" value="12"/>
-            <i class="mdui-radio-icon"></i>
-            12:00
-        </label>
-        <label class="mdui-radio">
-            <input type="radio" name="time-selector" value="18"/>
-            <i class="mdui-radio-icon"></i>
-            18:00
-        </label>
-        </div>
+        <div>日期: <span id="show-time"></span></div>
+        <div>当前文件: <span id="show-filename"></span></div>
         <div class="param-item">
             <div class="mdui-textfield">
                 <input class="mdui-textfield-input" type="number"

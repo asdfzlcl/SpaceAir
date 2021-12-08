@@ -16,6 +16,9 @@ import java.util.List;
 public class FuncInjectorImpl implements FuncInjector {
 
     private List<NetCDFFile> nowDictionary=null;
+    private List<Double> Levels=null;
+    private List<Double> Latitudes=null;
+    private List<Double> Longitudes=null;
     @Override
     public String GetHeatMapData(JSObject params){
         InputParam inputParam = new InputParam(params);
@@ -83,6 +86,33 @@ public class FuncInjectorImpl implements FuncInjector {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return data.toString();
+    }
+
+    public String Getinformation(JSObject params){
+        InputParam inputParam = new InputParam(params);
+        System.out.println(inputParam);
+        List<String> data = new ArrayList<>();
+        for(NetCDFFile f: nowDictionary){
+            if(f.getFileName().equals(inputParam.getFilename()))
+            {
+                data.add(f.getFileDate());
+                try{
+                    Latitudes=FileHelper.getInstance().getLatitudeFromFile(f);
+                    Longitudes=FileHelper.getInstance().getLongitudeFromFile(f);
+                    Levels=FileHelper.getInstance().getLevelFromFile(f);
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
+        data.add(Latitudes.get(0).toString());
+        data.add(Latitudes.get(Latitudes.size()-1).toString());
+        data.add(Longitudes.get(0).toString());
+        data.add(Longitudes.get(Longitudes.size()-1).toString());
+        data.add(Levels.get(0).toString());
+        data.add(Levels.get(Levels.size()-1).toString());
         return data.toString();
     }
 

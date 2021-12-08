@@ -26,7 +26,7 @@ mdui.$('#head-tab').on('change.mdui.tab',(event)=>{
 bindGetter(params,'task','',()=>{
     return taskId
 })
-bindNumberGetter(params,'time',"input[name=time-selector]:checked")
+// bindNumberGetter(params,'time',"input[name=time-selector]:checked")
 bindNumberGetter(params,'height',"#height-input")
 bindNumberGetter(params,'latLb',"#latLb-input")
 bindNumberGetter(params,'latUb',"#latUb-input")
@@ -38,40 +38,51 @@ bindSetterWithFixed2(statics,'min','#data-min')
 bindSetterWithFixed2(statics,'avg','#data-avg')
 bindSetterWithFixed2(statics,'sdev','#data-sdev')
 
+Object.defineProperty(params,'time',{
+    set:(newVal)=>{
+        document.querySelector("#show-time").innerHTML=newVal
+    }
+})
 
-Object.defineProperty(limit,'latLb',{
-    set:(newVal)=>{
-        for(let d of document.querySelectorAll(".limit-latLb"))
-            d.innerHTML=newVal.toString()
-    }
+Object.defineProperty(limit, 'latLb', {
+    set: (newVal) => {
+        for (let d of document.querySelectorAll(".limit-latLb"))
+            d.innerHTML = newVal.toString()
+    },
+    get: () => parseInt(document.querySelectorAll(".limit-latLb")[0].innerHTML)
 })
-Object.defineProperty(limit,'latUb',{
-    set:(newVal)=>{
-        for(let d of document.querySelectorAll(".limit-latUb"))
-            d.innerHTML=newVal.toString()
-    }
+Object.defineProperty(limit, 'latUb', {
+    set: (newVal) => {
+        for (let d of document.querySelectorAll(".limit-latUb"))
+            d.innerHTML = newVal.toString()
+    },
+    get: () => parseInt(document.querySelectorAll(".limit-latUb")[0].innerHTML)
 })
-Object.defineProperty(limit,'lonLb',{
-    set:(newVal)=>{
-        for(let d of document.querySelectorAll(".limit-lonLb"))
-            d.innerHTML=newVal.toString()
-    }
+Object.defineProperty(limit, 'lonLb', {
+    set: (newVal) => {
+        for (let d of document.querySelectorAll(".limit-lonLb"))
+            d.innerHTML = newVal.toString()
+    },
+    get: () => parseInt(document.querySelectorAll(".limit-lonLb")[0].innerHTML)
 })
-Object.defineProperty(limit,'lonUb',{
-    set:(newVal)=>{
-        for(let d of document.querySelectorAll(".limit-lonUb"))
-            d.innerHTML=newVal.toString()
-    }
+Object.defineProperty(limit, 'lonUb', {
+    set: (newVal) => {
+        for (let d of document.querySelectorAll(".limit-lonUb"))
+            d.innerHTML = newVal.toString()
+    },
+    get: () => parseInt(document.querySelectorAll(".limit-lonUb")[0].innerHTML)
 })
-Object.defineProperty(limit,'heightLb',{
-    set:(newVal)=>{
-        for(let d of document.querySelectorAll(".limit-heightLb"))
-            d.innerHTML=newVal.toString()
-    }
+Object.defineProperty(limit, 'heightLb', {
+    set: (newVal) => {
+        for (let d of document.querySelectorAll(".limit-heightLb"))
+            d.innerHTML = newVal.toString()
+    },
+    get: () => parseInt(document.querySelectorAll(".limit-heightLb")[0].innerHTML)
 })
-Object.defineProperty(limit,'heightUb',{
-    set:(newVal)=>{
-        for(let d of document.querySelectorAll(".limit-heightUb"))
-            d.innerHTML=newVal.toString()
-    }
+Object.defineProperty(limit, 'heightUb', {
+    set: (newVal) => {
+        for (let d of document.querySelectorAll(".limit-heightUb"))
+            d.innerHTML = newVal.toString()
+    },
+    get: () => parseInt(document.querySelectorAll(".limit-heightUb")[0].innerHTML)
 })
