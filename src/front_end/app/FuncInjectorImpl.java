@@ -29,7 +29,7 @@ public class FuncInjectorImpl implements FuncInjector {
 //            data.add(row);
 //        }
         // test
-        NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), new Date());
+        NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), new String());
         try {
             data = FileHelper.getInstance().getDataSetVarLevel(file, 0);
         } catch (IOException | InvalidRangeException e) {
@@ -45,7 +45,7 @@ public class FuncInjectorImpl implements FuncInjector {
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
         List<Float> data = new ArrayList<>(91);
-        NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), new Date());
+        NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), new String());
         try {
             data = FileHelper.getInstance().getDataSetVarCoordinate(file, inputParam.getLatLb(),inputParam.getLonLb());
         } catch (IOException | InvalidRangeException e) {
@@ -57,7 +57,7 @@ public class FuncInjectorImpl implements FuncInjector {
     }
 
     //获取对应文件属性目录
-    public String Getinformation(JSObject params){
+    public List<String> GetDictiontary(JSObject params){
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
         List<NetCDFFile> data = new ArrayList<>(200);
@@ -66,7 +66,7 @@ public class FuncInjectorImpl implements FuncInjector {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return data.toString();
+        return Arrays.asList("U010100_大气密度(U)气候态.nc","U010100_大气密度(U)气候态.nc");
     }
 
     //获取文件精度、纬度、高度上下限

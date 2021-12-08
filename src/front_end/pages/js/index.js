@@ -10,7 +10,7 @@ params = {
     latUb:0,
     lonLb:0,
     lonUb:0,
-    filename:''//TODO 数据绑定
+    filename:'U010100_大气密度(U)气候态.nc'//TODO 数据绑定
 }
 
 // 统计数据
@@ -86,7 +86,8 @@ function fetchTypes(){
 }
 // 动态添加文件列表组件
 function fetchFileList(){
-    let filelist = funcInjector.GetFileList(params)
+    document.querySelector("#file-list").innerHTML=''
+    let filelist = funcInjector.GetDictiontary(params)
     let files=[]
     files = filelist
         .toString()
@@ -98,13 +99,6 @@ function fetchFileList(){
         html = html + getFileListHtml(files[i])
     mdui.$("#file-list").append(html)
     mdui.$("#file-list").mutation()
-}
-
-function changetype()
-{
-    all_information=funcInjector.Getinformation(params)
-    //alert(all_information)
-
 }
 
 
