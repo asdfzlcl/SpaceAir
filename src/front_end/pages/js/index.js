@@ -102,7 +102,9 @@ function fileChangeHandler(filename) {
     limit.lonUb = parseFloat(limit_file[4])
     limit.heightLb = parseFloat(limit_file[5]).toFixed(2)
     limit.heightUb = parseFloat(limit_file[6]).toFixed(2)
-    if(limit_file[0].length==6)
+    if(limit_file[0].length==4)
+        params.time = limit_file[0].substr(0,2)+"月"+limit_file[0].substr(2,2)+"日"
+    else if(limit_file[0].length==6)
         params.time = limit_file[0].substr(0,2)+"月"+limit_file[0].substr(2,2)+"日"+limit_file[0].substr(4,2)+":00"
     else
         params.time = limit_file[0].substr(0,4)+"年"+limit_file[0].substr(4,2)+"月"+limit_file[0].substr(6,2)+"日"+limit_file[0].substr(8,2)+":00"
@@ -164,7 +166,7 @@ function drawHeatMap(rawData) {
     }
     statics.sdev = Math.sqrt(sum_avg / count)
 
-    for (let y = 0; y < rawData[0].length; y = y + cy) yData.push(y);
+    for (let y = 0; y + cy < rawData[0].length; y = y + cy) yData.push(y);
     let option = {
         tooltip: {}, xAxis: {
             type: 'category', data: xData, name: '经度 (°E)'

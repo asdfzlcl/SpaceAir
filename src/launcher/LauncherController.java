@@ -159,14 +159,6 @@ public class LauncherController {
         FileHelper.setInstance(pathInput);
 
 
-        try {
-            List<Double> a = FileHelper.getInstance().getLevelFromFile(new NetCDFFile("v010100_V数据_气候态.nc", FILE_TYPE.V, ""));
-            for(Double d: a){
-                System.out.println(d);
-            }
-        }catch (IOException e){
-            e.printStackTrace();
-        }
 
         final Stage stage = (Stage)T_file_path.getScene().getWindow();
         stage.close();
