@@ -1,5 +1,6 @@
 package algorithm;
 
+import java.util.Date;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -80,7 +81,7 @@ public class GenerateInputTxt {
     ap2:
     ap3:
      */
-    public static void  GenerateInputData(int year,int doy,double uth,double height_start,double height_end,double ratio,double lat,double lon,double f107p,double f107a,double apd,double ap1, double ap2,double ap3 ) {
+    public static String  GenerateInputData(int year,int doy,double uth,double height_start,double height_end,double ratio,double lat,double lon,double f107p,double f107a,double apd,double ap1, double ap2,double ap3 ) {
         double curr_height=height_start;
         while(curr_height<=height_end){
             WriteTxt(year,doy,uth,curr_height,lat,lon,f107p,f107a,apd,ap1,ap2,ap3);
@@ -90,8 +91,13 @@ public class GenerateInputTxt {
 
         //将本地生成的output.txt移动到output目录下
         File output_file=new File(algorithmDicPath+"/output.txt");
-        File to_file=new File(outputDicPath+"/output.txt");
+        Date date = new Date();
+        String output_name=outputDicPath+'/'+date.toString( )+"_output.txt";
+        File to_file=new File(output_name);
         output_file.renameTo(to_file);
+
+        //返回文件名称为时间_output.txt 例如Wed Dec 08 16:56:21 CST 2021_output.txt
+        return output_name
     }
 
     public static void main(String[] args){
