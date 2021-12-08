@@ -80,6 +80,14 @@ function fetchTypes(){
     mdui.$("#type-selector").mutation()
 }
 
+function changetype()
+{
+    all_information=funcInjector.Getinformation(params)
+    alert(all_information)
+
+}
+
+
 function drawHeatMap(rawData){
     //TODO 横纵坐标应按照经纬度重新生成
     let xData=[]
