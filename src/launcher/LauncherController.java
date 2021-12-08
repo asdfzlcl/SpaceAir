@@ -160,7 +160,7 @@ public class LauncherController {
 
 
         try {
-            List<Double> a = FileHelper.getInstance().getLevelFromFile(new NetCDFFile("T010100_大气密度(T)气候态.nc", FILE_TYPE.T, ""));
+            List<Double> a = FileHelper.getInstance().getLevelFromFile(new NetCDFFile("v010100_V数据_气候态.nc", FILE_TYPE.V, ""));
             for(Double d: a){
                 System.out.println(d);
             }

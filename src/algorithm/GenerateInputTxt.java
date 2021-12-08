@@ -1,5 +1,6 @@
 package algorithm;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -87,9 +88,11 @@ public class GenerateInputTxt {
         GenerateInputTxt.model_();
 
         //将本地生成的output.txt移动到output目录下
-        File output_file=new File(outputDicPath+"/output.txt");
-        Date date = new Date();
-        String output_name=outputDicPath+'/'+date.toString( )+"_output.txt";
+        File output_file=new File(outputDicPath+ File.separator + "output.txt");
+        String pattern = "YYYY-MM-dd:HH:mm:ss";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String date = simpleDateFormat.format(new Date());
+        String output_name=outputDicPath+ File.separator + date +"_output.txt";
         File to_file=new File(output_name);
         output_file.renameTo(to_file);
 
