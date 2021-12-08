@@ -89,19 +89,20 @@ function getFileListHtml(value) {
 
 function fileChangeHandler(filename) {
     params.filename = filename
+    document.querySelector("#show-filename").innerHTML = filename
     limit_file = funcInjector.Getinformation(params)
     limit_file = limit_file
         .toString()
         .slice(1, limit_file.toString().length - 1)
         .replace(/\s+/g, '')
         .split(',')
-    limit.latLb=parseFloat(limit_file[1])
-    limit.latUb=parseFloat(limit_file[2])
-    limit.lonLb=parseFloat(limit_file[3])
-    limit.lonUb=parseFloat(limit_file[4])
-    limit.heightLb=parseFloat(limit_file[5]).toFixed(2)
-    limit.heightUb=parseFloat(limit_file[6]).toFixed(2)
-    params.time=limit_file[0]
+    limit.latLb = parseFloat(limit_file[1])
+    limit.latUb = parseFloat(limit_file[2])
+    limit.lonLb = parseFloat(limit_file[3])
+    limit.lonUb = parseFloat(limit_file[4])
+    limit.heightLb = parseFloat(limit_file[5]).toFixed(2)
+    limit.heightUb = parseFloat(limit_file[6]).toFixed(2)
+    params.time = limit_file[0]
 }
 
 // 动态添加文件列表组件
@@ -162,16 +163,18 @@ function drawHeatMap(rawData) {
 
     for (let y = 0; y < rawData[0].length; y = y + cy) yData.push(y);
     let option = {
-        tooltip: {}, xAxis: {
-            type: 'category', data: xData
+        tooltip: {}, title: {
+            text: '热力图', textAlign: 'center'
+        }, xAxis: {
+            type: 'category', data: xData, name: '纬度 (°N)'
         }, yAxis: {
-            type: 'category', data: yData
+            type: 'category', data: yData, name: '经度 (°E)'
         }, visualMap: {
             min: min, max: max, calculable: true, realtime: false, inRange: {
                 color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
             }
         }, series: [{
-            name: 'Gaussian', type: 'heatmap', data: data, emphasis: {
+            name: '值', type: 'heatmap', data: data, emphasis: {
                 itemStyle: {
                     borderColor: '#333', borderWidth: 1
                 }
@@ -208,14 +211,14 @@ function drawContourMapData(rawData) {
     let option = {
         //TODO 修改坐标轴文字标题等
         legend: {
-            data: ['Altitude (km) vs. temperature (°C)']
+            data: ['高度 (km) vs. 温度 (K)']
         }, tooltip: {
-            trigger: 'axis', formatter: 'Temperature : <br/>{b}km : {c}°C'
+            trigger: 'axis', formatter: '温度 : <br/>{b}km : {c}K'
         }, grid: {
             left: '3%', right: '4%', bottom: '3%', containLabel: true
         }, xAxis: {
             type: 'value', axisLabel: {
-                formatter: '{value} °C'
+                formatter: '{value} K'
             },
         }, yAxis: {
             type: 'category', axisLine: {onZero: false}, axisLabel: {
@@ -226,7 +229,7 @@ function drawContourMapData(rawData) {
                 color: ['#313695', '#4575b4', '#74add1',]
             }
         }, series: [{
-            name: 'Altitude (km) vs. temperature (°C)',
+            name: 'Altitude (km) vs. Value ()',
             type: 'line',
             symbolSize: 10,
             symbol: 'circle',
