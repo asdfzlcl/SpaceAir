@@ -16,6 +16,15 @@ import util.FileHelper;
  * output.txt中每一行代表一个高度的数据，数据分别为 Temperature(K)    Density(kg/m3)   Mer and Zon Wind(m/s)   Pressure(Pa)
  */
 public class GenerateInputTxt {
+
+
+    //算法文件夹
+    public static String algorithmDicPath=FileHelper.algorithmDicPath;
+
+    //输出output.txt文件夹
+    public static String outputDicPath=FileHelper.outputDicPath;
+
+
     public interface LgetLib extends Library {
 
         LgetLib INSTANCE = (LgetLib) Native.loadLibrary("./model.so",LgetLib.class);
@@ -30,7 +39,7 @@ public class GenerateInputTxt {
     public static void WriteTxt(int year,int doy,double uth,double height,double lat,double lon,double f107p,double f107a,double apd,double ap1, double ap2,double ap3){
         try{
 
-            File file =new File("input.txt");
+            File file =new File(algorithmDicPath+"/input.txt");
             if(!file.exists()){
                 file.createNewFile();
             }
@@ -78,6 +87,11 @@ public class GenerateInputTxt {
             curr_height+=ratio;
         }
         GenerateInputTxt.model_();
+
+        //将本地生成的output.txt移动到output目录下
+        File output_file=new File(algorithmDicPath+"/output.txt");
+        File to_file=new File(outputDicPath+"/output.txt");
+        output_file.renameTo(to_file);
     }
 
     public static void main(String[] args){
