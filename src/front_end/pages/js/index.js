@@ -205,7 +205,7 @@ function drawContourMapData(rawData){
             type: 'value',
             axisLabel: {
                 formatter: '{value} °C'
-            }
+            },
         },
         yAxis: {
             type: 'category',
