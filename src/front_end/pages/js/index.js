@@ -102,7 +102,10 @@ function fileChangeHandler(filename) {
     limit.lonUb = parseFloat(limit_file[4])
     limit.heightLb = parseFloat(limit_file[5]).toFixed(2)
     limit.heightUb = parseFloat(limit_file[6]).toFixed(2)
-    params.time = limit_file[0]
+    if(limit_file[0].length==6)
+        params.time = limit_file[0].substr(0,2)+"月"+limit_file[0].substr(2,2)+"日"+limit_file[0].substr(4,2)+":00"
+    else
+        params.time = limit_file[0].substr(0,4)+"年"+limit_file[0].substr(4,2)+"月"+limit_file[0].substr(6,2)+"日"+limit_file[0].substr(8,2)+":00"
 }
 
 // 动态添加文件列表组件

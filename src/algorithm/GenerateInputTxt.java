@@ -19,9 +19,6 @@ import util.FileHelper;
 public class GenerateInputTxt {
 
 
-    //算法文件夹
-    public static String algorithmDicPath=FileHelper.algorithmDicPath;
-
     //输出output.txt文件夹
     public static String outputDicPath=FileHelper.outputDicPath;
 
@@ -40,7 +37,7 @@ public class GenerateInputTxt {
     public static void WriteTxt(int year,int doy,double uth,double height,double lat,double lon,double f107p,double f107a,double apd,double ap1, double ap2,double ap3){
         try{
 
-            File file =new File(algorithmDicPath+"/input.txt");
+            File file =new File("input.txt");
             if(!file.exists()){
                 file.createNewFile();
             }
@@ -90,14 +87,14 @@ public class GenerateInputTxt {
         GenerateInputTxt.model_();
 
         //将本地生成的output.txt移动到output目录下
-        File output_file=new File(algorithmDicPath+"/output.txt");
+        File output_file=new File(outputDicPath+"/output.txt");
         Date date = new Date();
         String output_name=outputDicPath+'/'+date.toString( )+"_output.txt";
         File to_file=new File(output_name);
         output_file.renameTo(to_file);
 
         //返回文件名称为时间_output.txt 例如Wed Dec 08 16:56:21 CST 2021_output.txt
-        return output_name
+        return output_name;
     }
 
     public static void main(String[] args){
