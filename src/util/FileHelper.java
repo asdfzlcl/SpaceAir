@@ -18,11 +18,9 @@ import java.util.List;
 public class FileHelper {
 
     public static String classBasePath = System.getProperty("user.dir"); //当前工作路径
-    public static String algorithmDicPath = classBasePath + File.separator + "algorithm"; //算法模块路径
     public static String outputDicPath = classBasePath + File.separator + "output"; //算法模块输出路径
     public static String configFileName = ".config"; //config文件名称
     public static String configFilePath = classBasePath + File.separator + configFileName; //config文件完整路径
-
 
     private static FileHelper instance; //唯一实例
 
@@ -139,10 +137,11 @@ public class FileHelper {
         for(File file:currentFiles){
             if(file.isFile()){
                 // 判断格式是否为nc
-                String ncFile = "nc";
+                String lowNCFile = "nc";
+                String upperNCFile = "NC";
                 String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1,
                         file.getName().length());
-                if(extension.equals(ncFile)){
+                if(extension.equals(lowNCFile) | extension.equals(upperNCFile)){
                     //抽取里面的数字（即时间信息）
                     String timeNumberString = file.getName().replaceAll("[^0-9]", "");
                     returnList.add(new NetCDFFile(file.getName(), fileType, timeNumberString));
@@ -169,6 +168,8 @@ public class FileHelper {
         }
         String[] temp = level.read().toString().split("\\s+");
         for(String i:temp){
+            double current = Double.parseDouble(i);
+
             levels.add(Double.parseDouble(i));
         }
         return levels;
@@ -284,16 +285,10 @@ public class FileHelper {
      * function: createAlgorithmOutPut
      * parameter: 算法的输入
      * description: 从前端获得的信息来生成算法模块（标准大气模型）的输出
-     * */
-    public void createAlgorithmOutPut(){
-
-    }
-
-    /**
-     *
      * throw: IOException 当无法读取文件或文件为空时 这时候应提出用户检查参数
      * */
-    public List<List<Double>> getAlgOut() throws IOException{
+    public List<List<Double>> getAlgOut(int year,int doy,double uth,double height,double lat,double lon,double f107p,
+                                        double f107a,double apd,double ap1, double ap2,double ap3) throws IOException{
         List<List<Double>> dataset = new ArrayList<>();
         String outputName = "";
         File algTXT = new File(outputDicPath + File.separator + outputName);

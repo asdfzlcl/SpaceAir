@@ -32,7 +32,7 @@ public class Launcher extends Application {
         Scene scene = new Scene(root, 800, 310);
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image("file:" +
-                System.getProperty("user.dir") + File.separator + "icon.png"));
+                System.getProperty("user.dir") + File.separator + "logo.png"));
 
         LauncherController controller = fxmlLoader.getController();
         controller.init();

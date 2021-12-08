@@ -9,6 +9,7 @@ import com.teamdev.jxbrowser.chromium.internal.Environment;
 import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -16,6 +17,7 @@ import javafx.stage.WindowEvent;
 import launcher.Launcher;
 import util.DialogHelper;
 
+import java.io.File;
 import java.util.Objects;
 
 public class WebStage {
@@ -85,6 +87,10 @@ public class WebStage {
         });
         browser.loadURL(url);
         webStageConfigured = true;
+
+        webStage.setTitle("标准大气软件");
+        webStage.getIcons().add(new Image("file:" +
+                System.getProperty("user.dir") + File.separator + "logo.png"));
 
         //给webStage增加退出按钮
         webStage.setOnCloseRequest(new EventHandler<WindowEvent>() {

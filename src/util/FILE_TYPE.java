@@ -18,7 +18,7 @@ public enum FILE_TYPE {
     public final String level;
     public final String latitude;
     public final String longitude;
-    private FILE_TYPE(String a, String level, String latitude, String longitude){
+    FILE_TYPE(String a, String level, String latitude, String longitude){
         this.attr = a;
         this.level = level;
         this.latitude = latitude;

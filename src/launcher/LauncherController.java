@@ -6,14 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import ucar.ma2.InvalidRangeException;
+import sun.nio.ch.Net;
 import util.*;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
 
 /**
  * @author wxy
@@ -160,12 +158,11 @@ public class LauncherController {
         };
         FileHelper.setInstance(pathInput);
 
-        List<NetCDFFile> list = new ArrayList<>();
+
         try {
-            list = FileHelper.getInstance().getAllFileOfDirectory(FILE_TYPE.T);
-            for(NetCDFFile f: list){
-                System.out.println(f.getFileName());
-                System.out.println(f.getFileDate());
+            List<Double> a = FileHelper.getInstance().getLevelFromFile(new NetCDFFile("T010100_大气密度(T)气候态.nc", FILE_TYPE.T, ""));
+            for(Double d: a){
+                System.out.println(d);
             }
         }catch (IOException e){
             e.printStackTrace();
