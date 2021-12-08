@@ -45,8 +45,14 @@ public class FuncInjectorImpl implements FuncInjector {
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
         List<Float> data = new ArrayList<>(91);
-        for(int i=0;i<91;i++)
-            data.add((float) (Math.random() * 10.0));
+        NetCDFFile file = new NetCDFFile("T010100_大气密度(T)气候态.nc", FILE_TYPE.T, new Date());
+        try {
+            data = FileHelper.getInstance().getDataSetVarCoordinate(file, inputParam.getLatLb(),inputParam.getLonLb());
+        } catch (IOException | InvalidRangeException e) {
+            e.printStackTrace();
+        }
+//        for(int i=0;i<91;i++)
+//            data.add((float) (Math.random() * 10.0));
         return data.toString();
     }
 
