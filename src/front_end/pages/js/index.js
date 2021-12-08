@@ -96,18 +96,18 @@ function fileChangeHandler(filename) {
         .slice(1, limit_file.toString().length - 1)
         .replace(/\s+/g, '')
         .split(',')
-    limit.latLb = Math.min(parseFloat(limit_file[1]),parseFloat(limit_file[2]))
-    limit.latUb = Math.max(parseFloat(limit_file[1]),parseFloat(limit_file[2]))
-    limit.lonLb = Math.min(parseFloat(limit_file[3]),parseFloat(limit_file[4]))
-    limit.lonUb = Math.max(parseFloat(limit_file[3]),parseFloat(limit_file[4]))
-    limit.heightLb = Math.min(parseFloat(limit_file[5]),parseFloat(limit_file[6])).toFixed(2)
-    limit.heightUb = Math.max(parseFloat(limit_file[5]),parseFloat(limit_file[6])).toFixed(2)
-    if(limit_file[0].length==4)
-        params.time = limit_file[0].substr(0,2)+"月"+limit_file[0].substr(2,2)+"日"
-    else if(limit_file[0].length==6)
-        params.time = limit_file[0].substr(0,2)+"月"+limit_file[0].substr(2,2)+"日"+limit_file[0].substr(4,2)+":00"
+    limit.latLb = Math.min(parseFloat(limit_file[1]), parseFloat(limit_file[2]))
+    limit.latUb = Math.max(parseFloat(limit_file[1]), parseFloat(limit_file[2]))
+    limit.lonLb = Math.min(parseFloat(limit_file[3]), parseFloat(limit_file[4]))
+    limit.lonUb = Math.max(parseFloat(limit_file[3]), parseFloat(limit_file[4]))
+    limit.heightLb = Math.min(parseFloat(limit_file[5]), parseFloat(limit_file[6])).toFixed(2)
+    limit.heightUb = Math.max(parseFloat(limit_file[5]), parseFloat(limit_file[6])).toFixed(2)
+    if (limit_file[0].length == 4)
+        params.time = limit_file[0].substr(0, 2) + "月" + limit_file[0].substr(2, 2) + "日"
+    else if (limit_file[0].length == 6)
+        params.time = limit_file[0].substr(0, 2) + "月" + limit_file[0].substr(2, 2) + "日" + limit_file[0].substr(4, 2) + ":00"
     else
-        params.time = limit_file[0].substr(0,4)+"年"+limit_file[0].substr(4,2)+"月"+limit_file[0].substr(6,2)+"日"+limit_file[0].substr(8,2)+":00"
+        params.time = limit_file[0].substr(0, 4) + "年" + limit_file[0].substr(4, 2) + "月" + limit_file[0].substr(6, 2) + "日" + limit_file[0].substr(8, 2) + ":00"
 }
 
 // 动态添加文件列表组件
@@ -171,9 +171,7 @@ function drawHeatMap(rawData) {
         toolbox: {
             show: true,
             feature: {
-                dataZoom: {
-                    yAxisIndex: 'none'
-                },
+                dataZoom: {},
                 saveAsImage: {}
             }
         },
@@ -225,9 +223,7 @@ function drawContourMapData(rawData) {
         toolbox: {
             show: true,
             feature: {
-                dataZoom: {
-                    yAxisIndex: 'none'
-                },
+                dataZoom: {},
                 saveAsImage: {}
             }
         },
@@ -236,9 +232,9 @@ function drawContourMapData(rawData) {
         }, tooltip: {
             trigger: 'axis', formatter: '温度 : <br/>{b}km : {c}K'
         }, xAxis: {
-            type: 'value',name:'温度 (K)'
+            type: 'value', name: '温度 (K)'
         }, yAxis: {
-            type: 'category', axisLine: {onZero: false}, name:'高度 (km)', boundaryGap: false, data: ydata
+            type: 'category', axisLine: {onZero: false}, name: '高度 (km)', boundaryGap: false, data: ydata
         }, visualMap: {
             min: min, max: max, calculable: true, realtime: true, inRange: {
                 color: ['#313695', '#4575b4', '#74add1',]
