@@ -29,7 +29,9 @@ public class FuncInjectorImpl implements FuncInjector {
 //            data.add(row);
 //        }
         // test
-        NetCDFFile file = new NetCDFFile("T010100_大气密度(T)气候态.nc", FILE_TYPE.T, new Date());
+
+        NetCDFFile file = new NetCDFFile("v010100_V数据_气候态.nc", FILE_TYPE.V, "010100");
+
         try {
             data = FileHelper.getInstance().getDataSetVarLevel(file, 0);
         } catch (IOException | InvalidRangeException e) {
@@ -45,7 +47,7 @@ public class FuncInjectorImpl implements FuncInjector {
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
         List<Float> data = new ArrayList<>(91);
-        NetCDFFile file = new NetCDFFile("T010100_大气密度(T)气候态.nc", FILE_TYPE.T, new Date());
+        NetCDFFile file = new NetCDFFile("T010100_大气密度(T)气候态.nc", FILE_TYPE.T, "010100");
         try {
             data = FileHelper.getInstance().getDataSetVarCoordinate(file, inputParam.getLatLb(), inputParam.getLonLb());
         } catch (IOException | InvalidRangeException e) {
@@ -54,6 +56,25 @@ public class FuncInjectorImpl implements FuncInjector {
 //        for(int i=0;i<91;i++)
 //            data.add((float) (Math.random() * 10.0));
         return data.toString();
+    }
+
+    public String Getinformation(JSObject params){
+        InputParam inputParam = new InputParam(params);
+        System.out.println(inputParam);
+        List<NetCDFFile> data = new ArrayList<>(200);
+        FILE_TYPE file = FILE_TYPE.T;
+        try {
+            data = FileHelper.getInstance().getAllFileOfDirectory(FILE_TYPE.T);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        List<Double> data1 = new ArrayList<>(91);
+        try {
+            data1 =FileHelper.getInstance().getLevelFromFile(data.get(0));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data.get(0).toString();
     }
 
     public List<String> GetFileList() {

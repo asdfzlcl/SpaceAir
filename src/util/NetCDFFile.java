@@ -11,21 +11,21 @@ import java.util.Date;
 public class NetCDFFile {
     private String fileName;
     private FILE_TYPE fileType;
-    private Date fileDate;
+    private String fileDate;
 
     /**
      * main constructor
      * */
-    public NetCDFFile(String fileName, FILE_TYPE fileType, Date fileDate) {
+    public NetCDFFile(String fileName, FILE_TYPE fileType, String date) {
         this.fileName = fileName;
         this.fileType = fileType;
-        this.fileDate = fileDate;
+        this.fileDate = date;
     }
 
     /**
      * secondary constructor
      * */
-    public NetCDFFile(FILE_TYPE fileType, Date fileDate) {
+    public NetCDFFile(FILE_TYPE fileType, String fileDate) {
         this.fileType = fileType;
         this.fileDate = fileDate;
     }
@@ -49,11 +49,11 @@ public class NetCDFFile {
         this.fileType = fileType;
     }
 
-    public Date getFileDate() {
+    public String getFileDate() {
         return fileDate;
     }
 
-    public void setFileDate(Date fileDate) {
+    public void setFileDate(String fileDate) {
         this.fileDate = fileDate;
     }
 }

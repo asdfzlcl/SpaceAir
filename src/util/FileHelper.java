@@ -19,8 +19,11 @@ import java.util.List;
 public class FileHelper {
 
     public static String classBasePath = System.getProperty("user.dir"); //当前工作路径
+    public static String algorithmDicPath = classBasePath + File.separator + "algorithm";
+    public static String outputDicPath = classBasePath + File.separator + "output";
     public static String configFileName = ".config"; //config文件名称
     public static String configFilePath = classBasePath + File.separator + configFileName;
+
 
     private static FileHelper instance; //唯一实例
 
@@ -86,7 +89,7 @@ public class FileHelper {
      * parameter: FILE_TYPE对象type 描述文件类型（T,U,V,O); Date对象date 描述文件日期
      * return: String对象 文件路径
      * */
-    public String getFilePath(FILE_TYPE type, Date date){
+    public String getFilePath(FILE_TYPE type, String date){
         String returnPath = null;
         switch (type){
             case V:
@@ -168,7 +171,13 @@ public class FileHelper {
         }
         for(File file:currentFiles){
             if(file.isFile()){
-                returnList.add(new NetCDFFile(file.getName(), fileType, convertDate(file.getName())));
+                // 判断格式是否为nc
+                String ncFile = "nc";
+                String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1,
+                        file.getName().length());
+                if(extension.equals(ncFile)){
+                    returnList.add(new NetCDFFile(file.getName(), fileType, file.getName()));
+                }
             }
         }
         return returnList;
@@ -300,15 +309,5 @@ public class FileHelper {
             latitudes.add(Double.parseDouble(s));
         }
         return latitudes;
-    }
-
-    /**
-     * tool function: convertDate
-     * parameter: String text of a nc file
-     * return: Date object which represent the create date of the nc file
-     * */
-    private Date convertDate(String fileName){
-        // pass
-        return new Date();
     }
 }

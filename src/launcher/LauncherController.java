@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import ucar.ma2.InvalidRangeException;
 import util.*;
 
@@ -166,8 +167,10 @@ public class LauncherController {
             e.printStackTrace();
         }
 
+        final Stage stage = (Stage)T_file_path.getScene().getWindow();
+        stage.close();
         WebStage.showWebStage();
-
+        System.exit(0); //退出程序
     }
 
     @FXML
