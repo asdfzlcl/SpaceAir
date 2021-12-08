@@ -10,16 +10,27 @@ params = {
     lonLb:0,
     lonUb:0
 }
+
+// 统计数据
+//TODO 将数据变化绑定到页面
+statics = {
+    min:0,
+    max:0,
+    avg:0,
+    sdev:0
+}
+
 // 异步获取数据，避免UI阻塞
 async function getData(){
-    let rawData = {}
-    //TODO 这里之后用switch
-    if(params.task===0)
-        rawData = funcInjector.GetHeatMapData(params)
-    else if(params.task===1)
-        rawData = funcInjector.GetContourMapData(params)
-    else
-        rawData = funcInjector.GetContourMapData(params)
+    let rawData
+    switch (params.task){
+        case 0:
+            rawData = funcInjector.GetHeatMapData(params)
+            break
+        case 1:
+        case 2:
+            rawData = funcInjector.GetContourMapData(params)
+    }
     return JSON.parse(rawData)
 }
 
@@ -27,13 +38,14 @@ async function getData(){
 document.querySelector("#submit-param").onclick=()=>{
     getData()
         .then(rawData => {
-            //TODO 这里之后用switch
-            if(params.task===0)
-                drawHeatMap(rawData)
-            else if(params.task===1)
-                drawContourMapData(rawData)
-            else
-                drawContourMapData(rawData)
+            switch (params.task){
+                case 0:
+                    drawHeatMap(rawData)
+                    break
+                case 1:
+                case 2:
+                    drawContourMapData(rawData)
+            }
         })
         .catch(e=> {
             mdui.alert(e.toString())

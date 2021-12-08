@@ -15,9 +15,9 @@
 </div>
 <div class="body-panel">
     <div class="param-panel">
-        <h1>
+        <h2>
             参数选择区
-        </h1>
+        </h2>
         <div id="type-selector" class="param-item param-input">
         </div>
         <div class="param-item">
@@ -25,7 +25,7 @@
                 <input id="height-input" class="mdui-textfield-input"
                        type="number" min="0" max="90" placeholder="高度(km)"
                         value="0"/>
-                <div class="mdui-textfield-helper">范围为 0-90(km)</div>
+                <div class="mdui-textfield-helper">高度: 0-90(km)</div>
             </div>
         </div>
         <div class="param-item">
@@ -58,39 +58,50 @@
         <div class="param-item">
             <div class="mdui-textfield">
                 <input class="mdui-textfield-input" type="number"
-                       min="0" max="60" placeholder="经度下限(°N)"
+                       min="0" max="60" placeholder="纬度下限(°N)"
                        id="latLb-input" value = "0"/>
-                <div class="mdui-textfield-helper">范围为 0-60(°N)</div>
+                <div class="mdui-textfield-helper">纬度下限: 0-60(°N)</div>
             </div>
         </div>
         <div class="param-item">
             <div class="mdui-textfield">
                 <input class="mdui-textfield-input" type="number"
-                       min="0" max="60" placeholder="经度上限(°N)"
+                       min="0" max="60" placeholder="纬度上限(°N)"
                        id="latUb-input" value = "60"/>
-                <div class="mdui-textfield-helper">范围为 0-60(°N)</div>
+                <div class="mdui-textfield-helper">纬度上限: 0-60(°N)</div>
             </div>
         </div>
         <div class="param-item">
             <div class="mdui-textfield">
                 <input class="mdui-textfield-input" type="number"
-                       min="60" max="120" placeholder="纬度下限(°E)"
+                       min="60" max="120" placeholder="经度下限(°E)"
                        id="lonLb-input" value = "60"/>
-                <div class="mdui-textfield-helper">范围为 60-120(°E)</div>
+                <div class="mdui-textfield-helper">经度下限: 60-120(°E)</div>
             </div>
         </div>
         <div class="param-item">
             <div class="mdui-textfield">
                 <input class="mdui-textfield-input" type="number"
-                       min="60" max="120" placeholder="纬度上限(°E)"
+                       min="60" max="120" placeholder="经度上限(°E)"
                        id="lonUb-input" value = "120"/>
-                <div class="mdui-textfield-helper">范围为 60-120(°E)</div>
+                <div class="mdui-textfield-helper">经度上限: 60-120(°E)</div>
             </div>
         </div>
         <div class="param-item" style="display: flex;justify-content: center">
             <button id="submit-param" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">绘制图形
             </button>
         </div>
+        <h2 class="data-statistics">
+            数据统计信息
+        </h2>
+        <p class="statistics-line">
+            最大值: <span id="data-max" class="statistics-item"></span>
+            最小值: <span id="data-min" class="statistics-item"></span>
+        </p>
+        <p class="statistics-line">
+            平均值: <span id="data-avg" class="statistics-item"></span>
+            标准差: <span id="data-sdev" class="statistics-item"></span>
+        </p>
     </div>
     <div class="draw-panel" id="draw-panel">
         <div id="chart" style="width: 1170px;height:840px;"></div>

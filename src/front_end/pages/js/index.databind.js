@@ -37,4 +37,3 @@ bindNumberGetter(params,'latLb',"#latLb-input")
 bindNumberGetter(params,'latUb',"#latUb-input")
 bindNumberGetter(params,'lonLb',"#lonLb-input")
 bindNumberGetter(params,'lonUb',"#lonUb-input")
-//TODO 绑定params.task
