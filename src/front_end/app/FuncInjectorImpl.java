@@ -15,6 +15,7 @@ import java.util.List;
 
 public class FuncInjectorImpl implements FuncInjector {
 
+    private List<NetCDFFile> nowDictionary=null;
     @Override
     public String GetHeatMapData(JSObject params){
         InputParam inputParam = new InputParam(params);
@@ -44,7 +45,7 @@ public class FuncInjectorImpl implements FuncInjector {
     public String GetContourMapData(JSObject params) {
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
-        List<Float> data = new ArrayList<>(91);
+        List<Float> data = new ArrayList<>();
         NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), new String());
         try {
             data = FileHelper.getInstance().getDataSetVarCoordinate(file, inputParam.getLatLb(),inputParam.getLonLb());
@@ -60,13 +61,16 @@ public class FuncInjectorImpl implements FuncInjector {
     public List<String> GetDictiontary(JSObject params){
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
-        List<NetCDFFile> data = new ArrayList<>(200);
         try {
-            data = FileHelper.getInstance().getAllFileOfDirectory(inputParam.getFileType());
+            nowDictionary = FileHelper.getInstance().getAllFileOfDirectory(inputParam.getFileType());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return Arrays.asList("U010100_大气密度(U)气候态.nc","U010100_大气密度(U)气候态.nc");
+        List<String> filedictionary=new ArrayList<>();
+        for(NetCDFFile f: nowDictionary){
+            filedictionary.add(f.getFileName());
+        }
+        return filedictionary;
     }
 
     //获取文件精度、纬度、高度上下限
