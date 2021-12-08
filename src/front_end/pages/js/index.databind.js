@@ -4,6 +4,14 @@ let bindGetter = function(obj,attr,domSelector,
         get: getter
     });
 }
+
+let bindSetterWithFixed2 = function(obj,attr,domSelector,
+                          setter=(newVal)=>document.querySelector(domSelector).innerHTML=newVal.toFixed(2)){
+    Object.defineProperty(obj, attr, {
+        set:setter
+    });
+}
+
 let bindNumberGetter = (obj,attr,domSelector)=>{
     Object.defineProperty(obj, attr, {
         get: ()=>parseInt(document.querySelector(domSelector).value)
@@ -37,3 +45,8 @@ bindNumberGetter(params,'latLb',"#latLb-input")
 bindNumberGetter(params,'latUb',"#latUb-input")
 bindNumberGetter(params,'lonLb',"#lonLb-input")
 bindNumberGetter(params,'lonUb',"#lonUb-input")
+
+bindSetterWithFixed2(statics,'max','#data-max')
+bindSetterWithFixed2(statics,'min','#data-min')
+bindSetterWithFixed2(statics,'avg','#data-avg')
+bindSetterWithFixed2(statics,'sdev','#data-sdev')

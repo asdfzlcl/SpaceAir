@@ -1,3 +1,5 @@
+// 参数数据
+// 该对象的所有属性getter均被绑定到页面
 params = {
     task:0,
     type:"",
@@ -12,7 +14,7 @@ params = {
 }
 
 // 统计数据
-//TODO 将数据变化绑定到页面
+// 该对象的所有属性setter均被绑定到页面
 statics = {
     min:0,
     max:0,
