@@ -96,12 +96,12 @@ function fileChangeHandler(filename) {
         .slice(1, limit_file.toString().length - 1)
         .replace(/\s+/g, '')
         .split(',')
-    limit.latLb = parseFloat(limit_file[1])
-    limit.latUb = parseFloat(limit_file[2])
-    limit.lonLb = parseFloat(limit_file[3])
-    limit.lonUb = parseFloat(limit_file[4])
-    limit.heightLb = parseFloat(limit_file[5]).toFixed(2)
-    limit.heightUb = parseFloat(limit_file[6]).toFixed(2)
+    limit.latLb = Math.min(parseFloat(limit_file[1]),parseFloat(limit_file[2]))
+    limit.latUb = Math.max(parseFloat(limit_file[1]),parseFloat(limit_file[2]))
+    limit.lonLb = Math.min(parseFloat(limit_file[3]),parseFloat(limit_file[4]))
+    limit.lonUb = Math.max(parseFloat(limit_file[3]),parseFloat(limit_file[4]))
+    limit.heightLb = Math.min(parseFloat(limit_file[5]),parseFloat(limit_file[6])).toFixed(2)
+    limit.heightUb = Math.max(parseFloat(limit_file[5]),parseFloat(limit_file[6])).toFixed(2)
     if(limit_file[0].length==4)
         params.time = limit_file[0].substr(0,2)+"月"+limit_file[0].substr(2,2)+"日"
     else if(limit_file[0].length==6)
@@ -168,6 +168,15 @@ function drawHeatMap(rawData) {
 
     for (let y = 0; y + cy < rawData[0].length; y = y + cy) yData.push(y);
     let option = {
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                saveAsImage: {}
+            }
+        },
         tooltip: {}, xAxis: {
             type: 'category', data: xData, name: '经度 (°E)'
         }, yAxis: {
@@ -213,6 +222,15 @@ function drawContourMapData(rawData) {
     }
     statics.sdev = Math.sqrt(sum_sdev / count)
     let option = {
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                saveAsImage: {}
+            }
+        },
         legend: {
             data: ['高度 (km) vs. 温度 (K)']
         }, tooltip: {
