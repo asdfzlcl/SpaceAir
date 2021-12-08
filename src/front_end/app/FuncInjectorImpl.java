@@ -58,6 +58,25 @@ public class FuncInjectorImpl implements FuncInjector {
         return data.toString();
     }
 
+    public String Getinformation(JSObject params){
+        InputParam inputParam = new InputParam(params);
+        System.out.println(inputParam);
+        List<NetCDFFile> data = new ArrayList<>(200);
+        FILE_TYPE file = FILE_TYPE.T;
+        try {
+            data = FileHelper.getInstance().getAllFileOfDirectory(FILE_TYPE.T);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        List<Double> data1 = new ArrayList<>(91);
+        try {
+            data1 =FileHelper.getInstance().getLevelFromFile(data.get(0));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data.get(0).toString();
+    }
+
     @Override
     public Object GetFileInfo() {
         return Arrays.asList("U","V","T","O");

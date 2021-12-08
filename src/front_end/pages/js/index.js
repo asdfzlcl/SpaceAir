@@ -80,6 +80,14 @@ function fetchTypes(){
     mdui.$("#type-selector").mutation()
 }
 
+function changetype()
+{
+    all_information=funcInjector.Getinformation(params)
+    alert(all_information)
+
+}
+
+
 function drawHeatMap(rawData){
     //TODO 横纵坐标应按照经纬度重新生成
     let xData=[]
@@ -87,6 +95,8 @@ function drawHeatMap(rawData){
     let data = []
     let min = rawData[0][0]
     let max = rawData[0][0]
+    let sum = 0
+    let count = 0
     //采样（为了保证速度）
     let cx=2,cy=2;
     if(rawData[0].length>1400)
@@ -102,13 +112,16 @@ function drawHeatMap(rawData){
                 for(let j=0;j<cy;j++)
                     now=now+rawData[x+i][y+j]
             rawData[x][y]=now/(cx*cy);
-            if(min>rawData[x][y])
-                min=rawData[x][y]
-            if(max<rawData[x][y])
-                max=rawData[x][y]
+            max = Math.max(rawData[x][y],max)
+            min = Math.min(rawData[x][y],min)
+            sum += rawData[x][y]
+            count++
             data.push([x/cx,y/cy,rawData[x][y]])
         }
     }
+    statics.min = min
+    statics.max = max
+    statics.avg = sum / count
     for(let y=0;y<rawData[0].length;y=y+cy)
         yData.push(y);
     let option = {
@@ -160,6 +173,7 @@ function drawHeatMap(rawData){
     };
     let chartDom = echarts.init(document.querySelector("#chart"));
     chartDom.setOption(option)
+    //TODO 热力图标准差计算
 }
 
 function drawContourMapData(rawData){
@@ -167,14 +181,19 @@ function drawContourMapData(rawData){
     let ydata = []
     let min = rawData[0]
     let max = rawData[0]
+    let sum = 0
+    let count = 0
     for(let i=0;i<rawData.length;i++) {
         ydata.push(i)
         data.push(rawData[i])
-        if(rawData[i]>max)
-            max=rawData[i]
-        if(rawData[i]<min)
-            min=rawData[i]
+        max = Math.max(rawData[i],max)
+        min = Math.min(rawData[i],min)
+        sum += rawData[i]
+        count++
     }
+    statics.max = max
+    statics.min = min
+    statics.avg = sum / count
     let option = {
         //TODO 修改坐标轴文字标题等
         legend: {
