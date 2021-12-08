@@ -1,4 +1,4 @@
-
+package algorithm;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
+import util.FileHelper;
 
 
 /**
@@ -77,6 +78,24 @@ public class GenerateInputTxt {
             curr_height+=ratio;
         }
         GenerateInputTxt.model_();
+    }
+
+    public static void main(String[] args){
+        int year=2002;
+        int doy=80;
+        double uth=12.0;
+        double height_start=0.0;
+        double height_end=5.0;
+        double ratio=5;
+        double lat=60;
+        double lon=120;
+        double f107p=120;
+        double f107a=120;
+        double apd=10;
+        double ap1=10;
+        double ap2=0;
+        double ap3=0;
+        GenerateInputTxt.GenerateInputData(year,doy,uth,height_start,height_end,ratio,lat,lon,f107p,f107a,apd,ap1,ap2,ap3);
     }
 
 }
