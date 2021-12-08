@@ -1,7 +1,6 @@
 package front_end.app;
 
 import com.teamdev.jxbrowser.chromium.JSObject;
-import com.teamdev.jxbrowser.chromium.JSString;
 import front_end.app.messages.InputParam;
 import ucar.ma2.InvalidRangeException;
 import util.FILE_TYPE;
@@ -17,7 +16,7 @@ import java.util.List;
 public class FuncInjectorImpl implements FuncInjector {
 
     @Override
-    public String GetHeatMapData(JSObject params) {
+    public String GetHeatMapData(JSObject params){
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
         List<List<Float>> data = new ArrayList<>(200);
@@ -30,9 +29,7 @@ public class FuncInjectorImpl implements FuncInjector {
 //            data.add(row);
 //        }
         // test
-
-        NetCDFFile file = new NetCDFFile("v010100_V数据_气候态.nc", FILE_TYPE.V, "010100");
-
+        NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), new Date());
         try {
             data = FileHelper.getInstance().getDataSetVarLevel(file, 0);
         } catch (IOException | InvalidRangeException e) {
@@ -48,9 +45,9 @@ public class FuncInjectorImpl implements FuncInjector {
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
         List<Float> data = new ArrayList<>(91);
-        NetCDFFile file = new NetCDFFile("T010100_大气密度(T)气候态.nc", FILE_TYPE.T, "010100");
+        NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), new Date());
         try {
-            data = FileHelper.getInstance().getDataSetVarCoordinate(file, inputParam.getLatLb(), inputParam.getLonLb());
+            data = FileHelper.getInstance().getDataSetVarCoordinate(file, inputParam.getLatLb(),inputParam.getLonLb());
         } catch (IOException | InvalidRangeException e) {
             e.printStackTrace();
         }
@@ -59,45 +56,34 @@ public class FuncInjectorImpl implements FuncInjector {
         return data.toString();
     }
 
+    //获取对应文件属性目录
     public String Getinformation(JSObject params){
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
         List<NetCDFFile> data = new ArrayList<>(200);
-        FILE_TYPE file = FILE_TYPE.T;
         try {
-            data = FileHelper.getInstance().getAllFileOfDirectory(FILE_TYPE.T);
+            data = FileHelper.getInstance().getAllFileOfDirectory(inputParam.getFileType());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        List<Double> data1 = new ArrayList<>(91);
-        try {
-            data1 =FileHelper.getInstance().getLevelFromFile(data.get(0));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return data.get(0).toString();
+        return data.toString();
     }
 
-    public List<String> GetFileList(JSObject params) {
-        String type = params.getProperty("type").getStringValue();
-        List<String> filelist = new ArrayList<>();
-        filelist.add("file1");
-        filelist.add("file2");
-        filelist.add("file1");
-        filelist.add("file2");
-        filelist.add("file1");
-        filelist.add("file2");
-        filelist.add("file1");
-        filelist.add("file2");
-        filelist.add("file1");
-        filelist.add("file2");
-        filelist.add("file1");
-        filelist.add("file2");
-        return filelist;
+    //获取文件精度、纬度、高度上下限
+    public String Getlimit(JSObject params){
+        InputParam inputParam = new InputParam(params);
+        System.out.println(inputParam);
+        List<NetCDFFile> data = new ArrayList<>(200);
+        try {
+            data = FileHelper.getInstance().getAllFileOfDirectory(inputParam.getFileType());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data.toString();
     }
 
     @Override
     public Object GetFileInfo() {
-        return Arrays.asList("U", "V", "T", "O");
+        return Arrays.asList("U","V","T","O");
     }
 }

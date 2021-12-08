@@ -1,6 +1,7 @@
 // 参数数据
 // 该对象的所有属性getter均被绑定到页面
 params = {
+    filename:"T010100_大气密度(T)气候态.nc",
     task:0,
     type:"",
     time:0,
@@ -102,7 +103,7 @@ function fetchFileList(){
 function changetype()
 {
     all_information=funcInjector.Getinformation(params)
-    alert(all_information)
+    //alert(all_information)
 
 }
 
