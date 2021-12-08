@@ -163,6 +163,10 @@ public class LauncherController {
         List<NetCDFFile> list = new ArrayList<>();
         try {
             list = FileHelper.getInstance().getAllFileOfDirectory(FILE_TYPE.T);
+            for(NetCDFFile f: list){
+                System.out.println(f.getFileName());
+                System.out.println(f.getFileDate());
+            }
         }catch (IOException e){
             e.printStackTrace();
         }

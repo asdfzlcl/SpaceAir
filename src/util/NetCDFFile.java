@@ -1,7 +1,5 @@
 package util;
 
-import java.util.Date;
-
 /**
  * @classname NetCADFile
  * @author wxy
@@ -20,14 +18,6 @@ public class NetCDFFile {
         this.fileName = fileName;
         this.fileType = fileType;
         this.fileDate = date;
-    }
-
-    /**
-     * secondary constructor
-     * */
-    public NetCDFFile(FILE_TYPE fileType, String fileDate) {
-        this.fileType = fileType;
-        this.fileDate = fileDate;
     }
 
     /**

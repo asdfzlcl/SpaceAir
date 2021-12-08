@@ -4,10 +4,9 @@ import ucar.ma2.Array;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
-import java.io.File;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,10 +18,10 @@ import java.util.List;
 public class FileHelper {
 
     public static String classBasePath = System.getProperty("user.dir"); //当前工作路径
-    public static String algorithmDicPath = classBasePath + File.separator + "algorithm";
-    public static String outputDicPath = classBasePath + File.separator + "output";
+    public static String algorithmDicPath = classBasePath + File.separator + "algorithm"; //算法模块路径
+    public static String outputDicPath = classBasePath + File.separator + "output"; //算法模块输出路径
     public static String configFileName = ".config"; //config文件名称
-    public static String configFilePath = classBasePath + File.separator + configFileName;
+    public static String configFilePath = classBasePath + File.separator + configFileName; //config文件完整路径
 
 
     private static FileHelper instance; //唯一实例
@@ -33,7 +32,6 @@ public class FileHelper {
     public String O_DIR_PATH = null; // O文件路径
 
     private NetcdfFile currentNetcdfFile;  //当前正在读取的文件，对象会缓存文件信息
-    private List<Double> levelList; //缓存当前的层数数组
 
     /**
      * function: getInstance()
@@ -62,7 +60,6 @@ public class FileHelper {
      */
     private FileHelper(PathOfDirectory[] paths){
         currentNetcdfFile = null; //init currentNetcdfFile
-        levelList = null;
         for(PathOfDirectory p: paths){
             switch (p.getType()){
                 case T:
@@ -81,32 +78,6 @@ public class FileHelper {
                     break;
             }
         }
-    }
-
-    /**
-     * function: getFilePath
-     * description: 通过文件类型和日期获取文件路径
-     * parameter: FILE_TYPE对象type 描述文件类型（T,U,V,O); Date对象date 描述文件日期
-     * return: String对象 文件路径
-     * */
-    public String getFilePath(FILE_TYPE type, String date){
-        String returnPath = null;
-        switch (type){
-            case V:
-                returnPath = V_DIR_PATH + File.separator + "v";
-                break;
-            case U:
-                returnPath = U_DIR_PATH + File.separator + "U";
-                break;
-            case T:
-                returnPath = T_DIR_PATH + File.separator + "T";
-                break;
-            case O:
-                returnPath = O_DIR_PATH + File.separator + "OMEGA";
-                break;
-        }
-        //增加时间参数
-        return returnPath;
     }
 
     /**
@@ -131,11 +102,7 @@ public class FileHelper {
                 returnPath = O_DIR_PATH;
                 break;
         }
-        if(file.getFileName() == null){
-            return getFilePath(file.getFileType(), file.getFileDate());
-        }else{
-            return returnPath + File.separator + file.getFileName();
-        }
+        return returnPath + File.separator + file.getFileName();
     }
 
     /**
@@ -176,7 +143,9 @@ public class FileHelper {
                 String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1,
                         file.getName().length());
                 if(extension.equals(ncFile)){
-                    returnList.add(new NetCDFFile(file.getName(), fileType, file.getName()));
+                    //抽取里面的数字（即时间信息）
+                    String timeNumberString = file.getName().replaceAll("[^0-9]", "");
+                    returnList.add(new NetCDFFile(file.getName(), fileType, timeNumberString));
                 }
             }
         }
@@ -202,9 +171,9 @@ public class FileHelper {
         for(String i:temp){
             levels.add(Double.parseDouble(i));
         }
-        levelList = levels;
         return levels;
     }
+
 
     /**
      * function: getDataSetFromFile
@@ -309,5 +278,43 @@ public class FileHelper {
             latitudes.add(Double.parseDouble(s));
         }
         return latitudes;
+    }
+
+    /**
+     * function: createAlgorithmOutPut
+     * parameter: 算法的输入
+     * description: 从前端获得的信息来生成算法模块（标准大气模型）的输出
+     * */
+    public void createAlgorithmOutPut(){
+
+    }
+
+    /**
+     *
+     * throw: IOException 当无法读取文件或文件为空时 这时候应提出用户检查参数
+     * */
+    public List<List<Double>> getAlgOut() throws IOException{
+        List<List<Double>> dataset = new ArrayList<>();
+        String outputName = "";
+        File algTXT = new File(outputDicPath + File.separator + outputName);
+        BufferedReader br = null;
+        br = new BufferedReader(new FileReader(algTXT));
+        String current;
+        String[] count;
+        if((current = br.readLine()) != null){
+            count = current.split("\\s+");
+            for(int i = 0;i<count.length;i++){
+                dataset.add(new ArrayList<>());
+            }
+            do{
+                for(int i = 0;i<count.length;i++){
+                    dataset.get(i).add(Double.parseDouble(count[i]));
+                }
+            }while ((current = br.readLine()) != null);
+        }
+        if (dataset.size() != 0){
+            throw new IOException();
+        }
+        return dataset;
     }
 }
