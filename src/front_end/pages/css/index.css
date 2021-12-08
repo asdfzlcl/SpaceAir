@@ -33,3 +33,15 @@
     width: 100%;
     margin-bottom: 1vh;
 }
+.data-statistics{
+    margin-top: 3vh;
+}
+.statistics-line{
+    margin-top: 3vh;
+}
+.statistics-item{
+    display: inline-block;
+    min-width: 3vw;
+    height: 100%;
+}
+

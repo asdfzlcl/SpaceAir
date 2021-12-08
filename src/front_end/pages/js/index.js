@@ -1,3 +1,5 @@
+// 参数数据
+// 该对象的所有属性getter均被绑定到页面
 params = {
     task:0,
     type:"",
@@ -10,16 +12,27 @@ params = {
     lonLb:0,
     lonUb:0
 }
+
+// 统计数据
+// 该对象的所有属性setter均被绑定到页面
+statics = {
+    min:0,
+    max:0,
+    avg:0,
+    sdev:0
+}
+
 // 异步获取数据，避免UI阻塞
 async function getData(){
-    let rawData = {}
-    //TODO 这里之后用switch
-    if(params.task===0)
-        rawData = funcInjector.GetHeatMapData(params)
-    else if(params.task===1)
-        rawData = funcInjector.GetContourMapData(params)
-    else
-        rawData = funcInjector.GetContourMapData(params)
+    let rawData
+    switch (params.task){
+        case 0:
+            rawData = funcInjector.GetHeatMapData(params)
+            break
+        case 1:
+        case 2:
+            rawData = funcInjector.GetContourMapData(params)
+    }
     return JSON.parse(rawData)
 }
 
@@ -27,13 +40,14 @@ async function getData(){
 document.querySelector("#submit-param").onclick=()=>{
     getData()
         .then(rawData => {
-            //TODO 这里之后用switch
-            if(params.task===0)
-                drawHeatMap(rawData)
-            else if(params.task===1)
-                drawContourMapData(rawData)
-            else
-                drawContourMapData(rawData)
+            switch (params.task){
+                case 0:
+                    drawHeatMap(rawData)
+                    break
+                case 1:
+                case 2:
+                    drawContourMapData(rawData)
+            }
         })
         .catch(e=> {
             mdui.alert(e.toString())
@@ -74,7 +88,11 @@ function drawHeatMap(rawData){
     let min = rawData[0][0]
     let max = rawData[0][0]
     //采样（为了保证速度）
-    let cx=5,cy=5;
+    let cx=2,cy=2;
+    if(rawData[0].length>1400)
+    {
+        cx=3;cy=3;
+    }
     for(let x=0;x+cx<rawData.length;x=x+cx){
         xData.push(x);
         for(let y=0;y+cy<rawData[0].length;y=y+cy)
@@ -176,7 +194,7 @@ function drawContourMapData(rawData){
             type: 'value',
             axisLabel: {
                 formatter: '{value} °C'
-            }
+            },
         },
         yAxis: {
             type: 'category',

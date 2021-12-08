@@ -45,7 +45,7 @@ public class WebStage {
         BrowserView browserView = new BrowserView(browser);
         StackPane pane = new StackPane();
         pane.getChildren().add(browserView);
-        Scene scene = new Scene(pane, 1400, 900);
+        Scene scene = new Scene(pane, 1400, 1000);
         webStage.setTitle("Webview");
         webStage.setScene(scene);
 
