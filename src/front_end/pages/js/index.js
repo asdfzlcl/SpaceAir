@@ -1,31 +1,31 @@
 // 参数数据
 // 该对象的所有属性getter均被绑定到页面
 params = {
-    filename:"T010100_大气密度(T)气候态.nc",
-    task:0,
-    type:"",
-    time:0,
-    height:0,
-    latLb:0,
-    latUb:0,
-    lonLb:0,
-    lonUb:0,
-    filename:'U010100_大气密度(U)气候态.nc'//TODO 数据绑定
+    filename: "T010100_大气密度(T)气候态.nc",
+    task: 0,
+    type: "",
+    time: 0,
+    height: 0,
+    latLb: 0,
+    latUb: 0,
+    lonLb: 0,
+    lonUb: 0,
+    filename: 'U010100_大气密度(U)气候态.nc'//TODO 数据绑定
 }
 
 // 统计数据
 // 该对象的所有属性setter均被绑定到页面
 statics = {
-    min:0,
-    max:0,
-    avg:0,
-    sdev:0 // TODO 计算标准差
+    min: 0,
+    max: 0,
+    avg: 0,
+    sdev: 0 // TODO 计算标准差
 }
 
 // 异步获取数据，避免UI阻塞
-async function getData(){
+async function getData() {
     let rawData
-    switch (params.task){
+    switch (params.task) {
         case 0:
             rawData = funcInjector.GetHeatMapData(params)
             break
@@ -37,10 +37,10 @@ async function getData(){
 }
 
 // 绑定提交参数事件
-document.querySelector("#submit-param").onclick=()=>{
+document.querySelector("#submit-param").onclick = () => {
     getData()
         .then(rawData => {
-            switch (params.task){
+            switch (params.task) {
                 case 0:
                     drawHeatMap(rawData)
                     break
@@ -49,33 +49,34 @@ document.querySelector("#submit-param").onclick=()=>{
                     drawContourMapData(rawData)
             }
         })
-        .catch(e=> {
+        .catch(e => {
             mdui.alert(e.toString())
         })
 }
 
 // 通过value动态生成类型选择组件
-function getTypeSelHtml(value,isChecked){
+function getTypeSelHtml(value, isChecked) {
     return `<label class="mdui-radio">
-<input type="radio" name="type-selector" value="${value}"
-${isChecked?"checked":""} />
-<i class="mdui-radio-icon"></i>
-${value}
-</label>`
+            <input type="radio" name="type-selector" value="${value}" onclick="fetchFileList()"
+            ${isChecked ? "checked" : ""} />
+            <i class="mdui-radio-icon"></i>
+            ${value}
+            </label>`
 }
+
 // 通过value动态生成文杰列表项
-function getFileListHtml(value){
+function getFileListHtml(value) {
     return `<li class="mdui-list-item mdui-ripple">${value}</li>
             <li class="mdui-divider"></li>`
 }
 
 // 动态添加type组件
-function fetchTypes(){
+function fetchTypes() {
     let types = funcInjector.GetFileInfo()
     types = types
         .toString()
-        .slice(1,types.toString().length-1)
-        .replace(/\s+/g,'')
+        .slice(1, types.toString().length - 1)
+        .replace(/\s+/g, '')
         .split(',')
     let html = ""
     html = html + getTypeSelHtml(types[0], true)
@@ -84,15 +85,16 @@ function fetchTypes(){
     mdui.$("#type-selector").append(html)
     mdui.$("#type-selector").mutation()
 }
+
 // 动态添加文件列表组件
-function fetchFileList(){
-    document.querySelector("#file-list").innerHTML=''
+function fetchFileList() {
+    document.querySelector("#file-list").innerHTML = ''
     let filelist = funcInjector.GetDictiontary(params)
-    let files=[]
+    let files = []
     files = filelist
         .toString()
-        .slice(1,filelist.toString().length-1)
-        .replace(/\s+/g,'')
+        .slice(1, filelist.toString().length - 1)
+        .replace(/\s+/g, '')
         .split(',')
     let html = ""
     for (let i = 0; i < files.length; i++)
@@ -102,41 +104,40 @@ function fetchFileList(){
 }
 
 
-function drawHeatMap(rawData){
+function drawHeatMap(rawData) {
     //TODO 横纵坐标应按照经纬度重新生成
-    let xData=[]
-    let yData=[]
+    let xData = []
+    let yData = []
     let data = []
     let min = rawData[0][0]
     let max = rawData[0][0]
     let sum = 0
     let count = 0
     //采样（为了保证速度）
-    let cx=2,cy=2;
-    if(rawData[0].length>1400)
-    {
-        cx=3;cy=3;
+    let cx = 2, cy = 2;
+    if (rawData[0].length > 1400) {
+        cx = 3;
+        cy = 3;
     }
-    for(let x=0;x+cx<rawData.length;x=x+cx){
+    for (let x = 0; x + cx < rawData.length; x = x + cx) {
         xData.push(x);
-        for(let y=0;y+cy<rawData[0].length;y=y+cy)
-        {
-            let now=0;
-            for(let i=0;i<cx;i++)
-                for(let j=0;j<cy;j++)
-                    now=now+rawData[x+i][y+j]
-            rawData[x][y]=now/(cx*cy);
-            max = Math.max(rawData[x][y],max)
-            min = Math.min(rawData[x][y],min)
+        for (let y = 0; y + cy < rawData[0].length; y = y + cy) {
+            let now = 0;
+            for (let i = 0; i < cx; i++)
+                for (let j = 0; j < cy; j++)
+                    now = now + rawData[x + i][y + j]
+            rawData[x][y] = now / (cx * cy);
+            max = Math.max(rawData[x][y], max)
+            min = Math.min(rawData[x][y], min)
             sum += rawData[x][y]
             count++
-            data.push([x/cx,y/cy,rawData[x][y]])
+            data.push([x / cx, y / cy, rawData[x][y]])
         }
     }
     statics.min = min
     statics.max = max
     statics.avg = sum / count
-    for(let y=0;y<rawData[0].length;y=y+cy)
+    for (let y = 0; y < rawData[0].length; y = y + cy)
         yData.push(y);
     let option = {
         tooltip: {},
@@ -190,18 +191,18 @@ function drawHeatMap(rawData){
     //TODO 热力图标准差计算
 }
 
-function drawContourMapData(rawData){
+function drawContourMapData(rawData) {
     let data = []
     let ydata = []
     let min = rawData[0]
     let max = rawData[0]
     let sum = 0
     let count = 0
-    for(let i=0;i<rawData.length;i++) {
+    for (let i = 0; i < rawData.length; i++) {
         ydata.push(i)
         data.push(rawData[i])
-        max = Math.max(rawData[i],max)
-        min = Math.min(rawData[i],min)
+        max = Math.max(rawData[i], max)
+        min = Math.min(rawData[i], min)
         sum += rawData[i]
         count++
     }
@@ -231,7 +232,7 @@ function drawContourMapData(rawData){
         },
         yAxis: {
             type: 'category',
-            axisLine: { onZero: false },
+            axisLine: {onZero: false},
             axisLabel: {
                 formatter: '{value} km'
             },
