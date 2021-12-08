@@ -5,12 +5,11 @@ params = {
     type:"",
     time:0,
     height:0,
-    days:0,
-    year:0,
     latLb:0,
     latUb:0,
     lonLb:0,
-    lonUb:0
+    lonUb:0,
+    filename:''//TODO 数据绑定
 }
 
 // 统计数据
@@ -19,7 +18,7 @@ statics = {
     min:0,
     max:0,
     avg:0,
-    sdev:0
+    sdev:0 // TODO 计算标准差
 }
 
 // 异步获取数据，避免UI阻塞
@@ -54,7 +53,7 @@ document.querySelector("#submit-param").onclick=()=>{
         })
 }
 
-// 通过value动态生成组件
+// 通过value动态生成类型选择组件
 function getTypeSelHtml(value,isChecked){
     return `<label class="mdui-radio">
 <input type="radio" name="type-selector" value="${value}"
@@ -62,6 +61,11 @@ ${isChecked?"checked":""} />
 <i class="mdui-radio-icon"></i>
 ${value}
 </label>`
+}
+// 通过value动态生成文杰列表项
+function getFileListHtml(value){
+    return `<li class="mdui-list-item mdui-ripple">${value}</li>
+            <li class="mdui-divider"></li>`
 }
 
 // 动态添加type组件
@@ -78,6 +82,21 @@ function fetchTypes(){
         html = html + getTypeSelHtml(types[i], false)
     mdui.$("#type-selector").append(html)
     mdui.$("#type-selector").mutation()
+}
+// 动态添加文件列表组件
+function fetchFileList(){
+    let filelist = funcInjector.GetFileList()
+    let files=[]
+    files = filelist
+        .toString()
+        .slice(1,filelist.toString().length-1)
+        .replace(/\s+/g,'')
+        .split(',')
+    let html = ""
+    for (let i = 0; i < files.length; i++)
+        html = html + getFileListHtml(files[i])
+    mdui.$("#file-list").append(html)
+    mdui.$("#file-list").mutation()
 }
 
 function drawHeatMap(rawData){

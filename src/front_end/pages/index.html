@@ -14,12 +14,21 @@
     <a id="tab2" class="mdui-ripple">标准模型廓线图</a>
 </div>
 <div class="body-panel">
-    <div class="param-panel">
+    <div class="filelist-panel">
         <h2>
             参数选择区
         </h2>
         <div id="type-selector" class="param-item param-input">
         </div>
+        <h2>
+            文件选择区
+        </h2>
+        <ul class="mdui-list" id="file-list">
+
+        </ul>
+    </div>
+    <div class="param-panel">
+
         <div class="param-item">
             <div class="mdui-textfield">
                 <input id="height-input" class="mdui-textfield-input"
@@ -28,9 +37,7 @@
                 <div class="mdui-textfield-helper">高度: 0-90(km)</div>
             </div>
         </div>
-        <div class="param-item">
-            <input type="date" id="date-input" style="width: 100%" value = "2021-12-01"/>
-        </div>
+        <p>时间点选择</p>
         <div class="param-item param-input">
             <label class="mdui-radio">
                 <input type="radio" name="time-selector" value="0" checked/>
@@ -104,7 +111,7 @@
         </p>
     </div>
     <div class="draw-panel" id="draw-panel">
-        <div id="chart" style="width: 1170px;height:840px;"></div>
+        <div id="chart" style="width: 1170px;height:840px;background-color: red;"></div>
     </div>
 </div>
 <script src="js/mdui.min.js"></script>

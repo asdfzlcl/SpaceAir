@@ -40,7 +40,7 @@ public class WebStage {
         BrowserView browserView = new BrowserView(browser);
         StackPane pane = new StackPane();
         pane.getChildren().add(browserView);
-        Scene scene = new Scene(pane, 1400, 1000);
+        Scene scene = new Scene(pane, 1750, 1000);
         webStage.setTitle("Webview");
         webStage.setScene(scene);
 
@@ -68,6 +68,7 @@ public class WebStage {
             public void onFinishLoadingFrame(FinishLoadingEvent event) {
                 super.onFinishLoadingFrame(event);
                 browser.executeJavaScript("fetchTypes()");
+                browser.executeJavaScript("fetchFileList()");
             }
         });
         browser.addScriptContextListener(new ScriptContextAdapter() {

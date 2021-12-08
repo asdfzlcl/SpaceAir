@@ -19,19 +19,6 @@ let bindNumberGetter = (obj,attr,domSelector)=>{
 }
 
 bindGetter(params,'type',"input[name=type-selector]:checked")
-bindGetter(params,'days',"",()=>{
-    let timeStr = document.querySelector("#date-input").value
-    let date= new Date(Date.parse(timeStr.replace(/-/g,  "/")))
-    let firstDayOfYear = new Date(`${date.getFullYear()}-01-01`)
-    return Math.floor((date.getTime() - firstDayOfYear.getTime()) / 86400000) + 2
-})
-bindGetter(params,'year',"",()=>{
-    return parseInt(
-        document.querySelector(
-            "#date-input"
-        ).value.slice(0,4)
-    )
-})
 let taskId = 0
 mdui.$('#head-tab').on('change.mdui.tab',(event)=>{
     taskId = event._detail.index

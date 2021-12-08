@@ -16,7 +16,7 @@ import java.util.List;
 public class FuncInjectorImpl implements FuncInjector {
 
     @Override
-    public String GetHeatMapData(JSObject params){
+    public String GetHeatMapData(JSObject params) {
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
         List<List<Float>> data = new ArrayList<>(200);
@@ -47,7 +47,7 @@ public class FuncInjectorImpl implements FuncInjector {
         List<Float> data = new ArrayList<>(91);
         NetCDFFile file = new NetCDFFile("T010100_大气密度(T)气候态.nc", FILE_TYPE.T, new Date());
         try {
-            data = FileHelper.getInstance().getDataSetVarCoordinate(file, inputParam.getLatLb(),inputParam.getLonLb());
+            data = FileHelper.getInstance().getDataSetVarCoordinate(file, inputParam.getLatLb(), inputParam.getLonLb());
         } catch (IOException | InvalidRangeException e) {
             e.printStackTrace();
         }
@@ -56,8 +56,25 @@ public class FuncInjectorImpl implements FuncInjector {
         return data.toString();
     }
 
+    public List<String> GetFileList() {
+        List<String> filelist = new ArrayList<>();
+        filelist.add("file1");
+        filelist.add("file2");
+        filelist.add("file1");
+        filelist.add("file2");
+        filelist.add("file1");
+        filelist.add("file2");
+        filelist.add("file1");
+        filelist.add("file2");
+        filelist.add("file1");
+        filelist.add("file2");
+        filelist.add("file1");
+        filelist.add("file2");
+        return filelist;
+    }
+
     @Override
     public Object GetFileInfo() {
-        return Arrays.asList("U","V","T","O");
+        return Arrays.asList("U", "V", "T", "O");
     }
 }
