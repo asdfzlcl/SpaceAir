@@ -37,3 +37,41 @@ bindSetterWithFixed2(statics,'max','#data-max')
 bindSetterWithFixed2(statics,'min','#data-min')
 bindSetterWithFixed2(statics,'avg','#data-avg')
 bindSetterWithFixed2(statics,'sdev','#data-sdev')
+
+
+Object.defineProperty(limit,'latLb',{
+    set:(newVal)=>{
+        for(let d of document.querySelectorAll(".limit-latLb"))
+            d.innerHTML=newVal.toString()
+    }
+})
+Object.defineProperty(limit,'latUb',{
+    set:(newVal)=>{
+        for(let d of document.querySelectorAll(".limit-latUb"))
+            d.innerHTML=newVal.toString()
+    }
+})
+Object.defineProperty(limit,'lonLb',{
+    set:(newVal)=>{
+        for(let d of document.querySelectorAll(".limit-lonLb"))
+            d.innerHTML=newVal.toString()
+    }
+})
+Object.defineProperty(limit,'lonUb',{
+    set:(newVal)=>{
+        for(let d of document.querySelectorAll(".limit-lonUb"))
+            d.innerHTML=newVal.toString()
+    }
+})
+Object.defineProperty(limit,'heightLb',{
+    set:(newVal)=>{
+        for(let d of document.querySelectorAll(".limit-heightLb"))
+            d.innerHTML=newVal.toString()
+    }
+})
+Object.defineProperty(limit,'heightUb',{
+    set:(newVal)=>{
+        for(let d of document.querySelectorAll(".limit-heightUb"))
+            d.innerHTML=newVal.toString()
+    }
+})

@@ -1,7 +1,6 @@
 // 参数数据
 // 该对象的所有属性getter均被绑定到页面
 params = {
-    filename: "T010100_大气密度(T)气候态.nc",
     task: 0,
     type: "",
     time: 0,
@@ -11,6 +10,16 @@ params = {
     lonLb: 0,
     lonUb: 0,
     filename: 'U010100_大气密度(U)气候态.nc'//TODO 数据绑定
+}
+
+// 数据限制
+limit = {
+    heightLb: 0,
+    heightUb:0,
+    latLb: 0,
+    latUb: 60,
+    lonLb: 60,
+    lonUb: 120,
 }
 
 // 统计数据
@@ -36,8 +45,24 @@ async function getData() {
     return JSON.parse(rawData)
 }
 
+function checkParam(){
+    return params.height>=limit.heightLb
+        && params.height<=limit.heightUb
+        && params.lonLb>=limit.lonLb
+        && params.lonLb<params.lonLb
+        && params.lonUb<=limit.lonUb
+        && params.latLb>=limit.latLb
+        && params.latLb<params.latLb
+        && params.latUb<=limit.latUb
+}
+
 // 绑定提交参数事件
 document.querySelector("#submit-param").onclick = () => {
+    if(!checkParam)
+    {
+        mdui.alert("数据不在范围内，请重新设置")
+        return
+    }
     getData()
         .then(rawData => {
             switch (params.task) {
@@ -188,7 +213,6 @@ function drawHeatMap(rawData) {
     };
     let chartDom = echarts.init(document.querySelector("#chart"));
     chartDom.setOption(option)
-    //TODO 热力图标准差计算
 }
 
 function drawContourMapData(rawData) {
