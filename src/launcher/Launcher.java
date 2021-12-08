@@ -1,26 +1,22 @@
 package launcher;
 
-
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-
+import util.DialogHelper;
 import java.io.File;
 import java.net.URL;
-import java.util.Optional;
 
 /**
- *
- *
+ * @description 程序入口所在类
+ * @author wxy
+ * @date 2021-12-05
  * */
 public class Launcher extends Application {
 
@@ -43,18 +39,10 @@ public class Launcher extends Application {
 
         primaryStage.show();
 
-
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("确认?");
-                alert.setHeaderText("确定");
-                alert.setContentText("是否退出？");
-                alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-
-                Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == ButtonType.OK){
+                if(DialogHelper.popConfirmationDialog("确认？","是否退出标准大气软件启动器")){
                     System.exit(0);
                 }else{
                     event.consume();

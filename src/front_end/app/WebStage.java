@@ -2,14 +2,19 @@ package front_end.app;
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.BrowserCore;
+import com.teamdev.jxbrowser.chromium.DialogHandler;
 import com.teamdev.jxbrowser.chromium.JSValue;
 import com.teamdev.jxbrowser.chromium.events.*;
 import com.teamdev.jxbrowser.chromium.internal.Environment;
 import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
+import launcher.Launcher;
+import util.DialogHelper;
 
 import java.util.Objects;
 
@@ -28,7 +33,7 @@ public class WebStage {
     public static void showWebStage(){
         if(!webStageConfigured)
             initWebStage();
-        webStage.show();
+        webStage.showAndWait();
     }
 
     public static void setFuncInjector(FuncInjector funcInjector){
@@ -79,5 +84,19 @@ public class WebStage {
         });
         browser.loadURL(url);
         webStageConfigured = true;
+
+        //给webStage增加退出按钮
+        webStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                if(DialogHelper.popConfirmationDialog("确认？","是否退出标准大气软件")){
+                    webStage.close();
+                }else{
+                    event.consume();
+                }
+            }
+        });
+
     }
+
 }
