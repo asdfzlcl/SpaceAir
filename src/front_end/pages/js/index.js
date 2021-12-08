@@ -85,7 +85,7 @@ function fetchTypes(){
 }
 // 动态添加文件列表组件
 function fetchFileList(){
-    let filelist = funcInjector.GetFileList()
+    let filelist = funcInjector.GetFileList(params)
     let files=[]
     files = filelist
         .toString()

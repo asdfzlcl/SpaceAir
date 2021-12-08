@@ -1,6 +1,7 @@
 package front_end.app;
 
 import com.teamdev.jxbrowser.chromium.JSObject;
+import com.teamdev.jxbrowser.chromium.JSString;
 import front_end.app.messages.InputParam;
 import ucar.ma2.InvalidRangeException;
 import util.FILE_TYPE;
@@ -77,7 +78,8 @@ public class FuncInjectorImpl implements FuncInjector {
         return data.get(0).toString();
     }
 
-    public List<String> GetFileList() {
+    public List<String> GetFileList(JSObject params) {
+        String type = params.getProperty("type").getStringValue();
         List<String> filelist = new ArrayList<>();
         filelist.add("file1");
         filelist.add("file2");
