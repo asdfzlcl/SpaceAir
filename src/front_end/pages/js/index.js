@@ -124,7 +124,7 @@ function fetchFileList() {
     mdui.$("#file-list").mutation()
 }
 
-
+// TODO 动态横纵轴、经纬度
 function drawHeatMap(rawData) {
     //TODO 横纵坐标应按照经纬度重新生成
     let xData = []
@@ -166,12 +166,10 @@ function drawHeatMap(rawData) {
 
     for (let y = 0; y < rawData[0].length; y = y + cy) yData.push(y);
     let option = {
-        tooltip: {}, title: {
-            text: '热力图', textAlign: 'center'
-        }, xAxis: {
-            type: 'category', data: xData, name: '纬度 (°N)'
+        tooltip: {}, xAxis: {
+            type: 'category', data: xData, name: '经度 (°E)'
         }, yAxis: {
-            type: 'category', data: yData, name: '经度 (°E)'
+            type: 'category', data: yData, name: '纬度 (°N)'
         }, visualMap: {
             min: min, max: max, calculable: true, realtime: false, inRange: {
                 color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
@@ -185,6 +183,7 @@ function drawHeatMap(rawData) {
         }]
     };
     let chartDom = echarts.init(document.querySelector("#chart"));
+    chartDom.setOption({})
     chartDom.setOption(option)
 }
 
@@ -212,21 +211,14 @@ function drawContourMapData(rawData) {
     }
     statics.sdev = Math.sqrt(sum_sdev / count)
     let option = {
-        //TODO 修改坐标轴文字标题等
         legend: {
             data: ['高度 (km) vs. 温度 (K)']
         }, tooltip: {
             trigger: 'axis', formatter: '温度 : <br/>{b}km : {c}K'
-        }, grid: {
-            left: '3%', right: '4%', bottom: '3%', containLabel: true
         }, xAxis: {
-            type: 'value', axisLabel: {
-                formatter: '{value} K'
-            },
+            type: 'value',name:'温度 (K)'
         }, yAxis: {
-            type: 'category', axisLine: {onZero: false}, axisLabel: {
-                formatter: '{value} km'
-            }, boundaryGap: false, data: ydata
+            type: 'category', axisLine: {onZero: false}, name:'高度 (km)', boundaryGap: false, data: ydata
         }, visualMap: {
             min: min, max: max, calculable: true, realtime: true, inRange: {
                 color: ['#313695', '#4575b4', '#74add1',]
@@ -244,5 +236,6 @@ function drawContourMapData(rawData) {
         }]
     };
     let chartDom = echarts.init(document.querySelector("#chart"));
+    chartDom.setOption({})
     chartDom.setOption(option)
 }
