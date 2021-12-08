@@ -8,14 +8,28 @@
     display: flex;
 }
 .param-panel{
-    width: 15%;
+    width: 15vw;
     display: flex;
     border-right: solid gray 1px;
     flex-direction: column;
     align-items:center;
-    justify-content:center;
+    justify-content:space-between;
     padding-left: 0.5vw;
     padding-right: 0.5vw;
+    padding-bottom: 3vh;
+}
+.filelist-panel{
+    padding-top: 3vh;
+    width: 15vw;
+    display: flex;
+    border-right: solid gray 1px;
+    flex-direction: column;
+    align-items:center;
+    padding-left: 0.5vw;
+    padding-right: 0.5vw;
+}
+.filelist-panel>h2{
+    margin-bottom: 3vh;
 }
 .param-input {
     width: 100%;
@@ -24,7 +38,7 @@
     justify-content: space-around;
 }
 .draw-panel{
-    width: 85%;
+    width: 70vw;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -44,4 +58,7 @@
     min-width: 3vw;
     height: 100%;
 }
-
+ul#file-list{
+    min-width: 14vw;
+    overflow: scroll;
+}

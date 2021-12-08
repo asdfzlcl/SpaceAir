@@ -29,9 +29,7 @@ public class FuncInjectorImpl implements FuncInjector {
 //            data.add(row);
 //        }
         // test
-
-        NetCDFFile file = new NetCDFFile("v010100_V数据_气候态.nc", FILE_TYPE.V, "010100");
-
+        NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), new String());
         try {
             data = FileHelper.getInstance().getDataSetVarLevel(file, 0);
         } catch (IOException | InvalidRangeException e) {
@@ -47,7 +45,7 @@ public class FuncInjectorImpl implements FuncInjector {
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
         List<Float> data = new ArrayList<>(91);
-        NetCDFFile file = new NetCDFFile("T010100_大气密度(T)气候态.nc", FILE_TYPE.T, "010100");
+        NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), new String());
         try {
             data = FileHelper.getInstance().getDataSetVarCoordinate(file, inputParam.getLatLb(),inputParam.getLonLb());
         } catch (IOException | InvalidRangeException e) {
@@ -58,23 +56,30 @@ public class FuncInjectorImpl implements FuncInjector {
         return data.toString();
     }
 
-    public String Getinformation(JSObject params){
+    //获取对应文件属性目录
+    public List<String> GetDictiontary(JSObject params){
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
         List<NetCDFFile> data = new ArrayList<>(200);
-        FILE_TYPE file = FILE_TYPE.T;
         try {
-            data = FileHelper.getInstance().getAllFileOfDirectory(FILE_TYPE.T);
+            data = FileHelper.getInstance().getAllFileOfDirectory(inputParam.getFileType());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        List<Double> data1 = new ArrayList<>(91);
+        return Arrays.asList("U010100_大气密度(U)气候态.nc","U010100_大气密度(U)气候态.nc");
+    }
+
+    //获取文件精度、纬度、高度上下限
+    public String Getlimit(JSObject params){
+        InputParam inputParam = new InputParam(params);
+        System.out.println(inputParam);
+        List<NetCDFFile> data = new ArrayList<>(200);
         try {
-            data1 =FileHelper.getInstance().getLevelFromFile(data.get(0));
+            data = FileHelper.getInstance().getAllFileOfDirectory(inputParam.getFileType());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return data.get(0).toString();
+        return data.toString();
     }
 
     @Override

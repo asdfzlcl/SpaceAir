@@ -1,6 +1,7 @@
 package front_end.app.messages;
 
 import com.teamdev.jxbrowser.chromium.JSObject;
+import util.FILE_TYPE;
 
 public class InputParam {
 
@@ -8,14 +9,8 @@ public class InputParam {
     private final int task;
     //U,V,T等类型
     private final String type;
-    //时间，取值只可能是0,6,12,18
-    private final int time;
     //高度
     private final int height;
-    //年份
-    private final int year;
-    //年积日
-    private final int days;
     //经度下限
     private final int latLb;
     //经度上限
@@ -24,19 +19,19 @@ public class InputParam {
     private final int lonLb;
     //纬度上限
     private final int lonUb;
+    //文件名
+    private final String filename;
 
     //唯一构造函数，用于将JS传入的参数转化为Java对象
     public InputParam(JSObject jsObject){
         task = (int)jsObject.getProperty("task").getNumberValue();
         type = jsObject.getProperty("type").getStringValue();
-        time = (int) jsObject.getProperty("time").getNumberValue();
         height = (int) jsObject.getProperty("height").getNumberValue();
-        year = (int)jsObject.getProperty("year").getNumberValue();
-        days = (int) jsObject.getProperty("days").getNumberValue();
         latLb = (int) jsObject.getProperty("latLb").getNumberValue();
         latUb = (int) jsObject.getProperty("latUb").getNumberValue();
         lonLb = (int) jsObject.getProperty("lonLb").getNumberValue();
         lonUb = (int) jsObject.getProperty("lonUb").getNumberValue();
+        filename= jsObject.getProperty("filename").getStringValue();
     }
 
     @Override
@@ -47,14 +42,8 @@ public class InputParam {
                 + ",\"type\":\""
                 + type + '\"'
                 + ",\"time\":"
-                + time
-                + ",\"height\":"
                 + height
                 + ",\"year\":"
-                + year
-                + ",\"days\":"
-                + days
-                + ",\"latLb\":"
                 + latLb
                 + ",\"latUb\":"
                 + latUb
@@ -62,6 +51,8 @@ public class InputParam {
                 + lonLb
                 + ",\"lonUb\":"
                 + lonUb
+                + ",\"filename\":"
+                + filename
                 + "}}";
 
     }
@@ -74,16 +65,8 @@ public class InputParam {
         return type;
     }
 
-    public int getTime() {
-        return time;
-    }
-
     public int getHeight() {
         return height;
-    }
-
-    public int getDays() {
-        return days;
     }
 
     public int getLatLb() {
@@ -102,7 +85,18 @@ public class InputParam {
         return lonUb;
     }
 
-    public int getYear() {
-        return year;
+    public String getFilename() {
+        return filename;
+    }
+
+    //获取FILE_TYPE格式的输出
+    public FILE_TYPE getFileType(){
+        if(type.equals("U"))
+            return FILE_TYPE.U;
+        if(type.equals("T"))
+            return FILE_TYPE.T;
+        if(type.equals("V"))
+            return FILE_TYPE.V;
+        return FILE_TYPE.O;
     }
 }
