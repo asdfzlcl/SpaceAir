@@ -1,7 +1,7 @@
 // 参数数据
 // 该对象的所有属性getter均被绑定到页面
 params = {
-    task: 0, type: "", time: "", height: 0, latLb: 0, latUb: 0, lonLb: 0, lonUb: 0, filename: 'U010100_大气密度(U)气候态.nc'//TODO 数据绑定, 改时间, 改limit
+    task: 0, type: "", time: "", height: 0, latLb: 0, latUb: 0, lonLb: 0, lonUb: 0, filename: 'U010100_大气密度(U)气候态.nc'
 }
 
 // 数据限制
@@ -175,6 +175,22 @@ function drawHeatMap(rawData) {
                 saveAsImage: {}
             }
         },
+        geo:{
+            show:true,
+            roam:false,
+            map: 'china',
+            center:[104.114129, 37.550339],
+            zoom:1.5,
+            top: 44,
+            zlevel:2,
+            silent:true,
+            itemStyle: {
+                borderColor: '#000',
+                areaColor:'rgba(255,255,255,0)',
+                borderWidth: 1
+            },
+            aspectScale:1/1.3
+        },
         tooltip: {}, xAxis: {
             type: 'category', data: xData, name: '经度 (°E)'
         }, yAxis: {
@@ -184,11 +200,16 @@ function drawHeatMap(rawData) {
                 color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
             }
         }, series: [{
-            name: '值', type: 'heatmap', data: data, emphasis: {
+            name: '值',
+            type: 'heatmap',
+            data: data,
+            emphasis: {
                 itemStyle: {
                     borderColor: '#333', borderWidth: 1
                 }
-            }, progressive: 10000, animation: false
+            },
+            progressive: 10000,
+            animation: false
         }]
     };
     let chartDom = echarts.init(document.querySelector("#chart"));

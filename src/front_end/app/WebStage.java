@@ -76,6 +76,7 @@ public class WebStage {
                 super.onFinishLoadingFrame(event);
                 browser.executeJavaScript("fetchTypes()");
                 browser.executeJavaScript("fetchFileList()");
+                browser.executeJavaScript("echarts.registerMap('china',{geoJSON:chinaJSON})");
             }
         });
         browser.addScriptContextListener(new ScriptContextAdapter() {
