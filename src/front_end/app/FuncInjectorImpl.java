@@ -14,7 +14,7 @@ import java.util.List;
 public class FuncInjectorImpl implements FuncInjector {
 
     private List<NetCDFFile> nowDictionary=null;
-    private List<Double> Levels=null;
+    private List<Double> heights =null;
     private List<Double> Latitudes=null;
     private List<Double> Longitudes=null;
     @Override
@@ -22,18 +22,9 @@ public class FuncInjectorImpl implements FuncInjector {
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
         List<List<Float>> data = new ArrayList<>(200);
-//        for (int j = 0; j < 200; j++)
-//        {
-//            List<Float> row = new ArrayList<>(200);
-//            for (int i = 0; i < 200; i++) {
-//                row.add((float) (Math.random() * 10.0));
-//            }
-//            data.add(row);
-//        }
-        // test
-        NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), new String());
+        NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), "");
         try {
-            data = FileHelper.getInstance().getDefaultDataSetVarLevel(file, 0);
+            data = FileHelper.getInstance().getDataSetVarLevel(file, inputParam.getHeight());
         } catch (IOException | InvalidRangeException e) {
             e.printStackTrace();
         }
@@ -47,14 +38,12 @@ public class FuncInjectorImpl implements FuncInjector {
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
         List<Float> data = new ArrayList<>();
-        NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), new String());
+        NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), "");
         try {
-            data = FileHelper.getInstance().getDataSetVarCoordinate(file, inputParam.getHeight(),inputParam.getLonLb());
+            data = FileHelper.getInstance().getDataSetVarCoordinate(file, inputParam.getLatLb(),inputParam.getLonLb());
         } catch (IOException | InvalidRangeException e) {
             e.printStackTrace();
         }
-//        for(int i=0;i<91;i++)
-//            data.add((float) (Math.random() * 10.0));
         return data.toString();
     }
 
@@ -91,17 +80,14 @@ public class FuncInjectorImpl implements FuncInjector {
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
         List<String> data = new ArrayList<>();
+
+        Latitudes=FileHelper.getInstance().getLatitude();
+        Longitudes=FileHelper.getInstance().getLongitude();
+        heights =FileHelper.getInstance().getHighList();
+
         for(NetCDFFile f: nowDictionary){
-            if(f.getFileName().equals(inputParam.getFilename()))
-            {
+            if(f.getFileName().equals(inputParam.getFilename())){
                 data.add(f.getFileDate());
-                try{
-                    Latitudes=FileHelper.getInstance().getLatitudeFromFile(f);
-                    Longitudes=FileHelper.getInstance().getLongitudeFromFile(f);
-                    Levels=FileHelper.getInstance().getLevelFromFile(f);
-                }catch (IOException e) {
-                    e.printStackTrace();
-                }
                 break;
             }
         }
@@ -109,15 +95,15 @@ public class FuncInjectorImpl implements FuncInjector {
         data.add(Latitudes.get(Latitudes.size()-1).toString());
         data.add(Longitudes.get(0).toString());
         data.add(Longitudes.get(Longitudes.size()-1).toString());
-        data.add(Levels.get(0).toString());
-        data.add(Levels.get(Levels.size()-1).toString());
+        data.add(heights.get(0).toString());
+        data.add(heights.get(heights.size()-1).toString());
         return data.toString();
     }
 
 
     public String GetFileHeight()
     {
-        return Levels.toString();
+        return heights.toString();
     }
 
     @Override

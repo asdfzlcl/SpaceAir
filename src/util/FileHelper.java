@@ -75,7 +75,7 @@ public class FileHelper {
      * description: 自检路径与文件夹内容 读取所需信息 提前计算high
      * return: status: -1?说明程序无法正常启动
      * */
-    private int checkStatus(){
+    public int checkStatus(){
         this.status = 0;
         File currentDirectory = new File(dirPath.get(FILE_TYPE.T.index));
         File[] TFiles = currentDirectory.listFiles();
@@ -101,7 +101,7 @@ public class FileHelper {
                 if(r.isFile() && isNCFile(r.getName())){
                     NetCDFFile rFile = new NetCDFFile(r.getName(), FILE_TYPE.R, "");
                     try {
-                        iLevelList = getLevelFromFile(rFile);
+                        iLevelList = getILevelFromRFile(rFile);
                         break;
                     } catch (IOException ignored) {
                     }
@@ -421,10 +421,18 @@ public class FileHelper {
     }
 
     public List<Double> getLongitude(){
-        return latitude;
+        List<Double> returnList = new ArrayList<>();
+        for(int i = lonStartIndex; i < lonStartIndex + lonLength;i++){
+            returnList.add(longitude.get(i));
+        }
+        return returnList;
     }
 
     public List<Double> getLatitude() {
-        return latitude;
+        List<Double> returnList = new ArrayList<>();
+        for(int i = latStartIndex;i < latLength + latStartIndex;i++){
+            returnList.add(latitude.get(i));
+        }
+        return returnList;
     }
 }

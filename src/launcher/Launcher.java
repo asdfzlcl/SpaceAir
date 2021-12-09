@@ -1,5 +1,6 @@
 package launcher;
 
+import front_end.app.WebStage;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;

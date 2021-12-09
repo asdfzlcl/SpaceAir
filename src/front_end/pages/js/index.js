@@ -189,22 +189,10 @@ function drawHeatMap(rawData) {
                 saveAsImage: {}
             }
         },
-        // geo:{
-        //     show:true,
-        //     roam:false,
-        //     map: 'china',
-        //     center:[104.114129, 37.550339],
-        //     zoom:1.5,
-        //     top: 44,
-        //     zlevel:2,
-        //     silent:true,
-        //     itemStyle: {
-        //         borderColor: '#000',
-        //         areaColor:'rgba(255,255,255,0)',
-        //         borderWidth: 1
-        //     },
-        //     aspectScale:1/1.3
-        // },
+        geo: {
+            "map": "china",
+            "roam": true
+        },
         tooltip: {}, xAxis: {
             type: 'category', data: yData, name: '经度 (°E)'
         }, yAxis: {
