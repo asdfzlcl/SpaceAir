@@ -7,21 +7,26 @@ package util;
  * U文件：即带状风流数据
  * V文件：即V风数据
  * O文件：即垂直风速
+ * @warnning: 修改此文件来进行读取文件顺序修改
  * */
 public enum FILE_TYPE {
-    T("T", "lev", "lat", "lon"), //temperature
-    U("U","lev", "lat", "lon"), //Zonal Winds
-    V("v","level", "latitude", "longitude"),  //V component of wind
-    O("OMEGA","lev", "lat", "lon");  //Omega velocity
+    T("T" ,0), //temperature
+    U("U", 1), //Zonal Winds
+    R("RHO_CLUBB", 2),  //R component of wind
+    O("OMEGA", 3);  //Omega velocity
+
+    public static final int count = 4;
+
 
     public final String attr; //attr 表示其在文件内的变量名称
-    public final String level;
-    public final String latitude;
-    public final String longitude;
-    FILE_TYPE(String a, String level, String latitude, String longitude){
+    public final String level = "lev";
+    public final String latitude = "lat";
+    public final String longitude = "lon";
+    public final int index;
+
+
+    FILE_TYPE(String a, int index){
         this.attr = a;
-        this.level = level;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.index = index;
     }
 }

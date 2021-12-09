@@ -6,7 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import sun.nio.ch.Net;
 import util.*;
 import java.io.File;
 import java.io.IOException;
@@ -153,14 +152,14 @@ public class LauncherController {
         PathOfDirectory[] pathInput = new PathOfDirectory[]{
                 new PathOfDirectory(FILE_TYPE.T, T_file_path.getText()),
                 new PathOfDirectory(FILE_TYPE.U, U_file_path.getText()),
-                new PathOfDirectory(FILE_TYPE.V, V_file_path.getText()),
+                new PathOfDirectory(FILE_TYPE.R, V_file_path.getText()),
                 new PathOfDirectory(FILE_TYPE.O, O_file_path.getText())
         };
         FileHelper.setInstance(pathInput);
 
 
         try {
-            List<Double> a = FileHelper.getInstance().getLevelFromFile(new NetCDFFile("v010100_V数据_气候态.nc", FILE_TYPE.V, ""));
+            List<Double> a = FileHelper.getInstance().getLevelFromFile(new NetCDFFile("v010100_V数据_气候态.nc", FILE_TYPE.R, ""));
             for(Double d: a){
                 System.out.println(d);
             }

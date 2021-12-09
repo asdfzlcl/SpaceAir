@@ -17,18 +17,21 @@ import java.util.List;
  * */
 public class FileHelper {
 
+    //static member
     public static String classBasePath = System.getProperty("user.dir"); //当前工作路径
     public static String outputDicPath = classBasePath + File.separator + "output"; //算法模块输出路径
     public static String configFileName = ".config"; //config文件名称
     public static String configFilePath = classBasePath + File.separator + configFileName; //config文件完整路径
 
+    //instance
     private static FileHelper instance; //唯一实例
 
-    public String T_DIR_PATH = null; // T文件路径
-    public String U_DIR_PATH = null; // U文件路径
-    public String V_DIR_PATH = null; // V文件路径
-    public String O_DIR_PATH = null; // O文件路径
-
+    //init member
+    public List<String> dirPath = new ArrayList<>();  //路径信息
+    private List<Double> levelList = new ArrayList<>();  //层数数组
+    private List<Double> highList = new ArrayList<>();  //高度数组 由层数数组计算得到
+    private List<Double> longitude = new ArrayList<>();  //经度数组
+    private List<Double> latitude = new ArrayList<>();  //纬度数组
     private NetcdfFile currentNetcdfFile;  //当前正在读取的文件，对象会缓存文件信息
 
     /**
@@ -52,6 +55,50 @@ public class FileHelper {
         instance = new FileHelper(paths);
     }
 
+
+    /**
+     * tool function: checkStatus
+     * description: 自检路径与文件夹内容 读取所需信息 提前计算high
+     * */
+    private void checkStatus(){
+        String directoryPath = null;
+        switch (fileType){
+            case R:
+                directoryPath = R_DIR_PATH;
+                break;
+            case O:
+                directoryPath = O_DIR_PATH;
+                break;
+            case T:
+                directoryPath = T_DIR_PATH;
+                break;
+            case U:
+                directoryPath = U_DIR_PATH;
+                break;
+            default:
+                break;
+        }
+        File currentDirectory = new File(directoryPath);
+        File[] currentFiles = currentDirectory.listFiles();
+        if(currentFiles == null){
+            throw new IOException();
+        }
+        for(File file:currentFiles){
+            if(file.isFile()){
+                // 判断格式是否为nc
+                String lowNCFile = "nc";
+                String upperNCFile = "NC";
+                String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1,
+                        file.getName().length());
+                if(extension.equals(lowNCFile) | extension.equals(upperNCFile)){
+                    //抽取里面的数字（即时间信息）
+                    String timeNumberString = file.getName().replaceAll("[^0-9]", "");
+                    returnList.add(new NetCDFFile(file.getName(), fileType, timeNumberString));
+                }
+            }
+        }
+    }
+
     /**
      * construction function: FilePathHelper()
      * parameter: PathOfDirectory[] 存储各个文件类型的文件夹路径
@@ -69,8 +116,8 @@ public class FileHelper {
                 case U:
                     U_DIR_PATH = p.getDirectoryPath();
                     break;
-                case V:
-                    V_DIR_PATH = p.getDirectoryPath();
+                case R:
+                    R_DIR_PATH = p.getDirectoryPath();
                     break;
                 default:
                     break;
@@ -87,8 +134,8 @@ public class FileHelper {
     public String getFilePath(NetCDFFile file){
         String returnPath = null;
         switch (file.getFileType()){
-            case V:
-                returnPath = V_DIR_PATH;
+            case R:
+                returnPath = R_DIR_PATH;
                 break;
             case U:
                 returnPath = U_DIR_PATH;
@@ -114,8 +161,8 @@ public class FileHelper {
         String directoryPath = null;
         List<NetCDFFile> returnList = new ArrayList<>();
         switch (fileType){
-            case V:
-                directoryPath = V_DIR_PATH;
+            case R:
+                directoryPath = R_DIR_PATH;
                 break;
             case O:
                 directoryPath = O_DIR_PATH;
