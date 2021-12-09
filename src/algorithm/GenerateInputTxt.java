@@ -88,7 +88,7 @@ public class GenerateInputTxt {
         GenerateInputTxt.model_();
 
         //将本地生成的output.txt移动到output目录下
-        File output_file=new File(outputDicPath+ File.separator + "output.txt");
+        File output_file=new File("output.txt");
         String pattern = "YYYY-MM-dd:HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String date = simpleDateFormat.format(new Date());
