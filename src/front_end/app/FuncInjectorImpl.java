@@ -49,7 +49,7 @@ public class FuncInjectorImpl implements FuncInjector {
         List<Float> data = new ArrayList<>();
         NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), new String());
         try {
-            data = FileHelper.getInstance().getDataSetVarCoordinate(file, inputParam.getLatLb(),inputParam.getLonLb());
+            data = FileHelper.getInstance().getDataSetVarCoordinate(file, inputParam.getHeight(),inputParam.getLonLb());
         } catch (IOException | InvalidRangeException e) {
             e.printStackTrace();
         }
@@ -112,6 +112,12 @@ public class FuncInjectorImpl implements FuncInjector {
         data.add(Levels.get(0).toString());
         data.add(Levels.get(Levels.size()-1).toString());
         return data.toString();
+    }
+
+
+    public String GetFileHeight()
+    {
+        return Levels.toString();
     }
 
     @Override
