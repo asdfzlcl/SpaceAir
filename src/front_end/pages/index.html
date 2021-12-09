@@ -13,8 +13,10 @@
     <a id="tab1" class="mdui-ripple">统计模型廓线图</a>
     <a id="tab2" class="mdui-ripple">标准模型廓线图</a>
 </div>
+
 <div class="body-panel">
     <div class="filelist-panel">
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="fab-animation-show">路径更改</button>
         <h2>
             参数选择区
         </h2>
@@ -44,7 +46,7 @@
             <div class="mdui-textfield">
                 <input class="mdui-textfield-input" type="number"
                        placeholder="纬度下限(°N)"
-                       id="latLb-input" value = "0"/>
+                       id="latLb-input" value = ""/>
                 <div class="mdui-textfield-helper">纬度下限: <span class="limit-latLb">0</span>-<span class="limit-latUb">60</span>(°N)</div>
             </div>
         </div>
@@ -52,7 +54,7 @@
             <div class="mdui-textfield">
                 <input class="mdui-textfield-input" type="number"
                        placeholder="纬度上限(°N)"
-                       id="latUb-input" value = "60"/>
+                       id="latUb-input" value = ""/>
                 <div class="mdui-textfield-helper">纬度上限: <span class="limit-latLb">0</span>-<span class="limit-latUb">60</span>(°N)</div>
             </div>
         </div>
@@ -60,7 +62,7 @@
             <div class="mdui-textfield">
                 <input class="mdui-textfield-input" type="number"
                        placeholder="经度下限(°E)"
-                       id="lonLb-input" value = "60"/>
+                       id="lonLb-input" value = ""/>
                 <div class="mdui-textfield-helper">经度下限: <span class="limit-lonLb">60</span>-<span class="limit-lonUb">120</span>(°E)</div>
             </div>
         </div>
@@ -68,7 +70,7 @@
             <div class="mdui-textfield">
                 <input class="mdui-textfield-input" type="number"
                         placeholder="经度上限(°E)"
-                       id="lonUb-input" value = "120"/>
+                       id="lonUb-input" value = ""/>
                 <div class="mdui-textfield-helper">经度上限: <span class="limit-lonLb">60</span>-<span class="limit-lonUb">120</span>(°E)</div>
             </div>
         </div>

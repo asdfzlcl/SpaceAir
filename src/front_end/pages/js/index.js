@@ -6,7 +6,7 @@ params = {
 
 // 数据限制
 limit = {
-    height: 0, latLb: 0, latUb: 60, lonLb: 60, lonUb: 120,
+    height: 0, latLb: 0, latUb: 0, lonLb: 0, lonUb: 120,
 }
 
 // 统计数据
@@ -30,7 +30,7 @@ async function getData() {
 }
 
 function checkParam() {
-    return params.height >= limit.heightLb && params.height <= limit.heightUb && params.lonLb >= limit.lonLb && params.lonLb < params.lonUb && params.lonUb <= limit.lonUb && params.latLb >= limit.latLb && params.latLb < params.latUb && params.latUb <= limit.latUb
+    return  params.lonLb >= limit.lonLb && params.lonLb < params.lonUb && params.lonUb <= limit.lonUb && params.latLb >= limit.latLb && params.latLb < params.latUb && params.latUb <= limit.latUb
 }
 
 // 绑定提交参数事件
@@ -119,8 +119,6 @@ function fileChangeHandler(filename) {
     limit.latUb = Math.max(parseFloat(limit_file[1]), parseFloat(limit_file[2]))
     limit.lonLb = Math.min(parseFloat(limit_file[3]), parseFloat(limit_file[4]))
     limit.lonUb = Math.max(parseFloat(limit_file[3]), parseFloat(limit_file[4]))
-    limit.heightLb = Math.min(parseFloat(limit_file[5]), parseFloat(limit_file[6])).toFixed(2)
-    limit.heightUb = Math.max(parseFloat(limit_file[5]), parseFloat(limit_file[6])).toFixed(2)
     if (limit_file[0].length == 4)
         params.time = limit_file[0].substr(0, 2) + "月" + limit_file[0].substr(2, 2) + "日"
     else if (limit_file[0].length == 6)
@@ -128,6 +126,10 @@ function fileChangeHandler(filename) {
     else
         params.time = limit_file[0].substr(0, 4) + "年" + limit_file[0].substr(4, 2) + "月" + limit_file[0].substr(6, 2) + "日" + limit_file[0].substr(8, 2) + ":00"
     fetchHeights()
+    document.querySelector("#latLb-input").value=limit.latLb
+    document.querySelector("#latUb-input").value=limit.latUb
+    document.querySelector("#lonLb-input").value=limit.lonLb
+    document.querySelector("#lonUb-input").value=limit.lonUb
 }
 
 // 动态添加文件列表组件
@@ -141,7 +143,7 @@ function fetchFileList() {
         .replace(/\s+/g, '')
         .split(',')
     let html = ""
-    for (let i = 0; i < files.length; i++) html = html + getFileListHtml(files[i])
+    for (let i = 0; i < files.length; i++) html = html + getFileListHtml(filelist.get(i))
     mdui.$("#file-list").append(html)
     mdui.$("#file-list").mutation()
 }
@@ -158,13 +160,13 @@ function drawHeatMap(rawData) {
     let count = 0
     //采样（为了保证速度）
     for (let x = 0; x  < rawData.length; x ++ ) {
-        xData.push(x);
+        xData.push((limit.latLb+(limit.latUb-limit.latLb)/(rawData.length-1)*x).toFixed(1));
         for (let y = 0; y  < rawData[0].length; y ++ ) {
             max = Math.max(rawData[x][y], max)
             min = Math.min(rawData[x][y], min)
             sum += rawData[x][y]
             count++
-            data.push([x, y, rawData[x][y]])
+            data.push([y, x, rawData[x][y]])
         }
     }
     statics.min = min
@@ -178,7 +180,7 @@ function drawHeatMap(rawData) {
     }
     statics.sdev = Math.sqrt(sum_avg / count)
 
-    for (let y = 0; y < rawData[0].length;  y++ ) yData.push(y);
+    for (let y = 0; y < rawData[0].length;  y++ ) yData.push((limit.lonLb+(limit.lonUb-limit.lonLb)/(rawData[0].length-1)*y).toFixed(1));
     let option = {
         toolbox: {
             show: true,
@@ -187,26 +189,26 @@ function drawHeatMap(rawData) {
                 saveAsImage: {}
             }
         },
-        geo:{
-            show:true,
-            roam:false,
-            map: 'china',
-            center:[104.114129, 37.550339],
-            zoom:1.5,
-            top: 44,
-            zlevel:2,
-            silent:true,
-            itemStyle: {
-                borderColor: '#000',
-                areaColor:'rgba(255,255,255,0)',
-                borderWidth: 1
-            },
-            aspectScale:1/1.3
-        },
+        // geo:{
+        //     show:true,
+        //     roam:false,
+        //     map: 'china',
+        //     center:[104.114129, 37.550339],
+        //     zoom:1.5,
+        //     top: 44,
+        //     zlevel:2,
+        //     silent:true,
+        //     itemStyle: {
+        //         borderColor: '#000',
+        //         areaColor:'rgba(255,255,255,0)',
+        //         borderWidth: 1
+        //     },
+        //     aspectScale:1/1.3
+        // },
         tooltip: {}, xAxis: {
-            type: 'category', data: xData, name: '经度 (°E)'
+            type: 'category', data: yData, name: '经度 (°E)'
         }, yAxis: {
-            type: 'category', data: yData, name: '纬度 (°N)'
+            type: 'category', data: xData, name: '纬度 (°N)'
         }, visualMap: {
             min: min, max: max, calculable: true, realtime: false, inRange: {
                 color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']

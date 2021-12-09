@@ -62,3 +62,6 @@ ul#file-list{
     min-width: 14vw;
     overflow: scroll;
 }
+#fab-animation-show{
+    margin-bottom: 3vh;
+}
