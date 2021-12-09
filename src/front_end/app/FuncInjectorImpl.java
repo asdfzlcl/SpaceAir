@@ -3,14 +3,12 @@ package front_end.app;
 import com.teamdev.jxbrowser.chromium.JSObject;
 import front_end.app.messages.InputParam;
 import ucar.ma2.InvalidRangeException;
-import util.FILE_TYPE;
 import util.FileHelper;
 import util.NetCDFFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public class FuncInjectorImpl implements FuncInjector {
@@ -35,7 +33,7 @@ public class FuncInjectorImpl implements FuncInjector {
         // test
         NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), new String());
         try {
-            data = FileHelper.getInstance().getDataSetVarLevel(file, 0);
+            data = FileHelper.getInstance().getDefaultDataSetVarLevel(file, 0);
         } catch (IOException | InvalidRangeException e) {
             e.printStackTrace();
         }
@@ -118,6 +116,6 @@ public class FuncInjectorImpl implements FuncInjector {
 
     @Override
     public Object GetFileInfo() {
-        return Arrays.asList("U","V","T","O");
+        return Arrays.asList("U","R","T","O");
     }
 }

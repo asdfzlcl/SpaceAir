@@ -16,10 +16,11 @@ public enum FILE_TYPE {
     O("OMEGA", 3);  //Omega velocity
 
     public static final int count = 4;
-
+    public static final FILE_TYPE[] sequence = new FILE_TYPE[]{T, U, R, O};
 
     public final String attr; //attr 表示其在文件内的变量名称
     public final String level = "lev";
+    public final String iLevel = "ilev";
     public final String latitude = "lat";
     public final String longitude = "lon";
     public final int index;

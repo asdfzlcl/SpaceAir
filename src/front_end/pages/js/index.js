@@ -1,7 +1,7 @@
 // 参数数据
 // 该对象的所有属性getter均被绑定到页面
 params = {
-    task: 0, type: "", time: "", height: 0, latLb: 0, latUb: 0, lonLb: 0, lonUb: 0, filename: 'U010100_大气密度(U)气候态.nc'//TODO 数据绑定, 改时间, 改limit
+    task: 0, type: "", time: "", height: 0, latLb: 0, latUb: 0, lonLb: 0, lonUb: 0, filename: 'U010100_大气密度(U)气候态.nc'
 }
 
 // 数据限制
@@ -96,16 +96,18 @@ function fileChangeHandler(filename) {
         .slice(1, limit_file.toString().length - 1)
         .replace(/\s+/g, '')
         .split(',')
-    limit.latLb = parseFloat(limit_file[1])
-    limit.latUb = parseFloat(limit_file[2])
-    limit.lonLb = parseFloat(limit_file[3])
-    limit.lonUb = parseFloat(limit_file[4])
-    limit.heightLb = parseFloat(limit_file[5]).toFixed(2)
-    limit.heightUb = parseFloat(limit_file[6]).toFixed(2)
-    if(limit_file[0].length==6)
-        params.time = limit_file[0].substr(0,2)+"月"+limit_file[0].substr(2,2)+"日"+limit_file[0].substr(4,2)+":00"
+    limit.latLb = Math.min(parseFloat(limit_file[1]), parseFloat(limit_file[2]))
+    limit.latUb = Math.max(parseFloat(limit_file[1]), parseFloat(limit_file[2]))
+    limit.lonLb = Math.min(parseFloat(limit_file[3]), parseFloat(limit_file[4]))
+    limit.lonUb = Math.max(parseFloat(limit_file[3]), parseFloat(limit_file[4]))
+    limit.heightLb = Math.min(parseFloat(limit_file[5]), parseFloat(limit_file[6])).toFixed(2)
+    limit.heightUb = Math.max(parseFloat(limit_file[5]), parseFloat(limit_file[6])).toFixed(2)
+    if (limit_file[0].length == 4)
+        params.time = limit_file[0].substr(0, 2) + "月" + limit_file[0].substr(2, 2) + "日"
+    else if (limit_file[0].length == 6)
+        params.time = limit_file[0].substr(0, 2) + "月" + limit_file[0].substr(2, 2) + "日" + limit_file[0].substr(4, 2) + ":00"
     else
-        params.time = limit_file[0].substr(0,4)+"年"+limit_file[0].substr(4,2)+"月"+limit_file[0].substr(6,2)+"日"+limit_file[0].substr(8,2)+":00"
+        params.time = limit_file[0].substr(0, 4) + "年" + limit_file[0].substr(4, 2) + "月" + limit_file[0].substr(6, 2) + "日" + limit_file[0].substr(8, 2) + ":00"
 }
 
 // 动态添加文件列表组件
@@ -164,8 +166,31 @@ function drawHeatMap(rawData) {
     }
     statics.sdev = Math.sqrt(sum_avg / count)
 
-    for (let y = 0; y < rawData[0].length; y = y + cy) yData.push(y);
+    for (let y = 0; y + cy < rawData[0].length; y = y + cy) yData.push(y);
     let option = {
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {},
+                saveAsImage: {}
+            }
+        },
+        geo:{
+            show:true,
+            roam:false,
+            map: 'china',
+            center:[104.114129, 37.550339],
+            zoom:1.5,
+            top: 44,
+            zlevel:2,
+            silent:true,
+            itemStyle: {
+                borderColor: '#000',
+                areaColor:'rgba(255,255,255,0)',
+                borderWidth: 1
+            },
+            aspectScale:1/1.3
+        },
         tooltip: {}, xAxis: {
             type: 'category', data: xData, name: '经度 (°E)'
         }, yAxis: {
@@ -175,11 +200,16 @@ function drawHeatMap(rawData) {
                 color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
             }
         }, series: [{
-            name: '值', type: 'heatmap', data: data, emphasis: {
+            name: '值',
+            type: 'heatmap',
+            data: data,
+            emphasis: {
                 itemStyle: {
                     borderColor: '#333', borderWidth: 1
                 }
-            }, progressive: 10000, animation: false
+            },
+            progressive: 10000,
+            animation: false
         }]
     };
     let chartDom = echarts.init(document.querySelector("#chart"));
@@ -211,14 +241,21 @@ function drawContourMapData(rawData) {
     }
     statics.sdev = Math.sqrt(sum_sdev / count)
     let option = {
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {},
+                saveAsImage: {}
+            }
+        },
         legend: {
             data: ['高度 (km) vs. 温度 (K)']
         }, tooltip: {
             trigger: 'axis', formatter: '温度 : <br/>{b}km : {c}K'
         }, xAxis: {
-            type: 'value',name:'温度 (K)'
+            type: 'value', name: '温度 (K)'
         }, yAxis: {
-            type: 'category', axisLine: {onZero: false}, name:'高度 (km)', boundaryGap: false, data: ydata
+            type: 'category', axisLine: {onZero: false}, name: '高度 (km)', boundaryGap: false, data: ydata
         }, visualMap: {
             min: min, max: max, calculable: true, realtime: true, inRange: {
                 color: ['#313695', '#4575b4', '#74add1',]
