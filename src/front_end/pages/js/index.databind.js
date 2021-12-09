@@ -22,6 +22,19 @@ bindGetter(params,'type',"input[name=type-selector]:checked")
 let taskId = 0
 mdui.$('#head-tab').on('change.mdui.tab',(event)=>{
     taskId = event._detail.index
+    if(taskId==0)
+    {
+        document.querySelector("#latLb-input").disabled=true
+        document.querySelector("#lonLb-input").disabled=true
+        document.querySelector("#height-selector").disabled=false
+    }
+    else
+    {
+        document.querySelector("#latLb-input").disabled=false
+        document.querySelector("#lonLb-input").disabled=false
+        document.querySelector("#height-selector").disabled=true
+    }
+
 })
 bindGetter(params,'task','',()=>{
     return taskId
@@ -29,9 +42,7 @@ bindGetter(params,'task','',()=>{
 // bindNumberGetter(params,'time',"input[name=time-selector]:checked")
 bindNumberGetter(params,'height',"#height-selector")
 bindNumberGetter(params,'latLb',"#latLb-input")
-bindNumberGetter(params,'latUb',"#latUb-input")
 bindNumberGetter(params,'lonLb',"#lonLb-input")
-bindNumberGetter(params,'lonUb',"#lonUb-input")
 
 bindSetterWithFixed2(statics,'max','#data-max')
 bindSetterWithFixed2(statics,'min','#data-min')
@@ -51,24 +62,10 @@ Object.defineProperty(limit, 'latLb', {
     },
     get: () => parseInt(document.querySelectorAll(".limit-latLb")[0].innerHTML)
 })
-Object.defineProperty(limit, 'latUb', {
-    set: (newVal) => {
-        for (let d of document.querySelectorAll(".limit-latUb"))
-            d.innerHTML = newVal.toString()
-    },
-    get: () => parseInt(document.querySelectorAll(".limit-latUb")[0].innerHTML)
-})
 Object.defineProperty(limit, 'lonLb', {
     set: (newVal) => {
         for (let d of document.querySelectorAll(".limit-lonLb"))
             d.innerHTML = newVal.toString()
     },
     get: () => parseInt(document.querySelectorAll(".limit-lonLb")[0].innerHTML)
-})
-Object.defineProperty(limit, 'lonUb', {
-    set: (newVal) => {
-        for (let d of document.querySelectorAll(".limit-lonUb"))
-            d.innerHTML = newVal.toString()
-    },
-    get: () => parseInt(document.querySelectorAll(".limit-lonUb")[0].innerHTML)
 })

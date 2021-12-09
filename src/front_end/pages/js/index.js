@@ -30,7 +30,7 @@ async function getData() {
 }
 
 function checkParam() {
-    return  params.lonLb >= limit.lonLb && params.lonLb < params.lonUb && params.lonUb <= limit.lonUb && params.latLb >= limit.latLb && params.latLb < params.latUb && params.latUb <= limit.latUb
+    return  params.lonLb >= limit.lonLb && params.lonLb  <= limit.lonUb && params.latLb >= limit.latLb && params.latLb  <= limit.latUb
 }
 
 // 绑定提交参数事件
@@ -81,7 +81,7 @@ function fetchTypes() {
 }
 
 function getHeightSelHtml(value, number) {
-    return `<option value="${number}">${value}</option>`
+    return `<option value="${number}">${value}km</option>`
 }
 
 function fetchHeights() {
@@ -93,10 +93,11 @@ function fetchHeights() {
         .replace(/\s+/g, '')
         .split(',')
     let html = ""
-    html = html + getHeightSelHtml(types[0], 0)
-    for (let i = 1; i < types.length; i++) html = html + getHeightSelHtml(types[i], i)
+    //html = html + getHeightSelHtml(types[0], 0)
+    for (let i = 0; i < types.length; i++) html = html + getHeightSelHtml((types[i]/1000).toFixed(3), i)
     mdui.$("#height-selector").append(html)
     mdui.$("#height-selector").mutation()
+    document.querySelector("#height-selector").value = types.length-1;
 }
 
 
@@ -115,10 +116,10 @@ function fileChangeHandler(filename) {
         .slice(1, limit_file.toString().length - 1)
         .replace(/\s+/g, '')
         .split(',')
-    limit.latLb = Math.min(parseFloat(limit_file[1]), parseFloat(limit_file[2]))
-    limit.latUb = Math.max(parseFloat(limit_file[1]), parseFloat(limit_file[2]))
-    limit.lonLb = Math.min(parseFloat(limit_file[3]), parseFloat(limit_file[4]))
-    limit.lonUb = Math.max(parseFloat(limit_file[3]), parseFloat(limit_file[4]))
+    limit.latLb = Math.min(parseFloat(limit_file[1]), parseFloat(limit_file[2])).toFixed(1)
+    limit.latUb = Math.max(parseFloat(limit_file[1]), parseFloat(limit_file[2])).toFixed(1)
+    limit.lonLb = Math.min(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1)
+    limit.lonUb = Math.max(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1)
     if (limit_file[0].length == 4)
         params.time = limit_file[0].substr(0, 2) + "月" + limit_file[0].substr(2, 2) + "日"
     else if (limit_file[0].length == 6)
@@ -127,9 +128,7 @@ function fileChangeHandler(filename) {
         params.time = limit_file[0].substr(0, 4) + "年" + limit_file[0].substr(4, 2) + "月" + limit_file[0].substr(6, 2) + "日" + limit_file[0].substr(8, 2) + ":00"
     fetchHeights()
     document.querySelector("#latLb-input").value=limit.latLb
-    document.querySelector("#latUb-input").value=limit.latUb
     document.querySelector("#lonLb-input").value=limit.lonLb
-    document.querySelector("#lonUb-input").value=limit.lonUb
 }
 
 // 动态添加文件列表组件
@@ -189,10 +188,16 @@ function drawHeatMap(rawData) {
                 saveAsImage: {}
             }
         },
-        geo: {
-            "map": "china",
-            "roam": true
-        },
+
+        // geo: {
+        //     "map": "china",
+        //     "roam": true
+        // },
+        axisPointer:
+            {
+                show:true,
+                type: 'shadow'
+            },
         tooltip: {}, xAxis: {
             type: 'category', data: yData, name: '经度 (°E)'
         }, yAxis: {
