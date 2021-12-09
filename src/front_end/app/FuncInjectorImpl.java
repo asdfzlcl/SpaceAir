@@ -116,6 +116,12 @@ public class FuncInjectorImpl implements FuncInjector {
         return data.toString();
     }
 
+
+    public String GetFileHeight()
+    {
+        return Levels.toString();
+    }
+
     @Override
     public Object GetFileInfo() {
         return Arrays.asList("U","R","T","O");

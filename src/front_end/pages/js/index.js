@@ -6,7 +6,7 @@ params = {
 
 // 数据限制
 limit = {
-    heightLb: 0, heightUb: 90, latLb: 0, latUb: 60, lonLb: 60, lonUb: 120,
+    height: 0, latLb: 0, latUb: 60, lonLb: 60, lonUb: 120,
 }
 
 // 统计数据
@@ -80,6 +80,25 @@ function fetchTypes() {
     mdui.$("#type-selector").mutation()
 }
 
+function getHeightSelHtml(value, number) {
+    return `<option value="${number}">${value}</option>`
+}
+
+function fetchHeights() {
+    document.querySelector("#height-selector").innerHTML = ''
+    let types = funcInjector.GetFileHeight()
+    types = types
+        .toString()
+        .slice(1, types.toString().length - 1)
+        .replace(/\s+/g, '')
+        .split(',')
+    let html = ""
+    html = html + getHeightSelHtml(types[0], 0)
+    for (let i = 1; i < types.length; i++) html = html + getHeightSelHtml(types[i], i)
+    mdui.$("#height-selector").append(html)
+    mdui.$("#height-selector").mutation()
+}
+
 
 // 通过value动态生成文杰列表项
 function getFileListHtml(value) {
@@ -108,6 +127,7 @@ function fileChangeHandler(filename) {
         params.time = limit_file[0].substr(0, 2) + "月" + limit_file[0].substr(2, 2) + "日" + limit_file[0].substr(4, 2) + ":00"
     else
         params.time = limit_file[0].substr(0, 4) + "年" + limit_file[0].substr(4, 2) + "月" + limit_file[0].substr(6, 2) + "日" + limit_file[0].substr(8, 2) + ":00"
+    fetchHeights()
 }
 
 // 动态添加文件列表组件
@@ -137,36 +157,28 @@ function drawHeatMap(rawData) {
     let sum = 0
     let count = 0
     //采样（为了保证速度）
-    let cx = 2, cy = 2;
-    if (rawData[0].length > 1400) {
-        cx = 3;
-        cy = 3;
-    }
-    for (let x = 0; x + cx < rawData.length; x = x + cx) {
+    for (let x = 0; x  < rawData.length; x ++ ) {
         xData.push(x);
-        for (let y = 0; y + cy < rawData[0].length; y = y + cy) {
-            let now = 0;
-            for (let i = 0; i < cx; i++) for (let j = 0; j < cy; j++) now = now + rawData[x + i][y + j]
-            rawData[x][y] = now / (cx * cy);
+        for (let y = 0; y  < rawData[0].length; y ++ ) {
             max = Math.max(rawData[x][y], max)
             min = Math.min(rawData[x][y], min)
             sum += rawData[x][y]
             count++
-            data.push([x / cx, y / cy, rawData[x][y]])
+            data.push([x, y, rawData[x][y]])
         }
     }
     statics.min = min
     statics.max = max
     statics.avg = sum / count
     let sum_avg = 0
-    for (let x = 0; x + cx < rawData.length; x = x + cx) {
-        for (let y = 0; y + cy < rawData[0].length; y = y + cy) {
+    for (let x = 0; x < rawData.length;  x ++) {
+        for (let y = 0; y  < rawData[0].length;  y ++) {
             sum_avg += (rawData[x][y] - sum / count) * (rawData[x][y] - sum / count)
         }
     }
     statics.sdev = Math.sqrt(sum_avg / count)
 
-    for (let y = 0; y + cy < rawData[0].length; y = y + cy) yData.push(y);
+    for (let y = 0; y < rawData[0].length;  y++ ) yData.push(y);
     let option = {
         toolbox: {
             show: true,

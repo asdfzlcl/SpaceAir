@@ -41,7 +41,7 @@ public class InputParam {
                 + task
                 + ",\"type\":\""
                 + type + '\"'
-                + ",\"time\":"
+                + ",\"height\":"
                 + height
                 + ",\"year\":"
                 + latLb

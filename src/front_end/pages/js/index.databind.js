@@ -27,7 +27,7 @@ bindGetter(params,'task','',()=>{
     return taskId
 })
 // bindNumberGetter(params,'time',"input[name=time-selector]:checked")
-bindNumberGetter(params,'height',"#height-input")
+bindNumberGetter(params,'height',"#height-selector")
 bindNumberGetter(params,'latLb',"#latLb-input")
 bindNumberGetter(params,'latUb',"#latUb-input")
 bindNumberGetter(params,'lonLb',"#lonLb-input")
@@ -71,18 +71,4 @@ Object.defineProperty(limit, 'lonUb', {
             d.innerHTML = newVal.toString()
     },
     get: () => parseInt(document.querySelectorAll(".limit-lonUb")[0].innerHTML)
-})
-Object.defineProperty(limit, 'heightLb', {
-    set: (newVal) => {
-        for (let d of document.querySelectorAll(".limit-heightLb"))
-            d.innerHTML = newVal.toString()
-    },
-    get: () => parseInt(document.querySelectorAll(".limit-heightLb")[0].innerHTML)
-})
-Object.defineProperty(limit, 'heightUb', {
-    set: (newVal) => {
-        for (let d of document.querySelectorAll(".limit-heightUb"))
-            d.innerHTML = newVal.toString()
-    },
-    get: () => parseInt(document.querySelectorAll(".limit-heightUb")[0].innerHTML)
 })
