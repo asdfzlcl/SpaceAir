@@ -105,8 +105,8 @@ function fetchHeights() {
 
 // 通过value动态生成文杰列表项
 function getFileListHtml(value) {
-    return `<li class="mdui-list-item mdui-ripple" onclick="fileChangeHandler('` + value + `')">${value}</li>
-<li class="mdui-divider"></li>`
+    return `<div><li class="mdui-list-item mdui-ripple file-item" onclick="fileChangeHandler('\` + value + \`')">${value}</li>
+<li class="mdui-divider"></li></div>`
 }
 
 function fileChangeHandler(filename) {
@@ -122,9 +122,9 @@ function fileChangeHandler(filename) {
     limit.latUb = Math.max(parseFloat(limit_file[1]), parseFloat(limit_file[2])).toFixed(1)
     limit.lonLb = Math.min(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1)
     limit.lonUb = Math.max(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1)
-    if (limit_file[0].length == 4)
+    if (limit_file[0].length === 4)
         params.time = limit_file[0].substr(0, 2) + "月" + limit_file[0].substr(2, 2) + "日"
-    else if (limit_file[0].length == 6)
+    else if (limit_file[0].length === 6)
         params.time = limit_file[0].substr(0, 2) + "月" + limit_file[0].substr(2, 2) + "日" + limit_file[0].substr(4, 2) + ":00"
     else
         params.time = limit_file[0].substr(0, 4) + "年" + limit_file[0].substr(4, 2) + "月" + limit_file[0].substr(6, 2) + "日" + limit_file[0].substr(8, 2) + ":00"
@@ -149,9 +149,7 @@ function fetchFileList() {
     mdui.$("#file-list").mutation()
 }
 
-// TODO 动态横纵轴、经纬度
 function drawHeatMap(rawData) {
-    //TODO 横纵坐标应按照经纬度重新生成
     let xData = []
     let yData = []
     let data = []
@@ -285,3 +283,33 @@ function drawContourMapData(rawData) {
     chartDom.setOption({})
     chartDom.setOption(option)
 }
+
+// 输入查询字符串和文件名，返回是否符合查询结果
+// TODO 完善该函数
+function fileFilter(queryString,filename){
+
+}
+
+// 文件搜索功能
+document.querySelector('#file-filter-btn').addEventListener('click',(event)=>{
+    let queryStr = document.querySelector('#file-filter-input').value
+    if(queryStr===''){
+        let files = document.querySelectorAll('.file-item')
+        for(let file of files){
+            file.hidden=false
+        }
+    }else{
+        let files = document.querySelectorAll('.file-item')
+        for(let file of files){
+            // file.hidden = file.innerHTML.indexOf(query)===-1
+            file.hidden = fileFilter(queryStr,file.innerHTML)
+        }
+    }
+
+})
+document.querySelector('#file-filter-reset-btn').addEventListener('click',(event)=>{
+    let files = document.querySelectorAll('.file-item')
+    for(let file of files){
+        file.hidden=false
+    }
+})
