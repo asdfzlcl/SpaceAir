@@ -43,7 +43,7 @@ public class InputParam {
                 + type + '\"'
                 + ",\"height\":"
                 + height
-                + ",\"year\":"
+                + ",\"latLb\":"
                 + latLb
                 + ",\"latUb\":"
                 + latUb

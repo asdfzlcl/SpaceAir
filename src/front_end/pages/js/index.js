@@ -30,6 +30,8 @@ async function getData() {
 }
 
 function checkParam() {
+    //alert(limit.latLb)
+    //alert(limit.latUb)
     return  params.lonLb >= limit.lonLb && params.lonLb  <= limit.lonUb && params.latLb >= limit.latLb && params.latLb  <= limit.latUb
 }
 

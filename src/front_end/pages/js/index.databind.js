@@ -69,3 +69,17 @@ Object.defineProperty(limit, 'lonLb', {
     },
     get: () => parseInt(document.querySelectorAll(".limit-lonLb")[0].innerHTML)
 })
+Object.defineProperty(limit, 'latUb', {
+    set: (newVal) => {
+        for (let d of document.querySelectorAll(".limit-latUb"))
+            d.innerHTML = newVal.toString()
+    },
+    get: () => parseInt(document.querySelectorAll(".limit-latUb")[0].innerHTML)
+})
+Object.defineProperty(limit, 'lonUb', {
+    set: (newVal) => {
+        for (let d of document.querySelectorAll(".limit-lonUb"))
+            d.innerHTML = newVal.toString()
+    },
+    get: () => parseInt(document.querySelectorAll(".limit-lonUb")[0].innerHTML)
+})
