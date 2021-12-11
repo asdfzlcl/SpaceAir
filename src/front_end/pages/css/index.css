@@ -65,3 +65,9 @@ ul#file-list{
 #fab-animation-show{
     margin-bottom: 3vh;
 }
+
+.xymid{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}

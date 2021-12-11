@@ -34,7 +34,6 @@
         </button><button id="file-filter-reset-btn" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" style="margin-left:2vw">重置
         </button></div>
         <ul class="mdui-list" id="file-list">
-
         </ul>
     </div>
     <div class="param-panel">
@@ -43,27 +42,25 @@
         <div>日期:<br> <span id="show-time"></span><br>
             当前文件:<br> <span id="show-filename"></span><br>
         </div>
-        <div class="param-item">
+        <div class="param-item xymid">
                 <select class="mdui-select" id="height-selector">
                 </select>
-
-                <div class="mdui-select-helper">高度选择</div>
-
+                <div class="mdui-select-helper height-selector-helper">高度选择</div>
         </div>
         <div class="param-item">
             <div class="mdui-textfield">
-                <input class="mdui-textfield-input" type="number"
+                <input class="mdui-textfield-input" type="text"
                        placeholder="纬度(°N)"
                        id="latLb-input" value = ""/>
-                <div class="mdui-textfield-helper">纬度范围: <span class="limit-latLb">0</span>(°N)-<span class="limit-latUb">60</span>(°N)</div>
+                <div class="mdui-textfield-helper latLb-input-helper">纬度范围: <span class="limit-latLb">0</span>(°N)-<span class="limit-latUb">60</span>(°N)</div>
             </div>
         </div>
         <div class="param-item">
             <div class="mdui-textfield">
-                <input class="mdui-textfield-input" type="number"
+                <input class="mdui-textfield-input" type="text"
                        placeholder="经度(°E)"
                        id="lonLb-input" value = ""/>
-                <div class="mdui-textfield-helper">经度范围: <span class="limit-lonLb">60</span>(°E)-<span class="limit-lonUb">120</span>(°E)</div>
+                <div class="mdui-textfield-helper lonLb-input-helper">经度范围: <span class="limit-lonLb">60</span>(°E)-<span class="limit-lonUb">120</span>(°E)</div>
             </div>
         </div>
         <div class="param-item" style="display: flex;justify-content: center">
