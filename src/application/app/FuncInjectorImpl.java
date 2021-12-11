@@ -1,7 +1,7 @@
-package front_end.app;
+package application.app;
 
 import com.teamdev.jxbrowser.chromium.JSObject;
-import front_end.app.messages.InputParam;
+import application.app.messages.InputParam;
 import ucar.ma2.InvalidRangeException;
 import util.FileHelper;
 import util.NetCDFFile;

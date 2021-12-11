@@ -1,4 +1,4 @@
-package front_end.app.messages;
+package application.app.messages;
 
 import com.teamdev.jxbrowser.chromium.JSObject;
 import util.FILE_TYPE;

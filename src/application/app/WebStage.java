@@ -1,8 +1,7 @@
-package front_end.app;
+package application.app;
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.BrowserCore;
-import com.teamdev.jxbrowser.chromium.DialogHandler;
 import com.teamdev.jxbrowser.chromium.JSValue;
 import com.teamdev.jxbrowser.chromium.events.*;
 import com.teamdev.jxbrowser.chromium.internal.Environment;
@@ -14,7 +13,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
-import launcher.Launcher;
 import util.DialogHelper;
 
 import java.io.File;
@@ -51,7 +49,7 @@ public class WebStage {
         webStage.setTitle("Webview");
         webStage.setScene(scene);
 
-        String url = Objects.requireNonNull(WebStage.class.getResource("/front_end/pages/index.html")).toExternalForm();
+        String url = Objects.requireNonNull(WebStage.class.getResource("/application/pages/index.html")).toExternalForm();
         browser.addLoadListener(new LoadAdapter() {
             @Override
             public void onStartLoadingFrame(StartLoadingEvent event) {

@@ -1,4 +1,4 @@
-package front_end.app;
+package application.app;
 
 import com.teamdev.jxbrowser.chromium.JSObject;
 

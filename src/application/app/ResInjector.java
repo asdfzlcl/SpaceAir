@@ -1,16 +1,16 @@
-package front_end.app;
+package application.app;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 public class ResInjector {
     public static String getCss(String filename) {
-        InputStream contentStream = ResInjector.class.getResourceAsStream("/front_end/pages/css/" + filename);
+        InputStream contentStream = ResInjector.class.getResourceAsStream("/application/pages/css/" + filename);
         assert contentStream != null;
         return getFileContent(contentStream);
     }
     public static String getJs(String filename) {
-        InputStream contentStream = ResInjector.class.getResourceAsStream("/front_end/pages/js/" + filename);
+        InputStream contentStream = ResInjector.class.getResourceAsStream("/application/pages/js/" + filename);
         assert contentStream != null;
         return getFileContent(contentStream);
     }

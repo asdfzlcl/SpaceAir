@@ -1,7 +1,7 @@
 ## 前后端胶水层涉及类
-1. front_end.app.messages.InputParam
-2. front_end.app.FuncInjector
-3. front_end.app.WebStage
+1. application.app.messages.InputParam
+2. application.app.FuncInjector
+3. application.app.WebStage
 
 ### InputParam
 该类的实例化对象用于表示前端向后端传输的参数，解析如下
