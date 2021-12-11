@@ -75,7 +75,7 @@ public class FileHelper {
      * description: 自检路径与文件夹内容 读取所需信息 提前计算high
      * return: status: -1?说明程序无法正常启动
      * */
-    public int checkStatus(){
+    public int checkStatus() throws Exception{
         this.status = 0;
         File currentDirectory = new File(dirPath.get(FILE_TYPE.T.index));
         File[] TFiles = currentDirectory.listFiles();

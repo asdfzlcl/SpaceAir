@@ -118,8 +118,12 @@ public class WebStage extends Application {
                 new PathOfDirectory(FILE_TYPE.O, ConfigFileHelper.getInstance().getOPathFromConfig())
         };
         FileHelper.setInstance(pathInput);
-        FileHelper.getInstance().checkStatus();
-
+        try {
+            FileHelper.getInstance().checkStatus();
+        }catch (Exception e){
+            DialogHelper.popErrorDialog("路径配置错误，程序无法正常运行!\n请修改配置文件或进入程序后手动修改路径!");
+            webStage.show();
+        }
         webStage.show();
     }
 
