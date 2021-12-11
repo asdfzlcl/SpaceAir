@@ -105,7 +105,7 @@ function fetchHeights() {
 
 // 通过value动态生成文杰列表项
 function getFileListHtml(value) {
-    return `<div><li class="mdui-list-item mdui-ripple file-item" onclick="fileChangeHandler('` + value + `')">${value}</li>
+    return `<div><li class="mdui-list-item mdui-ripple file-item" onclick="fileChangeHandler('\` + value + \`')">${value}</li>
 <li class="mdui-divider"></li></div>`
 }
 
