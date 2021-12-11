@@ -106,6 +106,16 @@ public class FuncInjectorImpl implements FuncInjector {
         return heights.toString();
     }
 
+    public String GetFileLat()
+    {
+        return Latitudes.toString();
+    }
+
+    public String GetFileLon()
+    {
+        return Longitudes.toString();
+    }
+
     @Override
     public Object GetFileInfo() {
         return Arrays.asList("U","R","T","O");

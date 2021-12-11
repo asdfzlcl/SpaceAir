@@ -150,6 +150,8 @@ function fetchFileList() {
 }
 
 function drawHeatMap(rawData) {
+    let lon=JSON.parse(funcInjector.GetFileLon())
+    let lat=JSON.parse(funcInjector.GetFileLat())
     let xData = []
     let yData = []
     let data = []
@@ -159,7 +161,7 @@ function drawHeatMap(rawData) {
     let count = 0
     //采样（为了保证速度）
     for (let x = 0; x  < rawData.length; x ++ ) {
-        xData.push((limit.latLb+(limit.latUb-limit.latLb)/(rawData.length-1)*x).toFixed(1));
+        xData.push(lat[x].toFixed(1));
         for (let y = 0; y  < rawData[0].length; y ++ ) {
             max = Math.max(rawData[x][y], max)
             min = Math.min(rawData[x][y], min)
@@ -179,7 +181,7 @@ function drawHeatMap(rawData) {
     }
     statics.sdev = Math.sqrt(sum_avg / count)
 
-    for (let y = 0; y < rawData[0].length;  y++ ) yData.push((limit.lonLb+(limit.lonUb-limit.lonLb)/(rawData[0].length-1)*y).toFixed(1));
+    for (let y = 0; y < rawData[0].length;  y++ ) yData.push(lon[y].toFixed(1));
     let option = {
         toolbox: {
             show: true,
@@ -198,7 +200,9 @@ function drawHeatMap(rawData) {
                 show:true,
                 type: 'shadow'
             },
-        tooltip: {}, xAxis: {
+        tooltip: {
+
+        }, xAxis: {
             type: 'category', data: yData, name: '经度 (°E)'
         }, yAxis: {
             type: 'category', data: xData, name: '纬度 (°N)'
@@ -225,14 +229,15 @@ function drawHeatMap(rawData) {
 }
 
 function drawContourMapData(rawData) {
+    let height=JSON.parse(funcInjector.GetFileHeight())
     let data = []
     let ydata = []
     let min = rawData[0]
     let max = rawData[0]
     let sum = 0
     let count = 0
-    for (let i = 0; i < rawData.length; i++) {
-        ydata.push()
+    for (let i = rawData.length-1; i >= 0; i--) {
+        ydata.push((height[i]/1000).toFixed(3))
         data.push(rawData[i])
         max = Math.max(rawData[i], max)
         min = Math.min(rawData[i], min)
