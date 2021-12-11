@@ -186,6 +186,12 @@ function drawHeatMap(rawData) {
     }
     statics.sdev = Math.sqrt(sum_avg / count)
 
+    let dataName='温度(K)'
+    if(params.type=="U"||params.type=="O")
+        dataName='速度(m/s)'
+    if(params.type=="R")
+        dataName='密度(kg/m³)'
+
     for (let y = 0; y < rawData[0].length;  y++ ) yData.push(lon[y].toFixed(1));
     let option = {
         toolbox: {
@@ -216,7 +222,7 @@ function drawHeatMap(rawData) {
                 color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
             }
         }, series: [{
-            name: '值',
+            name: dataName,
             type: 'heatmap',
             data: data,
             emphasis: {
@@ -257,6 +263,13 @@ function drawContourMapData(rawData) {
         sum_sdev += (rawData[i] - sum / count) * (rawData[i] - sum / count)
     }
     statics.sdev = Math.sqrt(sum_sdev / count)
+
+    let dataName='温度(K)'
+    if(params.type=="U"||params.type=="O")
+        dataName='速度(m/s)'
+    if(params.type=="R")
+        dataName='密度(kg/m³)'
+
     let option = {
         toolbox: {
             show: true,
@@ -266,11 +279,11 @@ function drawContourMapData(rawData) {
             }
         },
         legend: {
-            data: ['高度 (km) vs. 温度 (K)']
+            data: ['高度 (km) vs. '+dataName]
         }, tooltip: {
-            trigger: 'axis', formatter: '温度 : <br/>{b}km : {c}K'
+            trigger: 'axis', formatter: '高度(km) :'+dataName+' <br/>{b} : {c}'
         }, xAxis: {
-            type: 'value', name: '温度 (K)'
+            type: 'value', name: dataName
         }, yAxis: {
             type: 'category', axisLine: {onZero: false}, name: '高度 (km)', boundaryGap: false, data: ydata
         }, visualMap: {
