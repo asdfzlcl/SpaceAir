@@ -232,7 +232,7 @@ function drawContourMapData(rawData) {
     let sum = 0
     let count = 0
     for (let i = 0; i < rawData.length; i++) {
-        ydata.push(i)
+        ydata.push()
         data.push(rawData[i])
         max = Math.max(rawData[i], max)
         min = Math.min(rawData[i], min)

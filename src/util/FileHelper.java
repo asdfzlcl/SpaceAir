@@ -302,8 +302,8 @@ public class FileHelper {
             throw new IOException();
         }
         int[] shape = variable.getShape();
-        int latIndex = 0;
-        int longIndex = 0;
+        int latIndex =  fuzzySearch(latitude, latValue);
+        int longIndex = fuzzySearch(longitude, lonValue);
         int[] origin = new int[]{0, latIndex, longIndex};
         int[] size = new int[]{shape[0], 1, 1};
         Array data = variable.read(origin, size).reduce().reduce();
@@ -435,4 +435,18 @@ public class FileHelper {
         }
         return returnList;
     }
+
+    private int fuzzySearch(List<Double> list, double value){
+        int l=0,r=list.size();
+        while(l+1<r)
+        {
+            int m=(l+r)>>1;
+            if(list.get(m)<=value)
+                l=m;
+            else
+                r=m;
+        }
+        return l;
+    }
+
 }
