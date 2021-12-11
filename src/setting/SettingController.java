@@ -154,7 +154,12 @@ public class SettingController {
                 new PathOfDirectory(FILE_TYPE.O, O_file_path.getText())
         };
         FileHelper.setInstance(pathInput);
-        FileHelper.getInstance().checkStatus();
+        try {
+            FileHelper.getInstance().checkStatus();
+        } catch (Exception e) {
+            DialogHelper.popErrorDialog("路径配置错误，程序无法正常运行!\n请修改配置文件或重新修改路径!");
+            return;
+        }
 
         final Stage stage = (Stage)T_file_path.getScene().getWindow();
         stage.close();

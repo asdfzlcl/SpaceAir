@@ -70,7 +70,12 @@ public class FuncInjectorImpl implements FuncInjector {
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
 
-        int status = FileHelper.getInstance().checkStatus();
+        int status = 0;
+        try {
+            status = FileHelper.getInstance().checkStatus();
+        } catch (Exception e) {
+            DialogHelper.popErrorDialog("大气温度(T)目录与大气密度(R)目录格式错误或目录下必须有对应文件！\n请更改设置路径后重新尝试。");
+        }
         if(status == -1){
             DialogHelper.popErrorDialog("大气温度(T)目录与大气密度(R)目录格式错误或目录下必须有对应文件！\n请更改设置路径后重新尝试。");
         }
