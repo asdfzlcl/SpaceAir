@@ -17,7 +17,7 @@ public class DialogHelper {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                DialogHelper.popWarningDialog("错误提示",content);
+                DialogHelper.popWarningDialog("错误！",content);
             }
         });
     }

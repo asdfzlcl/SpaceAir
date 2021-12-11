@@ -6,6 +6,7 @@ import com.teamdev.jxbrowser.chromium.JSValue;
 import com.teamdev.jxbrowser.chromium.events.*;
 import com.teamdev.jxbrowser.chromium.internal.Environment;
 import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
+import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -13,15 +14,15 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
-import util.DialogHelper;
+import setting.Setting;
+import util.*;
 
 import java.io.File;
 import java.util.Objects;
 
-public class WebStage {
-    static private final Stage webStage = new Stage(StageStyle.DECORATED);
-    static private boolean webStageConfigured = false;
-    static private FuncInjector funcInjector = new FuncInjectorImpl();
+public class WebStage extends Application {
+    private final Stage webStage = new Stage(StageStyle.DECORATED);
+    private FuncInjector funcInjector = new FuncInjectorImpl();
 
     private static void initWebCore() {
         // On Mac OS X Chromium engine must be initialized in non-UI thread.
@@ -30,24 +31,21 @@ public class WebStage {
         }
     }
 
-    public static void showWebStage(){
-        if(!webStageConfigured)
-            initWebStage();
-        webStage.showAndWait();
+
+    public void setFuncInjector(FuncInjector funcInjector){
+        funcInjector = funcInjector;
     }
 
-    public static void setFuncInjector(FuncInjector funcInjector){
-        WebStage.funcInjector = funcInjector;
-    }
-
-    private static void initWebStage(){
+    private void initWebStage(){
         Browser browser = new Browser();
         BrowserView browserView = new BrowserView(browser);
         StackPane pane = new StackPane();
         pane.getChildren().add(browserView);
         Scene scene = new Scene(pane, 1850, 1000);
-        webStage.setTitle("Webview");
         webStage.setScene(scene);
+        webStage.setTitle("标准大气软件");
+        webStage.getIcons().add(new Image("file:" +
+                System.getProperty("user.dir") + File.separator + "logo.png"));
 
         String url = Objects.requireNonNull(WebStage.class.getResource("/application/pages/index.html")).toExternalForm();
         browser.addLoadListener(new LoadAdapter() {
@@ -81,22 +79,26 @@ public class WebStage {
             @Override
             public void onScriptContextCreated(ScriptContextEvent event) {
                 JSValue window = browser.executeJavaScriptAndReturnValue("window");
-                window.asObject().setProperty("funcInjector", WebStage.funcInjector);
+                window.asObject().setProperty("funcInjector", funcInjector);
             }
         });
         browser.loadURL(url);
-        webStageConfigured = true;
 
-        webStage.setTitle("标准大气软件");
-        webStage.getIcons().add(new Image("file:" +
-                System.getProperty("user.dir") + File.separator + "logo.png"));
+
 
         //给webStage增加退出按钮
         webStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
                 if(DialogHelper.popConfirmationDialog("确认？","是否退出标准大气软件")){
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            browser.dispose();
+                        }
+                    }).start();
                     webStage.close();
+                    System.exit(0);
                 }else{
                     event.consume();
                 }
@@ -105,4 +107,23 @@ public class WebStage {
 
     }
 
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        initWebStage();
+
+        PathOfDirectory[] pathInput = new PathOfDirectory[]{
+                new PathOfDirectory(FILE_TYPE.T, ConfigFileHelper.getInstance().getTPathFromConfig()),
+                new PathOfDirectory(FILE_TYPE.U, ConfigFileHelper.getInstance().getUPathFromConfig()),
+                new PathOfDirectory(FILE_TYPE.R, ConfigFileHelper.getInstance().getRPathFromConfig()),
+                new PathOfDirectory(FILE_TYPE.O, ConfigFileHelper.getInstance().getOPathFromConfig())
+        };
+        FileHelper.setInstance(pathInput);
+        FileHelper.getInstance().checkStatus();
+
+        webStage.show();
+    }
+
+    public static void main(String[] args){
+        launch(args);
+    }
 }

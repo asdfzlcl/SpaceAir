@@ -2,7 +2,12 @@ package application.app;
 
 import com.teamdev.jxbrowser.chromium.JSObject;
 import application.app.messages.InputParam;
+import javafx.application.Platform;
+import javafx.stage.Stage;
+import setting.Setting;
 import ucar.ma2.InvalidRangeException;
+import ucar.nc2.util.IO;
+import util.DialogHelper;
 import util.FileHelper;
 import util.NetCDFFile;
 
@@ -26,7 +31,7 @@ public class FuncInjectorImpl implements FuncInjector {
         try {
             data = FileHelper.getInstance().getDataSetVarLevel(file, inputParam.getHeight());
         } catch (IOException | InvalidRangeException e) {
-            e.printStackTrace();
+            DialogHelper.popErrorDialog("当前文件已不存在！\n请重启软件刷新文件目录重新尝试。");
         }
         // end test
 
@@ -42,19 +47,38 @@ public class FuncInjectorImpl implements FuncInjector {
         try {
             data = FileHelper.getInstance().getDataSetVarCoordinate(file, inputParam.getLatLb(),inputParam.getLonLb());
         } catch (IOException | InvalidRangeException e) {
-            e.printStackTrace();
+            DialogHelper.popErrorDialog("当前文件已不存在！\n请重启软件刷新文件目录重新尝试。");
         }
         return data.toString();
+    }
+
+    public void changePath(){
+        Platform.runLater(()->{
+            Setting setting = new Setting();
+            Stage settingStage = new Stage();
+            try {
+                setting.start(settingStage);
+                settingStage.showAndWait();
+            }catch (Exception e){
+                DialogHelper.popErrorDialog("致命错误！请重启软件。");
+            }
+        });
     }
 
     //获取对应文件属性目录
     public List<String> GetDictiontary(JSObject params){
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
+
+        int status = FileHelper.getInstance().checkStatus();
+        if(status == -1){
+            DialogHelper.popErrorDialog("大气温度(T)目录与大气密度(R)目录格式错误或目录下必须有对应文件！\n请更改设置路径后重新尝试。");
+        }
+
         try {
             nowDictionary = FileHelper.getInstance().getAllFileOfDirectory(inputParam.getFileType());
         } catch (IOException e) {
-            e.printStackTrace();
+            DialogHelper.popErrorDialog("当前目录格式有误或目录为空！\n请检查路径设置！");
         }
         List<String> filedictionary=new ArrayList<>();
         for(NetCDFFile f: nowDictionary){
@@ -71,7 +95,7 @@ public class FuncInjectorImpl implements FuncInjector {
         try {
             data = FileHelper.getInstance().getAllFileOfDirectory(inputParam.getFileType());
         } catch (IOException e) {
-            e.printStackTrace();
+            DialogHelper.popErrorDialog("大气温度(T)目录与大气密度(R)目录格式错误或目录下必须有对应文件！\n请更改设置路径后重新尝试。");
         }
         return data.toString();
     }

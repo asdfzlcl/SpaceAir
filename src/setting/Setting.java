@@ -1,4 +1,4 @@
-package launcher;
+package setting;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -8,9 +8,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import util.DialogHelper;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -18,32 +20,30 @@ import java.net.URL;
  * @author wxy
  * @date 2021-12-05
  * */
-public class Launcher extends Application {
+public class Setting extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        URL location = getClass().getResource("launcher.fxml");
+    public void start(Stage primaryStage) throws Exception {
+        URL location = getClass().getResource("setting.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(location);
         fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
         Parent root = fxmlLoader.load();
 
-        primaryStage.setTitle("标准大气软件启动器");
-        Scene scene = new Scene(root, 800, 310);
+        primaryStage.setTitle("标准大气软件路径设置");
+        Scene scene = new Scene(root, 900, 270);
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image("file:" +
                 System.getProperty("user.dir") + File.separator + "logo.png"));
 
-        LauncherController controller = fxmlLoader.getController();
+        SettingController controller = fxmlLoader.getController();
         controller.init();
-
-        primaryStage.show();
 
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-                if(DialogHelper.popConfirmationDialog("确认？","是否退出标准大气软件启动器")){
-                    System.exit(0);
+                if(DialogHelper.popConfirmationDialog("配置未保存","配置未保存，确认退出？")){
+                    primaryStage.close();
                 }else{
                     event.consume();
                 }
@@ -51,7 +51,5 @@ public class Launcher extends Application {
         });
     }
 
-    public static void main(String[] args){
-        launch(args);
-    }
+
 }

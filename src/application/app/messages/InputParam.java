@@ -95,7 +95,7 @@ public class InputParam {
             return FILE_TYPE.U;
         if(type.equals("T"))
             return FILE_TYPE.T;
-        if(type.equals("V"))
+        if(type.equals("R"))
             return FILE_TYPE.R;
         return FILE_TYPE.O;
     }

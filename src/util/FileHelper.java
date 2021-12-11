@@ -108,7 +108,10 @@ public class FileHelper {
                 }
             }
             if(levelList == null || longitude == null || latitude == null
-                    || atomTemperatureList == null || iLevelList == null){
+                    || atomTemperatureList == null || iLevelList == null
+                    || levelList.size() == 0 || longitude.size() == 0
+                    || latitude.size() == 0 ||atomTemperatureList.size() == 0
+                    || iLevelList.size() == 0){
                 this.status = -1;
             }else {
                 highList = Height.LevToHeight(levelList, iLevelList, atomTemperatureList);

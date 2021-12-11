@@ -35,6 +35,11 @@ function checkParam() {
     return  params.lonLb >= limit.lonLb && params.lonLb  <= limit.lonUb && params.latLb >= limit.latLb && params.latLb  <= limit.latUb
 }
 
+function changePath() {
+    funcInjector.changePath()
+}
+
+
 // 绑定提交参数事件
 document.querySelector("#submit-param").onclick = () => {
     if (!checkParam()) {

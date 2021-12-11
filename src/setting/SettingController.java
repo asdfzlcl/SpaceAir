@@ -1,6 +1,5 @@
-package launcher;
+package setting;
 
-import application.app.WebStage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -16,7 +15,7 @@ import java.io.IOException;
  * @description 启动窗口Controller类
  * @date 2021-12-07
  * */
-public class LauncherController {
+public class SettingController {
 
     private ConfigFileHelper config;
 
@@ -29,9 +28,9 @@ public class LauncherController {
     @FXML
     private Button U_file_choose;
     @FXML
-    private TextField V_file_path;
+    private TextField R_file_path;
     @FXML
-    private Button V_file_choose;
+    private Button R_file_choose;
     @FXML
     private TextField O_file_path;
     @FXML
@@ -54,10 +53,10 @@ public class LauncherController {
             }else{
                 U_file_path.setText(config.getUPathFromConfig());
             }
-            if(config.getVPathFromConfig() == null){
-                V_file_path.setText(FileHelper.classBasePath);
+            if(config.getRPathFromConfig() == null){
+                R_file_path.setText(FileHelper.classBasePath);
             }else{
-                V_file_path.setText(config.getVPathFromConfig());
+                R_file_path.setText(config.getRPathFromConfig());
             }
             if(config.getOPathFromConfig() == null){
                 O_file_path.setText(FileHelper.classBasePath);
@@ -105,16 +104,16 @@ public class LauncherController {
     @FXML
     private void chooseV() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setInitialDirectory(new File(V_file_path.getText()));
+        directoryChooser.setInitialDirectory(new File(R_file_path.getText()));
         File temp;
         try {
-            temp = directoryChooser.showDialog(V_file_choose.getScene().getWindow());
+            temp = directoryChooser.showDialog(R_file_choose.getScene().getWindow());
         }catch (IllegalArgumentException i){
             directoryChooser.setInitialDirectory(new File(FileHelper.classBasePath));
-            temp = directoryChooser.showDialog(V_file_choose.getScene().getWindow());
+            temp = directoryChooser.showDialog(R_file_choose.getScene().getWindow());
         }
         if(temp != null) {
-            V_file_path.setText(temp.getAbsolutePath());
+            R_file_path.setText(temp.getAbsolutePath());
         }
     }
 
@@ -140,7 +139,7 @@ public class LauncherController {
         try {
             config.setTPathToConfig(T_file_path.getText());
             config.setUPathToConfig(U_file_path.getText());
-            config.setVPathToConfig(V_file_path.getText());
+            config.setRPathToConfig(R_file_path.getText());
             config.setOPathToConfig(O_file_path.getText());
             config.store();
         }catch (IOException e){
@@ -151,7 +150,7 @@ public class LauncherController {
         PathOfDirectory[] pathInput = new PathOfDirectory[]{
                 new PathOfDirectory(FILE_TYPE.T, T_file_path.getText()),
                 new PathOfDirectory(FILE_TYPE.U, U_file_path.getText()),
-                new PathOfDirectory(FILE_TYPE.R, V_file_path.getText()),
+                new PathOfDirectory(FILE_TYPE.R, R_file_path.getText()),
                 new PathOfDirectory(FILE_TYPE.O, O_file_path.getText())
         };
         FileHelper.setInstance(pathInput);
@@ -159,12 +158,11 @@ public class LauncherController {
 
         final Stage stage = (Stage)T_file_path.getScene().getWindow();
         stage.close();
-        WebStage.showWebStage();
-        System.exit(0); //退出程序
     }
 
     @FXML
     private void exit() {
-        System.exit(0);
+        final Stage stage = (Stage)T_file_path.getScene().getWindow();
+        stage.close();
     }
 }
