@@ -14,7 +14,7 @@ let bindSetterWithFixed2 = function(obj,attr,domSelector,
 
 let bindNumberGetter = (obj,attr,domSelector)=>{
     Object.defineProperty(obj, attr, {
-        get: ()=>parseInt(document.querySelector(domSelector).value)
+        get: ()=>parseFloat(document.querySelector(domSelector).value)
     })
 }
 
@@ -22,17 +22,23 @@ bindGetter(params,'type',"input[name=type-selector]:checked")
 let taskId = 0
 mdui.$('#head-tab').on('change.mdui.tab',(event)=>{
     taskId = event._detail.index
-    if(taskId==0)
+    if(taskId===0)
     {
-        document.querySelector("#latLb-input").disabled=true
-        document.querySelector("#lonLb-input").disabled=true
-        document.querySelector("#height-selector").disabled=false
+        document.querySelector("#latLb-input").hidden=true
+        document.querySelector("#lonLb-input").hidden=true
+        document.querySelector("#height-selector").hidden=false
+        document.querySelector(".latLb-input-helper").hidden=true
+        document.querySelector(".lonLb-input-helper").hidden=true
+        document.querySelector(".height-selector-helper").hidden=false
     }
     else
     {
-        document.querySelector("#latLb-input").disabled=false
-        document.querySelector("#lonLb-input").disabled=false
-        document.querySelector("#height-selector").disabled=true
+        document.querySelector("#latLb-input").hidden=false
+        document.querySelector("#lonLb-input").hidden=false
+        document.querySelector("#height-selector").hidden=true
+        document.querySelector(".latLb-input-helper").hidden=false
+        document.querySelector(".lonLb-input-helper").hidden=false
+        document.querySelector(".height-selector-helper").hidden=true
     }
 
 })
