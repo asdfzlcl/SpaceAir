@@ -14,7 +14,7 @@ let bindSetterWithFixed2 = function(obj,attr,domSelector,
 
 let bindNumberGetter = (obj,attr,domSelector)=>{
     Object.defineProperty(obj, attr, {
-        get: ()=>parseInt(document.querySelector(domSelector).value)
+        get: ()=>parseFloat(document.querySelector(domSelector).value)
     })
 }
 
