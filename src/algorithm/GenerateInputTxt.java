@@ -26,12 +26,7 @@ public class GenerateInputTxt {
 
     public interface LgetLib extends Library {
 
-
-
-        //windows下测试用第二个语句，但是在windows下renameTo方法不成功，output.txt文件会生成在项目根目录下
         LgetLib INSTANCE = (LgetLib) Native.loadLibrary("./model.so",LgetLib.class);
-        //LgetLib INSTANCE = (LgetLib) Native.loadLibrary("model.dll",LgetLib.class);
-
         void model_();
     }
 
@@ -62,7 +57,6 @@ public class GenerateInputTxt {
             bw.write(String.valueOf(ap2)+' ');
             bw.write(String.valueOf(ap3)+'\n');
             bw.close();
-            fw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -121,10 +115,6 @@ public class GenerateInputTxt {
         double ap1=10;
         double ap2=0;
         double ap3=0;
-        File file =new File("input.txt");
-        if(file.exists()){
-            file.delete();
-        }
         GenerateInputTxt.GenerateInputData(year,doy,uth,height_start,height_end,ratio,lat,lon,f107p,f107a,apd,ap1,ap2,ap3);
     }
 
