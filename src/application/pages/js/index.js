@@ -136,7 +136,11 @@ function fileChangeHandler(filename) {
         params.time = limit_file[0].substr(0, 4) + "年" + limit_file[0].substr(4, 2) + "月" + limit_file[0].substr(6, 2) + "日" + limit_file[0].substr(8, 2) + ":00"
     fetchHeights()
     document.querySelector("#latLb-input").value=Math.min(parseFloat(limit_file[1]), parseFloat(limit_file[2])).toFixed(1)
+    document.querySelector("#latLb-input").min=Math.min(parseFloat(limit_file[1]), parseFloat(limit_file[2])).toFixed(1)
+    document.querySelector("#latLb-input").max=Math.max(parseFloat(limit_file[1]), parseFloat(limit_file[2])).toFixed(1)
     document.querySelector("#lonLb-input").value=Math.min(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1)
+    document.querySelector("#lonLb-input").min=Math.min(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1)
+    document.querySelector("#lonLb-input").max=Math.max(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1)
 }
 
 // 动态添加文件列表组件
