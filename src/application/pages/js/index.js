@@ -217,16 +217,19 @@ function drawHeatMap(rawData) {
                 type: 'shadow'
             },
         tooltip: {
-
+            formatter:function (p) {
+                return p.data[2].toString();
+            }
         }, xAxis: {
             type: 'category', data: yData, name: '经度 (°E)'
         }, yAxis: {
             type: 'category', data: xData, name: '纬度 (°N)'
         }, visualMap: {
-            min: min, max: max, calculable: true, realtime: false, inRange: {
+            min: min, max: max, range: [min, max],calculable: true, realtime: false, inRange: {
                 color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
-            }
-        }, series: [{
+            },
+        },
+        series: [{
             name: dataName,
             type: 'heatmap',
             data: data,

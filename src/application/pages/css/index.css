@@ -60,6 +60,7 @@
 }
 ul#file-list{
     min-width: 14vw;
+    max-height: 60vh;
     overflow: scroll;
 }
 #fab-animation-show{
@@ -70,4 +71,8 @@ ul#file-list{
     display: flex;
     align-items: center;
     justify-content: space-around;
+}
+
+#setting{
+    margin-bottom: 3vh;
 }

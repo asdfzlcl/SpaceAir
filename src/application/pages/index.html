@@ -15,7 +15,6 @@
 
 <div class="body-panel">
     <div class="filelist-panel">
-        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="setting" onclick="changePath()">路径更改</button>
         <h2>
             参数选择区
         </h2>
@@ -35,13 +34,16 @@
         </button></div>
         <ul class="mdui-list" id="file-list">
         </ul>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="setting" onclick="changePath()">路径更改</button>
     </div>
-    <div class="param-panel">
-        <div class="param-item">
-        </div>
-        <div>日期:<br> <span id="show-time"></span><br>
+    <div class="filelist-panel">
+        <h2>
+            文件信息
+        </h2>
+        <div>日期:<br> <span id="show-time"></span><br><br>
             当前文件:<br> <span id="show-filename"></span><br>
         </div>
+        <br><br>
         <div class="param-item xymid">
                 <select class="mdui-select" id="height-selector">
                 </select>
