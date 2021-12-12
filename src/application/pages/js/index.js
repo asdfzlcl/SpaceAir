@@ -31,7 +31,6 @@ async function getData() {
 
 function checkParam() {
     //alert(limit.latLb)
-    //alert(limit.latUb)
     return  params.lonLb >= limit.lonLb && params.lonLb  <= limit.lonUb && params.latLb >= limit.latLb && params.latLb  <= limit.latUb
 }
 
@@ -127,7 +126,7 @@ function fileChangeHandler(filename) {
     limit.latUb = Math.max(parseFloat(limit_file[1]), parseFloat(limit_file[2])).toFixed(1)
     limit.lonLb = Math.min(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1)
     limit.lonUb = Math.max(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1)
-    //alert(limit.lonLb)
+
     if (limit_file[0].length === 4)
         params.time = limit_file[0].substr(0, 2) + "月" + limit_file[0].substr(2, 2) + "日"
     else if (limit_file[0].length === 6)
@@ -227,7 +226,7 @@ function drawHeatMap(rawData) {
         }, visualMap: {
             min: min, max: max, range: [min, max],calculable: true, realtime: false, inRange: {
                 color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
-            },
+            },precision:2
         },
         series: [{
             name: dataName,
@@ -243,7 +242,7 @@ function drawHeatMap(rawData) {
         }]
     };
     let chartDom = echarts.init(document.querySelector("#chart"));
-    chartDom.setOption({})
+    chartDom.clear()
     chartDom.setOption(option)
 }
 
@@ -295,8 +294,8 @@ function drawContourMapData(rawData) {
         }, yAxis: {
             type: 'category', axisLine: {onZero: false}, name: '高度 (km)', boundaryGap: false, data: ydata
         }, visualMap: {
-            min: min, max: max, range: [min, max], calculable: true, realtime: true, inRange: {
-                color: ['#313695', '#4575b4', '#74add1',]
+            min: min, max: max,dimension :0, range: [min, max], calculable: true, realtime: true, inRange: {
+                color: ['#313695', '#4575b4', '#74add1']
             }
         }, series: [{
             name: 'Altitude (km) vs. Value ()',
@@ -311,7 +310,7 @@ function drawContourMapData(rawData) {
         }]
     };
     let chartDom = echarts.init(document.querySelector("#chart"));
-    chartDom.setOption({})
+    chartDom.clear()
     chartDom.setOption(option)
 }
 
