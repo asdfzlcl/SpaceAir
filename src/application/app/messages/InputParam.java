@@ -12,13 +12,13 @@ public class InputParam {
     //高度
     private final int height;
     //经度下限
-    private final int latLb;
+    private final double latLb;
     //经度上限
-    private final int latUb;
+    private final double latUb;
     //纬度下限
-    private final int lonLb;
+    private final double lonLb;
     //纬度上限
-    private final int lonUb;
+    private final double lonUb;
     //文件名
     private final String filename;
 
@@ -27,10 +27,10 @@ public class InputParam {
         task = (int)jsObject.getProperty("task").getNumberValue();
         type = jsObject.getProperty("type").getStringValue();
         height = (int) jsObject.getProperty("height").getNumberValue();
-        latLb = (int) jsObject.getProperty("latLb").getNumberValue();
-        latUb = (int) jsObject.getProperty("latUb").getNumberValue();
-        lonLb = (int) jsObject.getProperty("lonLb").getNumberValue();
-        lonUb = (int) jsObject.getProperty("lonUb").getNumberValue();
+        latLb = (double) jsObject.getProperty("latLb").getNumberValue();
+        latUb = (double) jsObject.getProperty("latUb").getNumberValue();
+        lonLb = (double) jsObject.getProperty("lonLb").getNumberValue();
+        lonUb = (double) jsObject.getProperty("lonUb").getNumberValue();
         filename= jsObject.getProperty("filename").getStringValue();
     }
 
@@ -69,19 +69,19 @@ public class InputParam {
         return height;
     }
 
-    public int getLatLb() {
+    public double getLatLb() {
         return latLb;
     }
 
-    public int getLatUb() {
+    public double getLatUb() {
         return latUb;
     }
 
-    public int getLonLb() {
+    public double getLonLb() {
         return lonLb;
     }
 
-    public int getLonUb() {
+    public double getLonUb() {
         return lonUb;
     }
 
