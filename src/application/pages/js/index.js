@@ -295,7 +295,7 @@ function drawContourMapData(rawData) {
         }, yAxis: {
             type: 'category', axisLine: {onZero: false}, name: '高度 (km)', boundaryGap: false, data: ydata
         }, visualMap: {
-            min: min, max: max, calculable: true, realtime: true, inRange: {
+            min: min, max: max, range: [min, max], calculable: true, realtime: true, inRange: {
                 color: ['#313695', '#4575b4', '#74add1',]
             }
         }, series: [{
