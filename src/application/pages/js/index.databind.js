@@ -66,26 +66,26 @@ Object.defineProperty(limit, 'latLb', {
         for (let d of document.querySelectorAll(".limit-latLb"))
             d.innerHTML = newVal.toString()
     },
-    get: () => parseInt(document.querySelectorAll(".limit-latLb")[0].innerHTML)
+    get: () => parseFloat(document.querySelectorAll(".limit-latLb")[0].innerHTML)
 })
 Object.defineProperty(limit, 'lonLb', {
     set: (newVal) => {
         for (let d of document.querySelectorAll(".limit-lonLb"))
             d.innerHTML = newVal.toString()
     },
-    get: () => parseInt(document.querySelectorAll(".limit-lonLb")[0].innerHTML)
+    get: () => parseFloat(document.querySelectorAll(".limit-lonLb")[0].innerHTML)
 })
 Object.defineProperty(limit, 'latUb', {
     set: (newVal) => {
         for (let d of document.querySelectorAll(".limit-latUb"))
             d.innerHTML = newVal.toString()
     },
-    get: () => parseInt(document.querySelectorAll(".limit-latUb")[0].innerHTML)
+    get: () => parseFloat(document.querySelectorAll(".limit-latUb")[0].innerHTML)
 })
 Object.defineProperty(limit, 'lonUb', {
     set: (newVal) => {
         for (let d of document.querySelectorAll(".limit-lonUb"))
             d.innerHTML = newVal.toString()
     },
-    get: () => parseInt(document.querySelectorAll(".limit-lonUb")[0].innerHTML)
+    get: () => parseFloat(document.querySelectorAll(".limit-lonUb")[0].innerHTML)
 })
