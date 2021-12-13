@@ -27,7 +27,12 @@
     <HBox styleClass="fileBox">
         <Label>大气密度(R)数据文件夹路径:</Label>
         <TextField fx:id="R_file_path" editable="false"/>
-        <Button fx:id="R_file_choose" text="浏览" onAction="#chooseV"/>
+        <Button fx:id="R_file_choose" text="浏览" onAction="#chooseR"/>
+    </HBox>
+    <HBox styleClass="fileBox">
+        <Label>北风风速(V)数据文件夹路径</Label>
+        <TextField fx:id="V_file_path" editable="false"/>
+        <Button fx:id="V_file_choose" text="浏览" onAction="#chooseV"/>
     </HBox>
     <HBox styleClass="fileBox">
         <Label>垂直风速(O)数据文件夹路径:</Label>

@@ -44,6 +44,9 @@ public class ConfigFileHelper {
     public String getRPathFromConfig(){
         return properties.getProperty("R_file_path");
     }
+    public String getVPathFromConfig(){
+        return properties.getProperty("V_file_path");
+    }
     public void setTPathToConfig(String path){
         properties.setProperty("T_file_path", path);
     }
@@ -55,6 +58,9 @@ public class ConfigFileHelper {
     }
     public void setOPathToConfig(String path){
         properties.setProperty("O_file_path", path);
+    }
+    public void setVPathToConfig(String path){
+        properties.setProperty("V_file_path", path);
     }
     public void store() throws IOException {
         OutputStream outputStream = new FileOutputStream(new File(FileHelper.configFilePath));

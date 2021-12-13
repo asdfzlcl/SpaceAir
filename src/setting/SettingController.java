@@ -1,5 +1,6 @@
 package setting;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -17,6 +18,8 @@ import java.io.IOException;
  * */
 public class SettingController {
 
+    public TextField V_file_path;
+    public Button V_file_choose;
     private ConfigFileHelper config;
 
     @FXML
@@ -63,6 +66,11 @@ public class SettingController {
             }else{
                 O_file_path.setText(config.getOPathFromConfig());
             }
+            if(config.getVPathFromConfig() == null){
+                V_file_path.setText(FileHelper.classBasePath);
+            }else{
+                V_file_path.setText(config.getVPathFromConfig());
+            }
 
         }catch (IOException e){
             e.printStackTrace(); //
@@ -102,7 +110,7 @@ public class SettingController {
     }
 
     @FXML
-    private void chooseV() {
+    private void chooseR() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(new File(R_file_path.getText()));
         File temp;
@@ -141,6 +149,7 @@ public class SettingController {
             config.setUPathToConfig(U_file_path.getText());
             config.setRPathToConfig(R_file_path.getText());
             config.setOPathToConfig(O_file_path.getText());
+            config.setVPathToConfig(V_file_path.getText());
             config.store();
         }catch (IOException e){
             e.printStackTrace(); //
@@ -151,7 +160,8 @@ public class SettingController {
                 new PathOfDirectory(FILE_TYPE.T, T_file_path.getText()),
                 new PathOfDirectory(FILE_TYPE.U, U_file_path.getText()),
                 new PathOfDirectory(FILE_TYPE.R, R_file_path.getText()),
-                new PathOfDirectory(FILE_TYPE.O, O_file_path.getText())
+                new PathOfDirectory(FILE_TYPE.O, O_file_path.getText()),
+                new PathOfDirectory(FILE_TYPE.V, V_file_path.getText())
         };
         FileHelper.setInstance(pathInput);
         try {
@@ -166,8 +176,26 @@ public class SettingController {
     }
 
     @FXML
+    private void chooseV() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setInitialDirectory(new File(V_file_choose.getText()));
+        File temp;
+        try {
+            temp = directoryChooser.showDialog(V_file_choose.getScene().getWindow());
+        }catch (IllegalArgumentException i){
+            directoryChooser.setInitialDirectory(new File(FileHelper.classBasePath));
+            temp = directoryChooser.showDialog(V_file_choose.getScene().getWindow());
+        }
+        if(temp != null) {
+            V_file_path.setText(temp.getAbsolutePath());
+        }
+    }
+
+    @FXML
     private void exit() {
         final Stage stage = (Stage)T_file_path.getScene().getWindow();
         stage.close();
     }
+
+
 }
