@@ -147,6 +147,6 @@ public class FuncInjectorImpl implements FuncInjector {
 
     @Override
     public Object GetFileInfo() {
-        return Arrays.asList("U","R","T","O");
+        return Arrays.asList("U","R","T","O","V");
     }
 }

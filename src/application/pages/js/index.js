@@ -272,7 +272,7 @@ function drawContourMapData(rawData) {
     statics.sdev = Math.sqrt(sum_sdev / count)
 
     let dataName='温度(K)'
-    if(params.type=="U"||params.type=="O")
+    if(params.type=="U"||params.type=="O"||params.type=="V")
         dataName='速度(m/s)'
     if(params.type=="R")
         dataName='密度(kg/m³)'
