@@ -160,6 +160,9 @@ public class FuncInjectorImpl implements FuncInjector {
 
     @Override
     public Object GetFileInfo() {
-        return Arrays.asList("U","R","T","O","V");
+        return Arrays.asList("T","U","R","O","V");
+    }
+    public Object GetFileInformation() {
+        return Arrays.asList("大气温度(T)","纬向风速(U)","大气密度(R)","垂直风速(O)","北向风速(V)");
     }
 }

@@ -62,26 +62,35 @@ document.querySelector("#submit-param").onclick = () => {
 }
 
 // 通过value动态生成类型选择组件
-function getTypeSelHtml(value, isChecked) {
+function getTypeSelHtml(value, value_info,isChecked) {
     return `<label class="mdui-radio">
             <input type="radio" name="type-selector" value="${value}" onclick="fetchFileList()"
             ${isChecked ? "checked" : ""} />
             <i class="mdui-radio-icon"></i>
-            ${value}
+            ${value_info}
             </label>`
 }
 
 // 动态添加type组件
 function fetchTypes() {
     let types = funcInjector.GetFileInfo()
+    let info=funcInjector.GetFileInformation()
     types = types
         .toString()
         .slice(1, types.toString().length - 1)
         .replace(/\s+/g, '')
         .split(',')
+    info = info
+        .toString()
+        .slice(1, info.toString().length - 1)
+        .replace(/\s+/g, '')
+        .split(',')
     let html = ""
-    html = html + getTypeSelHtml(types[0], true)
-    for (let i = 1; i < types.length; i++) html = html + getTypeSelHtml(types[i], false)
+    html = html + getTypeSelHtml(types[0],info[0], true)+'&#12288'
+    for (let i = 1; i < types.length; i++) {
+        html = html + getTypeSelHtml(types[i], info[i],false)+'&#12288'
+
+    }
     mdui.$("#type-selector").append(html)
     mdui.$("#type-selector").mutation()
 }

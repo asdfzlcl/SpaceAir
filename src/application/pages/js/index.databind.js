@@ -24,20 +24,24 @@ mdui.$('#head-tab').on('change.mdui.tab',(event)=>{
     taskId = event._detail.index
     if(taskId===0)
     {
-        document.querySelector("#latLb-input").hidden=true
-        document.querySelector("#lonLb-input").hidden=true
+        document.querySelector("#latLb-input").placeholder="纬度下限"
+        document.querySelector("#lonLb-input").placeholder="经度下限"
+        document.querySelector("#latUb-input").hidden=false
+        document.querySelector("#lonUb-input").hidden=false
         document.querySelector("#height-selector").hidden=false
-        document.querySelector(".latLb-input-helper").hidden=true
-        document.querySelector(".lonLb-input-helper").hidden=true
+        document.querySelector(".latLb-input-helper1").hidden=false
+        document.querySelector(".lonLb-input-helper1").hidden=false
         document.querySelector(".height-selector-helper").hidden=false
     }
     else
     {
-        document.querySelector("#latLb-input").hidden=false
-        document.querySelector("#lonLb-input").hidden=false
+        document.querySelector("#latLb-input").placeholder="纬度"
+        document.querySelector("#lonLb-input").placeholder="经度"
+        document.querySelector("#latUb-input").hidden=true
+        document.querySelector("#lonUb-input").hidden=true
         document.querySelector("#height-selector").hidden=true
-        document.querySelector(".latLb-input-helper").hidden=false
-        document.querySelector(".lonLb-input-helper").hidden=false
+        document.querySelector(".latLb-input-helper1").hidden=true
+        document.querySelector(".lonLb-input-helper1").hidden=true
         document.querySelector(".height-selector-helper").hidden=true
     }
 
@@ -49,6 +53,8 @@ bindGetter(params,'task','',()=>{
 bindNumberGetter(params,'height',"#height-selector")
 bindNumberGetter(params,'latLb',"#latLb-input")
 bindNumberGetter(params,'lonLb',"#lonLb-input")
+bindNumberGetter(params,'latUb',"#latUb-input")
+bindNumberGetter(params,'lonUb',"#lonUb-input")
 
 bindSetterWithFixed2(statics,'max','#data-max')
 bindSetterWithFixed2(statics,'min','#data-min')
