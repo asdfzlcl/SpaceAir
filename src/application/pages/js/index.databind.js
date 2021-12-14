@@ -32,6 +32,10 @@ mdui.$('#head-tab').on('change.mdui.tab',(event)=>{
         document.querySelector(".latLb-input-helper1").hidden=false
         document.querySelector(".lonLb-input-helper1").hidden=false
         document.querySelector(".height-selector-helper").hidden=false
+        document.querySelector("#lonLb-input").value=limit.lonLb
+        document.querySelector("#latLb-input").value=limit.latLb
+        document.querySelector("#lonUb-input").value=limit.lonUb
+        document.querySelector("#latUb-input").value=limit.latUb
     }
     else
     {
@@ -43,6 +47,10 @@ mdui.$('#head-tab').on('change.mdui.tab',(event)=>{
         document.querySelector(".latLb-input-helper1").hidden=true
         document.querySelector(".lonLb-input-helper1").hidden=true
         document.querySelector(".height-selector-helper").hidden=true
+        document.querySelector("#lonLb-input").value=limit.lonLb
+        document.querySelector("#latLb-input").value=limit.latLb
+        document.querySelector("#lonUb-input").value=limit.lonUb
+        document.querySelector("#latUb-input").value=limit.latUb
     }
 
 })

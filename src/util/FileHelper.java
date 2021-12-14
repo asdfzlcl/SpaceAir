@@ -204,7 +204,7 @@ public class FileHelper {
         boolean first = true;
         for(double d:tempLatList){
             if(d>lat_sml && d<=lat_big){
-                latOrigin = first ? tempLatList.indexOf(d) : latOrigin;
+                latOrigin = first ? tempLatList.indexOf(d) + latOrigin : latOrigin;
                 latSize++;
                 first = false;
             }
@@ -212,7 +212,7 @@ public class FileHelper {
         first = true;
         for(double d:tempLonList){
             if(d>lon_sml && d<=lon_big){
-                lonOrigin = first ? tempLonList.indexOf(d) : lonOrigin;
+                lonOrigin = first ? tempLonList.indexOf(d) + lonOrigin : lonOrigin;
                 lonSize++;
                 first = false;
             }

@@ -101,18 +101,18 @@ function getHeightSelHtml(value, number) {
 
 function fetchHeights() {
     document.querySelector("#height-selector").innerHTML = ''
-    let types = funcInjector.GetFileHeight()
-    types = types
-        .toString()
-        .slice(1, types.toString().length - 1)
-        .replace(/\s+/g, '')
-        .split(',')
+    // let types = funcInjector.GetFileHeight()
+    // types = types
+    //     .toString()
+    //     .slice(1, types.toString().length - 1)
+    //     .replace(/\s+/g, '')
+    //     .split(',')
     let html = ""
     //html = html + getHeightSelHtml(types[0], 0)
-    for (let i = 0; i < types.length; i++) html = html + getHeightSelHtml((types[i]/1000).toFixed(3), i)
+    for (let i = 1; i < 81; i++) html = html + getHeightSelHtml(i, i)
     mdui.$("#height-selector").append(html)
     mdui.$("#height-selector").mutation()
-    document.querySelector("#height-selector").value = types.length-1;
+    document.querySelector("#height-selector").value = 1;
 }
 
 
@@ -143,12 +143,16 @@ function fileChangeHandler(filename) {
     else
         params.time = limit_file[0].substr(0, 4) + "年" + limit_file[0].substr(4, 2) + "月" + limit_file[0].substr(6, 2) + "日" + limit_file[0].substr(8, 2) + ":00"
     fetchHeights()
+    //alert(Math.min(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1))
     document.querySelector("#latLb-input").value=Math.min(parseFloat(limit_file[1]), parseFloat(limit_file[2])).toFixed(1)
     document.querySelector("#latLb-input").min=Math.min(parseFloat(limit_file[1]), parseFloat(limit_file[2])).toFixed(1)
     document.querySelector("#latLb-input").max=Math.max(parseFloat(limit_file[1]), parseFloat(limit_file[2])).toFixed(1)
     document.querySelector("#lonLb-input").value=Math.min(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1)
     document.querySelector("#lonLb-input").min=Math.min(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1)
     document.querySelector("#lonLb-input").max=Math.max(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1)
+    //alert(Math.min(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1))
+    document.querySelector("#latUb-input").value=Math.max(parseFloat(limit_file[1]), parseFloat(limit_file[2])).toFixed(1)
+    document.querySelector("#lonUb-input").value=Math.max(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1)
 }
 
 // 动态添加文件列表组件
@@ -179,7 +183,7 @@ function drawHeatMap(rawData) {
     let count = 0
     //采样（为了保证速度）
     for (let x = 0; x  < rawData.length; x ++ ) {
-        xData.push(lat[x].toFixed(1));
+        xData.push((params.latLb+x*(params.latUb-params.latLb)/(rawData.length-1)).toFixed(1));
         for (let y = 0; y  < rawData[0].length; y ++ ) {
             max = Math.max(rawData[x][y], max)
             min = Math.min(rawData[x][y], min)
@@ -205,7 +209,7 @@ function drawHeatMap(rawData) {
     if(params.type=="R")
         dataName='密度(kg/m³)'
 
-    for (let y = 0; y < rawData[0].length;  y++ ) yData.push(lon[y].toFixed(1));
+    for (let y = 0; y < rawData[0].length;  y++ ) yData.push((params.lonLb+y*(params.lonUb-params.lonLb)/(rawData[0].length-1)).toFixed(1));
     let option = {
         toolbox: {
             show: true,
@@ -256,7 +260,7 @@ function drawHeatMap(rawData) {
 }
 
 function drawContourMapData(rawData) {
-    let height=JSON.parse(funcInjector.GetFileHeight())
+    let height=JSON.parse(funcInjector.GetFileHeight(params))
     let data = []
     let ydata = []
     let min = rawData[0]

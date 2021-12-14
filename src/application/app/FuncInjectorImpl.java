@@ -29,7 +29,7 @@ public class FuncInjectorImpl implements FuncInjector {
         List<List<Float>> data = new ArrayList<>(200);
         NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), "");
         try {
-            data = FileHelper.getInstance().getDataSetVarLevel(file, 1);
+            data = FileHelper.getInstance().getDataSetVarLevel(file, inputParam.getHeight(), inputParam.getLatLb(), inputParam.getLatUb(),inputParam.getLonLb(),inputParam.getLonUb());
         } catch (IOException | InvalidRangeException e) {
             e.printStackTrace();
             DialogHelper.popErrorDialog("当前文件已不存在！\n请重启软件刷新文件目录重新尝试。");
@@ -143,9 +143,12 @@ public class FuncInjectorImpl implements FuncInjector {
     }
 
 
-    public String GetFileHeight()
-    {
-        return heights.toString();
+    public String GetFileHeight(JSObject params){
+        InputParam inputParam = new InputParam(params);
+        System.out.println(inputParam);
+        List<String> data = new ArrayList<>();
+        NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), "");
+        return FileHelper.getInstance().getHeightList(file).toString();
     }
 
     public String GetFileLat()
