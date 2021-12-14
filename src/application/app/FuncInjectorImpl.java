@@ -83,6 +83,7 @@ public class FuncInjectorImpl implements FuncInjector {
         try {
             nowDictionary = FileHelper.getInstance().getAllFileOfDirectory(inputParam.getFileType());
         } catch (IOException e) {
+            e.printStackTrace();
             DialogHelper.popErrorDialog("当前目录格式有误或目录为空！\n请检查路径设置！");
         }
         List<String> filedictionary=new ArrayList<>();

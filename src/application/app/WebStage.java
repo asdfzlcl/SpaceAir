@@ -115,7 +115,8 @@ public class WebStage extends Application {
                 new PathOfDirectory(FILE_TYPE.T, ConfigFileHelper.getInstance().getTPathFromConfig()),
                 new PathOfDirectory(FILE_TYPE.U, ConfigFileHelper.getInstance().getUPathFromConfig()),
                 new PathOfDirectory(FILE_TYPE.R, ConfigFileHelper.getInstance().getRPathFromConfig()),
-                new PathOfDirectory(FILE_TYPE.O, ConfigFileHelper.getInstance().getOPathFromConfig())
+                new PathOfDirectory(FILE_TYPE.O, ConfigFileHelper.getInstance().getOPathFromConfig()),
+                new PathOfDirectory(FILE_TYPE.V, ConfigFileHelper.getInstance().getVPathFromConfig())
         };
         FileHelper.setInstance(pathInput);
         try {
