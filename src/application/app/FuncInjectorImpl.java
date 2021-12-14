@@ -29,8 +29,9 @@ public class FuncInjectorImpl implements FuncInjector {
         List<List<Float>> data = new ArrayList<>(200);
         NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), "");
         try {
-            data = FileHelper.getInstance().getDataSetVarLevel(file, inputParam.getHeight());
+            data = FileHelper.getInstance().getDataSetVarLevel(file, 1);
         } catch (IOException | InvalidRangeException e) {
+            e.printStackTrace();
             DialogHelper.popErrorDialog("当前文件已不存在！\n请重启软件刷新文件目录重新尝试。");
         }
         // end test
@@ -48,6 +49,7 @@ public class FuncInjectorImpl implements FuncInjector {
             data = FileHelper.getInstance().getDataSetVarCoordinate(file, inputParam.getLatLb(),inputParam.getLonLb());
         } catch (IOException | InvalidRangeException e) {
             DialogHelper.popErrorDialog("当前文件已不存在！\n请重启软件刷新文件目录重新尝试。");
+            e.printStackTrace();
         }
         return data.toString();
     }
@@ -70,15 +72,13 @@ public class FuncInjectorImpl implements FuncInjector {
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
 
-        int status = 0;
         try {
-            status = FileHelper.getInstance().checkStatus();
+            FileHelper.getInstance().checkStatus();
         } catch (Exception e) {
+            e.printStackTrace();
             DialogHelper.popErrorDialog("大气温度(T)目录与大气密度(R)目录格式错误或目录下必须有对应文件！\n请更改设置路径后重新尝试。");
         }
-        if(status == -1){
-            DialogHelper.popErrorDialog("大气温度(T)目录与大气密度(R)目录格式错误或目录下必须有对应文件！\n请更改设置路径后重新尝试。");
-        }
+
 
         try {
             nowDictionary = FileHelper.getInstance().getAllFileOfDirectory(inputParam.getFileType());
@@ -111,9 +111,21 @@ public class FuncInjectorImpl implements FuncInjector {
         System.out.println(inputParam);
         List<String> data = new ArrayList<>();
 
-        Latitudes=FileHelper.getInstance().getLatitude();
-        Longitudes=FileHelper.getInstance().getLongitude();
-        heights =FileHelper.getInstance().getHighList();
+        NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), "");
+        try {
+            Latitudes=FileHelper.getInstance().getLatitude(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Longitudes=FileHelper.getInstance().getLongitude(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        heights = new ArrayList<>();
+        for(int i = 0;i<80;i++){
+            heights.add((double) i + 1);
+        }
 
         for(NetCDFFile f: nowDictionary){
             if(f.getFileName().equals(inputParam.getFilename())){

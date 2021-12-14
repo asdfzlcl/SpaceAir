@@ -110,21 +110,11 @@ public class WebStage extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         initWebStage();
-
-        PathOfDirectory[] pathInput = new PathOfDirectory[]{
-                new PathOfDirectory(FILE_TYPE.T, ConfigFileHelper.getInstance().getTPathFromConfig()),
-                new PathOfDirectory(FILE_TYPE.U, ConfigFileHelper.getInstance().getUPathFromConfig()),
-                new PathOfDirectory(FILE_TYPE.R, ConfigFileHelper.getInstance().getRPathFromConfig()),
-                new PathOfDirectory(FILE_TYPE.O, ConfigFileHelper.getInstance().getOPathFromConfig()),
-                new PathOfDirectory(FILE_TYPE.V, ConfigFileHelper.getInstance().getVPathFromConfig())
-        };
-        FileHelper.setInstance(pathInput);
-        try {
-            FileHelper.getInstance().checkStatus();
-        }catch (Exception e){
-            DialogHelper.popErrorDialog("路径配置错误，程序无法正常运行!\n请修改配置文件或进入程序后手动修改路径!");
-            webStage.show();
+        String[] paths = new String[FILE_TYPE.count];
+        for(int i = 0;i<FILE_TYPE.count;i++){
+            paths[i] = ConfigFileHelper.getInstance().getPathFromConfig(FILE_TYPE.sequence[i]);
         }
+        FileHelper.setInstance(paths);
         webStage.show();
     }
 

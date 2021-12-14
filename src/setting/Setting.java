@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import util.DialogHelper;
+import util.PathHelper;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -31,10 +33,10 @@ public class Setting extends Application {
         Parent root = fxmlLoader.load();
 
         primaryStage.setTitle("标准大气软件路径设置");
-        Scene scene = new Scene(root, 900, 270);
+        Scene scene = new Scene(root, 900, 320);
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image("file:" +
-                System.getProperty("user.dir") + File.separator + "logo.png"));
+                PathHelper.classBasePath + File.separator + "logo.png"));
 
         SettingController controller = fxmlLoader.getController();
         controller.init();

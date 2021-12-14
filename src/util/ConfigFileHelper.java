@@ -21,7 +21,7 @@ public class ConfigFileHelper {
     }
 
     public ConfigFileHelper() throws IOException {
-        File configFile = new File(FileHelper.configFilePath);
+        File configFile = new File(PathHelper.configFilePath);
         properties = new Properties();
         if(!configFile.exists()){
             configFile.createNewFile();
@@ -32,38 +32,17 @@ public class ConfigFileHelper {
         System.out.println(properties);
     }
 
-    public String getTPathFromConfig(){
-        return properties.getProperty("T_file_path");
+    public String getPathFromConfig(FILE_TYPE type){
+        return properties.getProperty(type + "_file_path");
     }
-    public String getUPathFromConfig(){
-        return properties.getProperty("U_file_path");
+
+    public void setPathToConfig(String path, FILE_TYPE type){
+        properties.setProperty(type + "_file_path", path);
     }
-    public String getOPathFromConfig(){
-        return properties.getProperty("O_file_path");
-    }
-    public String getRPathFromConfig(){
-        return properties.getProperty("R_file_path");
-    }
-    public String getVPathFromConfig(){
-        return properties.getProperty("V_file_path");
-    }
-    public void setTPathToConfig(String path){
-        properties.setProperty("T_file_path", path);
-    }
-    public void setUPathToConfig(String path){
-        properties.setProperty("U_file_path", path);
-    }
-    public void setRPathToConfig(String path){
-        properties.setProperty("R_file_path", path);
-    }
-    public void setOPathToConfig(String path){
-        properties.setProperty("O_file_path", path);
-    }
-    public void setVPathToConfig(String path){
-        properties.setProperty("V_file_path", path);
-    }
+
+
     public void store() throws IOException {
-        OutputStream outputStream = new FileOutputStream(new File(FileHelper.configFilePath));
+        OutputStream outputStream = new FileOutputStream(new File(PathHelper.configFilePath));
         properties.store(outputStream, null);
         outputStream.close();
     }

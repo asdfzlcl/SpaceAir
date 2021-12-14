@@ -9,6 +9,7 @@ import java.io.IOException;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import util.FileHelper;
+import util.PathHelper;
 
 
 /**
@@ -21,7 +22,7 @@ public class GenerateInputTxt {
 
 
     //输出output.txt文件夹
-    public static String outputDicPath=FileHelper.outputDicPath;
+    public static String outputDicPath= PathHelper.outputDicPath;
 
 
     public interface LgetLib extends Library {

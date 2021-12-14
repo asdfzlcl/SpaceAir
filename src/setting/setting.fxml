@@ -14,33 +14,11 @@
     <HBox id="titleBox">
         <Label>启动参数设定</Label>
     </HBox>
-    <HBox styleClass="fileBox">
-        <Label>大气温度(T)数据文件夹路径:</Label>
-        <TextField fx:id="T_file_path" editable="false"/>
-        <Button fx:id="T_file_choose" text="浏览" onAction="#chooseT"/>
-    </HBox>
-    <HBox styleClass="fileBox">
-        <Label>纬向风速(U)数据文件夹路径:</Label>
-        <TextField fx:id="U_file_path" editable="false"/>
-        <Button fx:id="U_file_choose" text="浏览" onAction="#chooseU"/>
-    </HBox>
-    <HBox styleClass="fileBox">
-        <Label>大气密度(R)数据文件夹路径:</Label>
-        <TextField fx:id="R_file_path" editable="false"/>
-        <Button fx:id="R_file_choose" text="浏览" onAction="#chooseR"/>
-    </HBox>
-    <HBox styleClass="fileBox">
-        <Label>北风风速(V)数据文件夹路径</Label>
-        <TextField fx:id="V_file_path" editable="false"/>
-        <Button fx:id="V_file_choose" text="浏览" onAction="#chooseV"/>
-    </HBox>
-    <HBox styleClass="fileBox">
-        <Label>垂直风速(O)数据文件夹路径:</Label>
-        <TextField fx:id="O_file_path" editable="false"/>
-        <Button fx:id="O_file_choose" text="浏览" onAction="#chooseO"/>
-    </HBox>
+    <VBox fx:id="chooserBox">
+
+    </VBox>
     <HBox styleClass="buttonBox">
-        <Button text="确定" fx:id="launchButton" onAction="#launch"/>
-        <Button text="关闭" fx:id="exitButton" onAction="#exit"/>
+        <Button text="确定" onAction="#launch"/>
+        <Button text="关闭" onAction="#exit"/>
     </HBox>
 </VBox>

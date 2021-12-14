@@ -13,39 +13,19 @@ import java.util.List;
  * @classname FilePathHelper
  * @author wxy
  * @description Singleton 单例类
- * @date 2021-12-5
+ * @date 2021-12-5 remake in 2021-12-14
  * */
 public class FileHelper {
-
-    //static final member (class const)
-    public static final String classBasePath = System.getProperty("user.dir"); //当前工作路径
-    public static final String outputDicPath = classBasePath + File.separator + "output"; //算法模块输出路径
-    public static final String configFileName = ".config"; //config文件名称
-    public static final String configFilePath = classBasePath + File.separator + configFileName; //config文件完整路径
-
-    public static final double latUpper = 53.5;  //（N）纬度上限
-    public static final double latLower = 4.0;  //（N）纬度下限
-    public static final double lonUpper = 135.0;  //（E）经度上限
-    public static final double lonLower = 73.5; //（E）经度下限
-
     //instance
     private static FileHelper instance; //唯一实例
 
+    //data parameter
+    private List<Double> originHeightList = new ArrayList<>();
+
     //init member
     public int status;
-    public List<String> dirPath = new ArrayList<>();  //路径信息
-    private List<Double> levelList = new ArrayList<>();  //层数数组
-    private List<Double> iLevelList = new ArrayList<>(); //i层数数组 仅大气密度文件拥有
-    private List<Float> atomTemperatureList = new ArrayList<>();
-    private List<Double> highList = new ArrayList<>();  //高度数组 由层数数组计算得到
-    private List<Double> longitude = new ArrayList<>();  //经度数组
-    private List<Double> latitude = new ArrayList<>();  //纬度数组
+    public List<NetCDFDirectory> netCDFDirectories = new ArrayList<>();
     private NetcdfFile currentNetcdfFile;  //当前正在读取的文件，对象会缓存文件信息
-
-    private int latStartIndex = 99999;
-    private int lonStartIndex = 99999;
-    private int latLength = 0;
-    private int lonLength = 0;
 
     /**
      * function: getInstance()
@@ -65,7 +45,7 @@ public class FileHelper {
      * init function: setInstance()
      * parameter: PathOfDirectory[] 存储各个文件类型的文件夹路径
      */
-    public static void setInstance(PathOfDirectory[] paths){
+    public static void setInstance(String[] paths){
         instance = new FileHelper(paths);
     }
 
@@ -73,80 +53,33 @@ public class FileHelper {
     /**
      * tool function: checkStatus
      * description: 自检路径与文件夹内容 读取所需信息 提前计算high
-     * return: status: -1?说明程序无法正常启动
      * */
-    public int checkStatus() throws Exception{
-        this.status = 0;
-        File currentDirectory = new File(dirPath.get(FILE_TYPE.T.index));
-        File[] TFiles = currentDirectory.listFiles();
-        currentDirectory = new File(dirPath.get(FILE_TYPE.R.index));
-        File[] RFiles = currentDirectory.listFiles();
-        if(TFiles == null || RFiles == null){
-            this.status = -1;
-        }else{
-            for(File t:TFiles){
-                if(t.isFile() && isNCFile(t.getName())){
-                    NetCDFFile tFile = new NetCDFFile(t.getName(), FILE_TYPE.T, "");
-                    try {
-                        levelList = getLevelFromFile(tFile);
-                        longitude = getLongitudeFromFile(tFile);
-                        latitude = getLatitudeFromFile(tFile);
-                        atomTemperatureList = getDataSetVarCoordinate(tFile, 0, 0);
-                        break;
-                    } catch (IOException | InvalidRangeException ignored) {
-                    }
-                }
-            }
-            for(File r:RFiles){
-                if(r.isFile() && isNCFile(r.getName())){
-                    NetCDFFile rFile = new NetCDFFile(r.getName(), FILE_TYPE.R, "");
-                    try {
-                        iLevelList = getILevelFromRFile(rFile);
-                        break;
-                    } catch (IOException ignored) {
-                    }
-                }
-            }
-            if(levelList == null || longitude == null || latitude == null
-                    || atomTemperatureList == null || iLevelList == null
-                    || levelList.size() == 0 || longitude.size() == 0
-                    || latitude.size() == 0 ||atomTemperatureList.size() == 0
-                    || iLevelList.size() == 0){
-                this.status = -1;
-            }else {
-                highList = Height.LevToHeight(levelList, iLevelList, atomTemperatureList);
-                int count = 0;
-                for(double d: latitude){
-                    if(d > latLower && d <= latUpper){
-                        count ++;
-                        latStartIndex = Math.min(latStartIndex, latitude.indexOf(d));
-                    }
-                }
-                latLength = count;
-                count = 0;
-                for(double d: longitude){
-                    if(d > lonLower && d <= lonUpper){
-                        count++;
-                        lonStartIndex = Math.min(lonStartIndex, longitude.indexOf(d));
-                    }
-                }
-                lonLength = count;
+    public void checkStatus() throws Exception{
+        boolean ifError = false;
+        for(NetCDFDirectory n: netCDFDirectories){
+            n.init();
+            if(n.getType() == FILE_TYPE.T || n.getType() == FILE_TYPE.R){
+                ifError = n.status == -1;
             }
         }
-        return status;
+        if(ifError){
+            throw new IOException();
+        }else {
+            Height.LevToHeight_70(getLevel(new NetCDFFile("", FILE_TYPE.T, "")),
+                    getLevel(new NetCDFFile("", FILE_TYPE.R, "")),
+                    getDataSetVarCoordinate(netCDFDirectories.get(FILE_TYPE.T.index).getDirectoryList().get(0),  40, 80));
+            Height.LevToHeight_other(getLevel(new NetCDFFile("", FILE_TYPE.O, "")));
+            Height.LevToHeight_other(getLevel(new NetCDFFile("", FILE_TYPE.V, "")));
+        }
     }
 
     /**
      * construction function: FilePathHelper()
      * parameter: PathOfDirectory[] 存储各个文件类型的文件夹路径
      */
-    private FileHelper(PathOfDirectory[] paths){
-        currentNetcdfFile = null; //init currentNetcdfFile
-        for(int i = 0;i<FILE_TYPE.count;i++){
-            dirPath.add(""); //init dirPath
-        }
-        for(PathOfDirectory p: paths){
-            dirPath.set(p.getType().index, p.getDirectoryPath());
+    private FileHelper(String[] paths){
+        for (int i = 0;i < FILE_TYPE.count;i ++){
+            netCDFDirectories.add(new NetCDFDirectory(FILE_TYPE.sequence[i], paths[i]));
         }
     }
 
@@ -157,7 +90,7 @@ public class FileHelper {
      * return: String对象 文件路径
      * */
     public String getFilePath(NetCDFFile file){
-        String returnPath = dirPath.get(file.getFileType().index);
+        String returnPath = netCDFDirectories.get(file.getFileType().index).getDirectoryPath();
         return returnPath + File.separator + file.getFileName();
     }
 
@@ -169,75 +102,67 @@ public class FileHelper {
      * throw: IOException 当文件路径无效或内容为空时
      * */
     public List<NetCDFFile> getAllFileOfDirectory(FILE_TYPE fileType) throws IOException {
-        String directoryPath = dirPath.get(fileType.index);
-        List<NetCDFFile> returnList = new ArrayList<>();
-        File currentDirectory = new File(directoryPath);
-        File[] currentFiles = currentDirectory.listFiles();
-        if(currentFiles == null){
+        if(netCDFDirectories.get(fileType.index).status == -1){
             throw new IOException();
         }
-        for(File file:currentFiles){
-            if(file.isFile()){
-                // 判断格式是否为nc
-                String lowNCFile = "nc";
-                String upperNCFile = "NC";
-                String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1,
-                        file.getName().length());
-                if(extension.equals(lowNCFile) | extension.equals(upperNCFile)){
-                    //抽取里面的数字（即时间信息）
-                    String timeNumberString = file.getName().replaceAll("[^0-9]", "");
-                    returnList.add(new NetCDFFile(file.getName(), fileType, timeNumberString));
-                }
-            }
-        }
-        return returnList;
+        return netCDFDirectories.get(fileType.index).getDirectoryList();
     }
 
 
     /**
      * function: getLevelFromFile
-     * parameter: 需要获得的文件类型的任意一个文件
+     * @param file 需要获得的文件类型的任意一个文件
      * return: List<Integer> 即层数数组
      * throws: IOException 当文件不存在或文件格式有误时
      * @warnning: levels是一个整型数组 且是升序的
      * */
-    public List<Double> getLevelFromFile(NetCDFFile file) throws IOException{
-        List<Double> levels = new ArrayList<>();
-        currentNetcdfFile = NetcdfFile.open(getFilePath(file));
-        Variable level = currentNetcdfFile.findVariable(file.getFileType().level);
-        if(level == null){
+    public List<Double> getLevel(NetCDFFile file) throws IOException{
+        if(netCDFDirectories.get(file.getFileType().index).status == -1){
             throw new IOException();
         }
-        String[] temp = level.read().toString().split("\\s+");
-        for(String i:temp){
-            double current = Double.parseDouble(i);
-
-            levels.add(Double.parseDouble(i));
-        }
-        return levels;
+        return netCDFDirectories.get(file.getFileType().index).getLevelList();
     }
 
 
     /**
      * function: getDataSetFromFile
-     * parameter:(default) NetCDFFile 与 level层数
+     * @param file 代表传入的文件信息
+     * @param high 传入的高度数值(1<high<80)
      * description: 输入对应层数与内容 返回默认中国范围内的所有经纬度对应数值
      * return: 二维List
      * throw: IOException, InvalidRangeException 均是读文件发生的错误
      * */
-    public List<List<Float>> getDataSetVarLevel(NetCDFFile file, int highIndex) throws IOException, InvalidRangeException {
+    public List<List<Float>> getDataSetVarLevel(NetCDFFile file, int high) throws IOException, InvalidRangeException {
+        if(high > 80 || high < 1){
+            throw new InvalidRangeException();
+        }
+        double height = high * 1000; // convert km to m
+        int[] scope = Height.Position((int)height, file.getFileType());
         List<List<Float>> dataSet = new ArrayList<>();
         currentNetcdfFile = NetcdfFile.open(getFilePath(file));
         Variable variable = currentNetcdfFile.findVariable(file.getFileType().attr);
         if(variable == null){
             throw new IOException();
         }
-        int[] origin = new int[]{highIndex, latStartIndex, lonStartIndex};;
-        int[] size = new int[]{1, latLength, lonLength};
-        Array data2D;
-        data2D = variable.read(origin, size).reduce(0);
+        int[] origin = new int[]{scope[0], netCDFDirectories.get(file.getFileType().index).getLatStartIndex(), netCDFDirectories.get(file.getFileType().index).getLonStartIndex()};;
+        int[] size = new int[]{1, netCDFDirectories.get(file.getFileType().index).getLatLength(), netCDFDirectories.get(file.getFileType().index).getLonLength()};
+        Array dataUpper;
+        dataUpper = variable.read(origin, size).reduce(0);
+        origin[0] = scope[1];
+        Array dataLower;
+        dataLower = variable.read(origin, size).reduce(0);
 
-        float[][] temp = (float[][]) data2D.copyToNDJavaArray();
+        List<Double> tempLevelList = netCDFDirectories.get(file.getFileType().index).getLevelList();
+
+        float[][] upper = (float[][]) dataUpper.copyToNDJavaArray();
+        float[][] lower = (float[][]) dataLower.copyToNDJavaArray();
+        float[][] temp = new float[upper.length][upper[0].length];
+        for(int i = 0;i<temp.length;i++){
+            for(int j = 0;j<temp[0].length;j++){
+                double de_x = tempLevelList.get(scope[0]) - tempLevelList.get(scope[1]);
+                temp[i][j] = (float) (lower[i][j] + (upper[i][j] - lower[i][j])/de_x * (0.5*de_x));
+            }
+        }
         for(float[] list :temp){
             List<Float> inner = new ArrayList<>();
             for(float i :list){
@@ -248,47 +173,54 @@ public class FileHelper {
         return dataSet;
     }
 
-    public List<List<Float>> getDataSetVarLevel(NetCDFFile file, int highIndex, double lat_sml, double lat_big,
-                                                double lon_sml, double lon_big) throws IOException, InvalidRangeException {
-        currentNetcdfFile = NetcdfFile.open(getFilePath(file));
-        Variable variable = currentNetcdfFile.findVariable(file.getFileType().attr);
-        List<List<Float>> dataSet = new ArrayList<>();
-        if(variable == null){
-            throw new IOException();
-        }
-        int latOrigin = 0;
-        int lonOrigin = 0;
-        int latSize = 0;
-        int lonSize = 0;
-        boolean first = true;
-        for(double d:latitude){
-            if(d>lat_sml && d<=lat_big){
-                latOrigin = first ? latitude.indexOf(d) : latOrigin;
-                latSize++;
-                first = false;
-            }
-        }
-        first = true;
-        for(double d:longitude){
-            if(d>lon_sml && d<=lon_big){
-                lonOrigin = first ? longitude.indexOf(d) : lonOrigin;
-                lonSize++;
-                first = false;
-            }
-        }
-        int[] origin = new int[]{highIndex, latOrigin, lonOrigin};;
-        int[] size = new int[]{1, latSize, lonSize};
-        Array data = variable.read(origin, size).reduce(0);
-        float[][] temp = (float[][]) data.copyToNDJavaArray();
-        for(float[] list :temp){
-            List<Float> inner = new ArrayList<>();
-            for(float i :list){
-                inner.add(i);
-            }
-            dataSet.add(inner);
-        }
-        return dataSet;
-    }
+//    /**
+//     * function: getDataSetFromFile
+//     * parameter:(default) NetCDFFile 与 high（高度 km) 以及 经纬度范围
+//     * description: 输入对应层数与内容 返回默认中国范围内的所有经纬度对应数值
+//     * return: 二维List
+//     * throw: IOException, InvalidRangeException 均是读文件发生的错误
+//     * */
+//    public List<List<Float>> getDataSetVarLevel(NetCDFFile file, int highIndex, double lat_sml, double lat_big,
+//                                                double lon_sml, double lon_big) throws IOException, InvalidRangeException {
+//        currentNetcdfFile = NetcdfFile.open(getFilePath(file));
+//        Variable variable = currentNetcdfFile.findVariable(file.getFileType().attr);
+//        List<List<Float>> dataSet = new ArrayList<>();
+//        if(variable == null){
+//            throw new IOException();
+//        }
+//        int latOrigin = 0;
+//        int lonOrigin = 0;
+//        int latSize = 0;
+//        int lonSize = 0;
+//        boolean first = true;
+//        for(double d:latitude){
+//            if(d>lat_sml && d<=lat_big){
+//                latOrigin = first ? latitude.indexOf(d) : latOrigin;
+//                latSize++;
+//                first = false;
+//            }
+//        }
+//        first = true;
+//        for(double d:longitude){
+//            if(d>lon_sml && d<=lon_big){
+//                lonOrigin = first ? longitude.indexOf(d) : lonOrigin;
+//                lonSize++;
+//                first = false;
+//            }
+//        }
+//        int[] origin = new int[]{highIndex, latOrigin, lonOrigin};;
+//        int[] size = new int[]{1, latSize, lonSize};
+//        Array data = variable.read(origin, size).reduce(0);
+//        float[][] temp = (float[][]) data.copyToNDJavaArray();
+//        for(float[] list :temp){
+//            List<Float> inner = new ArrayList<>();
+//            for(float i :list){
+//                inner.add(i);
+//            }
+//            dataSet.add(inner);
+//        }
+//        return dataSet;
+//    }
 
     /**
      * function: getDataSetVarCoordinate
@@ -305,8 +237,8 @@ public class FileHelper {
             throw new IOException();
         }
         int[] shape = variable.getShape();
-        int latIndex =  fuzzySearch(latitude, latValue);
-        int longIndex = fuzzySearch(longitude, lonValue);
+        int latIndex =  fuzzySearch(getLatitude(file), latValue);
+        int longIndex = fuzzySearch(getLongitude(file), lonValue);
         int[] origin = new int[]{0, latIndex, longIndex};
         int[] size = new int[]{shape[0], 1, 1};
         Array data = variable.read(origin, size).reduce().reduce();
@@ -324,18 +256,11 @@ public class FileHelper {
      * throws: IOException 当文件不存在或文件格式有误时
      * @warnning: 经度是float 数组升序
      * */
-    public List<Double> getLongitudeFromFile(NetCDFFile file) throws IOException{
-        List<Double> longitudes = new ArrayList<>();
-        currentNetcdfFile = NetcdfFile.open(getFilePath(file));
-        Variable longitude = currentNetcdfFile.findVariable(file.getFileType().longitude);
-        if(longitude == null){
+    public List<Double> getLongitude(NetCDFFile file) throws IOException{
+        if(netCDFDirectories.get(file.getFileType().index).status == -1){
             throw new IOException();
         }
-        String[] temp = longitude.read().toString().split("\\s+");
-        for(String s:temp){
-            longitudes.add(Double.parseDouble(s));
-        }
-        return longitudes;
+        return netCDFDirectories.get(file.getFileType().index).getLongitudeList();
     }
 
     /**
@@ -345,99 +270,13 @@ public class FileHelper {
      * throws: IOException 当文件不存在或文件格式有误时
      * @warnning: 纬度也是float 数组升序 有正负
      * */
-    public List<Double> getLatitudeFromFile(NetCDFFile file) throws IOException{
-        List<Double> latitudes = new ArrayList<>();
-        currentNetcdfFile = NetcdfFile.open(getFilePath(file));
-        Variable latitude = currentNetcdfFile.findVariable(file.getFileType().latitude);
-        if(latitude == null){
+    public List<Double> getLatitude(NetCDFFile file) throws IOException{
+        if(netCDFDirectories.get(file.getFileType().index).status == -1){
             throw new IOException();
         }
-        String[] temp = latitude.read().toString().split("\\s+");
-        for(String s:temp){
-            latitudes.add(Double.parseDouble(s));
-        }
-        return latitudes;
+        return netCDFDirectories.get(file.getFileType().index).getLatitudeList();
     }
 
-    /**
-     * function: createAlgorithmOutPut
-     * parameter: 算法的输入
-     * description: 从前端获得的信息来生成算法模块（标准大气模型）的输出
-     * throw: IOException 当无法读取文件或文件为空时 这时候应提出用户检查参数
-     * */
-    public List<List<Double>> getAlgOut(int year,int doy,double uth,double height,double lat,double lon,double f107p,
-                                        double f107a,double apd,double ap1, double ap2,double ap3) throws IOException{
-        List<List<Double>> dataset = new ArrayList<>();
-        String outputName = "";
-        File algTXT = new File(outputDicPath + File.separator + outputName);
-        BufferedReader br = null;
-        br = new BufferedReader(new FileReader(algTXT));
-        String current;
-        String[] count;
-        if((current = br.readLine()) != null){
-            count = current.split("\\s+");
-            for(int i = 0;i<count.length;i++){
-                dataset.add(new ArrayList<>());
-            }
-            do{
-                for(int i = 0;i<count.length;i++){
-                    dataset.get(i).add(Double.parseDouble(count[i]));
-                }
-            }while ((current = br.readLine()) != null);
-        }
-        if (dataset.size() != 0){
-            throw new IOException();
-        }
-        return dataset;
-    }
-
-    /**
-     * function: getILevelFromRFile
-     * parameter: 需要获得ilevel的R类型的一个文件
-     * return: List<Double> 即纬度数组
-     * throws: IOException 当文件不存在或文件格式有误时
-     * @warnning: ilevel double 数组升序 正数
-     * */
-    private List<Double> getILevelFromRFile(NetCDFFile file) throws IOException{
-        List<Double> iLevelList = new ArrayList<>();
-        currentNetcdfFile = NetcdfFile.open(getFilePath(file));
-        Variable iLevel = currentNetcdfFile.findVariable(FILE_TYPE.R.iLevel);
-        if(iLevel == null){
-            throw new IOException();
-        }
-        String[] temp = iLevel.read().toString().split("\\s+");
-        for(String s:temp){
-            iLevelList.add(Double.parseDouble(s));
-        }
-        return iLevelList;
-    }
-
-    private boolean isNCFile(String filename){
-        String lowNCFile = "nc";
-        String upperNCFile = "NC";
-        String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
-        return (extension.equals(lowNCFile) | extension.equals(upperNCFile));
-    }
-
-    public List<Double> getHighList() {
-        return highList;
-    }
-
-    public List<Double> getLongitude(){
-        List<Double> returnList = new ArrayList<>();
-        for(int i = lonStartIndex; i < lonStartIndex + lonLength;i++){
-            returnList.add(longitude.get(i));
-        }
-        return returnList;
-    }
-
-    public List<Double> getLatitude() {
-        List<Double> returnList = new ArrayList<>();
-        for(int i = latStartIndex;i < latLength + latStartIndex;i++){
-            returnList.add(latitude.get(i));
-        }
-        return returnList;
-    }
 
     private int fuzzySearch(List<Double> list, double value){
         int l=0,r=list.size();
