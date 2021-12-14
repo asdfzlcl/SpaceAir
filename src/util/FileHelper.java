@@ -152,15 +152,16 @@ public class FileHelper {
         Array dataLower;
         dataLower = variable.read(origin, size).reduce(0);
 
-        List<Double> tempLevelList = netCDFDirectories.get(file.getFileType().index).getLevelList();
+        List<Double> tempHeightList = Height.getHeightList(file.getFileType());
+
 
         float[][] upper = (float[][]) dataUpper.copyToNDJavaArray();
         float[][] lower = (float[][]) dataLower.copyToNDJavaArray();
         float[][] temp = new float[upper.length][upper[0].length];
         for(int i = 0;i<temp.length;i++){
             for(int j = 0;j<temp[0].length;j++){
-                double de_x = tempLevelList.get(scope[0]) - tempLevelList.get(scope[1]);
-                temp[i][j] = (float) (lower[i][j] + (upper[i][j] - lower[i][j])/de_x * (0.5*de_x));
+                double de_x = tempHeightList.get(scope[0]) - tempHeightList.get(scope[1]);
+                temp[i][j] = (float) (lower[i][j] + (upper[i][j] - lower[i][j])/de_x * (height - tempHeightList.get(scope[1])));
             }
         }
         for(float[] list :temp){
@@ -173,54 +174,78 @@ public class FileHelper {
         return dataSet;
     }
 
-//    /**
-//     * function: getDataSetFromFile
-//     * parameter:(default) NetCDFFile 与 high（高度 km) 以及 经纬度范围
-//     * description: 输入对应层数与内容 返回默认中国范围内的所有经纬度对应数值
-//     * return: 二维List
-//     * throw: IOException, InvalidRangeException 均是读文件发生的错误
-//     * */
-//    public List<List<Float>> getDataSetVarLevel(NetCDFFile file, int highIndex, double lat_sml, double lat_big,
-//                                                double lon_sml, double lon_big) throws IOException, InvalidRangeException {
-//        currentNetcdfFile = NetcdfFile.open(getFilePath(file));
-//        Variable variable = currentNetcdfFile.findVariable(file.getFileType().attr);
-//        List<List<Float>> dataSet = new ArrayList<>();
-//        if(variable == null){
-//            throw new IOException();
-//        }
-//        int latOrigin = 0;
-//        int lonOrigin = 0;
-//        int latSize = 0;
-//        int lonSize = 0;
-//        boolean first = true;
-//        for(double d:latitude){
-//            if(d>lat_sml && d<=lat_big){
-//                latOrigin = first ? latitude.indexOf(d) : latOrigin;
-//                latSize++;
-//                first = false;
-//            }
-//        }
-//        first = true;
-//        for(double d:longitude){
-//            if(d>lon_sml && d<=lon_big){
-//                lonOrigin = first ? longitude.indexOf(d) : lonOrigin;
-//                lonSize++;
-//                first = false;
-//            }
-//        }
-//        int[] origin = new int[]{highIndex, latOrigin, lonOrigin};;
-//        int[] size = new int[]{1, latSize, lonSize};
-//        Array data = variable.read(origin, size).reduce(0);
-//        float[][] temp = (float[][]) data.copyToNDJavaArray();
-//        for(float[] list :temp){
-//            List<Float> inner = new ArrayList<>();
-//            for(float i :list){
-//                inner.add(i);
-//            }
-//            dataSet.add(inner);
-//        }
-//        return dataSet;
-//    }
+    /**
+     * function: getDataSetFromFile
+     * parameter:(default) NetCDFFile 与 high（高度 km) 以及 经纬度范围
+     * description: 输入对应层数与内容 返回默认中国范围内的所有经纬度对应数值
+     * return: 二维List
+     * throw: IOException, InvalidRangeException 均是读文件发生的错误
+     * */
+    public List<List<Float>> getDataSetVarLevel(NetCDFFile file, int high, double lat_sml, double lat_big,
+                                                double lon_sml, double lon_big) throws IOException, InvalidRangeException {
+        if(high > 80 || high < 1){
+            throw new InvalidRangeException();
+        }
+        double height = high * 1000; // convert km to m
+        int[] scope = Height.Position((int)height, file.getFileType());
+        List<List<Float>> dataSet = new ArrayList<>();
+        currentNetcdfFile = NetcdfFile.open(getFilePath(file));
+        Variable variable = currentNetcdfFile.findVariable(file.getFileType().attr);
+        if(variable == null){
+            throw new IOException();
+        }
+
+        List<Double> tempLatList = netCDFDirectories.get(file.getFileType().index).getLatitudeList();
+        List<Double> tempLonList = netCDFDirectories.get(file.getFileType().index).getLongitudeList();
+        int latOrigin = netCDFDirectories.get(file.getFileType().index).getLatStartIndex();
+        int lonOrigin = netCDFDirectories.get(file.getFileType().index).getLonStartIndex();
+        int latSize = 0;
+        int lonSize = 0;
+        boolean first = true;
+        for(double d:tempLatList){
+            if(d>lat_sml && d<=lat_big){
+                latOrigin = first ? tempLatList.indexOf(d) : latOrigin;
+                latSize++;
+                first = false;
+            }
+        }
+        first = true;
+        for(double d:tempLonList){
+            if(d>lon_sml && d<=lon_big){
+                lonOrigin = first ? tempLonList.indexOf(d) : lonOrigin;
+                lonSize++;
+                first = false;
+            }
+        }
+        int[] origin = new int[]{scope[0], latOrigin, lonOrigin};;
+        int[] size = new int[]{1, latSize, lonSize};
+        Array dataUpper;
+        dataUpper = variable.read(origin, size).reduce(0);
+        origin[0] = scope[1];
+        Array dataLower;
+        dataLower = variable.read(origin, size).reduce(0);
+
+        List<Double> tempHeightList = Height.getHeightList(file.getFileType());
+
+
+        float[][] upper = (float[][]) dataUpper.copyToNDJavaArray();
+        float[][] lower = (float[][]) dataLower.copyToNDJavaArray();
+        float[][] temp = new float[upper.length][upper[0].length];
+        for(int i = 0;i<temp.length;i++){
+            for(int j = 0;j<temp[0].length;j++){
+                double de_x = tempHeightList.get(scope[0]) - tempHeightList.get(scope[1]);
+                temp[i][j] = (float) (lower[i][j] + (upper[i][j] - lower[i][j])/de_x * (height - tempHeightList.get(scope[1])));
+            }
+        }
+        for(float[] list :temp){
+            List<Float> inner = new ArrayList<>();
+            for(float i :list){
+                inner.add(i);
+            }
+            dataSet.add(inner);
+        }
+        return dataSet;
+    }
 
     /**
      * function: getDataSetVarCoordinate
@@ -277,6 +302,10 @@ public class FileHelper {
         return netCDFDirectories.get(file.getFileType().index).getLatitudeList();
     }
 
+
+    public List<Double> getHeightList(NetCDFFile file){
+        return Height.getHeightList(file.getFileType());
+    }
 
     private int fuzzySearch(List<Double> list, double value){
         int l=0,r=list.size();

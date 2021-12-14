@@ -161,6 +161,18 @@ public class Height {
         }
     }
 
+    public static List<Double> getHeightList(FILE_TYPE type){
+        if(type == FILE_TYPE.O){
+            return h_80;
+        }
+        else if(type == FILE_TYPE.V){
+            return h_30;
+        }
+        else {
+            return h_70;
+        }
+    }
+
 
 //    /**
 //     *
