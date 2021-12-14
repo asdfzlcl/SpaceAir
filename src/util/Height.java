@@ -10,19 +10,25 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 气体常数R=8.314472J/K/mol
- * g=908.665
- *
- * 输入：level：T010100_大气密度(T)气候态.nc文件中的lev变量
- * ilevel：RHO_CLUBB010100_大气密度气候态.nc中的ilev变量
- * Tem:T010100_大气密度(T)气候态.nc文件中的T变量（任意一个经纬度）
- * 输出：lev对应的高度值，单位为米
+ * 该类实现了高度与level之间的计算与转换
+ * init和HeightToLev两个方法是主要方法
+ * init方法会生成三种不同level各自对应的高度存储在静态成员变量中
+ * HeightToLev方法会根据自定义的文件类型，返回一个二维数组，表示每个高度在level中所处的位置
  */
 public class Height {
     public static double R=8.314472;
     public static double g=9.80665;
+
+    //70、30、80层文件的level值
     public static List<Double> level_70;
-    public static List<Double> h;
+    public static List<Double> level_30;
+    public static List<Double> level_80;
+
+    //70、30、80层level分别对应的高度
+    public static List<Double> h_70;
+    public static List<Double> h_30;
+    public static List<Double> h_80;
+
 
     public static List<Double> linearFit(double[] low,double[] high) {
         List<Double> result=new ArrayList<>();
@@ -40,7 +46,7 @@ public class Height {
      * @param Tem 大气温度
      * @return 70个level对应的高度
      */
-    public static List<Double> LevToHeight_70(List<Double> level,List<Double> ilevel,List<Float> Tem){
+    public static void LevToHeight_70(List<Double> level,List<Double> ilevel,List<Float> Tem){
         List<Double> height=new ArrayList<>();
         List<Double> result=new ArrayList<>();
         level_70=new ArrayList<>(level);
@@ -57,33 +63,36 @@ public class Height {
             result.add(sum);
         }
         Collections.reverse(result);
-        h=new ArrayList<>(result);
-        return result;
+        h_70=new ArrayList<>(result);
+
     }
 
     /**
      *
-     * @param level_30 30个level的值(80个值的也可以)
-     * @return result 通过线性插值得到的高度
+     * @param level_other V文件或者O文件的level
      */
-    public static List<Double> LevToHeight_other(List<Double> level_30){
+    public static void LevToHeight_other(List<Double> level_other){
+        if(level_other.size()==37)
+            Height.level_30=level_other;
+        if(level_other.size()==88)
+            Height.level_80=level_other;
         List<Double> result=new ArrayList<>();
-        for(int i=0;i<level_30.size();i++){
+        for(int i=0;i<level_other.size();i++){
             for(int j=0;j<level_70.size();j++) {
-                if(level_30.get(i)<=level_70.get(j)) {
+                if(level_other.get(i)<=level_70.get(j)) {
                     //如果30层的最小值小于70层的最小值
                     if(j==0){
-                        double[] low = new double[]{level_70.get(j ), h.get(j )};
-                        double[] high = new double[]{level_70.get(j+1), h.get(j+1)};
+                        double[] low = new double[]{level_70.get(j ), h_70.get(j )};
+                        double[] high = new double[]{level_70.get(j+1), h_70.get(j+1)};
                         List<Double> fit = linearFit(low, high);
-                        result.add(fit.get(0) * level_30.get(i) + fit.get(1));
+                        result.add(fit.get(0) * level_other.get(i) + fit.get(1));
                     }
                     else {
 //                    System.out.println("当前高度层"+i+'\n');
-                        double[] low = new double[]{level_70.get(j - 1), h.get(j - 1)};
-                        double[] high = new double[]{level_70.get(j), h.get(j)};
+                        double[] low = new double[]{level_70.get(j - 1), h_70.get(j - 1)};
+                        double[] high = new double[]{level_70.get(j), h_70.get(j)};
                         List<Double> fit = linearFit(low, high);
-                        result.add(fit.get(0) * level_30.get(i) + fit.get(1));
+                        result.add(fit.get(0) * level_other.get(i) + fit.get(1));
 
                     }
                     break;
@@ -91,19 +100,79 @@ public class Height {
             }
         }
         //如果70层的高度值最大值不能包含30层的
-        if(result.size()<level_30.size()){
-            for(int i=result.size();i<level_30.size();i++){
-                double[] low = new double[]{level_70.get(level_70.size()-2), h.get(level_70.size()-2)};
-                double[] high = new double[]{level_70.get(level_70.size()-1), h.get(level_70.size()-1)};
+        if(result.size()<level_other.size()){
+            for(int i=result.size();i<level_other.size();i++){
+                double[] low = new double[]{level_70.get(level_70.size()-2), h_70.get(level_70.size()-2)};
+                double[] high = new double[]{level_70.get(level_70.size()-1), h_70.get(level_70.size()-1)};
                 List<Double> fit = linearFit(low, high);
-                result.add(fit.get(0) * level_30.get(i) + fit.get(1));
+                result.add(fit.get(0) * level_other.get(i) + fit.get(1));
             }
         }
-        return result;
+        if(level_other.size()==37)
+            Height.h_30=result;
+        if(level_other.size()==88)
+            Height.h_80=result;
+    }
+
+    /**
+     *
+     * @param level 70层level的值
+     * @param ilevel 密度文件中的ilevel
+     * @param Tem 温度
+     * @param level_30 V文件中的level值
+     * @param level_80 O文件中的level值
+     *
+     *
+     */
+    public static void init(List<Double> level,List<Double> ilevel,List<Float> Tem,List<Double> level_30,List<Double> level_80){
+        LevToHeight_70(level,ilevel,Tem);
+        LevToHeight_other(level_30);
+        LevToHeight_other(level_80);
     }
 
 
+    /**
+     *
+     * @param height 某一个高度0至80
+     * @param flag 气象文件标志 ，0-30层 1-70层 2-80层
+     * @return 一对序号，height就在他们之中
+     */
+    public static int[] Position(int height,int flag){
+        if(flag==0){
+            int i=0;
+            while(height>h_30.get(i))
+                i++;
+            int[] result=new int[]{i-1,i};
+            return result;
+        }
+        if(flag==1){
+            int i=0;
+            while(height>h_70.get(i))
+                i++;
+            int[] result=new int[]{i-1,i};
+            return result;
+        }
+        else{
+            int i=0;
+            while(height>h_80.get(i))
+                i++;
+            int[] result=new int[]{i-1,i};
+            return result;
+        }
+    }
 
+
+    /**
+     *
+     * @param flag 气象文件标志 ，0--37层 1--70层 2--88层
+     * @return 一个int型二维数组，一维大小为81，代表着0——80km每个高度在某种文件中所处的位置
+     */
+    public static int[][] HeightToLev(int flag){
+        int[][] result=new int[81][];
+        for(int height=0;height<=80;height++)
+            result[height]=Position(height,flag);
+        return result;
+    }
 
 
 //    public static void main(String[] args) throws IOException, InvalidRangeException {
