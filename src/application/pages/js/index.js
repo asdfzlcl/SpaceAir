@@ -1,7 +1,7 @@
 // 参数数据
 // 该对象的所有属性getter均被绑定到页面
 params = {
-    task: 0, type: "", time: "", height: 0, latLb: 0.0, latUb: 0.0, lonLb: 0.0, lonUb: 0.0, filename: 'U010100_大气密度(U)气候态.nc'
+    task: 0, type: "", time: "", height: 0, latLb: 0.0, latUb: 0.0, lonLb: 0.0, lonUb: 0.0, filename: ""
 }
 
 // 数据限制
@@ -31,7 +31,7 @@ async function getData() {
 
 function checkParam() {
     //alert(limit.latLb)
-    return  params.lonLb >= limit.lonLb && params.lonLb  <= limit.lonUb && params.latLb >= limit.latLb && params.latLb  <= limit.latUb
+    return  params.lonLb >= limit.lonLb && params.lonUb  <= limit.lonUb && params.latLb >= limit.latLb && params.latUb  <= limit.latUb && params.lonLb  <= params.lonUb && params.latLb  <= params.latUb
 }
 
 function changePath() {
@@ -41,6 +41,11 @@ function changePath() {
 
 // 绑定提交参数事件
 document.querySelector("#submit-param").onclick = () => {
+    if(params.filename=="")
+    {
+        mdui.alert("请选择文件")
+        return
+    }
     if (!checkParam()) {
         mdui.alert("数据不在范围内，请重新设置")
         return
@@ -158,6 +163,7 @@ function fileChangeHandler(filename) {
 // 动态添加文件列表组件
 function fetchFileList() {
     document.querySelector("#file-list").innerHTML = ''
+    params.filename=""
     let filelist = funcInjector.GetDictiontary(params)
     let files = []
     files = filelist
