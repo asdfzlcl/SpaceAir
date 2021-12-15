@@ -65,6 +65,12 @@ public class NetCDFDirectory {
             }
         }
 
+        System.out.println("**************************************");
+        for(NetCDFFile c: directoryList){
+            System.out.println(c.getFileName());
+        }
+        System.out.println("**************************************");
+
         try {
             NetcdfFile current = NetcdfFile.open(directoryPath + File.separator + directoryList.get(0).getFileName());
             Variable level = current.findVariable(this.type.level);
@@ -100,7 +106,7 @@ public class NetCDFDirectory {
                 }
                 lonLength = count;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             status = -1;
         }
