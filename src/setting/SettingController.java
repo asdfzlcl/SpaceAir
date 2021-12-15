@@ -35,6 +35,7 @@ public class SettingController {
         try {
             config = ConfigFileHelper.getInstance();
         } catch (IOException e) {
+            e.printStackTrace();
             DialogHelper.popErrorDialog("配置文件读写出错！\n请检查程序读写权限！");
         }
 
@@ -66,6 +67,7 @@ public class SettingController {
                     try {
                         temp = directoryChooser.showDialog(currentButton.getScene().getWindow());
                     }catch (IllegalArgumentException i){
+                        i.printStackTrace();
                         directoryChooser.setInitialDirectory(new File(PathHelper.classBasePath));
                         temp = directoryChooser.showDialog(currentButton.getScene().getWindow());
                     }
@@ -88,6 +90,7 @@ public class SettingController {
         try {
             config.store();
         }catch (IOException e){
+            e.printStackTrace();
             DialogHelper.popErrorDialog("配置文件读写出错！\n请检查程序读写权限！");
         }
 

@@ -62,6 +62,7 @@ public class FuncInjectorImpl implements FuncInjector {
                 setting.start(settingStage);
                 settingStage.showAndWait();
             }catch (Exception e){
+                e.printStackTrace();
                 DialogHelper.popErrorDialog("致命错误！请重启软件。");
             }
         });
@@ -82,7 +83,7 @@ public class FuncInjectorImpl implements FuncInjector {
 
         try {
             nowDictionary = FileHelper.getInstance().getAllFileOfDirectory(inputParam.getFileType());
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             DialogHelper.popErrorDialog("当前目录格式有误或目录为空！\n请检查路径设置！");
         }
@@ -101,6 +102,7 @@ public class FuncInjectorImpl implements FuncInjector {
         try {
             data = FileHelper.getInstance().getAllFileOfDirectory(inputParam.getFileType());
         } catch (IOException e) {
+            e.printStackTrace();
             DialogHelper.popErrorDialog("大气温度(T)目录与大气密度(R)目录格式错误或目录下必须有对应文件！\n请更改设置路径后重新尝试。");
         }
         return data.toString();
