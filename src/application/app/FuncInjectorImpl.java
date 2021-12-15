@@ -108,7 +108,7 @@ public class FuncInjectorImpl implements FuncInjector {
 
     public String Getinformation(JSObject params){
         InputParam inputParam = new InputParam(params);
-        System.out.println(inputParam);
+        //System.out.println(inputParam);
         List<String> data = new ArrayList<>();
 
         NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), "");
