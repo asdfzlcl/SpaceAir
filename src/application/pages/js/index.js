@@ -9,6 +9,9 @@ limit = {
     height: 0, latLb: 0, latUb: 0, lonLb: 0, lonUb: 120,
 }
 
+params_info={
+    task: 0, type: "", time: "", height: 0, latLb: 0.0, latUb: 0.0, lonLb: 0.0, lonUb: 0.0, filename: ""
+}
 // 统计数据
 // 该对象的所有属性setter均被绑定到页面
 statics = {
@@ -127,6 +130,25 @@ function getFileListHtml(value) {
 <li class="mdui-divider"></li></div>`
 }
 
+function getDatainfo(filename)
+{
+    params_info=params
+    params_info.filename = filename
+    //document.querySelector("#show-filename").innerHTML = filename
+    limit_file = funcInjector.Getinformation(params_info)
+    limit_file = limit_file
+        .toString()
+        .slice(1, limit_file.toString().length - 1)
+        .replace(/\s+/g, '')
+        .split(',')
+    if (limit_file[0].length === 4)
+        return [0,limit_file[0].substr(0, 2), limit_file[0].substr(2, 2)]
+    else if (limit_file[0].length === 6)
+        return [0,limit_file[0].substr(0, 2) , limit_file[0].substr(2, 2) ]
+    else
+        return [limit_file[0].substr(0, 4) , limit_file[0].substr(4, 2) , limit_file[0].substr(6, 2)]
+}
+
 function fileChangeHandler(filename) {
     params.filename = filename
     document.querySelector("#show-filename").innerHTML = filename
@@ -140,13 +162,15 @@ function fileChangeHandler(filename) {
     limit.latUb = Math.max(parseFloat(limit_file[1]), parseFloat(limit_file[2])).toFixed(1)
     limit.lonLb = Math.min(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1)
     limit.lonUb = Math.max(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1)
-
+    let yearL=[]
     if (limit_file[0].length === 4)
         params.time = limit_file[0].substr(0, 2) + "月" + limit_file[0].substr(2, 2) + "日"
     else if (limit_file[0].length === 6)
         params.time = limit_file[0].substr(0, 2) + "月" + limit_file[0].substr(2, 2) + "日" + limit_file[0].substr(4, 2) + ":00"
     else
+    {
         params.time = limit_file[0].substr(0, 4) + "年" + limit_file[0].substr(4, 2) + "月" + limit_file[0].substr(6, 2) + "日" + limit_file[0].substr(8, 2) + ":00"
+    }
     fetchHeights()
     //alert(Math.min(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1))
     document.querySelector("#latLb-input").value=Math.min(parseFloat(limit_file[1]), parseFloat(limit_file[2])).toFixed(1)
@@ -160,8 +184,21 @@ function fileChangeHandler(filename) {
     document.querySelector("#lonUb-input").value=Math.max(parseFloat(limit_file[3]), parseFloat(limit_file[4])).toFixed(1)
 }
 
+function unique(arr){
+    var res = [];
+    var obj = {};
+    for(var i=0; i<arr.length; i++){
+        if( !obj[arr[i]] ){
+            obj[arr[i]] = 1;
+            res.push(arr[i]);
+        }
+    }
+    return res;
+}
 // 动态添加文件列表组件
 function fetchFileList() {
+    addM()
+    addD()
     document.querySelector("#file-list").innerHTML = ''
     params.filename=""
     let filelist = funcInjector.GetDictiontary(params)
@@ -175,6 +212,17 @@ function fetchFileList() {
     for (let i = 0; i < files.length; i++) html = html + getFileListHtml(filelist.get(i))
     mdui.$("#file-list").append(html)
     mdui.$("#file-list").mutation()
+    let yearL=[]
+    for (let i = 0; i < files.length; i++) {
+        let Dataf=getDatainfo(filelist.get(i))
+        if(Dataf[0]!==0)
+            yearL.push(Dataf[0])
+
+    }
+    addY(unique(yearL))
+    params.filename=""
+    params.time=""
+    document.querySelector("#show-filename").innerHTML=""
 }
 
 function drawHeatMap(rawData) {
@@ -335,31 +383,66 @@ function drawContourMapData(rawData) {
 
 // 输入查询字符串和文件名，返回是否符合查询结果
 // TODO 完善该函数
-function fileFilter(queryString,filename){
-
+function fileFilter(filename){
+    let F_data=getDatainfo(filename)
+    //alert(F_data[0])
+    if(F_data[0]!=0 && document.querySelector('#fliter-Y').value!==0 && Number(F_data[0])!=document.querySelector('#fliter-Y').value)
+        return true
+    //alert(document.querySelector('#fliter-M').value!=0)
+    if(Number(F_data[1])!=document.querySelector('#fliter-M').value && document.querySelector('#fliter-M').value!=0)
+        return true
+    //alert(document.querySelector('#fliter-D').value)
+    if(Number(F_data[2])!=document.querySelector('#fliter-D').value && document.querySelector('#fliter-D').value!=0)
+        return true
+    return false
 }
 
 // 文件搜索功能
 document.querySelector('#file-filter-btn').addEventListener('click',(event)=>{
-    let queryStr = document.querySelector('#file-filter-input').value
-    if(queryStr===''){
-        let files = document.querySelectorAll('.file-item')
-        for(let file of files){
-            file.hidden=false
-        }
-    }else{
+    //let queryStr = document.querySelector('#file-filter-input').value
         let files = document.querySelectorAll('.file-item')
         for(let file of files){
             // file.hidden = file.innerHTML.indexOf(query)===-1
-            file.hidden = fileFilter(queryStr,file.innerHTML)
+            file.hidden = fileFilter(file.innerHTML)
         }
-    }
-
 })
 document.querySelector('#file-filter-reset-btn').addEventListener('click',(event)=>{
-    document.querySelector('#file-filter-input').value=""
+    document.querySelector('#fliter-Y').value=0
+    document.querySelector('#fliter-M').value=0
+    document.querySelector('#fliter-D').value=0
     let files = document.querySelectorAll('.file-item')
     for(let file of files){
         file.hidden=false
     }
 })
+function addM() {
+    document.querySelector("#fliter-M").innerHTML = ''
+    let html = `<option value="0">*</option>`
+    for (let i = 1; i <= 12; i++)
+        html = html + `<option value="${i}">${i}</option>`
+    //alert(html)
+    mdui.$("#fliter-M").append(html)
+    mdui.$("#fliter-M").mutation()
+    document.querySelector("#fliter-M").value = 0;
+}
+function addD() {
+    document.querySelector("#fliter-D").innerHTML = ''
+    let html = `<option value="0">*</option>`
+    for (let i = 1; i <= 31; i++)
+        html = html + `<option value="${i}">${i}</option>`
+    //alert(html)
+    mdui.$("#fliter-D").append(html)
+    mdui.$("#fliter-D").mutation()
+    document.querySelector("#fliter-D").value = 0;
+}
+function addY(yearL) {
+    //alert(yearL)
+    document.querySelector("#fliter-Y").innerHTML = ''
+    let html = `<option value="0">*</option>`
+    for (let i = 0; i < yearL.length; i++)
+        html = html + `<option value="${yearL[i]}">${yearL[i]}</option>`
+    //alert(html)
+    mdui.$("#fliter-Y").append(html)
+    mdui.$("#fliter-Y").mutation()
+    document.querySelector("#fliter-Y").value = 0;
+}
