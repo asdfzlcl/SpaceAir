@@ -357,6 +357,7 @@ document.querySelector('#file-filter-btn').addEventListener('click',(event)=>{
 
 })
 document.querySelector('#file-filter-reset-btn').addEventListener('click',(event)=>{
+    document.querySelector('#file-filter-input').value=""
     let files = document.querySelectorAll('.file-item')
     for(let file of files){
         file.hidden=false
