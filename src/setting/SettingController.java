@@ -62,12 +62,12 @@ public class SettingController {
                 public void handle(MouseEvent event) {
                     DirectoryChooser directoryChooser = new DirectoryChooser();
                     //TODO: change config
-                    directoryChooser.setInitialDirectory(new File(config.getPathFromConfig(FILE_TYPE.sequence[finalI])));
                     File temp;
                     try {
+                        directoryChooser.setInitialDirectory(new File(config.getPathFromConfig(FILE_TYPE.sequence[finalI])));
                         temp = directoryChooser.showDialog(currentButton.getScene().getWindow());
-                    }catch (IllegalArgumentException i){
-                        i.printStackTrace();
+                    }catch (Exception i){
+                        System.out.println("配置文件路径有误，已重设为程序根目录");
                         directoryChooser.setInitialDirectory(new File(PathHelper.classBasePath));
                         temp = directoryChooser.showDialog(currentButton.getScene().getWindow());
                     }
