@@ -117,8 +117,11 @@ function fetchHeights() {
     //     .replace(/\s+/g, '')
     //     .split(',')
     let html = ""
+    let height_max = 81
+    if(params.type=="V"||params.type=="rH")
+    {height_max = 47}
     //html = html + getHeightSelHtml(types[0], 0)
-    for (let i = 1; i < 81; i++) html = html + getHeightSelHtml(i, i)
+    for (let i = 1; i < height_max; i++) html = html + getHeightSelHtml(i, i)
     mdui.$("#height-selector").append(html)
     mdui.$("#height-selector").mutation()
     document.querySelector("#height-selector").value = 1;
@@ -340,7 +343,7 @@ function drawContourMapData(rawData) {
     statics.sdev = Math.sqrt(sum_sdev / count)
 
     let dataName='温度(K)'
-    if(params.type=="U"||params.type=="O"||params.type=="V")
+    if(params.type=="U"||params.type=="O"||params.type=="V"||params.type=="rH")
         dataName='速度(m/s)'
     if(params.type=="R")
         dataName='密度(kg/m³)'
@@ -456,5 +459,15 @@ document.querySelector('#tab2').addEventListener('click',(event)=>{
     // var Shell = new ActiveXObject("WScript.Shell");
     // mdui.alert(path)
     // Shell.Run(path,0,true);
-    funcInjector.StartExe(params_info)
+    funcInjector.StartExe("D:\\atmosphere\\HeatDemo.exe")
+})
+
+document.querySelector('#tab3').addEventListener('click',(event)=>{
+    //let queryStr = document.querySelector('#file-filter-input').value
+    // var path = "D:\\atmosphere\\HeatDemo.exe"
+    // mdui.alert(path)
+    // var Shell = new ActiveXObject("WScript.Shell");
+    // mdui.alert(path)
+    // Shell.Run(path,0,true);
+    funcInjector.StartExe("D:\\atmosphere\\HeatDemo.exe")
 })

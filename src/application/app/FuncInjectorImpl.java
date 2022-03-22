@@ -155,11 +155,11 @@ public class FuncInjectorImpl implements FuncInjector {
         return FileHelper.getInstance().getHeightList(file).toString();
     }
 
-    public void StartExe(JSObject params)
+    public void StartExe(String adress)
     {
         Runtime rt = Runtime.getRuntime();
         try {
-            rt.exec("D:\\atmosphere\\HeatDemo.exe");
+            rt.exec(adress);
         } catch (IOException e) {
             e.printStackTrace();
         }
