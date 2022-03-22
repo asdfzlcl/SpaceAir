@@ -459,7 +459,7 @@ document.querySelector('#tab2').addEventListener('click',(event)=>{
     // var Shell = new ActiveXObject("WScript.Shell");
     // mdui.alert(path)
     // Shell.Run(path,0,true);
-    funcInjector.StartExe("D:\\atmosphere\\HeatDemo.exe")
+    funcInjector.StartExe(".\\HeatDemo.exe")
 })
 
 document.querySelector('#tab3').addEventListener('click',(event)=>{
@@ -469,5 +469,5 @@ document.querySelector('#tab3').addEventListener('click',(event)=>{
     // var Shell = new ActiveXObject("WScript.Shell");
     // mdui.alert(path)
     // Shell.Run(path,0,true);
-    funcInjector.StartExe("D:\\atmosphere\\HeatDemo.exe")
+    funcInjector.StartExe(".\\atmosphere\\HeatDemo.exe")
 })
