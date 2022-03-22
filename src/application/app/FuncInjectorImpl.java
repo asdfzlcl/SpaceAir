@@ -1,5 +1,7 @@
 package application.app;
 
+
+import java.io.IOException;
 import com.teamdev.jxbrowser.chromium.JSObject;
 import application.app.messages.InputParam;
 import javafx.application.Platform;
@@ -153,6 +155,16 @@ public class FuncInjectorImpl implements FuncInjector {
         return FileHelper.getInstance().getHeightList(file).toString();
     }
 
+    public void StartExe(JSObject params)
+    {
+        Runtime rt = Runtime.getRuntime();
+        try {
+            rt.exec("D:\\atmosphere\\HeatDemo.exe");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public String GetFileLat()
     {
         return Latitudes.toString();
@@ -165,9 +177,9 @@ public class FuncInjectorImpl implements FuncInjector {
 
     @Override
     public Object GetFileInfo() {
-        return Arrays.asList("T","U","R","O","V");
+        return Arrays.asList("T","U","R","O","V","H","r");
     }
     public Object GetFileInformation() {
-        return Arrays.asList("大气温度(T)","纬向风速(U)","大气密度(R)","垂直风速(O)","北向风速(V)");
+        return Arrays.asList("大气温度(T)","纬向风速(U)","大气密度(R)","垂直风速(O)","北向风速(V)","绝对湿度(H)","相对湿度(r)");
     }
 }

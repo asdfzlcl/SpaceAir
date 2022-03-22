@@ -21,7 +21,9 @@ let bindNumberGetter = (obj,attr,domSelector)=>{
 bindGetter(params,'type',"input[name=type-selector]:checked")
 let taskId = 0
 mdui.$('#head-tab').on('change.mdui.tab',(event)=>{
-    taskId = event._detail.index
+    if(event._detail.index<=1)
+        taskId = event._detail.index
+
     if(taskId===0)
     {
         document.querySelector("#latLb-input").placeholder="纬度下限"
@@ -37,7 +39,7 @@ mdui.$('#head-tab').on('change.mdui.tab',(event)=>{
         document.querySelector("#lonUb-input").value=limit.lonUb
         document.querySelector("#latUb-input").value=limit.latUb
     }
-    else
+    if(taskId===1)
     {
         document.querySelector("#latLb-input").placeholder="纬度"
         document.querySelector("#lonLb-input").placeholder="经度"

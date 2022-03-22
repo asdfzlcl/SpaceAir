@@ -83,6 +83,7 @@ function getTypeSelHtml(value, value_info,isChecked) {
 function fetchTypes() {
     let types = funcInjector.GetFileInfo()
     let info=funcInjector.GetFileInformation()
+
     types = types
         .toString()
         .slice(1, types.toString().length - 1)
@@ -386,13 +387,13 @@ function drawContourMapData(rawData) {
 function fileFilter(filename){
     let F_data=getDatainfo(filename)
     //alert(F_data[0])
-    if(F_data[0]!=0 && document.querySelector('#fliter-Y').value!==0 && Number(F_data[0])!=document.querySelector('#fliter-Y').value)
+    if(F_data[0]!==0 && document.querySelector('#fliter-Y').value!==0 && Number(F_data[0])!==document.querySelector('#fliter-Y').value)
         return true
     //alert(document.querySelector('#fliter-M').value!=0)
-    if(Number(F_data[1])!=document.querySelector('#fliter-M').value && document.querySelector('#fliter-M').value!=0)
+    if(Number(F_data[1])!==document.querySelector('#fliter-M').value && document.querySelector('#fliter-M').value!==0)
         return true
     //alert(document.querySelector('#fliter-D').value)
-    if(Number(F_data[2])!=document.querySelector('#fliter-D').value && document.querySelector('#fliter-D').value!=0)
+    if(Number(F_data[2])!==document.querySelector('#fliter-D').value && document.querySelector('#fliter-D').value!==0)
         return true
     return false
 }
@@ -446,3 +447,14 @@ function addY(yearL) {
     mdui.$("#fliter-Y").mutation()
     document.querySelector("#fliter-Y").value = 0;
 }
+
+//触发exe文件
+document.querySelector('#tab2').addEventListener('click',(event)=>{
+    //let queryStr = document.querySelector('#file-filter-input').value
+    // var path = "D:\\atmosphere\\HeatDemo.exe"
+    // mdui.alert(path)
+    // var Shell = new ActiveXObject("WScript.Shell");
+    // mdui.alert(path)
+    // Shell.Run(path,0,true);
+    funcInjector.StartExe(params_info)
+})
