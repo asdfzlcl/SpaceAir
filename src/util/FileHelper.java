@@ -4,6 +4,8 @@ import ucar.ma2.Array;
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
+import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.VariableEnhanced;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -125,61 +127,15 @@ public class FileHelper {
 
 
     /**
-     * function: getDataSetFromFile
-     * @param file 代表传入的文件信息
-     * @param high 传入的高度数值(1<high<80)
-     * description: 输入对应层数与内容 返回默认中国范围内的所有经纬度对应数值
-     * return: 二维List
-     * throw: IOException, InvalidRangeException 均是读文件发生的错误
-     * */
-    public List<List<Float>> getDataSetVarLevel(NetCDFFile file, int high) throws IOException, InvalidRangeException {
-        if(high > 80 || high < 1){
-            throw new InvalidRangeException();
-        }
-        double height = high * 1000; // convert km to m
-        int[] scope = Height.Position((int)height, file.getFileType());
-        List<List<Float>> dataSet = new ArrayList<>();
-        currentNetcdfFile = NetcdfFile.open(getFilePath(file));
-        Variable variable = currentNetcdfFile.findVariable(file.getFileType().attr);
-        if(variable == null){
-            throw new IOException();
-        }
-        int[] origin = new int[]{scope[0], netCDFDirectories.get(file.getFileType().index).getLatStartIndex(), netCDFDirectories.get(file.getFileType().index).getLonStartIndex()};;
-        int[] size = new int[]{1, netCDFDirectories.get(file.getFileType().index).getLatLength(), netCDFDirectories.get(file.getFileType().index).getLonLength()};
-        Array dataUpper;
-        dataUpper = variable.read(origin, size).reduce(0);
-        origin[0] = scope[1];
-        Array dataLower;
-        dataLower = variable.read(origin, size).reduce(0);
-
-        List<Double> tempHeightList = Height.getHeightList(file.getFileType());
-
-
-        float[][] upper = (float[][]) dataUpper.copyToNDJavaArray();
-        float[][] lower = (float[][]) dataLower.copyToNDJavaArray();
-        float[][] temp = new float[upper.length][upper[0].length];
-        for(int i = 0;i<temp.length;i++){
-            for(int j = 0;j<temp[0].length;j++){
-                double de_x = tempHeightList.get(scope[0]) - tempHeightList.get(scope[1]);
-                temp[i][j] = (float) (lower[i][j] + (upper[i][j] - lower[i][j])/de_x * (height - tempHeightList.get(scope[1])));
-            }
-        }
-        for(float[] list :temp){
-            List<Float> inner = new ArrayList<>();
-            for(float i :list){
-                inner.add(i);
-            }
-            dataSet.add(inner);
-        }
-        return dataSet;
-    }
-
-    /**
-     * function: getDataSetFromFile
-     * parameter:(default) NetCDFFile 与 high（高度 km) 以及 经纬度范围
-     * description: 输入对应层数与内容 返回默认中国范围内的所有经纬度对应数值
-     * return: 二维List
-     * throw: IOException, InvalidRangeException 均是读文件发生的错误
+     * @param file 传入的文件信息;
+     * @param high 传入的高度值
+     * @param lat_sml 经度左值
+     * @param lat_big 经度右值
+     * @param lon_sml 纬度左值
+     * @param lon_big 纬度右值
+     * @return List的List，二维数组
+     * @exception IOException 读文件发生的错误
+     * @exception InvalidRangeException 读文件发生的错误
      * */
     public List<List<Float>> getDataSetVarLevel(NetCDFFile file, int high, double lat_sml, double lat_big,
                                                 double lon_sml, double lon_big) throws IOException, InvalidRangeException {
@@ -189,7 +145,7 @@ public class FileHelper {
         double height = high * 1000; // convert km to m
         int[] scope = Height.Position((int)height, file.getFileType());
         List<List<Float>> dataSet = new ArrayList<>();
-        currentNetcdfFile = NetcdfFile.open(getFilePath(file));
+        currentNetcdfFile = NetcdfDataset.openDataset(getFilePath(file));;
         Variable variable = currentNetcdfFile.findVariable(file.getFileType().attr);
         if(variable == null){
             throw new IOException();
@@ -227,25 +183,44 @@ public class FileHelper {
 
         List<Double> tempHeightList = Height.getHeightList(file.getFileType());
 
-
-        float[][] upper = (float[][]) dataUpper.copyToNDJavaArray();
-        float[][] lower = (float[][]) dataLower.copyToNDJavaArray();
-        float[][] temp = new float[upper.length][upper[0].length];
-        for(int i = 0;i<temp.length;i++){
-            for(int j = 0;j<temp[0].length;j++){
-                double de_x = tempHeightList.get(scope[0]) - tempHeightList.get(scope[1]);
-                temp[i][j] = (float) (lower[i][j] + (upper[i][j] - lower[i][j])/de_x * (height - tempHeightList.get(scope[1])));
+        if(file.getFileType().ifScaled){
+            double[][] upper = (double[][]) dataUpper.copyToNDJavaArray();
+            double[][] lower = (double[][]) dataLower.copyToNDJavaArray();
+            double[][] temp = new double[upper.length][upper[0].length];
+            for(int i = 0;i<temp.length;i++){
+                for(int j = 0;j<temp[0].length;j++){
+                    double de_x = tempHeightList.get(scope[0]) - tempHeightList.get(scope[1]);
+                    temp[i][j] = (lower[i][j] + (upper[i][j] - lower[i][j])/de_x * (height - tempHeightList.get(scope[1])));
+                }
             }
-        }
-        for(float[] list :temp){
-            List<Float> inner = new ArrayList<>();
-            for(float i :list){
-                inner.add(i);
+            for(double[] list :temp){
+                List<Float> inner = new ArrayList<>();
+                for(double i :list){
+                    inner.add((float)i);
+                }
+                dataSet.add(inner);
             }
-            dataSet.add(inner);
+        }else {
+            float[][] upper = (float[][]) dataUpper.copyToNDJavaArray();
+            float[][] lower = (float[][]) dataLower.copyToNDJavaArray();
+            float[][] temp = new float[upper.length][upper[0].length];
+            for(int i = 0;i<temp.length;i++){
+                for(int j = 0;j<temp[0].length;j++){
+                    double de_x = tempHeightList.get(scope[0]) - tempHeightList.get(scope[1]);
+                    temp[i][j] = (float) (lower[i][j] + (upper[i][j] - lower[i][j])/de_x * (height - tempHeightList.get(scope[1])));
+                }
+            }
+            for(float[] list :temp){
+                List<Float> inner = new ArrayList<>();
+                for(float i :list){
+                    inner.add(i);
+                }
+                dataSet.add(inner);
+            }
         }
         return dataSet;
     }
+
 
     /**
      * function: getDataSetVarCoordinate
@@ -256,7 +231,7 @@ public class FileHelper {
      * */
     public List<Float> getDataSetVarCoordinate(NetCDFFile file, double latValue, double lonValue)throws IOException, InvalidRangeException{
         List<Float> dataset = new ArrayList<>();
-        currentNetcdfFile = NetcdfFile.open(getFilePath(file));
+        currentNetcdfFile = NetcdfDataset.openDataset(getFilePath(file));
         Variable variable = currentNetcdfFile.findVariable(file.getFileType().attr);
         if(variable == null){
             throw new IOException();
@@ -264,12 +239,19 @@ public class FileHelper {
         int[] shape = variable.getShape();
         int latIndex =  fuzzySearch(getLatitude(file), latValue);
         int longIndex = fuzzySearch(getLongitude(file), lonValue);
-        int[] origin = new int[]{0, latIndex, longIndex};
+        int[] origin = new int[]{0, netCDFDirectories.get(file.getFileType().index).getLatStartIndex() + latIndex, netCDFDirectories.get(file.getFileType().index).getLonStartIndex() + longIndex};
         int[] size = new int[]{shape[0], 1, 1};
         Array data = variable.read(origin, size).reduce().reduce();
-        float[] temp = (float[]) data.copyTo1DJavaArray();
-        for(float f : temp){
-            dataset.add(f);
+        if(file.getFileType().ifScaled){
+            double[] temp = (double[]) data.copyToNDJavaArray();
+            for(double f : temp){
+                dataset.add((float)f);
+            }
+        }else{
+            float[] temp = (float[]) data.copyTo1DJavaArray();
+            for(float f : temp){
+                dataset.add(f);
+            }
         }
         return dataset;
     }

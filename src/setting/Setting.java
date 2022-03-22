@@ -33,7 +33,7 @@ public class Setting extends Application {
         Parent root = fxmlLoader.load();
 
         primaryStage.setTitle("标准大气软件路径设置");
-        Scene scene = new Scene(root, 900, 330);
+        Scene scene = new Scene(root, 900, 450);
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image("file:" +
                 PathHelper.classBasePath + File.separator + "logo.png"));

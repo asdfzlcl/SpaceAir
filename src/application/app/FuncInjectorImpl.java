@@ -32,9 +32,9 @@ public class FuncInjectorImpl implements FuncInjector {
         NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), "");
         try {
             data = FileHelper.getInstance().getDataSetVarLevel(file, inputParam.getHeight(), inputParam.getLatLb(), inputParam.getLatUb(),inputParam.getLonLb(),inputParam.getLonUb());
-        } catch (IOException | InvalidRangeException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            DialogHelper.popErrorDialog("当前文件已不存在！\n请重启软件刷新文件目录重新尝试。");
+            DialogHelper.popErrorDialog("当前文件已不存在！或文件格式有误！\n请重启软件刷新文件目录重新尝试。");
         }
         // end test
 
@@ -49,7 +49,7 @@ public class FuncInjectorImpl implements FuncInjector {
         NetCDFFile file = new NetCDFFile(inputParam.getFilename(), inputParam.getFileType(), "");
         try {
             data = FileHelper.getInstance().getDataSetVarCoordinate(file, inputParam.getLatLb(),inputParam.getLonLb());
-        } catch (IOException | InvalidRangeException e) {
+        } catch (Exception e) {
             DialogHelper.popErrorDialog("当前文件已不存在！\n请重启软件刷新文件目录重新尝试。");
             e.printStackTrace();
         }
@@ -177,9 +177,9 @@ public class FuncInjectorImpl implements FuncInjector {
 
     @Override
     public Object GetFileInfo() {
-        return Arrays.asList("T","U","R","O","V","H","r");
+        return Arrays.asList("T","U","R","O","V","H","rH");
     }
     public Object GetFileInformation() {
-        return Arrays.asList("大气温度(T)","纬向风速(U)","大气密度(R)","垂直风速(O)","北向风速(V)","绝对湿度(H)","相对湿度(r)");
+        return Arrays.asList("大气温度(T)","纬向风速(U)","大气密度(R)","垂直风速(O)","北向风速(V)","绝对湿度(H)","相对湿度(rH)");
     }
 }

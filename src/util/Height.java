@@ -141,13 +141,13 @@ public class Height {
      */
     public static int[] Position(int height, FILE_TYPE type){
         int i=0;
-        if(type == FILE_TYPE.V){
+        if(type == FILE_TYPE.V || type == FILE_TYPE.rH){
             while(height<h_30.get(i))
                 i++;
             int[] result=new int[]{i-1,i};
             return result;
         }
-        if(type == FILE_TYPE.R || type == FILE_TYPE.T || type == FILE_TYPE.U){
+        if(type == FILE_TYPE.R || type == FILE_TYPE.T || type == FILE_TYPE.U || type == FILE_TYPE.H){
             while(height<h_70.get(i))
                 i++;
             int[] result=new int[]{i-1,i};
