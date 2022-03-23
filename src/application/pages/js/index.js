@@ -469,5 +469,5 @@ document.querySelector('#tab3').addEventListener('click',(event)=>{
     // var Shell = new ActiveXObject("WScript.Shell");
     // mdui.alert(path)
     // Shell.Run(path,0,true);
-    funcInjector.StartExe(".\\atmosphere\\HeatDemo.exe")
+    funcInjector.StartExe(".\\ForceDemo.exe")
 })
