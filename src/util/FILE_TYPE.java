@@ -11,7 +11,7 @@ package util;
  * */
 public enum FILE_TYPE {
     T("T" ,0, "lev", "lat", "lon", "大气温度", false), //temperature
-    U("U", 1, "lev", "lat", "lon", "纬向风俗", false), //Zonal Winds
+    U("U", 1, "lev", "lat", "lon", "纬向风速", false), //Zonal Winds
     R("RHO_CLUBB", 2, "ilev", "lat", "lon", "大气密度", false),  //
     O("OMEGA", 3, "lev", "lat", "lon", "垂直风速",false),  //Omega velocity
     V("v", 4, "level", "latitude", "longitude", "北向风速", true), //V component of wind

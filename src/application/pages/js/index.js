@@ -262,10 +262,14 @@ function drawHeatMap(rawData) {
     statics.sdev = Math.sqrt(sum_avg / count)
 
     let dataName='温度(K)'
-    if(params.type=="U"||params.type=="O")
+    if(params.type=="U"||params.type=="O"||params.type=="V")
         dataName='速度(m/s)'
     if(params.type=="R")
         dataName='密度(kg/m³)'
+    if(params.type=="rH")
+        dataName='%'
+    if(params.type=="H")
+        dataName='mol/mol'
 
     for (let y = 0; y < rawData[0].length;  y++ ) yData.push((params.lonLb+y*(params.lonUb-params.lonLb)/(rawData[0].length-1)).toFixed(1));
     let option = {
@@ -343,11 +347,14 @@ function drawContourMapData(rawData) {
     statics.sdev = Math.sqrt(sum_sdev / count)
 
     let dataName='温度(K)'
-    if(params.type=="U"||params.type=="O"||params.type=="V"||params.type=="rH")
+    if(params.type=="U"||params.type=="O"||params.type=="V")
         dataName='速度(m/s)'
     if(params.type=="R")
         dataName='密度(kg/m³)'
-
+    if(params.type=="rH")
+        dataName='%'
+    if(params.type=="H")
+        dataName='mol/mol'
     let option = {
         toolbox: {
             show: true,

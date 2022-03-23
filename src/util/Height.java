@@ -162,10 +162,10 @@ public class Height {
     }
 
     public static List<Double> getHeightList(FILE_TYPE type){
-        if(type == FILE_TYPE.O){
+        if(type == FILE_TYPE.O || type == FILE_TYPE.H){
             return h_80;
         }
-        else if(type == FILE_TYPE.V){
+        else if(type == FILE_TYPE.V || type == FILE_TYPE.rH){
             return h_30;
         }
         else {

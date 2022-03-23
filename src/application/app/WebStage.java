@@ -43,7 +43,7 @@ public class WebStage extends Application {
         pane.getChildren().add(browserView);
         Scene scene = new Scene(pane, 1850, 1000);
         webStage.setScene(scene);
-        webStage.setTitle("标准大气软件");
+        webStage.setTitle("气动大气环境效应仿真可视化平台");
         webStage.getIcons().add(new Image("file:" +
                 System.getProperty("user.dir") + File.separator + "logo.png"));
 

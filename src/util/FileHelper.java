@@ -9,6 +9,8 @@ import ucar.nc2.dataset.VariableEnhanced;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,6 +30,12 @@ public class FileHelper {
     public int status;
     public List<NetCDFDirectory> netCDFDirectories = new ArrayList<>();
     private NetcdfFile currentNetcdfFile;  //当前正在读取的文件，对象会缓存文件信息
+
+    //中国区域经纬度上下限
+    public static final double latUpper = 53.5;  //（N）纬度上限
+    public static final double latLower = 4.0;  //（N）纬度下限
+    public static final double lonUpper = 135.0;  //（E）经度上限
+    public static final double lonLower = 73.5; //（E）经度下限
 
     /**
      * function: getInstance()
@@ -134,11 +142,10 @@ public class FileHelper {
      * @param lon_sml 纬度左值
      * @param lon_big 纬度右值
      * @return List的List，二维数组
-     * @exception IOException 读文件发生的错误
-     * @exception InvalidRangeException 读文件发生的错误
+     * @exception Exception 读文件发生的错误
      * */
     public List<List<Float>> getDataSetVarLevel(NetCDFFile file, int high, double lat_sml, double lat_big,
-                                                double lon_sml, double lon_big) throws IOException, InvalidRangeException {
+                                                double lon_sml, double lon_big) throws Exception {
         if(high > 80 || high < 1){
             throw new InvalidRangeException();
         }
@@ -151,28 +158,30 @@ public class FileHelper {
             throw new IOException();
         }
 
-        List<Double> tempLatList = netCDFDirectories.get(file.getFileType().index).getLatitudeList();
-        List<Double> tempLonList = netCDFDirectories.get(file.getFileType().index).getLongitudeList();
-        int latOrigin = netCDFDirectories.get(file.getFileType().index).getLatStartIndex();
-        int lonOrigin = netCDFDirectories.get(file.getFileType().index).getLonStartIndex();
-        int latSize = 0;
-        int lonSize = 0;
-        boolean first = true;
-        for(double d:tempLatList){
-            if(d>lat_sml && d<=lat_big){
-                latOrigin = first ? tempLatList.indexOf(d) + latOrigin : latOrigin;
-                latSize++;
-                first = false;
-            }
+        List<Double> tempLatList = readLatitude(file);
+        List<Double> tempLonList = readLongitude(file);
+
+        if(lat_sml >= lat_big || lon_sml >= lon_big)
+            throw new IllegalArgumentException();
+
+        int latOrigin = 0;
+        int lonOrigin = 0;
+        int latSize = 1;
+        int lonSize = 1;
+
+        if(file.getFileType().ifScaled){
+            latOrigin = fuzzySearchReverse(tempLatList, lat_big);
+            lonOrigin = fuzzySearch(tempLonList, lon_sml);
+            latSize = fuzzySearchReverse(tempLatList, lat_sml) - latOrigin;
+            lonSize = fuzzySearch(tempLonList, lon_big) - lonOrigin;
+        }else {
+            latOrigin = fuzzySearch(tempLatList, lat_sml);
+            lonOrigin = fuzzySearch(tempLonList, lon_sml);
+            latSize = fuzzySearch(tempLatList, lat_big) - latOrigin;
+            lonSize = fuzzySearch(tempLonList, lon_big) - lonOrigin;
         }
-        first = true;
-        for(double d:tempLonList){
-            if(d>lon_sml && d<=lon_big){
-                lonOrigin = first ? tempLonList.indexOf(d) + lonOrigin : lonOrigin;
-                lonSize++;
-                first = false;
-            }
-        }
+
+
         int[] origin = new int[]{scope[0], latOrigin, lonOrigin};;
         int[] size = new int[]{1, latSize, lonSize};
         Array dataUpper;
@@ -193,12 +202,14 @@ public class FileHelper {
                     temp[i][j] = (lower[i][j] + (upper[i][j] - lower[i][j])/de_x * (height - tempHeightList.get(scope[1])));
                 }
             }
-            for(double[] list :temp){
-                List<Float> inner = new ArrayList<>();
-                for(double i :list){
-                    inner.add((float)i);
+            for(int k = 0;k<temp.length;k++){
+                dataSet.add(new ArrayList<>());
+            }
+            for(int k = 0;k<temp.length;k++){
+                for(double d: temp[k]){
+                    dataSet.get(temp.length - k - 1).add((float)d);
                 }
-                dataSet.add(inner);
+                Collections.reverse(dataSet.get(temp.length - k - 1));
             }
         }else {
             float[][] upper = (float[][]) dataUpper.copyToNDJavaArray();
@@ -289,12 +300,63 @@ public class FileHelper {
         return Height.getHeightList(file.getFileType());
     }
 
+    /**
+     * @param file 传入的CDF文件对象
+     * @return DoubleList 文件对应的全额经度数组
+     * @exception Exception 读取错误
+     */
+    private List<Double> readLatitude(NetCDFFile file) throws Exception{
+        currentNetcdfFile = NetcdfDataset.openDataset(getFilePath(file));
+        Variable variable = currentNetcdfFile.findVariable(file.getFileType().latitude);
+        String[] latString = variable.read().toString().split("\\s+");
+        List<Double> latList = new ArrayList<>();
+        for(String s : latString){
+            latList.add(Double.parseDouble(s));
+        }
+        return latList;
+    }
+
+    /**
+     * @param file 传入的CDF文件对象
+     * @return DoubleList 文件对应的全额纬度数组
+     * @exception Exception 读取错误
+     */
+    private List<Double> readLongitude(NetCDFFile file) throws Exception{
+        currentNetcdfFile = NetcdfDataset.openDataset(getFilePath(file));
+        Variable variable = currentNetcdfFile.findVariable(file.getFileType().longitude);
+        String[] longString = variable.read().toString().split("\\s+");
+        List<Double> longList = new ArrayList<>();
+        for(String s : longString){
+            longList.add(Double.parseDouble(s));
+        }
+        return longList;
+    }
+
+
+    /**
+     * @param list 被查找的List
+     * @param value 查找值
+     * @return 最接近value的元素序号
+     */
     private int fuzzySearch(List<Double> list, double value){
         int l=0,r=list.size();
         while(l+1<r)
         {
             int m=(l+r)>>1;
             if(list.get(m)<=value)
+                l=m;
+            else
+                r=m;
+        }
+        return l;
+    }
+
+    private int fuzzySearchReverse(List<Double> list, double value){
+        int l=0,r=list.size();
+        while(l+1<r)
+        {
+            int m=(l+r)>>1;
+            if(list.get(m)>=value)
                 l=m;
             else
                 r=m;
