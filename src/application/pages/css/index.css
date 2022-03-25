@@ -60,7 +60,7 @@
 }
 ul#file-list{
     min-width: 14vw;
-    max-height: 30vh;
+    height: 28vh;
     overflow: scroll;
 }
 #fab-animation-show{
