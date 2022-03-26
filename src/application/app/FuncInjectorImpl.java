@@ -137,10 +137,14 @@ public class FuncInjectorImpl implements FuncInjector {
                 break;
             }
         }
-        data.add(Latitudes.get(0).toString());
-        data.add(Latitudes.get(Latitudes.size()-1).toString());
-        data.add(Longitudes.get(0).toString());
-        data.add(Longitudes.get(Longitudes.size()-1).toString());
+        data.add("-90");
+        data.add("90");
+        data.add("-180");
+        data.add("180");
+//        data.add(Latitudes.get(0).toString());
+//        data.add(Latitudes.get(Latitudes.size()-1).toString());
+//        data.add(Longitudes.get(0).toString());
+//        data.add(Longitudes.get(Longitudes.size()-1).toString());
         data.add(heights.get(0).toString());
         data.add(heights.get(heights.size()-1).toString());
         return data.toString();

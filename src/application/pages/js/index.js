@@ -6,7 +6,7 @@ params = {
 
 // 数据限制
 limit = {
-    height: 0, latLb: 0, latUb: 0, lonLb: 0, lonUb: 120,
+    height: 0, latLb: -90, latUb: 90, lonLb: -180, lonUb: 180,
 }
 
 params_info={
