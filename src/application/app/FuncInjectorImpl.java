@@ -184,6 +184,6 @@ public class FuncInjectorImpl implements FuncInjector {
         return Arrays.asList("T","U","R","O","V","H","rH");
     }
     public Object GetFileInformation() {
-        return Arrays.asList("大气温度(T)","纬向风速(U)","大气密度(R)","垂直风速(O)","北向风速(V)","绝对湿度(H)","相对湿度(rH)");
+        return Arrays.asList("大气温度(T)","纬向风速(U)","大气密度(R)","垂直风速(O)","经向风速(V)","绝对湿度(H)","相对湿度(rH)");
     }
 }

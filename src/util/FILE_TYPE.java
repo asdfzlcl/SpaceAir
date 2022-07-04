@@ -14,7 +14,7 @@ public enum FILE_TYPE {
     U("U", 1, "lev", "lat", "lon", "纬向风速", false), //Zonal Winds
     R("RHO_CLUBB", 2, "ilev", "lat", "lon", "大气密度", false),  //
     O("OMEGA", 3, "lev", "lat", "lon", "垂直风速",false),  //Omega velocity
-    V("v", 4, "level", "latitude", "longitude", "北向风速", true), //V component of wind
+    V("v", 4, "level", "latitude", "longitude", "经向风速", true), //V component of wind
     H("H2O", 5, "lev", "lat", "lon", "绝对湿度", false),// H absolute humidity
     rH("r", 6, "level", "latitude", "longitude", "相对湿度", true); //rH relative humidity
 
