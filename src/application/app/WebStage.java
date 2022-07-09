@@ -110,11 +110,6 @@ public class WebStage extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         initWebStage();
-        String[] paths = new String[FILE_TYPE.count];
-        for(int i = 0;i<FILE_TYPE.count;i++){
-            paths[i] = ConfigFileHelper.getInstance().getPathFromConfig(FILE_TYPE.sequence[i]);
-        }
-        FileHelper.setInstance(paths);
         webStage.show();
     }
 
