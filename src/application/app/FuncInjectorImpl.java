@@ -7,14 +7,8 @@ import application.app.messages.InputParam;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import setting.Setting;
-import ucar.ma2.InvalidRangeException;
-import ucar.nc2.util.IO;
 import util.DialogHelper;
-
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class FuncInjectorImpl implements FuncInjector {
@@ -22,24 +16,6 @@ public class FuncInjectorImpl implements FuncInjector {
     private List<Double> heights =null;
     private List<Double> Latitudes=null;
     private List<Double> Longitudes=null;
-    @Override
-    public String GetHeatMapData(JSObject params){
-        InputParam inputParam = new InputParam(params);
-        System.out.println(inputParam);
-        List<List<Float>> data = new ArrayList<>(200);
-        // end test
-
-        return data.toString();
-    }
-
-    @Override
-    public String GetContourMapData(JSObject params) {
-        InputParam inputParam = new InputParam(params);
-        System.out.println(inputParam);
-        List<Float> data = new ArrayList<>();
-
-        return data.toString();
-    }
 
     public void changePath(){
         Platform.runLater(()->{
@@ -114,13 +90,5 @@ public class FuncInjectorImpl implements FuncInjector {
     public String GetFileLon()
     {
         return Longitudes.toString();
-    }
-
-    @Override
-    public Object GetFileInfo() {
-        return Arrays.asList("T","U","R","O","V","H","rH");
-    }
-    public Object GetFileInformation() {
-        return Arrays.asList("大气温度(T)","纬向风速(U)","大气密度(R)","垂直风速(O)","经向风速(V)","绝对湿度(H)","相对湿度(rH)");
     }
 }

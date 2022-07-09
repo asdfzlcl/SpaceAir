@@ -8,18 +8,11 @@
     <link rel="stylesheet" href="css/global.css">
 </head>
 <body class="mdui-theme-primary-blue mdui-theme-accent-blue">
-<div id="head-tab" class="head-tab mdui-tab mdui-tab-full-width" mdui-tab>
-    <a id="tab0" class="mdui-ripple">大气环境参数水平分布图</a>
-
-    <a id="tab1" class="mdui-ripple">大气环境参数垂直分布图</a>
-<!--    <a id="tab2" class="mdui-ripple">高超声速飞行器气动热大气环境效应计算平台HeatDemo</a>-->
-<!--    <a id="tab3" class="mdui-ripple">高超声速飞行器气动热大气环境效应计算平台ForceDemo</a>-->
-</div>
 
 <div class="body-panel">
     <div class="filelist-panel">
         <h2>
-            参数选择区
+            文件类型选择区
         </h2>
         <div id="type-selector" class="mdui-textfield">
         </div>
@@ -28,84 +21,31 @@
         <h2>
             文件选择区
         </h2>
-        <div class="param-item xymid">
-            <select class="mdui-select" id="fliter-Y">
-            </select>年
-            <select class="mdui-select" id="fliter-M">
-            </select>月
-            <select class="mdui-select" id="fliter-D">
-            </select>日
-        </div>
-        <div><button id="file-filter-btn" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">查找
-        </button><button id="file-filter-reset-btn" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" style="margin-left:2vw">重置
-        </button></div>
+        <!--        <div class="param-item xymid">-->
+        <!--            <select class="mdui-select" id="fliter-Y">-->
+        <!--            </select>年-->
+        <!--            <select class="mdui-select" id="fliter-M">-->
+        <!--            </select>月-->
+        <!--            <select class="mdui-select" id="fliter-D">-->
+        <!--            </select>日-->
+        <!--        </div>-->
+        <!--        <div><button id="file-filter-btn" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">查找-->
+        <!--        </button><button id="file-filter-reset-btn" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" style="margin-left:2vw">重置-->
+        <!--        </button></div>-->
         <ul class="mdui-list" id="file-list">
         </ul>
         <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="setting" onclick="changePath()" >路径更改</button>
-        <div class="mdui-divider-dark" style="width: 100%"></div><br>
-        <h2 style="text-align: center">
-            高超声速飞行器气动<br>
-            大气环境效应计算平台
-        </h2>
-        <div><button id="tab2" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">Heat
-        </button><button id="tab3" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" style="margin-left:2vw">Force
-        </button></div>
 
-<!--        <h2>-->
-<!--            气动大气环境效应仿真-->
-<!--        </h2>-->
-<!--        <div>-->
-<!--            <button id="submit-param-01" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">EXE1-->
-<!--            </button>-->
-<!--            <button id="submit-param-02" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">EXE2-->
-<!--            </button>-->
-<!--        </div>-->
     </div>
     <div class="filelist-panel">
         <h2>
             文件信息
         </h2>
-        <div>日期:<br> <span id="show-time"></span><br><br>
+        <div>
             当前文件:<br> <span id="show-filename"></span><br>
         </div>
         <br><br>
-        <div class="param-item xymid">
-                <select class="mdui-select" id="height-selector">
-                </select>
-                <div class="mdui-select-helper height-selector-helper">高度选择</div>
-        </div>
-        <div class="param-item">
-            <div class="mdui-textfield">
-                <input class="mdui-textfield-input" type="text" step="0.5"
-                       placeholder="纬度下限(°N)"
-                       id="latLb-input" value = ""/>
-                <div class="mdui-textfield-helper latLb-input-helper">纬度范围: <span class="limit-latLb">-90</span>(°N)-<span class="limit-latUb">90</span>(°N)</div>
-            </div>
-        </div>
-        <div class="param-item">
-            <div class="mdui-textfield">
-                <input class="mdui-textfield-input" type="text" step="0.5"
-                       placeholder="纬度上限(°N)"
-                       id="latUb-input" value = ""/>
-                <div class="mdui-textfield-helper latLb-input-helper1">纬度范围: <span class="limit-latLb">-90</span>(°N)-<span class="limit-latUb">90</span>(°N)</div>
-            </div>
-        </div>
-        <div class="param-item">
-            <div class="mdui-textfield">
-                <input class="mdui-textfield-input" type="text" step="0.5"
-                       placeholder="经度下限(°E)"
-                       id="lonLb-input" value = ""/>
-                <div class="mdui-textfield-helper lonLb-input-helper">经度范围: <span class="limit-lonLb">-180</span>(°E)-<span class="limit-lonUb">180</span>(°E)</div>
-            </div>
-        </div>
-        <div class="param-item">
-            <div class="mdui-textfield">
-                <input class="mdui-textfield-input" type="text" step="0.5"
-                       placeholder="经度上限(°E)"
-                       id="lonUb-input" value = ""/>
-                <div class="mdui-textfield-helper lonLb-input-helper1">经度范围: <span class="limit-lonLb">-180</span>(°E)-<span class="limit-lonUb">180</span>(°E)</div>
-            </div>
-        </div>
+
         <div class="param-item" style="display: flex;justify-content: center">
             <button id="submit-param" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">绘制图形
             </button>
