@@ -1,10 +1,6 @@
 package application.app.messages;
 
 import com.teamdev.jxbrowser.chromium.JSObject;
-<<<<<<< HEAD
-
-=======
->>>>>>> 9e2d9e6664f4334204df554c6b4823f1b2a0fd14
 
 public class InputParam {
 
@@ -59,29 +55,4 @@ public class InputParam {
                 + "}}";
 
     }
-
-
-
-<<<<<<< HEAD
-
-=======
-    //获取FILE_TYPE格式的输出
-//    public FILE_TYPE getFileType(){
-//        if(type.equals("U"))
-//            return FILE_TYPE.U;
-//        if(type.equals("T"))
-//            return FILE_TYPE.T;
-//        if(type.equals("R"))
-//            return FILE_TYPE.R;
-//        if(type.equals("V"))
-//            return FILE_TYPE.V;
-//        if(type.equals("O"))
-//            return FILE_TYPE.O;
-//        if(type.equals("H"))
-//            return FILE_TYPE.H;
-//        if(type.equals("rH"))
-//            return FILE_TYPE.rH;
-//        return FILE_TYPE.T;
-//    }
->>>>>>> 9e2d9e6664f4334204df554c6b4823f1b2a0fd14
 }
