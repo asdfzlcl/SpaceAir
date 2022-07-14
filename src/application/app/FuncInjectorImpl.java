@@ -50,19 +50,20 @@ public class FuncInjectorImpl implements FuncInjector {
     public Object GetBottonType(JSObject params){
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
-        if(Objects.equals(inputParam.type, "0"))
+        String type = inputParam.getType();
+        if(Objects.equals(type, "0"))
         {
             return Arrays.asList("太阳和地磁指数","太阳指数","0","地磁指数","0");
         }
-        if(Objects.equals(inputParam.type, "1"))
+        if(Objects.equals(type, "1"))
         {
             return Arrays.asList("大气密度","大气密度变化","0");
         }
-        if(Objects.equals(inputParam.type, "2"))
+        if(Objects.equals(type, "2"))
         {//电离层参数
             return Arrays.asList("电离层参数","一维图","3","二维图","2");
         }
-        if(Objects.equals(inputParam.type, "3"))
+        if(Objects.equals(type, "3"))
         {//临近空间环境
             return Arrays.asList("临近空间环境","一维图","0","二维图","1");
         }
@@ -75,7 +76,7 @@ public class FuncInjectorImpl implements FuncInjector {
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
         List<String> filedictionary=new ArrayList<>();
-        for(int i = 0;i<=Integer.parseInt(inputParam.type);i++){
+        for(int i = 0;i<=Integer.parseInt(inputParam.getType());i++){
             filedictionary.add("File"+i);
         }
         //todo: 获取文件目录
@@ -87,6 +88,21 @@ public class FuncInjectorImpl implements FuncInjector {
 //        }
         return filedictionary;
     }
+
+    //获取折线图数据
+    public String GetLinearMapData(JSObject params){
+        InputParam inputParam = new InputParam(params);
+        System.out.println(inputParam);
+        List<Float> data = new ArrayList<Float>();
+
+        for(int i=0; i<200; i++)
+        {
+            data.add((float)3*i*i-9*i+10);
+        }
+
+        return data.toString();
+    }
+
 
     //获取热力图
     public String GetHeatMapData(JSObject params){
