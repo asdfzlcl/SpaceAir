@@ -1,8 +1,8 @@
 package util;
 
 public enum FileType {
-    CssiSpaceWeatherData,
-    NeutralDensityData,
-    WHUGlobalIonosphereData,
-    RocketSpaceTemperatureData
+    SunAndTerrestrialMagnetismFile,
+    AtmosphereDensityFile ,
+    IonizationParameterFile,
+    SpaceEnvironmentFIle
 }

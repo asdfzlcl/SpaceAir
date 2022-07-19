@@ -90,7 +90,7 @@ public class WebStage extends Application {
         webStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-                if(DialogHelper.popConfirmationDialog("确认？","是否退出标准大气软件")){
+                if(DialogHelper.popConfirmationDialog("退出","是否退出气动大气环境效应仿真可视化平台?")){
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
