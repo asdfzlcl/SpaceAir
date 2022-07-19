@@ -1,6 +1,5 @@
 package util.fileType;
 import util.FileType;
-import java.util.ArrayList;
 
 /**
  * 此类用作其他文件类型对应类的父类, 涵盖了文件类型类包含的基础信息以及基础构造函数
@@ -8,7 +7,7 @@ import java.util.ArrayList;
  * 此静态方法
  * @author wxy
  * */
-public class BaseFile {
+public abstract class BaseFile {
 
     protected String fileURL;
 
@@ -19,9 +18,18 @@ public class BaseFile {
      * */
     protected BaseFile(String fileURL){
         this.fileURL = fileURL;
+        readFIle();
     }
 
     /**
+     * 抽象方法, 作为工具函数, 每个子类需要实现
+     * 用来读取文件内部信息的真正函数
+     * */
+    protected abstract void readFIle();
+
+
+    /**
+     * 抽象类唯一外部静态函数接口, 获取对应文件类型的文件对象
      * @param fileURL 传入的文件路径, 推荐使用PathHelper内的方法获取前缀
      * @param fileType 获取的文件类型, 使用enum类
      * @return 一个文件类型对应的对象, 注意需要使用强制类型转换将其转换为对应的对象

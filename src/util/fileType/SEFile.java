@@ -6,7 +6,8 @@ public class SEFile extends BaseFile{
         super(fileURL);
     }
 
-    private void readSEFFile(){
+    @Override
+    protected void readFIle() {
 
     }
 }
