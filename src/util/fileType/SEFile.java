@@ -1,13 +1,17 @@
 package util.fileType;
 
+import java.io.IOException;
+
 public class SEFile extends BaseFile{
 
-    public SEFile(String fileURL) {
+    public SEFile(String fileURL) throws IOException {
         super(fileURL);
     }
 
     @Override
-    protected void readFIle() {
+    protected void readFile() throws IOException {
 
     }
+
+
 }

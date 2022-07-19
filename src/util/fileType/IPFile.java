@@ -1,13 +1,17 @@
 package util.fileType;
 
+import java.io.IOException;
+
 public class IPFile extends BaseFile{
 
-    public IPFile(String fileURL) {
+    public IPFile(String fileURL) throws IOException {
         super(fileURL);
     }
 
     @Override
-    protected void readFIle() {
+    protected void readFile() throws IOException {
 
     }
+
+
 }
