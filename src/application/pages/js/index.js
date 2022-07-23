@@ -26,9 +26,41 @@ async function getData() {
     }
     return JSON.parse(rawData)
 }
+//onchange="handleFiles(this.files)"
+function getObjectURL(file) {
+    var url = null;
+    if (window.createObjcectURL != undefined) {
+        url = window.createOjcectURL(file);
+    } else if (window.URL != undefined) {
+        url = window.URL.createObjectURL(file);
+    } else if (window.webkitURL != undefined) {
+        url = window.webkitURL.createObjectURL(file);
+    }
+    return url;
+}
 
-function changePath() {
-    funcInjector.changePath()
+function fileChangeHandler(filename,path) {
+    mdui.alert(getObjectURL(filename))
+    params.filename = filename.name
+    params.filepath = getObjectURL(filename)
+    document.querySelector("#show-filename").innerHTML = filename.name
+    document.querySelector("#show-filepath").innerHTML = path
+}
+
+function upload() {
+    var inputObj=document.createElement('input')
+    inputObj.setAttribute('id','file')
+    inputObj.setAttribute('type','file')
+    inputObj.setAttribute('name','file')
+    inputObj.setAttribute("style",'visibility:hidden')
+    inputObj.setAttribute("onchange",'fileChangeHandler(this.files[0],this.value)')
+    document.body.appendChild(inputObj)
+    inputObj.value
+    inputObj.click()
+}
+function GetFile() {
+    upload()
+    //funcInjector.changePath()
 }
 
 function DrawPic(pictype){
@@ -85,40 +117,19 @@ document.querySelector("#submit-param").onclick = () => {
         })
 }
 
-function fileChangeHandler(filename) {
-    params.filename = filename
-    document.querySelector("#show-filename").innerHTML = filename
-}
 
 
-// 通过value动态生成文杰列表项
-function getFileListHtml(value) {
-    return `<div><li class="mdui-list-item mdui-ripple file-item" onclick="fileChangeHandler('` + value + `')">${value}</li>
-<li class="mdui-divider"></li></div>`
-}
+
 
 // 生成按钮组件
 function getBottomListHtml(value1,value2)
 {
-    return `<button id="submit-param" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="DrawPic('` + value2 + `')" style = "margin-left:1vh;margin-bottom:1vh;margin-right:1vh"> ${value1} </button>`
+    return `<button id="submit-param" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="DrawPic('` + value2 + `')" style = "margin-bottom: 1vh"> ${value1} </button>`
 }
-//获取文件目录
+//获取画图属性目录
 function fetchFileList()
 {
-    //生成文件目录
-    document.querySelector("#file-list").innerHTML = ''
-    params.filename=""
-    let filelist = funcInjector.GetDictiontary(params)
-    let files = []
-    files = filelist
-        .toString()
-        .slice(1, filelist.toString().length - 1)
-        .replace(/\s+/g, '')
-        .split(',')
-    let html = ""
-    for (let i = 0; i < files.length; i++) html = html + getFileListHtml(filelist.get(i))
-    mdui.$("#file-list").append(html)
-    mdui.$("#file-list").mutation()
+
     params.filename=""
     document.querySelector("#show-filename").innerHTML=""
     //生成按钮组件
@@ -131,7 +142,7 @@ function fetchFileList()
     //mdui.$("#botton-list").mutation()
     html = ''
     for (let i = 1; i < bottontype.length; i+=2) {
-        html = html  + getBottomListHtml(bottontype[i],bottontype[i+1])
+        html = html  + getBottomListHtml(bottontype[i],bottontype[i+1]) +'<br>'
     }
     document.querySelector("#botton-list").innerHTML = ''
     mdui.$("#botton-list").append(html)
