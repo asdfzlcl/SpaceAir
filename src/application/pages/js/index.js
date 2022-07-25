@@ -47,20 +47,8 @@ function fileChangeHandler(filename,path) {
     document.querySelector("#show-filepath").innerHTML = path
 }
 
-function upload() {
-    var inputObj=document.createElement('input')
-    inputObj.setAttribute('id','file')
-    inputObj.setAttribute('type','file')
-    inputObj.setAttribute('name','file')
-    inputObj.setAttribute("style",'visibility:hidden')
-    inputObj.setAttribute("onchange",'fileChangeHandler(this.files[0],this.value)')
-    document.body.appendChild(inputObj)
-    inputObj.value
-    inputObj.click()
-}
 function GetFile() {
-    upload()
-    //funcInjector.changePath()
+    fileURL = funcInjector.chooseFile()
 }
 
 function DrawPic(pictype){

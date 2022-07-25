@@ -1,17 +1,25 @@
 package application.app;
 
 
-import java.io.IOException;
 import com.teamdev.jxbrowser.chromium.JSObject;
 import application.app.messages.InputParam;
 import javafx.application.Platform;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import setting.Setting;
 import util.DialogHelper;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static java.lang.Thread.sleep;
 
 public class FuncInjectorImpl implements FuncInjector {
 
@@ -31,6 +39,20 @@ public class FuncInjectorImpl implements FuncInjector {
                 DialogHelper.popErrorDialog("致命错误！请重启软件。");
             }
         });
+    }
+
+    public String chooseFile(){
+        final FutureTask popChooseFile = new FutureTask(() -> new FileChooser().showOpenDialog(new Stage()).getAbsolutePath());
+        Platform.runLater(popChooseFile);
+        String filePath = "";
+        try {
+            filePath = (String) popChooseFile.get();
+        }catch (Exception e){
+            e.printStackTrace();
+            DialogHelper.popErrorDialog("未选择文件！");
+        }
+        System.out.println(filePath);
+        return filePath;
     }
 /*
 太阳和地磁指数

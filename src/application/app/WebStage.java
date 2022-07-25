@@ -21,8 +21,11 @@ import java.io.File;
 import java.util.Objects;
 
 public class WebStage extends Application {
-    private final Stage webStage = new Stage(StageStyle.DECORATED);
+    private static final Stage webStage = new Stage(StageStyle.DECORATED);
     private FuncInjector funcInjector = new FuncInjectorImpl();
+    public static Stage getInstance(){
+        return webStage;
+    }
 
     private static void initWebCore() {
         // On Mac OS X Chromium engine must be initialized in non-UI thread.
@@ -43,7 +46,7 @@ public class WebStage extends Application {
         pane.getChildren().add(browserView);
         Scene scene = new Scene(pane, 1850, 1000);
         webStage.setScene(scene);
-        webStage.setTitle("气动大气环境效应仿真可视化平台");
+        webStage.setTitle(NameHelper.softwareName);
         webStage.getIcons().add(new Image("file:" +
                 System.getProperty("user.dir") + File.separator + "logo.png"));
 
@@ -90,7 +93,7 @@ public class WebStage extends Application {
         webStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-                if(DialogHelper.popConfirmationDialog("退出","是否退出气动大气环境效应仿真可视化平台?")){
+                if(DialogHelper.popConfirmationDialog("退出","是否退出" + NameHelper.softwareName + "?")){
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
