@@ -41,6 +41,9 @@ public class FuncInjectorImpl implements FuncInjector {
         });
     }
 
+    /**
+     * @return filePath, String 表示文件绝对路径, 直接在js文件中获取, 之后可以调用其他方法获取数据
+     * */
     public String chooseFile(){
         final FutureTask popChooseFile = new FutureTask(() -> new FileChooser().showOpenDialog(new Stage()).getAbsolutePath());
         Platform.runLater(popChooseFile);
@@ -54,6 +57,7 @@ public class FuncInjectorImpl implements FuncInjector {
         System.out.println(filePath);
         return filePath;
     }
+
 /*
 太阳和地磁指数
 大气密度变化规律
