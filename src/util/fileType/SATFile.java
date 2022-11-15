@@ -30,6 +30,7 @@ public class SATFile extends BaseFile {
         timeSeries = new ArrayList<>();
         APSeries = new ArrayList<>();
         F10Series = new ArrayList<>();
+        readFile();
     }
 
     /**
@@ -60,7 +61,7 @@ public class SATFile extends BaseFile {
                     currentAP = Double.parseDouble(splitArray[14]);
                     currentF10 = Double.parseDouble(splitArray[26]);
                 }catch (ParseException e){
-                    continue;
+                    continue; // 如果遇到无法parse的行 直接跳过 不抛出异常
                 }
                 this.timeSeries.add(currentDate);
                 this.APSeries.add(currentAP);

@@ -18,9 +18,8 @@ public abstract class BaseFile {
      * 一般不会在外部使用次构造函数, 因此为protected前缀
      * @param fileURL 传入的文件路径
      * */
-    protected BaseFile(String fileURL) throws IOException{
+    protected BaseFile(String fileURL){
         this.fileURL = fileURL;
-        readFile();
     }
 
     /**
@@ -53,5 +52,17 @@ public abstract class BaseFile {
                 break;
         }
         return currentFile;
+    }
+
+    /**
+     * 测试主类
+     * */
+    public static void main(String[] args) {
+        try {
+            SEFile temp = (SEFile) readFile("C:\\Users\\seu-wxy\\Desktop\\空间天气\\空间天气\\图4对应的数据--ROCKET_TEMP.txt", FileType.SEFile);
+            System.out.println("Done!");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
