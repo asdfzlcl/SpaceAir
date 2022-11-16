@@ -68,10 +68,16 @@ function DrawPic(pictype){
                     drawLinearMapData(rawData)
                     break
                 case 1:
+                    drawLinear2MapData(rawData)
+                    break
+                case 2:
+                    drawLinearVerticalMapData(rawData)
+                    break
+                case 3:
                     drawHeatMapData(rawData)
                     break
-                case 2:
-                    drawContourMapData(rawData)
+                case 4:
+                    drawTECUData(rawData)
             }
         })
         .catch(e => {
@@ -80,30 +86,6 @@ function DrawPic(pictype){
 }
 
 
-
-
-// 绑定提交参数事件
-document.querySelector("#submit-param").onclick = () => {
-    if(params.filename=="")
-    {
-        mdui.alert("请选择文件")
-        return
-    }
-    getData()
-        .then(rawData => {
-            switch (params.task) {
-                case 0:
-                    drawHeatMap(rawData)
-                    break
-                case 1:
-                case 2:
-                    drawContourMapData(rawData)
-            }
-        })
-        .catch(e => {
-            mdui.alert(e.toString())
-        })
-}
 
 
 
@@ -212,3 +194,140 @@ function drawLinearMapData(rawData){
     chartDom.setOption(option)
 }
 
+
+//画两条折线图
+function drawLinear2MapData(rawData){
+    dataName = "电离层参数一维图"
+    let option = {
+        title: {
+            text: '电离层参数一维图'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['15', '70']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'value',
+            boundaryGap: false,
+            data: rawData[0]
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                name: '15',
+                type: 'line',
+                stack: 'Total',
+                data: rawData[1]
+            },
+            {
+                name: '70',
+                type: 'line',
+                stack: 'Total',
+                data: rawData[2]
+            },
+        ]
+    };
+    let chartDom = echarts.init(document.querySelector("#chart"));
+    chartDom.clear()
+    chartDom.setOption(option)
+}
+
+//垂直折线图
+function drawLinearVerticalMapData(rawData){
+    let option ={
+        legend: {
+            data: ['临近空间环境一维图','x']
+        },
+        tooltip: {
+            trigger: 'axis',
+            formatter: '{b}km : {c}K'
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} K'
+            }
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} km'
+            },
+            data: rawData[0]
+        },
+        series: [
+            {
+                name: '临近空间环境一维图',
+                type: 'line',
+                symbolSize: 10,
+                symbol: 'circle',
+                smooth: true,
+                lineStyle: {
+                    width: 3,
+                    shadowColor: 'rgba(0,0,0,0.3)',
+                    shadowBlur: 10,
+                    shadowOffsetY: 8
+                },
+                data: [15, -50, -56.5, -46.5, -22.1, -2.5, -27.7, -55.7, -76.5]
+            },
+            {
+                name: 'x',
+                type: 'line',
+                symbolSize: 10,
+                symbol: 'circle',
+                smooth: true,
+                lineStyle: {
+                    width: 3,
+                    shadowColor: 'rgba(0,0,0,0.3)',
+                    shadowBlur: 10,
+                    shadowOffsetY: 8
+                },
+                data: [15, -50, -56.5, -46.5, -22.1, -2.5, -27.7, -55.7, -76.5]
+            }
+        ]
+    };
+    let chartDom = echarts.init(document.querySelector("#chart"));
+    chartDom.clear()
+    chartDom.setOption(option)
+}
+
+
+//热力图
+function drawContourMapData(rawData) {
+    let option={
+        //Todo:https://echarts.apache.org/examples/zh/editor.html?c=calendar-heatmap
+    };
+    let chartDom = echarts.init(document.querySelector("#chart"));
+    chartDom.clear()
+    chartDom.setOption(option)
+}
+
+function drawTECUData(rawData) {
+    let option={
+        //Todo:不会等高线
+    };
+    let chartDom = echarts.init(document.querySelector("#chart"));
+    chartDom.clear()
+    chartDom.setOption(option)
+}

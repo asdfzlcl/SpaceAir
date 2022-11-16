@@ -87,13 +87,13 @@ public class FuncInjectorImpl implements FuncInjector {
         }
         if(Objects.equals(type, "2"))
         {//电离层参数
-            return Arrays.asList("电离层参数","一维图","3","二维图","2");
+            return Arrays.asList("电离层参数","一维图","1","二维图","4");
         }
         if(Objects.equals(type, "3"))
         {//临近空间环境
-            return Arrays.asList("临近空间环境","一维图","0","二维图","1");
+            return Arrays.asList("临近空间环境","一维图","2","二维图","3");
         }
-        return Arrays.asList("临近空间环境一维图","0","临近空间环境二维图","1");
+        return Arrays.asList("临近空间环境","一维图","2","临近空间环境二维图","3");
     }
 
 
@@ -120,7 +120,7 @@ public class FuncInjectorImpl implements FuncInjector {
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
         List<Float> data = new ArrayList<Float>();
-
+        //todo:获取数据
         for(int i=0; i<200; i++)
         {
             data.add((float)3*i*i-9*i+10);
