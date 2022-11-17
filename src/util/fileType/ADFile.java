@@ -7,6 +7,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.lang.Math;
 
+/**
+ * ADF文件(大气密度 Atmosphere Density File)
+ * 需要分别获得太阳与地球的电磁指数
+ * 使用getTimeSeries()获取x-axis对应时间序列
+ * 使用getAPFactor()方法获取此文件内AP指数序列
+ * 使用getF10Factor()获取此文件内F10.7指数序列
+ * @author wxy
+ * */
 public class ADFile extends BaseFile{
 
     private final ArrayList<String> timeSeries;
@@ -23,7 +31,7 @@ public class ADFile extends BaseFile{
 
 
     /**
-     * 读取ADF File(大气密度 Atmosphere Density File)
+     * 读取ADF File
      * 需要跳过前面的无效注释行
      * 后续数据行格式为:
      * Year   d  ut      ratio       uncert     log10(msis)  log10(darg)   uncert

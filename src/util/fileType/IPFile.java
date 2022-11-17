@@ -18,6 +18,7 @@ import java.util.ArrayList;
  * timeSeries: ArrayList<DateTime> 包含所有的时间序列
  * positionSeries: ArrayList<Double> 每个时间序列内的纬度序列(默认每个时间序列都包含所有纬度序列)(经度序列固定为-180~180, 分辨率:5度)
  * dataSeries: ArrayList<ArrayList<ArrayList<Double>>> 每个时间序列的每个纬度序列包含的IPF值
+ * @author wxy
  * */
 public class IPFile extends BaseFile{
 
@@ -58,7 +59,7 @@ public class IPFile extends BaseFile{
                 // 首先将这行按照空格分离
                 String match = currentLine.replace("\t", "");
                 match = match.replace(" ", "");
-                String temp[] = currentLine.split("\\s+");
+                String[] temp = currentLine.split("\\s+");
                 if(match.matches("[0-9]STARTOFTECMAP")) {
                     continue;
                 }
