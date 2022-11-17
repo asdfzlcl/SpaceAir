@@ -9,10 +9,12 @@ import java.lang.Math;
 
 /**
  * ADF文件(大气密度 Atmosphere Density File)
- * 需要分别获得太阳与地球的电磁指数
- * 使用getTimeSeries()获取x-axis对应时间序列
- * 使用getAPFactor()方法获取此文件内AP指数序列
- * 使用getF10Factor()获取此文件内F10.7指数序列
+ * 有两个有效数据
+ * 有一个时间索引
+ * getTimeSeries 获取时间序列
+ * getModelDataSeries 获取模型预测数据序列
+ * getSpecDataSeries 获取实际观测序列
+ * 全都与时间序列相对应
  * @author wxy
  * */
 public class ADFile extends BaseFile{
