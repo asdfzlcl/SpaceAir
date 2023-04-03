@@ -1,0 +1,196 @@
+.head-tab{
+    height: 5vh;
+    border-bottom: solid gray 1px;
+}
+.body-panel{
+    width: 100vw;
+    height: 95vh;
+    display: flex;
+}
+
+
+.mdui-theme-accent-blue {
+    height:100vh
+}
+
+.header {
+    background-color: #f0f0f0;
+    min-height: 7vh;
+    border:1px solid #000 ;
+    display: flex;
+    /* box-shadow: 0px 2px 2px #666a6d; */
+    flex-direction: row;
+    font-family:Arial,"Microsoft Yahe","微软雅黑";
+    align-items: center;
+    border-radius: 0px 0px 8px 8px;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+.mdui-select {
+    margin-left: 0.5vw;
+    width: 10vw;
+}
+.charts {
+    color: #61dafb;
+}
+.file-select {
+    margin-left: 5vw;
+    margin-right: auto;
+}
+.file-select-title {
+    font-size: 20px;
+    color: #000;
+}
+
+.param-panel{
+    width: 15vw;
+    display: flex;
+    border-right: solid gray 1px;
+    flex-direction: column;
+    align-items:center;
+    justify-content:space-between;
+    padding-left: 0.5vw;
+    padding-right: 0.5vw;
+    padding-bottom: 3vh;
+}
+.filelist-panel{
+    padding-top: 3vh;
+    width: 15vw;
+    display: flex;
+    border-right: solid gray 1px;
+    flex-direction: column;
+    align-items:center;
+    padding-left: 0.5vw;
+    padding-right: 0.5vw;
+}
+.filelist-panel>h2{
+    margin-bottom: 3vh;
+}
+.param-input {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.draw-panel{
+    width: 70vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.param-item{
+    width: 100%;
+    margin-bottom: 1vh;
+}
+.data-statistics{
+    margin-top: -7vh;
+}
+.statistics-line{
+    margin-top: 3vh;
+}
+.statistics-item{
+    display: inline-block;
+    min-width: 3vw;
+    height: 100%;
+}
+ul#file-list{
+    min-width: 14vw;
+    height: 28vh;
+    overflow: scroll;
+}
+#fab-animation-show{
+    margin-bottom: 3vh;
+}
+
+.xymid{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#setting{
+    margin-left: 1vh;
+}
+
+#selector{
+    color: #000;
+}
+
+.fliter{
+    width: 10%;
+}
+
+.file-info {
+    width: 70vw;
+}
+
+.mdui-select-selected {
+    color: #000;
+}
+
+
+.file-name {
+    display: inline-block;
+}
+
+.file-path {
+    display: inline-block;
+}
+
+.file-detail {
+    display: none;
+    float: left;
+    text-align: left;
+}
+.file-info {
+    font-size: 14px;
+    color: #000;
+    float: left;
+}
+
+.charts {
+    height: 60vh;
+
+    background:#ccc;
+    background-image: linear-gradient(white 0px,transparent 0),
+    linear-gradient(90deg, white 0px,transparent 0),
+    linear-gradient(hsla(0,0%,100%,.3) 1px,transparent 0),
+    linear-gradient(90deg,hsla(0,0%,100%,.3) 1px,transparent 0);
+    background-size:75px 75px,75px 75px,15px 15px,15px 15px;
+
+}
+
+.statistic {
+    height: 33vh;
+    margin-bottom: 0;
+    background-color: #f0f0f0;
+    display: flex;
+    /* box-shadow: 0px 2px 2px #666a6d; */
+    flex-direction: row;
+    font-family:Arial,"Microsoft Yahe","微软雅黑";
+    align-items: center;
+    border:1px solid #000 ;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.statistic-info {
+    width: 70vw;
+    color: #000;
+}
+.logo {
+    opacity: 0.7;
+    float: right;
+}
+
+.chartpic {
+    margin:0px auto;
+    height: 55vh;
+    width: 80vw;
+}
+
+.chart-radio {
+   text-align: center;
+}
