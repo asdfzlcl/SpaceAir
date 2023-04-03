@@ -10,10 +10,7 @@ import setting.Setting;
 import util.DialogHelper;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -143,5 +140,9 @@ public class FuncInjectorImpl implements FuncInjector {
         }
 
         return data.toString();
+    }
+
+    public void log(String info){
+        System.out.println(info);
     }
 }
