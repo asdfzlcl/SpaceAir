@@ -41,7 +41,7 @@ public abstract class BaseFile {
             case SEFile:
                 currentFile = new SEFile(fileURL);
                 break;
-            case ADFFile:
+            case ADFile:
                 currentFile = new ADFile(fileURL);
                 break;
             case IPFile:
@@ -59,7 +59,7 @@ public abstract class BaseFile {
      * */
     public static void main(String[] args) {
         try {
-            ADFile temp = (ADFile) readFile("C:\\Users\\seu-wxy\\Desktop\\空间天气\\空间天气\\图2对应的数据--热层大气密度\\新建文件夹\\cedar_file_access-250km.txt", FileType.ADFFile);
+            ADFile temp = (ADFile) readFile("C:\\Users\\seu-wxy\\Desktop\\空间天气\\空间天气\\图2对应的数据--热层大气密度\\新建文件夹\\cedar_file_access-250km.txt", FileType.ADFile);
             System.out.println("Done!");
         }catch (IOException e){
             e.printStackTrace();

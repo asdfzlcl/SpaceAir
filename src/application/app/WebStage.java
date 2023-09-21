@@ -2,6 +2,7 @@ package application.app;
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.BrowserCore;
+import com.teamdev.jxbrowser.chromium.BrowserPreferences;
 import com.teamdev.jxbrowser.chromium.JSValue;
 import com.teamdev.jxbrowser.chromium.events.*;
 import com.teamdev.jxbrowser.chromium.internal.Environment;
@@ -49,7 +50,6 @@ public class WebStage extends Application {
         webStage.setTitle(NameHelper.softwareName);
         webStage.getIcons().add(new Image("file:" +
                 System.getProperty("user.dir") + File.separator + "logo.png"));
-
         String url = Objects.requireNonNull(WebStage.class.getResource("/application/pages/index.html")).toExternalForm();
         browser.addLoadListener(new LoadAdapter() {
             @Override

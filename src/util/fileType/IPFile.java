@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 
@@ -22,8 +23,9 @@ import java.util.ArrayList;
  * */
 public class IPFile extends BaseFile{
 
-    private final ArrayList<DateTime> timeSeries;
+    private final ArrayList<String> timeSeries;
     private final ArrayList<Double> positionSeries;
+
     private final ArrayList<ArrayList<ArrayList<Double>>> dataSeries;
 
     public IPFile(String fileURL) throws IOException {
@@ -48,6 +50,7 @@ public class IPFile extends BaseFile{
         boolean isInDataSeries = false;
         int countInPositionSeries = -1;
         int countInDateSeries = -1;
+        boolean isRSM = false;
         while((currentLine = currentBR.readLine()) != null){
             if(!startValidation){
                 // 去除多余的空格与tab
@@ -56,16 +59,26 @@ public class IPFile extends BaseFile{
                 if(temp.equals("ENDOFHEADER"))
                     startValidation = true;
             }else{
+
                 // 首先将这行按照空格分离
                 String match = currentLine.replace("\t", "");
                 match = match.replace(" ", "");
                 String[] temp = currentLine.split("\\s+");
-                if(match.matches("[0-9]STARTOFTECMAP")) {
+                if(isRSM == true && ! match.matches("[0-9]*ENDOFRMSMAP")  ) {
+                    continue;
+                } else  {
+                    isRSM = false;
+                }
+                if(match.matches("[0-9]*STARTOFTECMAP")) {
+                    continue;
+                }
+                if(match.matches("[0-9]*STARTOFRMSMAP")) {
+                    isRSM = true;
                     continue;
                 }
                 if(match.matches("[0-9]*EPOCHOFCURRENTMAP")){
                     timeSeries.add(new DateTime(Integer.parseInt(temp[1]), Integer.parseInt(temp[2]),
-                            Integer.parseInt(temp[3]), Integer.parseInt(temp[4]), Integer.parseInt(temp[5]), Integer.parseInt(temp[6])));
+                            Integer.parseInt(temp[3]), Integer.parseInt(temp[4]), Integer.parseInt(temp[5]), Integer.parseInt(temp[6])).toString("yyyy-MM-dd hh:mm:ss"));
                     dataSeries.add(new ArrayList<>());
                     countInPositionSeries = -1;
                     countInDateSeries ++;
@@ -105,9 +118,10 @@ public class IPFile extends BaseFile{
     /**
      * 获得当前文件的时间序列
      * 内部元素是个DataTime对象
+     *
      * @return timeSeries: ArrayList<DateTime>
-     * */
-    public ArrayList<DateTime> getTimeSeries() {
+     */
+    public ArrayList<String> getTimeSeries() {
         return timeSeries;
     }
 

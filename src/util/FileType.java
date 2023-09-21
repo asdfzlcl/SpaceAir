@@ -9,7 +9,7 @@ package util;
  * */
 public enum FileType {
     SATFile,
-    ADFFile,
+    ADFile,
     IPFile,
     SEFile
 }

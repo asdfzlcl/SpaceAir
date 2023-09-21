@@ -4,10 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * SAT文件(Sun and terrestrial magnetism file) 太阳与地球电磁指数文件类
@@ -21,13 +19,13 @@ import java.util.Date;
  * */
 public class SATFile extends BaseFile {
 
-    protected ArrayList<Date> timeSeries;
+    protected ArrayList<String> timeSeries;
     protected ArrayList<Double> APSeries;
     protected ArrayList<Double> F10Series;
 
     public SATFile(String fileURL) throws IOException {
         super(fileURL);
-        timeSeries = new ArrayList<>();
+        timeSeries = new ArrayList<String>();
         APSeries = new ArrayList<>();
         F10Series = new ArrayList<>();
         readFile();
@@ -53,16 +51,13 @@ public class SATFile extends BaseFile {
             if( !splitArray[0].equals("#") && splitArray.length == 33){
                 SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
                 String unFormatDate = splitArray[0] + "-" + splitArray[1] + "-" + splitArray[2];
-                Date currentDate;
+                String currentDate;
                 double currentAP;
                 double currentF10;
-                try{
-                    currentDate = ft.parse(unFormatDate);
-                    currentAP = Double.parseDouble(splitArray[14]);
-                    currentF10 = Double.parseDouble(splitArray[26]);
-                }catch (ParseException e){
-                    continue; // 如果遇到无法parse的行 直接跳过 不抛出异常
-                }
+                //                    currentDate = ft.parse(unFormatDate);
+                currentDate = unFormatDate;
+                currentAP = Double.parseDouble(splitArray[14]);
+                currentF10 = Double.parseDouble(splitArray[26]);
                 this.timeSeries.add(currentDate);
                 this.APSeries.add(currentAP);
                 this.F10Series.add(currentF10);
@@ -73,7 +68,7 @@ public class SATFile extends BaseFile {
     /**
      * @return return a Array<Date> represent x-axis data: Time series
      * */
-    public ArrayList<Date> getTimeSeries() {
+    public ArrayList<String> getTimeSeries() {
         return timeSeries;
     }
 
