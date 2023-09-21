@@ -22,12 +22,14 @@ public class ADFile extends BaseFile{
     private final ArrayList<String> timeSeries;
     private final ArrayList<Double> modelDataSeries;
     private final ArrayList<Double> specDataSeries;
+    private final ArrayList<Double> densDataSeries;
 
     public ADFile(String fileURL) throws IOException {
         super(fileURL);
         timeSeries = new ArrayList<>();
         modelDataSeries = new ArrayList<>();
         specDataSeries = new ArrayList<>();
+        densDataSeries = new ArrayList<>();
         readFile();
     }
 
@@ -50,6 +52,7 @@ public class ADFile extends BaseFile{
             String[] temp = currentLine.split("\\s+");
             String year;
             String day;
+            double ratio;
             double logMsis;
             double logDrag;
             try{
@@ -58,14 +61,16 @@ public class ADFile extends BaseFile{
                     index ++;
                 year = temp[index];
                 day = temp[index + 1];
-                logMsis = Double.parseDouble(temp[index + 4]);
-                logDrag = Double.parseDouble(temp[index + 5]);
+                ratio = Double.parseDouble(temp[index + 3]);
+                logMsis = Double.parseDouble(temp[index + 5]);
+                logDrag = Double.parseDouble(temp[index + 6]);
             }catch (Exception e){
                 continue;
             }
             timeSeries.add(year + '-' + day);
-            modelDataSeries.add(Math.pow(logDrag, 10));
-            specDataSeries.add(Math.pow(logMsis, 10));
+            modelDataSeries.add(Math.pow(10, logDrag));
+            specDataSeries.add(Math.pow(10, logMsis));
+            densDataSeries.add(ratio * Math.pow(10, logMsis));
         }
     }
 
@@ -95,5 +100,14 @@ public class ADFile extends BaseFile{
      * */
     public ArrayList<Double> getSpecDataSeries() {
         return specDataSeries;
+    }
+
+    /**
+     * 获得当前文件的密度数据序列
+     * 数据是个Double
+     * @return densDataSeries: ArrayList<Double>
+     * */
+    public ArrayList<Double> getDensDataSeries() {
+        return densDataSeries;
     }
 }
