@@ -6,17 +6,21 @@ import application.app.messages.InputParam;
 import javafx.application.Platform;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import setting.Setting;
 import util.DialogHelper;
+import util.FileType;
+import org.json.simple.JSONObject;
+import util.fileType.IPFile;
+import util.fileType.SATFile;
+import util.fileType.SEFile;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static java.lang.Thread.sleep;
+import static util.fileType.BaseFile.readFile;
 
 public class FuncInjectorImpl implements FuncInjector {
 
@@ -76,19 +80,19 @@ public class FuncInjectorImpl implements FuncInjector {
         String type = inputParam.getType();
         if(Objects.equals(type, "0"))
         {
-            return Arrays.asList("太阳和地磁指数","太阳指数","0","地磁指数","0");
+            return Arrays.asList("太阳和地磁指数","太阳指数","0","地磁指数","1");
         }
         if(Objects.equals(type, "1"))
         {
-            return Arrays.asList("大气密度","大气密度变化","0");
+            return Arrays.asList("大气密度","大气密度变化","2");
         }
         if(Objects.equals(type, "2"))
         {//电离层参数
-            return Arrays.asList("电离层参数","一维图","1","二维图","4");
+            return Arrays.asList("电离层参数","一维图","3","二维图","4");
         }
         if(Objects.equals(type, "3"))
         {//临近空间环境
-            return Arrays.asList("临近空间环境","一维图","2","二维图","3");
+            return Arrays.asList("临近空间环境","一维图","5","二维图","6");
         }
         return Arrays.asList("临近空间环境","一维图","2","临近空间环境二维图","3");
     }
@@ -112,37 +116,158 @@ public class FuncInjectorImpl implements FuncInjector {
         return filedictionary;
     }
 
-    //获取折线图数据
-    public String GetLinearMapData(JSObject params){
-        InputParam inputParam = new InputParam(params);
-        System.out.println(inputParam);
-        List<Float> data = new ArrayList<Float>();
-        //todo:获取数据
-        for(int i=0; i<200; i++)
-        {
-            data.add((float)3*i*i-9*i+10);
-        }
 
-        return data.toString();
+    public JSONObject getTime_F10Data(JSObject params) throws IOException {
+        InputParam inputParam = new InputParam(params);
+        List<String> timeSeries = new ArrayList<>();
+        ArrayList<Double> data = new ArrayList<>();
+        SATFile sat = (SATFile) readFile(inputParam.filepath, FileType.SATFile);
+        timeSeries = sat.getTimeSeries();
+        data = sat.getF10Series();
+        HashMap ret = new HashMap();
+        ret.put("x",timeSeries);
+        ret.put("y",data);
+        JSONObject json =  new JSONObject(ret);
+        return json;
     }
 
+    public JSONObject getTime_ApData(JSObject params) throws IOException {
+        InputParam inputParam = new InputParam(params);
+        List<String> timeSeries = new ArrayList<>();
+        ArrayList<Double> data = new ArrayList<>();
+        SATFile sat = (SATFile) readFile(inputParam.filepath, FileType.SATFile);
+        timeSeries = sat.getTimeSeries();
+        data = sat.getAPSeries();
+        HashMap ret = new HashMap();
+        ret.put("x",timeSeries);
+        ret.put("y",data);
+        JSONObject json =  new JSONObject(ret);
+        return json;
+    }
 
-    //获取热力图
-    public String GetHeatMapData(JSObject params){
+//    public String getTime_DensityData(JSObject params) throws IOException {
+//        InputParam inputParam = new InputParam(params);
+//        System.out.println(inputParam);
+//        ArrayList<String> timeSeries = new ArrayList<>();
+//        ArrayList<Double> data = new ArrayList<>();
+//        ADFile ad = (ADFile) readFile(inputParam.filepath, FileType.ADFile);
+//        timeSeries = ad.getTimeSeries();
+//        data = ad.getModelDataSeries();
+//        System.out.println(timeSeries);
+//        System.out.println(data);
+//        return data.toString();
+//    }
+//
+
+    public JSONObject getLocation_TECUData(JSObject params) throws IOException {
         InputParam inputParam = new InputParam(params);
         System.out.println(inputParam);
-        List<List<Float>> data = new ArrayList<List<Float>>(200);
-
-        for(int i=0; i<200; i++)
-        {
-            for(int j=0; j<20; j++)
-                ((ArrayList)data.get(i)).add(j);
+        ArrayList<String> timeSeries;
+        ArrayList<ArrayList<ArrayList<Double>>> data;
+        IPFile ip = (IPFile) readFile(inputParam.filepath, FileType.IPFile);
+        timeSeries = ip.getTimeSeries();
+        data = ip.getDataSeries();
+        ArrayList<Double> longSeries = new ArrayList<Double>();
+        for (int i = -180;i <= 180 ;i+=5) {
+            longSeries.add((double) i);
         }
-
-        return data.toString();
+        ArrayList<Double> latiSeries = ip.getPositionSeries();
+        HashMap ret = new HashMap();
+        for(int i= 0;i< data.size();i++) {
+            ArrayList dataOfEachTime = new ArrayList<>();
+            for(int j = 0; j< data.get(0).size(); j++) {
+                for(int k = 0; k< data.get(0).get(0).size(); k++) {
+                    ArrayList temp = new ArrayList<>();
+                    temp.add(longSeries.get(k));
+                    temp.add(latiSeries.get(j));
+                    temp.add(data.get(i).get(j).get(k));
+                    System.out.println(temp);
+                    dataOfEachTime.add(temp);
+                }
+            }
+            ret.put(timeSeries.get(i),dataOfEachTime);
+        }
+        System.out.println(timeSeries);
+        ret.put("legend",timeSeries);
+        JSONObject json =  new JSONObject(ret);
+        return json;
     }
+
+//    public String getTIME_TECUData(JSObject params) throws IOException {
+//        InputParam inputParam = new InputParam(params);
+//        System.out.println(inputParam);
+//        ArrayList<String> timeSeries = new ArrayList<>();
+//        ArrayList<Double> data = new ArrayList<>();
+//        ADFile ad = (ADFile) readFile(inputParam.filepath, FileType.ADFile);
+//        timeSeries = ad.getTimeSeries();
+//        data = ad.getModelDataSeries();
+//        System.out.println(timeSeries);
+//        System.out.println(data);
+//        return data.toString();
+//    }
+//
+    public JSONObject getTemp_HeightData(JSObject params) throws IOException {
+        InputParam inputParam = new InputParam(params);
+        System.out.println(inputParam);
+        ArrayList<ArrayList<String>> timeSeries;
+        ArrayList<ArrayList<ArrayList<Pair<Double, Double>>>> data;
+        SEFile se = (SEFile) readFile(inputParam.filepath, FileType.SEFile);
+        ArrayList<String> stationSeries = se.getStationSeries();
+        timeSeries = se.getTimeSeries();
+        data = se.getDataSeries();
+        ArrayList<Double> longSeries = new ArrayList<Double>();
+
+        HashMap<String,HashMap> timeRawData = new HashMap();
+        for (int i =0; i<timeSeries.size();i++) {
+            for (int j =0; j<timeSeries.get(i).size();j++) {
+                String time = timeSeries.get(i).get(j);
+                if(timeRawData.containsKey(time))  {
+                    timeRawData.get(time).put(stationSeries.get(i),true);
+                } else {
+                    HashMap temp = new HashMap();
+                    temp.put(stationSeries.get(i),true);
+                    timeRawData.put(time,temp);
+                }
+            }
+        }
+        HashMap<Object, Object> dataRaw = new HashMap<>();
+        for (int i =0; i<timeSeries.size();i++) {
+            for (int j =0; j<timeSeries.get(i).size();j++) {
+                String time = timeSeries.get(i).get(j);
+                if(timeRawData.containsKey(time))  {
+                    timeRawData.get(time).put(stationSeries.get(i), data.get(j).get(i));
+                } else {
+                    HashMap temp = new HashMap();
+                    temp.put(stationSeries.get(i), data.get(j).get(i));
+                    timeRawData.put(time,temp);
+                }
+            }
+        }
+        System.out.println(dataRaw);
+        HashMap ret = new HashMap();
+        ret.put("timeSeries",timeRawData);
+        JSONObject json =  new JSONObject(ret);
+        return json;
+    }
+//
+//    public String getTime_AltitudeMapData(JSObject params) throws IOException {
+//        InputParam inputParam = new InputParam(params);
+//        System.out.println(inputParam);
+//        ArrayList<String> timeSeries = new ArrayList<>();
+//        ArrayList<Double> data = new ArrayList<>();
+//        ADFile ad = (ADFile) readFile(inputParam.filepath, FileType.ADFile);
+//        timeSeries = ad.getTimeSeries();
+//        data = ad.getModelDataSeries();
+//        System.out.println(timeSeries);
+//        System.out.println(data);
+//        return data.toString();
+//    }
 
     public void log(String info){
+
         System.out.println(info);
     }
+
+
+
 }

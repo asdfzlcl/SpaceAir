@@ -118,6 +118,10 @@ ul#file-list{
     margin-left: 1vh;
 }
 
+#test{
+    margin-left: 1vh;
+}
+
 #selector{
     color: #000;
 }
@@ -139,6 +143,12 @@ ul#file-list{
     display: inline-block;
 }
 
+.file-list {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
 .file-path {
     display: inline-block;
 }
@@ -149,14 +159,20 @@ ul#file-list{
     text-align: left;
 }
 .file-info {
+    margin-left: 1vh;
     font-size: 14px;
     color: #000;
     float: left;
 }
 
-.charts {
-    height: 60vh;
+.charts-selector {
+    margin-right: 1vh;
+    float: right;
+}
 
+.charts {
+    height: 65vh;
+    width: 100vw;
     background:#ccc;
     background-image: linear-gradient(white 0px,transparent 0),
     linear-gradient(90deg, white 0px,transparent 0),
@@ -167,7 +183,7 @@ ul#file-list{
 }
 
 .statistic {
-    height: 33vh;
+    height: 28vh;
     margin-bottom: 0;
     background-color: #f0f0f0;
     display: flex;

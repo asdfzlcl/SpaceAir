@@ -61,7 +61,7 @@ public class SEFile extends BaseFile{
             String stationString = "";
             double temperature = 0;
             try{
-                dateString = temp[0];
+                dateString = temp[0].substring(0,4)+ "-" + temp[0].substring(4,6) + "-" +temp[0].substring(6,8) + " " + temp[0].substring(8,10) + ":" + temp[0].substring(10,12);
                 attitude = Double.parseDouble(temp[1]);
                 stationString = temp[2];
                 temperature = Double.parseDouble(temp[3]);
