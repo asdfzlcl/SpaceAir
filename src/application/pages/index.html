@@ -14,7 +14,7 @@
         <div class='header'>
             <div class="file-select">
                 <text class='file-select-title'> 文件类型: </text>
-                <select class="mdui-select" mdui-select id="selector">
+                <select class="mdui-select" mdui-select id="selector" onchange="fetchFileList()">
                     <option value='0'>太阳和地磁指数</option>
                     <option value='1'>大气密度变化规律</option>
                     <option value='2'>电离层参数</option>
@@ -23,7 +23,11 @@
                 <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="setting"
                     onclick="GetFile()">选择文件</button>
                 <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="test"
-                    onclick="testEchart()"> 作图测试 </button>
+                        onclick="testEchart()"> 作图测试 </button>
+                <span class="file-list">
+
+                </span>
+
             </div>
            
             <div class="file-info">
@@ -37,12 +41,12 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class='charts'>
-            <div class='chartpic' id="chart">
+            <div class="charts-selector">
+
             </div>
-            <div class='chart-radio' id = "radio">
-                </div>
+        </div>
+        <div class='charts' id="chart">
+
         </div>
         <div class='statistic'>
             <div class="statistic-info">

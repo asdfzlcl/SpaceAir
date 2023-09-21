@@ -41,7 +41,7 @@ public abstract class BaseFile {
             case SEFile:
                 currentFile = new SEFile(fileURL);
                 break;
-            case ADFFile:
+            case ADFile:
                 currentFile = new ADFile(fileURL);
                 break;
             case IPFile:

@@ -10,7 +10,7 @@ public class InputParam {
     private final int pictype;
     private final String filename;
     //高度
-
+    public final String filepath;
 
     public String getType(){
         return type;
@@ -26,6 +26,7 @@ public class InputParam {
         type = jsObject.getProperty("type").getStringValue();
         pictype = (int)jsObject.getProperty("pictype").getNumberValue();
         filename = jsObject.getProperty("filename").getStringValue();
+        filepath = jsObject.getProperty("filepath").getStringValue();
         //height = (int) jsObject.getProperty("height").getNumberValue();
     }
 

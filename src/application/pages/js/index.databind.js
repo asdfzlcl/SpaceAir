@@ -1,8 +1,12 @@
 let bindGetter = function(obj,attr,domSelector,
-                          getter=()=>document.querySelector(domSelector).value){
+                          getter=()=>{
+                              let mySelection =  document.querySelector(domSelector)
+                             return mySelection.options[mySelection.selectedIndex].value
+                            }
+                          ){
     Object.defineProperty(obj, attr, {
         get: getter
     });
 }
 
-bindGetter(params,'type',"input[name=type-selector]:checked")
+bindGetter(params,'type',"#selector")
