@@ -31,6 +31,14 @@
     margin-left: 0.5vw;
     width: 10vw;
 }
+
+.charts-selector {
+    margin-left: 0.5vw;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+
+}
 .charts {
     color: #61dafb;
 }

@@ -45,7 +45,7 @@ public class WebStage extends Application {
         BrowserView browserView = new BrowserView(browser);
         StackPane pane = new StackPane();
         pane.getChildren().add(browserView);
-        Scene scene = new Scene(pane, 1850, 1000);
+        Scene scene = new Scene(pane, 1900, 1000);
         webStage.setScene(scene);
         webStage.setTitle(NameHelper.softwareName);
         webStage.getIcons().add(new Image("file:" +

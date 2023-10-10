@@ -11,6 +11,7 @@ import setting.Setting;
 import util.DialogHelper;
 import util.FileType;
 import org.json.simple.JSONObject;
+import util.fileType.ADFile;
 import util.fileType.IPFile;
 import util.fileType.SATFile;
 import util.fileType.SEFile;
@@ -145,18 +146,20 @@ public class FuncInjectorImpl implements FuncInjector {
         return json;
     }
 
-//    public String getTime_DensityData(JSObject params) throws IOException {
-//        InputParam inputParam = new InputParam(params);
-//        System.out.println(inputParam);
-//        ArrayList<String> timeSeries = new ArrayList<>();
-//        ArrayList<Double> data = new ArrayList<>();
-//        ADFile ad = (ADFile) readFile(inputParam.filepath, FileType.ADFile);
-//        timeSeries = ad.getTimeSeries();
-//        data = ad.getModelDataSeries();
-//        System.out.println(timeSeries);
-//        System.out.println(data);
-//        return data.toString();
-//    }
+    public JSONObject getTime_DensityData(JSObject params) throws IOException {
+        InputParam inputParam = new InputParam(params);
+        System.out.println(inputParam);
+        ArrayList<String> timeSeries = new ArrayList<>();
+        ArrayList<Double> data = new ArrayList<>();
+        ADFile ad = (ADFile) readFile(inputParam.filepath, FileType.ADFile);
+        timeSeries = ad.getTimeSeries();
+        data = ad.getDensDataSeries();
+        HashMap ret = new HashMap();
+        ret.put("x",timeSeries);
+        ret.put("y",data);
+        JSONObject json =  new JSONObject(ret);
+        return json;
+    }
 //
 
     public JSONObject getLocation_TECUData(JSObject params) throws IOException {
@@ -193,6 +196,38 @@ public class FuncInjectorImpl implements FuncInjector {
         return json;
     }
 
+    public JSONObject getTime_AltitudeData(JSObject params) throws IOException {
+        InputParam inputParam = new InputParam(params);
+        System.out.println(inputParam);
+
+        ArrayList<ArrayList<ArrayList<Pair<Double, Double>>>> data;
+        SEFile se = (SEFile) readFile(inputParam.filepath, FileType.SEFile);
+        ArrayList<String> stationSeries = se.getStationSeries();
+        ArrayList<ArrayList<String>> timeSeries = se.getTimeSeries();
+        data = se.getDataSeries();
+        HashMap ret = new HashMap();
+        for (int i=0;i<stationSeries.size();i++) {
+            ArrayList<ArrayList<String>> oneStationdata = new ArrayList<>();
+            for(int j=0;j<timeSeries.get(i).size();j++) {
+
+                for(int k=0 ; k<data.get(i).get(j).size();k++) {
+                    ArrayList<String> onePointData = new ArrayList<>();
+                    onePointData.add(timeSeries.get(i).get(j));
+                    onePointData.add(String.valueOf(data.get(i).get(j).get(k).getKey()));
+                    onePointData.add(String.valueOf(data.get(i).get(j).get(k).getValue()));
+                    oneStationdata.add(onePointData);
+                }
+
+            }
+            HashMap temp = new HashMap();
+            ret.put(stationSeries.get(i),oneStationdata);
+        }
+        ret.put("legend",stationSeries);
+        System.out.println(ret);
+        JSONObject json =  new JSONObject(ret);
+        return json;
+    }
+
 //    public String getTIME_TECUData(JSObject params) throws IOException {
 //        InputParam inputParam = new InputParam(params);
 //        System.out.println(inputParam);
@@ -215,8 +250,6 @@ public class FuncInjectorImpl implements FuncInjector {
         ArrayList<String> stationSeries = se.getStationSeries();
         timeSeries = se.getTimeSeries();
         data = se.getDataSeries();
-        ArrayList<Double> longSeries = new ArrayList<Double>();
-
         HashMap<String,HashMap> timeRawData = new HashMap();
         for (int i =0; i<timeSeries.size();i++) {
             for (int j =0; j<timeSeries.get(i).size();j++) {
@@ -230,22 +263,91 @@ public class FuncInjectorImpl implements FuncInjector {
                 }
             }
         }
+
         HashMap<Object, Object> dataRaw = new HashMap<>();
-        for (int i =0; i<timeSeries.size();i++) {
-            for (int j =0; j<timeSeries.get(i).size();j++) {
-                String time = timeSeries.get(i).get(j);
-                if(timeRawData.containsKey(time))  {
-                    timeRawData.get(time).put(stationSeries.get(i), data.get(j).get(i));
-                } else {
-                    HashMap temp = new HashMap();
-                    temp.put(stationSeries.get(i), data.get(j).get(i));
-                    timeRawData.put(time,temp);
+            for (int i =0; i<timeSeries.size();i++) {
+                for (int j =0; j<timeSeries.get(i).size();j++) {
+                    String time = timeSeries.get(i).get(j);
+                    if(timeRawData.containsKey(time))  {
+                        ArrayList<ArrayList<Double>> onestationData = new ArrayList<ArrayList<Double>>();
+                        for (int k =0; k< data.get(i).get(j).size();k++) {
+                            ArrayList<Double> onePointData = new ArrayList<Double>();
+                            onePointData.add(data.get(i).get(j).get(k).getValue());
+                            onePointData.add(data.get(i).get(j).get(k).getKey());
+                            onestationData.add(onePointData);
+                        }
+                        timeRawData.get(time).put(stationSeries.get(i), onestationData);
+
+                    } else {
+                        HashMap temp = new HashMap();
+                        ArrayList<ArrayList<Double>> onestationData = new ArrayList<ArrayList<Double>>();
+                        for (int k =0; k< data.get(i).get(j).size();k++) {
+                            ArrayList<Double> onePointData = new ArrayList<Double>();
+                            onePointData.add(data.get(i).get(j).get(k).getValue());
+                            onePointData.add(data.get(i).get(j).get(k).getKey());
+                            onestationData.add(onePointData);
+                        }
+                        timeRawData.get(time).put(stationSeries.get(i), onestationData);
+                        temp.put(stationSeries.get(i),onestationData);
+                        timeRawData.put(time,temp);
+                    }
+                }
+            }
+
+        System.out.println(timeRawData);
+        HashMap ret = new HashMap();
+        ret.put("timeSeries",timeRawData);
+        JSONObject json =  new JSONObject(ret);
+        return json;
+    }
+
+    public JSONObject getPositionSelection(JSObject params) throws IOException {
+        InputParam inputParam = new InputParam(params);
+        System.out.println(inputParam);
+        IPFile ip = (IPFile) readFile(inputParam.filepath, FileType.IPFile);
+        ArrayList<Double> longSeries = new ArrayList<Double>();
+        for (int i = -180;i <= 180 ;i+=5) {
+            longSeries.add((double) i);
+        }
+        ArrayList<Double> latiSeries = ip.getPositionSeries();
+        HashMap ret = new HashMap();
+        ret.put("longSeries",longSeries);
+        ret.put("latiSeries",latiSeries);
+        System.out.println(ret);
+        JSONObject json =  new JSONObject(ret);
+        return json;
+    }
+
+    public JSONObject getPositionedData(Double longitude,Double latitude,JSObject params) throws IOException {
+        InputParam inputParam = new InputParam(params);
+        System.out.println(inputParam);
+        ArrayList<String> timeSeries;
+        ArrayList<ArrayList<ArrayList<Double>>> data;
+        IPFile ip = (IPFile) readFile(inputParam.filepath, FileType.IPFile);
+        timeSeries = ip.getTimeSeries();
+        data = ip.getDataSeries();
+        ArrayList<Double> longSeries = new ArrayList<Double>();
+        for (int i = -180;i <= 180 ;i+=5) {
+            longSeries.add((double) i);
+        }
+
+        ArrayList<Double> latiSeries = ip.getPositionSeries();
+        HashMap ret = new HashMap();
+        for(int i= 0;i< data.size();i++) {
+            ArrayList dataOfEachTime = new ArrayList<>();
+            for(int j = 0; j< data.get(0).size(); j++) {
+                for(int k = 0; k< data.get(0).get(0).size(); k++) {
+                    if(Objects.equals(latiSeries.get(j), latitude) && Objects.equals(longSeries.get(k), longitude)) {
+                        ArrayList temp = new ArrayList<>();
+                        temp.add(timeSeries.get(i));
+                        temp.add(data.get(i).get(j).get(k));
+                        System.out.println(temp);
+                        dataOfEachTime.add(temp);
+                    }
                 }
             }
         }
-        System.out.println(dataRaw);
-        HashMap ret = new HashMap();
-        ret.put("timeSeries",timeRawData);
+        ret.put("legend",timeSeries);
         JSONObject json =  new JSONObject(ret);
         return json;
     }
