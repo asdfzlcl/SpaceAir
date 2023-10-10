@@ -63,6 +63,10 @@ public class SATFile extends BaseFile {
                 this.F10Series.add(currentF10);
             }
         }
+
+        if(this.timeSeries.isEmpty() || this.APSeries.isEmpty() || this.F10Series.isEmpty()){
+            throw new IOException("错误的文件格式！");
+        }
     }
 
     /**
