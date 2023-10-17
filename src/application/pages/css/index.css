@@ -14,19 +14,22 @@
 }
 
 .header {
-    background-color: #f0f0f0;
+    background-image: linear-gradient(135deg, #f2eef9, #E2E4EF);
+    box-shadow: inset 1px 1px 1px 0px rgba(255, 255, 255, 0.8), inset -1px -1px 1px 0px rgba(40, 49, 85, 0.3), 1px 1px 3px 0px rgba(40, 49, 85, 0.1);
+    user-select: none;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    opacity: 1 !important;
     min-height: 7vh;
-    border:1px solid #000 ;
     display: flex;
-    /* box-shadow: 0px 2px 2px #666a6d; */
     flex-direction: row;
     font-family:Arial,"Microsoft Yahe","微软雅黑";
     align-items: center;
-    border-radius: 0px 0px 8px 8px;
+    /*border-radius: 0px 0px 16px 16px;*/
     justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
 }
+
 .mdui-select {
     margin-left: 0.5vw;
     width: 10vw;
@@ -39,6 +42,13 @@
     display: flex;
 
 }
+
+
+.tags {
+    font-size: 14px;
+    color: #000;
+}
+
 .charts {
     color: #61dafb;
 }
@@ -98,9 +108,11 @@
 }
 .data-statistics{
     margin-top: -7vh;
+    font-size: 20px;
 }
 .statistics-line{
     margin-top: 3vh;
+    font-size: 20px;
 }
 .statistics-item{
     display: inline-block;
@@ -181,32 +193,58 @@ ul#file-list{
 .charts {
     height: 65vh;
     width: 100vw;
-    background:#ccc;
-    background-image: linear-gradient(white 0px,transparent 0),
-    linear-gradient(90deg, white 0px,transparent 0),
-    linear-gradient(hsla(0,0%,100%,.3) 1px,transparent 0),
-    linear-gradient(90deg,hsla(0,0%,100%,.3) 1px,transparent 0);
-    background-size:75px 75px,75px 75px,15px 15px,15px 15px;
+    box-shadow: inset 1px 1px 1px 0 rgba(40, 49, 85, 0.4);
+    /*border-radius: 18px;*/
+    background: #fff;
 
 }
 
+.statistic-charts {
+    height: 22vh;
+    width: 40vw;
+    background:#f0f0f0;
+    display: flex;
+    padding: 12px 16px 11px 16px;
+    overflow: hidden;
+    box-shadow: inset -1px -1px 1px 0 rgba(255, 255, 255, 0.8);
+    box-shadow: inset 1px 1px 1px 0 rgba(40, 49, 85, 0.4);
+    border-radius: 18px;
+    margin-bottom: 2vh;
+
+    background: #fff;
+}
+
 .statistic {
-    height: 28vh;
-    margin-bottom: 0;
-    background-color: #f0f0f0;
+    background-image: linear-gradient(135deg, #D9DCE8, #E2E4EF);
+    border-radius: 16px;
+    box-shadow: inset 1px 1px 1px 0px rgba(255, 255, 255, 0.8), inset -1px -1px 1px 0px rgba(40, 49, 85, 0.3), 1px 1px 3px 0px rgba(40, 49, 85, 0.1);
+    user-select: none;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    opacity: 1 !important;
     display: flex;
     /* box-shadow: 0px 2px 2px #666a6d; */
     flex-direction: row;
     font-family:Arial,"Microsoft Yahe","微软雅黑";
     align-items: center;
-    border:1px solid #000 ;
     justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    height: 28vh;
+    margin-bottom: 0;
+    background-color:#f2eef9;
+    display: flex;
+    justify-content: space-around;
+    /* box-shadow: 0px 2px 2px #666a6d; */
+    flex-direction: row;
+    font-family:Arial,"Microsoft Yahe","微软雅黑";
+    align-items: center;
     font-size: calc(10px + 2vmin);
     color: white;
 }
 
 .statistic-info {
-    width: 70vw;
+    width: 33vw;
+    float: left;
     color: #000;
 }
 .logo {
@@ -220,6 +258,3 @@ ul#file-list{
     width: 80vw;
 }
 
-.chart-radio {
-   text-align: center;
-}

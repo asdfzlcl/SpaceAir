@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/mdui.min.css">
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/global.css">
+
 </head>
 
 <body class="mdui-theme-primary-blue mdui-theme-accent-blue">
@@ -22,8 +23,8 @@
                 </select>
                 <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="setting"
                     onclick="GetFile()">选择文件</button>
-                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="test"
-                        onclick="testEchart()"> 作图测试 </button>
+<!--                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="test"-->
+<!--                        onclick="testEchart()"> 作图测试 </button>-->
                 <span class="file-list">
 
                 </span>
@@ -54,14 +55,25 @@
                     数据统计信息
                 </h2>
                 <p class="statistics-line">
-                    最大值: <span id="data-max" class="statistics-item"></span>
-                    最小值: <span id="data-min" class="statistics-item"></span>
+                    样本量:<span id="data-num" class="statistics-item"></span>
+                    最大值:<span id="data-max" class="statistics-item"></span>
+                    最小值:<span id="data-min" class="statistics-item"></span>
+                    中位数:<span id="data-median" class="statistics-item"></span>
                 </p>
                 <p class="statistics-line">
-                    平均值: <span id="data-avg" class="statistics-item"></span>
-                    标准差: <span id="data-sdev" class="statistics-item"></span>
+                    平均值:<span id="data-avg" class="statistics-item"></span>
+                    标准差:<span id="data-sdev" class="statistics-item"></span>
+                    方差:  <span id="data-var" class="statistics-item"> </span>
+                    &nbsp&nbsp极差:  <span id="data-exe" class="statistics-item"></span>
+
                 </p>
             </div>
+            <div class="statistic-charts" id="hisCharts">
+
+            </div>
+<!--            <div class="statistic-charts" id="statCharts">-->
+
+<!--            </div>-->
             <img src="./logo.png" class="logo">
         </div>
     </div>
@@ -113,11 +125,13 @@
     <!--        <div id="chart" style="width: 1200px;height:840px;"></div>-->
     <!--    </div>-->
     <!--</div>-->
+    <script src='js/ecStat.js'></script>
     <script src="js/mdui.min.js"></script>
     <script src="js/china.js"></script>
     <script src="js/index.js"></script>
     <script src="js/index.databind.js"></script>
     <script src="js/echarts.min.js"></script>
+    <script src="js/big.js"></script>
 </body>
 
 </html>

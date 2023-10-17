@@ -333,10 +333,13 @@ public class FuncInjectorImpl implements FuncInjector {
 
         ArrayList<Double> latiSeries = ip.getPositionSeries();
         HashMap ret = new HashMap();
+        ArrayList dataOfEachTime = new ArrayList<>();
+        System.out.println(data);
+        System.out.println(data.size());
+        System.out.println(timeSeries);
         for(int i= 0;i< data.size();i++) {
-            ArrayList dataOfEachTime = new ArrayList<>();
-            for(int j = 0; j< data.get(0).size(); j++) {
-                for(int k = 0; k< data.get(0).get(0).size(); k++) {
+            for(int j = 0; j< data.get(i).size(); j++) {
+                for(int k = 0; k< data.get(i).get(j).size(); k++) {
                     if(Objects.equals(latiSeries.get(j), latitude) && Objects.equals(longSeries.get(k), longitude)) {
                         ArrayList temp = new ArrayList<>();
                         temp.add(timeSeries.get(i));
@@ -347,7 +350,8 @@ public class FuncInjectorImpl implements FuncInjector {
                 }
             }
         }
-        ret.put("legend",timeSeries);
+        ret.put("data",dataOfEachTime);
+        System.out.println(ret);
         JSONObject json =  new JSONObject(ret);
         return json;
     }

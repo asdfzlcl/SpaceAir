@@ -1,8 +1,11 @@
 // 参数数据
 // 该对象的所有属性getter均被绑定到页面
+
+
 params = {
     type: 0, pictype: 0, filename: "", filepath: ""
 }
+
 
 // 统计数据
 // 该对象的所有属性setter均被绑定到页面
@@ -10,9 +13,11 @@ statics = {
     min: 0, max: 0, avg: 0, sdev: 0
 }
 
-data = {
+data = {}
 
-}
+legendData = []
+
+serData = []
 
 const PicType = {
     Time_F10: 0, Time_Ap: 1, Time_Density: 2, TIME_TECU: 3, Location_TECU: 4, Temp_Height: 5, Time_Altitude: 6
@@ -31,9 +36,15 @@ window.onerror = function (errorMessage, scriptURI, lineNo, columnNo, error) {
     funcInjector.log('error: ' + error.toString()); // 异常堆栈信息
 };
 
+
 // 异步获取数据，避免UI阻塞
 async function getData() {
     let rawData
+    data = {}
+
+    legendData = []
+
+    serData = []
     switch (params.pictype) {
         case PicType.Time_F10:
             rawData = funcInjector.getTime_F10Data(params)
@@ -104,11 +115,10 @@ function renewEcharts() {
     try {
         let mySelection = document.getElementById("chartselector")
         let index = mySelection.selectedIndex
-        var arr = mySelection.options[index].value.substring(0,15).split("");
+        var arr = mySelection.options[index].value.substring(0, 15).split("");
         arr.splice(10, 0, " ");
         var newStr = arr.join("");
         let time = newStr
-        funcInjector.log(time)
         drawLinearVerticalMapData(data[time])
     } catch (e) {
         mdui.alert(e)
@@ -123,41 +133,83 @@ function getSelectorHTML(data) {
     let html = ' <select class="charts-selector"  id="chartselector" onchange="renewEcharts()">'
     for (let i = 0; i < data.length; i += 1) {
         let temp = data[i]
-        html = html + `<option value=` + data[i].replace(" ","") + `> ${temp} </option>`
+        html = html + `<option value=` + data[i].replace(" ", "") + `> ${temp} </option>`
     }
     html += "</select>"
     return html
 }
 
-function getPositionSelectorHTML(latitude,longitude) {
-    let html = '纬度 <select class="charts-selector"  id="latitudeselector" >'
+function getPositionSelectorHTML(latitude, longitude) {
+    let html = '<div class="tags">纬度</div> <select class="charts-selector"  id="latitudeselector" >'
     for (let i = 0; i < latitude.length; i += 1) {
         let temp = latitude[i]
-        html = html + `<option value=` + latitude[i] + `> ${temp} </option>`
+        html = html + `<option value=` + temp + `> ${temp} </option>`
     }
     html += "</select>"
-    html += '经度 <select class="charts-selector"  id="longitudeselector" >'
+    html += '<div class="tags">经度</div> <select class="charts-selector"  id="longitudeselector" >'
     for (let i = 0; i < longitude.length; i += 1) {
         let temp = longitude[i]
-        html = html + `<option value=` + longitude[i] + `> ${temp} </option>`
+        html = html + `<option value=` + temp + `> ${temp} </option>`
     }
     html += "</select>"
-    html += `<button id="submit-param" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="clearPosition()" style = "margin-left: 1vh"> 清空 </button>`
     html += `<button id="submit-param" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="addPosition()" style = "margin-left: 1vh"> 添加 </button>`
+    html += `<button id="submit-param" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="clearPosition()" style = "margin-left: 1vh"> 清空 </button>`
     return html
 }
 
 
 function clearPosition() {
-
+    let chartDom = echarts.init(document.querySelector("#chart"));
+    chartDom.clear()
+     chartDom = echarts.init(document.querySelector("#hisCharts"));
+    chartDom.clear()
+    document.getElementById('data-num').innerHTML = ''
+    document.getElementById('data-max').innerHTML = ''
+    document.getElementById('data-min').innerHTML =  ''
+    document.getElementById('data-avg').innerHTML =  ''
+    document.getElementById('data-sdev').innerHTML =   ''
+    document.getElementById('data-var').innerHTML =  ''
+    document.getElementById('data-median').innerHTML =  ''
+    document.getElementById('data-exe').innerHTML = ''
+    serData = []
+    legendData = []
 }
 
 function addPosition() {
+    try {
+
+        let latitudeSelector = document.getElementById("latitudeselector")
+        let index = latitudeSelector.selectedIndex
+        let latitude = latitudeSelector.options[index].value
+        let longitudeSelector = document.getElementById("longitudeselector")
+        index = longitudeSelector.selectedIndex
+        let longitude = longitudeSelector.options[index].value
+        funcInjector.log(longitude)
+        funcInjector.log(latitude)
+        let positionTitle = Math.abs(latitude) + (latitude >= 0 ? "°N," : "°S,") + Math.abs(longitude) + (longitude >= 0 ? "°E" : "°W")
+        for (i in serData) {
+            if (serData[i].name == positionTitle) {
+                mdui.alert("此坐标已添加，请勿重复添加")
+                return
+            }
+          }
+        legendData.push(positionTitle)
+        serData.push({
+            name: positionTitle,
+            type: 'line',
+            symbol: 'none',
+            sampling: 'lttb',
+            data: getPositionedData(longitude, latitude)["data"]
+        })
+        drawPositionLinearMapData()
+    } catch (e) {
+        mdui.alert(e)
+    }
 
 }
 
-function getPositionedData(longitude,latitude) {
-    rawData = funcInjector.getPositionedData(longitude,latitude,params)
+function getPositionedData(longitude, latitude) {
+    rawData = funcInjector.getPositionedData(Number(longitude), Number(latitude), params)
     return JSON.parse(rawData.toString())
 }
 
@@ -173,27 +225,32 @@ function DrawPic(pictype) {
     //绘制图像
     getData()
         .then(rawData => {
+            data = {}
+            legendData = []
+            serData = []
             document.querySelector(".charts-selector").innerHTML = ""
             switch (params.pictype) {
                 case 0:
-                    drawLinearMapData(rawData, "太阳地磁指数一维图", "Time(Year)", "F10.7(sfu)")
+                    drawLinearMapData(rawData, "太阳指数一维图", "Time", "F10.7(sfu)", "F10.7(sfu)")
                     break
                 case 1:
-                    drawLinearMapData(rawData, "电离层参数一维图", "Time(Year)", "Ap")
+                    drawLinearMapData(rawData, "地磁指数一维图", "Time", "Ap", "Ap")
                     break
                 case 2:
-                    drawLinearMapData(rawData, "电离层参数一维图", "Time(Year)", "Density (kg/m^3)")
+                    drawLinearMapData(rawData, "大气密度变化一维图", "Time", "Density (kg/m^3)", "Density (kg/m^3)")
                     break
                 case 3:
                     document.querySelector(".charts-selector").innerHTML = ""
                     longSeries = rawData["longSeries"]
                     latiSeries = rawData["latiSeries"]
-                    let element =getPositionSelectorHTML(latiSeries,longSeries)
+                    let element = getPositionSelectorHTML(latiSeries, longSeries)
                     mdui.$(".charts-selector").append(element)
                     mdui.$(".charts-selector").mutation()
                     break
                 case 4:
-                    drawHeatMapData(rawData, 0, 1100, "category")
+                    drawHeatMapData(rawData, 0, 1100, "category", "电离层参数二维图", "Longitude(°)", "Latitude(°)", true, [
+                        "Longitude(°)", "Latitude(°)", "TECU(TECU)"
+                    ])
                     break
 
                 case 5:
@@ -222,7 +279,9 @@ function DrawPic(pictype) {
 
                     break
                 case 6:
-                    drawHeatMapData(rawData, -100, 0, "value")
+                    drawHeatMapData(rawData, -100, 0, "value", "临近空间环境二维图", "Time", "Altitude(km)", false, [
+                        "Time", "Altitude(km)", "Temperature(°C)"
+                    ])
             }
         })
         .catch(e => {
@@ -289,10 +348,395 @@ function fetchTypes() {
     mdui.$("#selector").mutation()
 }
 
+function demonstrateStat(datax, datay) {
 
+    sampleDeviation = ecStat.statistics.deviation(datay);
+    varianceValue = ecStat.statistics.sampleVariance(datay);
+    maxValue = ecStat.statistics.max(datay);
+    minValue = ecStat.statistics.min(datay);
+    meanValue = ecStat.statistics.mean(datay);
+    medianValue = ecStat.statistics.median(datay);
+    sumValue = datay.length;
+    document.getElementById('data-num').innerHTML = sumValue
+    document.getElementById('data-max').innerHTML = (maxValue>0&&maxValue<0.01)?(new Big(maxValue).toExponential(2)):maxValue.toFixed(2)
+    document.getElementById('data-min').innerHTML = (minValue>0&&minValue<0.01)?(new Big(minValue).toExponential(2)):minValue.toFixed(2)
+    document.getElementById('data-avg').innerHTML =  (meanValue>0&&meanValue<0.01)&&meanValue<0.01?(new Big(meanValue).toExponential(2)):meanValue.toFixed(2)
+    document.getElementById('data-sdev').innerHTML =  (sampleDeviation>0&&sampleDeviation<0.01)&&sampleDeviation<0.01?(new Big(sampleDeviation).toExponential(2)):sampleDeviation.toFixed(2)
+    document.getElementById('data-var').innerHTML = (varianceValue>0&&varianceValue<0.01)?(new Big(varianceValue).toExponential(2)):varianceValue.toFixed(2)
+    document.getElementById('data-median').innerHTML = (medianValue>0&&medianValue<0.01)?(new Big(medianValue).toExponential(2)):medianValue.toFixed(2)
+    document.getElementById('data-exe').innerHTML =( (maxValue-minValue)>0&&(maxValue-minValue)<0.01)?(new Big((maxValue-minValue)).toExponential(2)):(maxValue-minValue).toFixed(2)
+    echarts.registerTransform(ecStat.transform.histogram);
+    echarts.registerTransform(ecStat.transform.clustering);
+    let chartDom = echarts.init(document.querySelector("#hisCharts"));
+    chartDom.clear()
+    var bins = ecStat.histogram(datay);
+    var option = {
+        tooltip: {
+            show: true
+        },
+        title: {
+            text: "频数直方图",
+            left: "center"
+        },
+        color: ['rgb(25, 183, 207)'],
+        grid: {
+            top: '10%',
+            left: '3%',
+            right: '3%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            // boundaryGap: '5%',
+            scale: true, //这个一定要设，不然barWidth和bins对应不上
+            axisLabel: {
+                formatter: function (value) {
+                    return value
+                }
+            },
+            min:function(value){
+                return value.min
+            },
+            max: function (value) {
+                return value.max
+            },
+        },
+        dataZoom:[{ type:"inside"  }],
+        yAxis: {},
+        series: [{
+            name: '频数',
+            type: 'bar',
+            barWidth: '99.3%',
+            // barCategoryGap: 0,
+            data: bins.data
+        }]
+    };
+
+    chartDom.setOption(option);
+    // var chart = echarts.init(document.getElementById('statCharts'));
+    //
+    // window.onresize = function () {
+    //     chart.resize();
+    // };
+
+    // data =[
+    //     [3.275154, 2.957587],
+    //     [-3.344465, 2.603513],
+    //     [0.355083, -3.376585],
+    //     [1.852435, 3.547351],
+    //     [-2.078973, 2.552013],
+    //     [-0.993756, -0.884433],
+    //     [2.682252, 4.007573],
+    //     [-3.087776, 2.878713],
+    //     [-1.565978, -1.256985],
+    //     [2.441611, 0.444826],
+    //     [-0.659487, 3.111284],
+    //     [-0.459601, -2.618005],
+    //     [2.17768, 2.387793],
+    //     [-2.920969, 2.917485],
+    //     [-0.028814, -4.168078],
+    //     [3.625746, 2.119041],
+    //     [-3.912363, 1.325108],
+    //     [-0.551694, -2.814223],
+    //     [2.855808, 3.483301],
+    //     [-3.594448, 2.856651],
+    //     [0.421993, -2.372646],
+    //     [1.650821, 3.407572],
+    //     [-2.082902, 3.384412],
+    //     [-0.718809, -2.492514],
+    //     [4.513623, 3.841029],
+    //     [-4.822011, 4.607049],
+    //     [-0.656297, -1.449872],
+    //     [1.919901, 4.439368],
+    //     [-3.287749, 3.918836],
+    //     [-1.576936, -2.977622],
+    //     [3.598143, 1.97597],
+    //     [-3.977329, 4.900932],
+    //     [-1.79108, -2.184517],
+    //     [3.914654, 3.559303],
+    //     [-1.910108, 4.166946],
+    //     [-1.226597, -3.317889],
+    //     [1.148946, 3.345138],
+    //     [-2.113864, 3.548172],
+    //     [0.845762, -3.589788],
+    //     [2.629062, 3.535831],
+    //     [-1.640717, 2.990517],
+    //     [-1.881012, -2.485405],
+    //     [4.606999, 3.510312],
+    //     [-4.366462, 4.023316],
+    //     [0.765015, -3.00127],
+    //     [3.121904, 2.173988],
+    //     [-4.025139, 4.65231],
+    //     [-0.559558, -3.840539],
+    //     [4.376754, 4.863579],
+    //     [-1.874308, 4.032237],
+    //     [-0.089337, -3.026809],
+    //     [3.997787, 2.518662],
+    //     [-3.082978, 2.884822],
+    //     [0.845235, -3.454465],
+    //     [1.327224, 3.358778],
+    //     [-2.889949, 3.596178],
+    //     [-0.966018, -2.839827],
+    //     [2.960769, 3.079555],
+    //     [-3.275518, 1.577068],
+    //     [0.639276, -3.41284]
+    // ]
+
+
+    // echarts.registerTransform(ecStat.transform.clustering);
+    // var CLUSTER_COUNT = 6;
+    // var DIENSIION_CLUSTER_INDEX = 2;
+    // var COLOR_ALL = [
+    //     '#37A2DA', '#e06343', '#37a354', '#b55dba', '#b5bd48', '#8378EA', '#96BFFF'
+    // ];
+    // var pieces = [];
+    // for (var i = 0; i < CLUSTER_COUNT; i++) {
+    //     pieces.push({
+    //         value: i,
+    //         label: 'cluster ' + i,
+    //         color: COLOR_ALL[i]
+    //     });
+    // }
+    //
+    // var option = {
+    //     dataset: [{
+    //         source: data
+    //     }, {
+    //         transform: {
+    //             type: 'ecStat:clustering',
+    //             print: true,
+    //             config: {
+    //                 clusterCount: CLUSTER_COUNT,
+    //                 outputType: 'single',
+    //                 outputClusterIndexDimension: DIENSIION_CLUSTER_INDEX
+    //             }
+    //         }
+    //     }],
+    //     tooltip: {
+    //         position: 'top'
+    //     },
+    //     visualMap: {
+    //         type: 'piecewise',
+    //         top: 'middle',
+    //         min: 0,
+    //         max: CLUSTER_COUNT,
+    //         left: 10,
+    //         splitNumber: CLUSTER_COUNT,
+    //         dimension: DIENSIION_CLUSTER_INDEX,
+    //         pieces: pieces
+    //     },
+    //     grid: {
+    //         left: 120
+    //     },
+    //     xAxis: {
+    //     },
+    //     yAxis: {
+    //     },
+    //     series: {
+    //         type: 'scatter',
+    //         encode: { tooltip: [0, 1] },
+    //         symbolSize: 15,
+    //         itemStyle: {
+    //             borderColor: '#555'
+    //         },
+    //         datasetIndex: 1
+    //     }
+    // };
+    //
+    // chart.setOption(option);
+}
+
+function deepClone (obj) {
+    let objClone = Array.isArray(obj) ? [] : {};
+    if (obj && typeof obj === "object") {
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                //判断ojb子元素是否为对象，如果是，递归复制
+                if (obj[key] && typeof obj[key] === "object") {
+                    objClone[key] = deepClone(obj[key]);
+                } else {
+                    //如果不是，简单复制
+                    objClone[key] = obj[key];
+                }
+            }
+        }
+    }
+    return objClone;
+};
+
+
+function demonstratePositionedStat() {
+    let tempData = deepClone(serData)
+    let datay = []
+    for(i in tempData) {
+        let dataY = []
+        for(j in tempData[i].data) {
+            dataY.push(tempData[i].data[j][1])
+            datay.push(tempData[i].data[j][1])
+        }
+        var bins = ecStat.histogram(dataY);
+        tempData[i].type = 'bar'
+        tempData[i].barWidth = '99.3%'
+        tempData[i].data =bins.data
+    }
+    sampleDeviation = ecStat.statistics.deviation(datay);
+    varianceValue = ecStat.statistics.sampleVariance(datay);
+    maxValue = ecStat.statistics.max(datay);
+    minValue = ecStat.statistics.min(datay);
+    meanValue = ecStat.statistics.mean(datay);
+    medianValue = ecStat.statistics.median(datay);
+    sumValue = datay.length;
+    document.getElementById('data-num').innerHTML = sumValue
+    document.getElementById('data-max').innerHTML = maxValue.toFixed(2)
+    document.getElementById('data-min').innerHTML = minValue.toFixed(2)
+    document.getElementById('data-avg').innerHTML = meanValue.toFixed(2)
+    document.getElementById('data-sdev').innerHTML = sampleDeviation.toFixed(2)
+    document.getElementById('data-var').innerHTML = varianceValue.toFixed(2)
+    document.getElementById('data-median').innerHTML = medianValue.toFixed(2)
+    document.getElementById('data-exe').innerHTML = (maxValue - minValue).toFixed(2)
+    echarts.registerTransform(ecStat.transform.histogram);
+    echarts.registerTransform(ecStat.transform.clustering);
+    let chartDom = echarts.init(document.querySelector("#hisCharts"));
+    chartDom.clear()
+    // var bins = ecStat.histogram(datay);
+    var option = {
+        tooltip: {
+            show: true
+        },
+        legend: {
+            type: 'scroll',
+            data: legendData,
+            top: "7%",
+            selector: [
+                {
+                    // 全选
+                    type: 'all',
+                    // 可以是任意你喜欢的标题
+                    title: '全选'
+                },
+                {
+                    // 反选
+                    type: 'inverse',
+                    // 可以是任意你喜欢的标题
+                    title: '反选'
+                }
+            ]
+        },
+        title: {
+            text: "频数直方图",
+            left: "center"
+        },
+        color: ['rgb(25, 183, 207)'],
+        grid: {
+            top: '15%',
+            left: '3%',
+            right: '3%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            // boundaryGap: '5%',
+            scale: true, //这个一定要设，不然barWidth和bins对应不上
+            axisLabel: {
+                formatter: function (value) {
+                    return value
+                }
+            },
+            min:function(value){
+                return value.min
+            },
+            max: function (value) {
+                return value.max
+            },
+        },
+        dataZoom:[{ type:"inside"  }],
+        yAxis: {},
+        series: tempData
+    };
+
+    chartDom.setOption(option);
+}
+
+function demonstrateHeatStat(legendData,seriesData) {
+    let tempData = deepClone(seriesData)
+    let datay = []
+    for(i in tempData) {
+        let dataY = []
+        for(j in tempData[i].data) {
+            dataY.push(Number(tempData[i].data[j][2]))
+            datay.push(Number(tempData[i].data[j][2]))
+        }
+        var bins = ecStat.histogram(dataY);
+        tempData[i].type = 'bar'
+        tempData[i].barWidth = '99.3%'
+        tempData[i].data =bins.data
+    }
+    funcInjector.log(datay.toString())
+    sampleDeviation = ecStat.statistics.deviation(datay);
+    varianceValue = ecStat.statistics.sampleVariance(datay);
+    maxValue = ecStat.statistics.max(datay);
+    minValue = ecStat.statistics.min(datay);
+    meanValue = ecStat.statistics.mean(datay);
+    medianValue = ecStat.statistics.median(datay);
+    sumValue = datay.length;
+    funcInjector.log(typeof maxValue)
+    document.getElementById('data-num').innerHTML = sumValue
+    document.getElementById('data-max').innerHTML = Number(maxValue).toFixed(2)
+    document.getElementById('data-min').innerHTML = Number(minValue).toFixed(2)
+    document.getElementById('data-avg').innerHTML = Number(meanValue).toFixed(2)
+    document.getElementById('data-sdev').innerHTML = Number(sampleDeviation).toFixed(2)
+    document.getElementById('data-var').innerHTML =Number(varianceValue).toFixed(2)
+    document.getElementById('data-median').innerHTML = Number(medianValue).toFixed(2)
+    document.getElementById('data-exe').innerHTML = (maxValue - minValue).toFixed(2)
+    echarts.registerTransform(ecStat.transform.histogram);
+    echarts.registerTransform(ecStat.transform.clustering);
+    let chartDom = echarts.init(document.querySelector("#hisCharts"));
+    chartDom.clear()
+    // var bins = ecStat.histogram(datay);
+    var option = {
+        tooltip: {
+            show: true
+        },
+        legend: legendData,
+        title: {
+            text: "频数直方图",
+            left: "center"
+        },
+        color: ['rgb(25, 183, 207)'],
+        grid: {
+            top: '16%',
+            left: '3%',
+            right: '3%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            // boundaryGap: '5%',
+            scale: true, //这个一定要设，不然barWidth和bins对应不上
+            axisLabel: {
+                formatter: function (value) {
+                    return value
+                }
+            },
+            min:function(value){
+                return value.min
+            },
+            max: function (value) {
+                return value.max
+            },
+        },
+        dataZoom:[{ type:"inside"  }],
+        yAxis: {},
+        series: tempData
+    };
+
+    chartDom.setOption(option);
+}
 //画折线图
 //原始数据 标题 横坐标 纵坐标
-function drawLinearMapData(rawData, title, xname, yname) {
+function drawLinearMapData(rawData, title, xname, yname, tagName) {
+    demonstrateStat(rawData["x"], rawData["y"])
+    funcInjector.log(sampleDeviation.toString())
     let option = {
         tooltip: {
             trigger: 'axis',
@@ -305,14 +749,14 @@ function drawLinearMapData(rawData, title, xname, yname) {
             text: title
         },
         toolbox: {
+            left: 'right',
+            top: 'bottom',
             feature: {
                 dataZoom: {
                     yAxisIndex: 'none',
-                    title: ""
+                    title: "缩放"
                 },
-                restore: {
-                    title: '还原配置项'
-                },
+
                 dataView: {
                     title: '数据视图工具',
                     lang: ['数据视图', '关闭', '刷新'],
@@ -331,52 +775,28 @@ function drawLinearMapData(rawData, title, xname, yname) {
             data: rawData["x"]
         },
         yAxis: {
-            name: yname,
-            type: 'value',
-            axisLabel: {
-                formatter: function (value) {
-                    var res = value.toString();
-                    var numN1 = 0;
-                    var numN2 = 1;
-                    var num1 = 0;
-                    var num2 = 0;
-                    var t1 = 1;
-                    for (var k = 0; k < res.length; k++) {
-                        if (res[k] == ".")
-                            t1 = 0;
-                        if (t1)
-                            num1++;
-                        else
-                            num2++;
-                    }
-
-                    if (Math.abs(value) < 1 && res.length > 4) {
-                        for (var i = 2; i < res.length; i++) {
-                            if (res[i] == "0") {
-                                numN2++;
-                            } else if (res[i] == ".")
-                                continue;
-                            else
-                                break;
-                        }
-                        var v = parseFloat(value);
-                        v = v * Math.pow(10, numN2);
-                        return v.toString() + "e-" + numN2;
-                    } else if (num1 > 4) {
-                        if (res[0] == "-")
-                            numN1 = num1 - 2;
-                        else
-                            numN1 = num1 - 1;
-                        var v = parseFloat(value);
-                        v = v / Math.pow(10, numN1);
-                        if (num2 > 4)
-                            v = v.toFixed(4);
-                        return v.toString() + "e" + numN1;
-                    } else
-                        return parseFloat(value);
+            axisLine: {
+                show: true,
+                lineStyle: {
+                    color: '#000', // x坐标轴的轴线颜色
                 }
             },
-            boundaryGap: [0, '100%']
+            name: yname,
+            type: 'value',
+            // min:function(value){
+            //     return value.min
+            // },
+            max: function (value) {
+                return value.max
+            },
+            show: true,
+            // axisLine: { onZero: false },
+            axisLabel: {
+                formatter: function (value) {
+                    return value
+                }
+            },
+            // boundaryGap: [0, '100%']
         },
 
         dataZoom: [
@@ -392,25 +812,25 @@ function drawLinearMapData(rawData, title, xname, yname) {
         ],
         series: [
             {
-                name: 'F10.7指数',
+                name: tagName,
                 type: 'line',
                 symbol: 'none',
                 sampling: 'lttb',
-                itemStyle: {
-                    color: 'rgb(255, 70, 131)'
-                },
-                areaStyle: {
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                            offset: 0,
-                            color: 'rgb(255, 158, 68)'
-                        },
-                        {
-                            offset: 1,
-                            color: 'rgb(255, 70, 131)'
-                        }
-                    ])
-                },
+                // itemStyle: {
+                //     color: 'rgb(255, 70, 131)'
+                // },
+                // areaStyle: {
+                //     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                //         {
+                //             offset: 0,
+                //             color: 'rgb(255, 158, 68)'
+                //         },
+                //         {
+                //             offset: 1,
+                //             color: 'rgb(255, 70, 131)'
+                //         }
+                //     ])
+                // },
                 data: rawData["y"]
             }
         ],
@@ -421,8 +841,103 @@ function drawLinearMapData(rawData, title, xname, yname) {
     chartDom.setOption(option)
 }
 
+
+function drawPositionLinearMapData() {
+    demonstratePositionedStat()
+    try {
+        let option = {
+            tooltip: {
+                trigger: 'axis',
+
+            },
+            legend: {
+                type: 'scroll',
+                // inactiveColor: "#fff",
+                // inactiveBorderColor: "#000",
+                data: legendData,
+                top: "6%",
+                selector: [
+                    {
+                        // 全选
+                        type: 'all',
+                        // 可以是任意你喜欢的标题
+                        title: '全选'
+                    },
+                    {
+                        // 反选
+                        type: 'inverse',
+                        // 可以是任意你喜欢的标题
+                        title: '反选'
+                    }
+                ]
+            },
+            title: {
+                left: 'center',
+                // top: "bottom",
+                text: "电离层参数二维图"
+            },
+            toolbox: {
+                left: 'right',
+                top: 'bottom',
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none',
+                        title: ""
+                    },
+                    dataView: {
+                        title: '数据视图工具',
+                        lang: ['数据视图', '关闭', '刷新'],
+                        backgroundColor: "f2eef9",
+
+                    },
+                    saveAsImage: {
+                        title: '另存为图像'
+                    }
+                }
+            },
+            xAxis: {
+                name: "Time",
+                type: 'category',
+                axisLine: {
+                    show: true,
+                    onZero: false
+                },
+
+            },
+            yAxis: {
+                axisLine: {
+                    show: true,
+                },
+                name: "TECU",
+                type: 'value',
+                boundaryGap: [0, '100%']
+            },
+
+            dataZoom: [
+                {
+                    bottom: "10%",
+                    type: 'inside',
+                    start: 0,
+                    end: 50
+                },
+                {
+                    start: 0,
+                    end: 50
+                }
+            ],
+            series: serData
+        };
+        let chartDom = echarts.init(document.querySelector("#chart"));
+        chartDom.clear()
+        chartDom.setOption(option)
+    } catch (e) {
+        mdui.alert(e)
+    }
+
+}
+
 function testEchart() {
-    getPositionedData(100.0,5.0)
+    funcInjector.log(getPositionedData(100.0, 5.0)["data"][0].toString())
     //  <input type="radio" name="type-selector" value="0" onclick="fetchFileList()"
     // />
     //  <i class="mdui-radio-icon"></i>
@@ -439,92 +954,49 @@ function testEchart() {
     //  mdui.$("#radio").mutation()
 }
 
-//画两条折线图
-function drawLinear2MapData(rawData) {
-    dataName = "电离层参数一维图"
-    let option = {
-        title: {
-            text: '电离层参数一维图'
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        legend: {
-            data: ['15', '70']
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        toolbox: {
-            feature: {
-                saveAsImage: {}
-            }
-        },
-        xAxis: {
-            type: 'value',
-            boundaryGap: false,
-            data: rawData[0]
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [
-            {
-                name: '15',
-                type: 'line',
-                stack: 'Total',
-                data: rawData[1]
-            },
-            {
-                name: '70',
-                type: 'line',
-                stack: 'Total',
-                data: rawData[2]
-            },
-        ]
-    };
-    let chartDom = echarts.init(document.querySelector("#chart"));
-    chartDom.clear()
-    chartDom.setOption(option)
-}
-
 //垂直折线图
 function drawLinearVerticalMapData(rawData) {
     let seriesData = []
     let legendsData = []
+    let dataX = [],dataY = []
+
     for (let i in rawData) {
-        funcInjector.log(i.toString())
-            let temp =  {
-                name: i,
-                type: 'line',
-                symbolSize: 10,
-                symbol: 'circle',
-                smooth: true,
-                lineStyle: {
-                    width: 3,
-                    shadowColor: 'rgba(0,0,0,0.3)',
-                    shadowBlur: 10,
-                    shadowOffsetY: 8
-                },
-                data:  rawData[i]
-            }
-            seriesData.push(temp)
-            // legendsData.push(i)
+        for(let j in rawData[i]) {
+            dataX.push(rawData[i][j][0])
+            dataY.push(rawData[i][j][1])
+        }
+
+        let temp = {
+            name: i,
+            type: 'line',
+            symbolSize: 10,
+            symbol: 'circle',
+            smooth: true,
+            lineStyle: {
+                width: 3,
+                shadowColor: 'rgba(0,0,0,0.3)',
+                shadowBlur: 10,
+                shadowOffsetY: 8
+            },
+            data: rawData[i]
+        }
+
+        seriesData.push(temp)
+        // legendsData.push(i)
     }
+
+    demonstrateStat(dataY,dataX)
     let option = {
         legend: legendsData,
         toolbox: {
+            left: 'right',
+            top: 'bottom',
             feature: {
                 dataZoom: {
                     // yAxisIndex: 'none',
                     title: ""
                 },
-                restore: {
-                    title: '还原配置项'
-                },
+
                 dataView: {
                     title: '数据视图工具',
                     lang: ['数据视图', '关闭', '刷新'],
@@ -536,9 +1008,13 @@ function drawLinearVerticalMapData(rawData) {
                 }
             }
         },
+        title: {
+            text: "临近空间环境一维图",
+            left: "center"
+        },
         tooltip: {
             trigger: 'axis',
-            formatter: 'Temperature : <br/>{b}km : {c}°C'
+            formatter: '{a} <br/>Temperature(°C):Altitude(km)' + ':' + '{c}'
         },
         grid: {
             left: '3%',
@@ -547,18 +1023,25 @@ function drawLinearVerticalMapData(rawData) {
             containLabel: true
         },
         xAxis: {
+            name: "温度(°C)",
             type: 'value',
-            axisLine: { onZero: false },
-            axisLabel: {
-                formatter: '{value} °C'
-            }
+            axisLine: {onZero: false},
+            show: true,
+            axisLine: {
+                show: true,
+            },
         },
         yAxis: {
-            type: 'category',
-            axisLine: { onZero: false },
-            axisLabel: {
-                formatter: '{value} km'
+            axisLine: {
+                show: true,
+                lineStyle: {
+                    color: '#000', // x坐标轴的轴线颜色
+                }
             },
+            name: "高度(千米)",
+            type: 'category',
+            axisLine: {onZero: false},
+
             boundaryGap: false,
 
         },
@@ -571,8 +1054,9 @@ function drawLinearVerticalMapData(rawData) {
 
 
 
+
 //热力图
-function drawHeatMapData(rawData,min,max,ytype) {
+function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, reverseY, schema) {
     let seriesData = []
     for (let i in rawData) {
         funcInjector.log(i.toString())
@@ -595,28 +1079,72 @@ function drawHeatMapData(rawData,min,max,ytype) {
         }
     }
 
-    let option = {
-        tooltip: {},
-        legend: {
+    let selectedtime = rawData["legend"][0]
+
+    let legendData = {
             type: 'scroll',
+            // inactiveColor: "#fff",
+            // inactiveBorderColor: "#000",
+            data: rawData["legend"],
+        // selectedMode: 'single',
+            top:"6.5%",
+            selected: {
+                selectedtime :true
+
+        },
+        selector: [
+            {
+                // 全选
+                type: 'all',
+                // 可以是任意你喜欢的标题
+                title: '全选'
+            },
+            {
+                // 反选
+                type: 'inverse',
+                // 可以是任意你喜欢的标题
+                title: '反选'
+            }
+        ]
+    }
+
+        demonstrateHeatStat(legendData,seriesData)
+
+
+    let option = {
+        tooltip: {
+            formatter: function (param) {
+                var value = param.value;
+                // prettier-ignore
+                return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
+                    + schema[2] + " " + value[2]
+                    + '</div>'
+                    + param.seriesName + '<br>'
+                    + schema[0] + '：' + value[0] + '<br>'
+                    + schema[1] + '：' + value[1] + '<br>'
+            }
+        },
+        legend: {
+            width: "78%",
+            type: 'scroll',
+            // inactiveColor: "#fff",
+            // inactiveBorderColor: "#000",
             // selector: ['all', 'inverse'] ,
             data: rawData["legend"],
             selectedMode: 'single'
         },
+        title: {
+            text: title,
+            left: "center",
+            top: "bottom"
+        },
         toolbox: {
+            left: 'right',
+            top: 'bottom',
             feature: {
                 dataZoom: {
                     // yAxisIndex: 'none',
                     title: ""
-                },
-                restore: {
-                    title: '还原配置项'
-                },
-                dataView: {
-                    title: '数据视图工具',
-                    lang: ['数据视图', '关闭', '刷新'],
-                    backgroundColor: "f2eef9",
-
                 },
                 saveAsImage: {
                     title: '另存为图像'
@@ -624,13 +1152,20 @@ function drawHeatMapData(rawData,min,max,ytype) {
             }
         },
         xAxis: {
+            name: xTitle,
             type: 'category',
             show: true
         },
         yAxis: {
+            axisLine: {
+                show: true,
+
+            },
+            name: yTitle,
             type: ytype,
-            axisLine: { onZero: false },
             show: true,
+            inverse: reverseY
+
         },
         visualMap: {
             min: min,

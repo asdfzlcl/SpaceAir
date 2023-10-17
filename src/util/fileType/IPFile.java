@@ -51,6 +51,7 @@ public class IPFile extends BaseFile{
         int countInPositionSeries = -1;
         int countInDateSeries = -1;
         boolean isRSM = false;
+        int count = 0;
         while((currentLine = currentBR.readLine()) != null){
             if(!startValidation){
                 // 去除多余的空格与tab
@@ -58,8 +59,9 @@ public class IPFile extends BaseFile{
                 temp = temp.replace(" ", "");
                 if(temp.equals("ENDOFHEADER"))
                     startValidation = true;
+                count++;
             }else{
-
+                count++;
                 // 首先将这行按照空格分离
                 String match = currentLine.replace("\t", "");
                 match = match.replace(" ", "");
@@ -77,8 +79,9 @@ public class IPFile extends BaseFile{
                     continue;
                 }
                 if(match.matches("[0-9]*EPOCHOFCURRENTMAP")){
+                    System.out.println(count);
                     timeSeries.add(new DateTime(Integer.parseInt(temp[1]), Integer.parseInt(temp[2]),
-                            Integer.parseInt(temp[3]), Integer.parseInt(temp[4]), Integer.parseInt(temp[5]), Integer.parseInt(temp[6])).toString("yyyy-MM-dd hh:mm:ss"));
+                            Integer.parseInt(temp[3]), Integer.parseInt(temp[4]), Integer.parseInt(temp[5]), Integer.parseInt(temp[6])).toString("yyyy-MM-dd HH:mm:ss"));
                     dataSeries.add(new ArrayList<>());
                     countInPositionSeries = -1;
                     countInDateSeries ++;
