@@ -42,89 +42,50 @@
                     </div>
                 </div>
             </div>
-            <div class="charts-selector">
-
-            </div>
+            <div class="charts-selector"></div>
+            <img  class="guide" decoding="async" src="./static/wenhao.png" width="42" height="42" onclick="guide()"/>
         </div>
         <div class='charts' id="chart">
 
         </div>
         <div class='statistic'>
             <div class="statistic-info">
-                <h2 class="data-statistics">
-                    数据统计信息
-                </h2>
-                <p class="statistics-line">
-                    样本量:<span id="data-num" class="statistics-item"></span>
-                    最大值:<span id="data-max" class="statistics-item"></span>
-                    最小值:<span id="data-min" class="statistics-item"></span>
-                    中位数:<span id="data-median" class="statistics-item"></span>
-                </p>
-                <p class="statistics-line">
-                    平均值:<span id="data-avg" class="statistics-item"></span>
-                    标准差:<span id="data-sdev" class="statistics-item"></span>
-                    方差:  <span id="data-var" class="statistics-item"> </span>
-                    &nbsp&nbsp极差:  <span id="data-exe" class="statistics-item"></span>
-
-                </p>
+                <table>
+                    <thead>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>样本量</td>
+                        <td><span id="data-num" class="statistics-item"></span></td>
+                        <td>平均值</td>
+                        <td><span id="data-avg" class="statistics-item"></span></td>
+                    </tr>
+                    <tr>
+                        <td>最大值</td>
+                        <td><span id="data-max" class="statistics-item"></span></td>
+                        <td>标准值</td>
+                        <td><span id="data-sdev" class="statistics-item"></span></td>
+                    </tr>
+                    <tr>
+                        <td>最小值</td>
+                        <td><span id="data-min" class="statistics-item"></span></td>
+                        <td>方差</td>
+                        <td> <span id="data-var" class="statistics-item"> </span></td>
+                    </tr>
+                    <tr>
+                        <td>中位数</td>
+                        <td><span id="data-median" class="statistics-item"></span></td>
+                        <td>极差</td>
+                        <td><span id="data-exe" class="statistics-item"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="statistic-charts" id="hisCharts">
-
             </div>
-<!--            <div class="statistic-charts" id="statCharts">-->
-
-<!--            </div>-->
             <img src="./logo.png" class="logo">
         </div>
     </div>
-    <!--<div class="body-panel">-->
-    <!--    <div class="filelist-panel">-->
-    <!--        <h2>-->
-    <!--            文件类型选择区-->
-    <!--        </h2>-->
-    <!--        <div id="type-selector" class="mdui-textfield">-->
-    <!--        </div>-->
-    <!--        <br>-->
-    <!--        <div class="mdui-divider-dark" style="width: 100%"></div><br>-->
-
-
-    <!--    </div>-->
-    <!--    <div class="filelist-panel">-->
-    <!--        <h2>-->
-    <!--            文件信息-->
-    <!--        </h2>-->
-    <!--        <div>-->
-    <!--            当前文件:<br> <span id="show-filename"></span><br>-->
-    <!--        </div>-->
-    <!--        <div>-->
-    <!--            当前路径:<br> <span id="show-filepath"></span><br>-->
-    <!--        </div>-->
-    <!--        <br><br>-->
-    <!--        <br><div class="mdui-divider-dark" style="width: 100%"></div><br>-->
-    <!--        <h2 id = "botton-type">-->
-    <!--            文件信息-->
-    <!--        </h2>-->
-    <!--        <div id="botton-list"  >-->
-    <!--            <button id="submit-param" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="DrawPic('` + value2 + `')"> $value1 </button>-->
-    <!--        </div>-->
-    <!--        <br><div class="mdui-divider-dark" style="width: 100%"></div><br>-->
-
-    <!-- <h2 class="data-statistics">
-           数据统计信息
-       </h2>
-       <p class="statistics-line">
-           最大值: <span id="data-max" class="statistics-item"></span>
-           最小值: <span id="data-min" class="statistics-item"></span>
-       </p>
-       <p class="statistics-line">
-           平均值: <span id="data-avg" class="statistics-item"></span>
-           标准差: <span id="data-sdev" class="statistics-item"></span>
-       </p> -->
-    <!--    </div>-->
-    <!--    <div class="draw-panel" id="draw-panel">-->
-    <!--        <div id="chart" style="width: 1200px;height:840px;"></div>-->
-    <!--    </div>-->
-    <!--</div>-->
     <script src='js/ecStat.js'></script>
     <script src="js/mdui.min.js"></script>
     <script src="js/china.js"></script>
@@ -132,6 +93,9 @@
     <script src="js/index.databind.js"></script>
     <script src="js/echarts.min.js"></script>
     <script src="js/big.js"></script>
+
+    <script src="js/driver.js"></script>
+    <link rel="stylesheet" href="css/driver.css"/>
 </body>
 
 </html>

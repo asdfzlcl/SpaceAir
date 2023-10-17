@@ -2,6 +2,8 @@
 // 该对象的所有属性getter均被绑定到页面
 
 
+
+
 params = {
     type: 0, pictype: 0, filename: "", filepath: ""
 }
@@ -157,6 +159,35 @@ function getPositionSelectorHTML(latitude, longitude) {
     return html
 }
 
+
+function guide() {
+    const driver = window.driver.js.driver;
+
+    let config = {
+        showProgress: true,
+            closeBtnText: '关闭', // Text on the close button for this step 关闭按钮的文字
+        nextBtnText: '下一个', // Next button text for this step 下一步按钮的文字
+        prevBtnText: '上一个', // Previous button text for this step 上一步按钮文字
+        doneBtnText:'完成',
+        steps: [
+        { element: '.file-select', popover: { title: '文件与图像选择区域', description: '此处选择数据源文件的类型和文件路径，分为四种类型,请在选择正确的类型后选取文件路径，根据需要选择可视化图像', side: "left", align: 'start' }},
+        { element: '.file-info', popover: { title: '文件信息区域', description: '此处展现当前选择文件的具体信息', side: "bottom", align: 'start' }},
+        { element: '.guide', popover: { title: '帮助按钮', description: '此按钮用于触发帮助弹窗，可多次点击', side: "bottom", align: 'start' }},
+        { element: '.charts', popover: { title: '可视化区域', description: '此处展现当前的可视化图像信息，具有缩放、保存、数据视图、图例选择等功能', side: "bottom", align: 'start' }},
+        { element: '.statistic-info', popover: { title: '统计数据', description: '此处展现当前选中数据因变量的统计信息', side: "bottom", align: 'start' }},
+        { element: '.statistic-charts', popover: { title: '频数直方图', description: '此处展现当前选中数据因变量的频数直方图，如果有多种数据可以选择图例来进行转变', side: "left", align: 'start' }},
+    ]
+    }
+    console.log(document.querySelector(".charts-selector").innerHTML)
+    if(document.querySelector(".charts-selector").innerHTML != "") {
+        config.steps.splice(2,0,  { element: '.charts-selector', popover: { title: '文件与图像选择区域', description: '此处选择数据源文件的类型和文件路径，分为四种类型,请在选择正确的类型后选取文件路径，根据需要选择可视化图像', side: "left", align: 'start' }})
+    }
+
+    let driverObj = driver(config);
+
+
+    driverObj.drive();
+}
 
 function clearPosition() {
     let chartDom = echarts.init(document.querySelector("#chart"));

@@ -174,7 +174,7 @@ ul#file-list{
 }
 
 .file-detail {
-    display: none;
+    /*display: none;*/
     float: left;
     text-align: left;
 }
@@ -209,7 +209,7 @@ ul#file-list{
     box-shadow: inset -1px -1px 1px 0 rgba(255, 255, 255, 0.8);
     box-shadow: inset 1px 1px 1px 0 rgba(40, 49, 85, 0.4);
     border-radius: 18px;
-    margin-bottom: 2vh;
+    /*margin-bottom: 2vh;*/
 
     background: #fff;
 }
@@ -243,12 +243,51 @@ ul#file-list{
 }
 
 .statistic-info {
-    width: 33vw;
+    width: 22vw;
     float: left;
     color: #000;
+    display: flex;
+    /*flex-direction:column;*/
+    text-align: center;
+    /*align-content: space-between;*/
+    justify-content: space-around;
+
 }
+
+.guide {
+    margin-right: 1vw;
+}
+html {
+    font-family: sans-serif;
+}
+
+table {
+    border-collapse: collapse;
+    border: 2px solid rgb(200,200,200);
+    letter-spacing: 1px;
+    font-size: 1rem;
+    box-shadow: inset -1px -1px 1px 0 rgba(255, 255, 255, 0.8);
+    box-shadow: inset 1px 1px 1px 0 rgba(40, 49, 85, 0.4);
+    background-color: #fff;
+
+}
+
+td, th {
+    border: 1px solid rgb(190,190,190);
+    padding: 10px 20px;
+}
+
+td {
+    text-align: center;
+}
+
+caption {
+    padding: 10px;
+}
+
 .logo {
-    opacity: 0.7;
+    opacity: 0.9;
+    height: 90%;
     float: right;
 }
 

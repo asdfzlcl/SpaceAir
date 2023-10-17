@@ -8,6 +8,7 @@ import com.teamdev.jxbrowser.chromium.events.*;
 import com.teamdev.jxbrowser.chromium.internal.Environment;
 import com.teamdev.jxbrowser.chromium.javafx.BrowserView;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -31,12 +32,17 @@ import util.*;
 import java.io.File;
 import java.util.Objects;
 
+import static java.lang.Thread.sleep;
+
 public class WebStage extends Application {
+
     private static final Stage webStage = new Stage(StageStyle.DECORATED);
     private FuncInjector funcInjector = new FuncInjectorImpl();
     public static Stage getInstance(){
         return webStage;
     }
+
+    public Browser browser;
 
     private static void initWebCore() {
         // On Mac OS X Chromium engine must be initialized in non-UI thread.
@@ -51,7 +57,7 @@ public class WebStage extends Application {
     }
 
     private void initWebStage(){
-        Browser browser = new Browser();
+        browser = new Browser();
 //        webStage.initStyle(StageStyle.UNDECORATED);
 //        GridPane gridPane = new GridPane();
 //        gridPane.setStyle("-fx-background-color: rgb(78.0,163.0,248.0);");
@@ -103,7 +109,6 @@ public class WebStage extends Application {
 //        box.getChildren().add(gridPane);
 
         BrowserView browserView = new BrowserView(browser);
-
         StackPane pane = new StackPane();
 //        browserView.getChildren().add(gridPane);
         pane.getChildren().add(browserView);
@@ -158,14 +163,7 @@ public class WebStage extends Application {
             @Override
             public void handle(WindowEvent event) {
                 if(DialogHelper.popConfirmationDialog("退出","是否退出" + NameHelper.softwareName + "?")){
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            browser.dispose();
-                        }
-                    }).start();
-                    webStage.close();
-                    System.exit(0);
+                    Platform.exit();
                 }else{
                     event.consume();
                 }
@@ -178,6 +176,13 @@ public class WebStage extends Application {
     public void start(Stage primaryStage) throws Exception{
         initWebStage();
         webStage.show();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        this.browser.dispose();
+        webStage.close();
+
     }
 
     public static void main(String[] args){

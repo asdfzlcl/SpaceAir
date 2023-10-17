@@ -6,6 +6,6 @@ package util;
  * */
 public class NameHelper {
 
-    public static String softwareName = "气动大气环境效应仿真可视化平台"; // 软件名称
+    public static String softwareName = "空间天气训练管理与智能分析平台"; // 软件名称
 
 }
