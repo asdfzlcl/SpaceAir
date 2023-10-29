@@ -16,9 +16,17 @@ import util.fileType.IPFile;
 import util.fileType.SATFile;
 import util.fileType.SEFile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.FutureTask;
+import java.nio.file.StandardCopyOption;
 
 import static java.lang.Thread.sleep;
 import static util.fileType.BaseFile.readFile;
@@ -46,12 +54,47 @@ public class FuncInjectorImpl implements FuncInjector {
     /**
      * @return filePath, String 表示文件绝对路径, 直接在js文件中获取, 之后可以调用其他方法获取数据
      * */
-    public String chooseFile(){
+    public String chooseFile(JSObject params){
+        InputParam inputParam = new InputParam(params);
+        System.out.println(inputParam);
+        String type = inputParam.getType();
+
         final FutureTask popChooseFile = new FutureTask(() -> new FileChooser().showOpenDialog(new Stage()).getAbsolutePath());
         Platform.runLater(popChooseFile);
         String filePath = "";
         try {
             filePath = (String) popChooseFile.get();
+            String dest = new String();
+            if(Objects.equals(type, "0")) {
+               dest = "./data/太阳和地磁指数/";
+            } else if (Objects.equals(type, "1")) {
+                dest = "./data/大气密度变化规律/";
+            } else if (Objects.equals(type, "2")) {
+                dest = "./data/电离层参数/";
+            } else if (Objects.equals(type, "3")) {
+                dest = "./data/临近空间环境/";
+            }
+            File file;
+            file = new File(filePath);
+            String fileName = file.getName();
+            file = new File(dest);
+
+            if (file.exists()) {
+                System.out.println("路径已存在");
+            } else {
+                System.out.println("路径不存在");
+                boolean created = file.mkdirs();
+                if (created) {
+                    System.out.println("路径创建成功");
+                } else {
+                    System.out.println("路径创建失败");
+                }
+            }
+            dest += fileName;
+            FileChannel sourceChannel = new FileInputStream(filePath).getChannel();
+            FileChannel destChannel = new FileOutputStream(dest).getChannel();
+            destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
+
         }catch (Exception e){
             e.printStackTrace();
             DialogHelper.popErrorDialog("未选择文件！");

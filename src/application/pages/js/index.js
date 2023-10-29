@@ -38,6 +38,10 @@ window.onerror = function (errorMessage, scriptURI, lineNo, columnNo, error) {
     funcInjector.log('error: ' + error.toString()); // 异常堆栈信息
 };
 
+const ExcelJS =
+
+
+
 
 // 异步获取数据，避免UI阻塞
 async function getData() {
@@ -101,7 +105,7 @@ function browserRedirect() {
 }
 
 function GetFile() {
-    fileURL = funcInjector.chooseFile()
+    fileURL = funcInjector.chooseFile(params)
     document.querySelector(".file-detail").style.display = 'inline'
     document.querySelector(".file-path").innerHTML = fileURL
     var Splitter = browserRedirect() == "Win" ? '\\' : '/'
