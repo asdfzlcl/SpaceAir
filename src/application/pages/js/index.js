@@ -38,8 +38,6 @@ window.onerror = function (errorMessage, scriptURI, lineNo, columnNo, error) {
     funcInjector.log('error: ' + error.toString()); // 异常堆栈信息
 };
 
-const ExcelJS =
-
 
 
 
@@ -249,79 +247,83 @@ function getPositionedData(longitude, latitude) {
 }
 
 function DrawPic(pictype) {
-    //更新图片属性
-    params.pictype = Number(pictype)
-    funcInjector.log('pictype: ' + Number(pictype));
-    //错误检查
-    if (params.filename == "") {
-        mdui.alert("请选择文件")
-        return
-    }
-    //绘制图像
-    getData()
-        .then(rawData => {
-            data = {}
-            legendData = []
-            serData = []
-            document.querySelector(".charts-selector").innerHTML = ""
-            switch (params.pictype) {
-                case 0:
-                    drawLinearMapData(rawData, "太阳指数一维图", "Time", "F10.7(sfu)", "F10.7(sfu)")
-                    break
-                case 1:
-                    drawLinearMapData(rawData, "地磁指数一维图", "Time", "Ap", "Ap")
-                    break
-                case 2:
-                    drawLinearMapData(rawData, "大气密度变化一维图", "Time", "Density (kg/m^3)", "Density (kg/m^3)")
-                    break
-                case 3:
-                    document.querySelector(".charts-selector").innerHTML = ""
-                    longSeries = rawData["longSeries"]
-                    latiSeries = rawData["latiSeries"]
-                    let element = getPositionSelectorHTML(latiSeries, longSeries)
-                    mdui.$(".charts-selector").append(element)
-                    mdui.$(".charts-selector").mutation()
-                    break
-                case 4:
-                    drawHeatMapData(rawData, 0, 1100, "category", "电离层参数二维图", "Longitude(°)", "Latitude(°)", true, [
-                        "Longitude(°)", "Latitude(°)", "TECU(TECU)"
-                    ])
-                    break
+    try {
+        //更新图片属性
+        params.pictype = Number(pictype)
+        funcInjector.log('pictype: ' + Number(pictype));
+        //错误检查
+        if (params.filename == "") {
+            mdui.alert("请选择文件")
+            return
+        }
+        //绘制图像
+        getData()
+            .then(rawData => {
+                data = {}
+                legendData = []
+                serData = []
+                document.querySelector(".charts-selector").innerHTML = ""
+                switch (params.pictype) {
+                    case 0:
+                        drawLinearMapData(rawData, "太阳指数一维图", "Time", "F10.7(sfu)", "F10.7(sfu)")
+                        break
+                    case 1:
+                        drawLinearMapData(rawData, "地磁指数一维图", "Time", "Ap", "Ap")
+                        break
+                    case 2:
+                        drawLinearMapData(rawData, "大气密度变化一维图", "Time", "Density (kg/m^3)", "Density (kg/m^3)")
+                        break
+                    case 3:
+                        document.querySelector(".charts-selector").innerHTML = ""
+                        longSeries = rawData["longSeries"]
+                        latiSeries = rawData["latiSeries"]
+                        let element = getPositionSelectorHTML(latiSeries, longSeries)
+                        mdui.$(".charts-selector").append(element)
+                        mdui.$(".charts-selector").mutation()
+                        break
+                    case 4:
+                        drawHeatMapData(rawData, 0, 1100, "category", "电离层参数二维图", "Longitude(°)", "Latitude(°)", true, [
+                            "Longitude(°)", "Latitude(°)", "TECU(TECU)"
+                        ])
+                        break
 
-                case 5:
-                    document.querySelector(".charts-selector").innerHTML = ""
-                    data = rawData["timeSeries"]
-                    let legends = []
-                    for (i in data) {
-                        let temp = i + "("
-                        for (j in data[i]) {
-                            temp += j
+                    case 5:
+                        document.querySelector(".charts-selector").innerHTML = ""
+                        data = rawData["timeSeries"]
+                        let legends = []
+                        for (i in data) {
+                            let temp = i + "("
+                            for (j in data[i]) {
+                                temp += j
+                            }
+                            temp += ")"
+                            legends.push(temp)
                         }
-                        temp += ")"
-                        legends.push(temp)
-                    }
-                    let html = getSelectorHTML(legends)
-                    mdui.$(".charts-selector").append(html)
-                    mdui.$(".charts-selector").mutation()
-                    let mySelection = document.getElementById("chartselector")
-                    let index = mySelection.selectedIndex
-                    var arr = mySelection.options[index].value.substring(0, 15).split("");
-                    arr.splice(10, 0, " ");
-                    var newStr = arr.join("");
-                    let time = newStr
-                    funcInjector.log(time)
-                    drawLinearVerticalMapData(data[time])
+                        let html = getSelectorHTML(legends)
+                        mdui.$(".charts-selector").append(html)
+                        mdui.$(".charts-selector").mutation()
+                        let mySelection = document.getElementById("chartselector")
+                        let index = mySelection.selectedIndex
+                        var arr = mySelection.options[index].value.substring(0, 15).split("");
+                        arr.splice(10, 0, " ");
+                        var newStr = arr.join("");
+                        let time = newStr
+                        funcInjector.log(time)
+                        drawLinearVerticalMapData(data[time])
 
-                    break
-                case 6:
-                    drawHeatMapData(rawData, -100, 0, "value", "临近空间环境二维图", "Time", "Altitude(km)", false, [
-                        "Time", "Altitude(km)", "Temperature(°C)"
-                    ])
-            }
-        })
-        .catch(e => {
-            mdui.alert(e.toString())
-        })
+                        break
+                    case 6:
+                        drawHeatMapData(rawData, -100, 0, "value", "临近空间环境二维图", "Time", "Altitude(km)", false, [
+                            "Time", "Altitude(km)", "Temperature(°C)"
+                        ])
+                }
+            })
+            .catch(e => {
+                mdui.alert(e.toString())
+            })
+    } catch (e) {
+        mdui.alert(e.toString())
+    }
 }
 
 
