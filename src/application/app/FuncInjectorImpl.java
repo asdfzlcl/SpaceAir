@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import org.json.simple.JSONArray;
 import setting.Setting;
 import util.DialogHelper;
 import util.FileType;
@@ -16,17 +17,15 @@ import util.fileType.IPFile;
 import util.fileType.SATFile;
 import util.fileType.SEFile;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.FutureTask;
-import java.nio.file.StandardCopyOption;
 
 import static java.lang.Thread.sleep;
 import static util.fileType.BaseFile.readFile;
@@ -51,12 +50,20 @@ public class FuncInjectorImpl implements FuncInjector {
         });
     }
 
+
+
+    public void test() {
+//        FileSystemView fsv = FileSystemView.getFileSystemView();
+        final FutureTask popChooseFile = new FutureTask(() -> new JFileChooser().showOpenDialog(null));
+        Platform.runLater(popChooseFile);
+    }
+
+
     /**
      * @return filePath, String 表示文件绝对路径, 直接在js文件中获取, 之后可以调用其他方法获取数据
      * */
     public String chooseFile(JSObject params){
         InputParam inputParam = new InputParam(params);
-        System.out.println(inputParam);
         String type = inputParam.getType();
 
         final FutureTask popChooseFile = new FutureTask(() -> new FileChooser().showOpenDialog(new Stage()).getAbsolutePath());
@@ -66,14 +73,20 @@ public class FuncInjectorImpl implements FuncInjector {
             filePath = (String) popChooseFile.get();
             String dest = new String();
             if(Objects.equals(type, "0")) {
-               dest = "./data/太阳和地磁指数/";
+                SATFile sat = (SATFile) readFile(filePath, FileType.SATFile);
+               dest = "." + File.separator+ "data" +File.separator + "太阳和地磁指数" +File.separator;
             } else if (Objects.equals(type, "1")) {
-                dest = "./data/大气密度变化规律/";
+                ADFile sat = (ADFile) readFile(filePath, FileType.ADFile);
+                dest = "." + File.separator+ "data" +File.separator + "大气密度变化规律" +File.separator;
             } else if (Objects.equals(type, "2")) {
-                dest = "./data/电离层参数/";
+                SEFile sat = (SEFile) readFile(filePath, FileType.SEFile);
+                dest = "." + File.separator+ "data" +File.separator + "电离层参数" +File.separator;
             } else if (Objects.equals(type, "3")) {
-                dest = "./data/临近空间环境/";
+                IPFile sat = (IPFile) readFile(filePath, FileType.IPFile);
+                dest = "." + File.separator+ "data" +File.separator + "临近空间环境" +File.separator;
             }
+            SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd") ;
+            dest +=sdf.format(System.currentTimeMillis())+ File.separator;
             File file;
             file = new File(filePath);
             String fileName = file.getName();
@@ -90,6 +103,7 @@ public class FuncInjectorImpl implements FuncInjector {
                     System.out.println("路径创建失败");
                 }
             }
+
             dest += fileName;
             FileChannel sourceChannel = new FileInputStream(filePath).getChannel();
             FileChannel destChannel = new FileOutputStream(dest).getChannel();
@@ -97,7 +111,11 @@ public class FuncInjectorImpl implements FuncInjector {
 
         }catch (Exception e){
             e.printStackTrace();
-            DialogHelper.popErrorDialog("未选择文件！");
+            if(e.getMessage() == "错误的文件格式！" || e.getMessage() == "0") {
+                DialogHelper.popErrorDialog("文件类型错误，请选择正确的文件格式！");
+            } else {
+                DialogHelper.popErrorDialog("未选择文件！");
+            }
         }
         System.out.println(filePath);
         return filePath;
@@ -360,6 +378,58 @@ public class FuncInjectorImpl implements FuncInjector {
         JSONObject json =  new JSONObject(ret);
         return json;
     }
+
+    public static JSONArray hisFile = new JSONArray();
+
+
+    public static void traverse(File dir) {
+        if (dir == null && !dir.exists() || dir.isFile()) {
+            return;
+        }
+        hisFile = new JSONArray();
+
+        // 读取出该目录下的所有文件
+        File[] files = dir.listFiles();
+
+        for (File file : files) {
+            // 如果是文件，加入到文件集合中否则加入到文件夹集合中
+            HashMap temp = new HashMap();
+            if (file.isFile()) {
+                temp.put("fileName",file.getName());
+                int lastIndex = file.getParent().lastIndexOf(File.separator);
+                temp.put("fileTime",file.getParent().substring(lastIndex+1));
+                System.out.println(temp);
+                hisFile.add(temp);
+            }
+
+            if (file.isDirectory()) {
+//                dirList.add(file.toString());
+                traverse(file);
+            }
+        }
+    }
+
+
+
+
+    public ArrayList getHisFile(JSObject params) throws IOException {
+        InputParam inputParam = new InputParam(params);
+        String type = inputParam.getType();
+        String dest = new String();
+        if(Objects.equals(type, "0")) {
+            dest = "." + File.separator+ "data" +File.separator + "太阳和地磁指数" +File.separator;
+        } else if (Objects.equals(type, "1")) {
+            dest = "." + File.separator+ "data" +File.separator + "大气密度变化规律" +File.separator;
+        } else if (Objects.equals(type, "2")) {
+            dest = "." + File.separator+ "data" +File.separator + "电离层参数" +File.separator;
+        } else if (Objects.equals(type, "3")) {
+            dest = "." + File.separator+ "data" +File.separator + "临近空间环境" +File.separator;
+        }
+        traverse(new File(dest));
+
+        return hisFile;
+    }
+
 
     public JSONObject getPositionedData(Double longitude,Double latitude,JSObject params) throws IOException {
         InputParam inputParam = new InputParam(params);

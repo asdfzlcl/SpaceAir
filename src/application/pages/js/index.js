@@ -2,8 +2,6 @@
 // 该对象的所有属性getter均被绑定到页面
 
 
-
-
 params = {
     type: 0, pictype: 0, filename: "", filepath: ""
 }
@@ -37,8 +35,6 @@ window.onerror = function (errorMessage, scriptURI, lineNo, columnNo, error) {
     funcInjector.log('columnNo: ' + columnNo.toString()); // 异常列号
     funcInjector.log('error: ' + error.toString()); // 异常堆栈信息
 };
-
-
 
 
 // 异步获取数据，避免UI阻塞
@@ -167,22 +163,71 @@ function guide() {
 
     let config = {
         showProgress: true,
-            closeBtnText: '关闭', // Text on the close button for this step 关闭按钮的文字
+        closeBtnText: '关闭', // Text on the close button for this step 关闭按钮的文字
         nextBtnText: '下一个', // Next button text for this step 下一步按钮的文字
         prevBtnText: '上一个', // Previous button text for this step 上一步按钮文字
-        doneBtnText:'完成',
+        doneBtnText: '完成',
         steps: [
-        { element: '.file-select', popover: { title: '文件与图像选择区域', description: '此处选择数据源文件的类型和文件路径，分为四种类型,请在选择正确的类型后选取文件路径，根据需要选择可视化图像', side: "left", align: 'start' }},
-        { element: '.file-info', popover: { title: '文件信息区域', description: '此处展现当前选择文件的具体信息', side: "bottom", align: 'start' }},
-        { element: '.guide', popover: { title: '帮助按钮', description: '此按钮用于触发帮助弹窗，可多次点击', side: "bottom", align: 'start' }},
-        { element: '.charts', popover: { title: '可视化区域', description: '此处展现当前的可视化图像信息，具有缩放、保存、数据视图、图例选择等功能', side: "bottom", align: 'start' }},
-        { element: '.statistic-info', popover: { title: '统计数据', description: '此处展现当前选中数据因变量的统计信息', side: "bottom", align: 'start' }},
-        { element: '.statistic-charts', popover: { title: '频数直方图', description: '此处展现当前选中数据因变量的频数直方图，如果有多种数据可以选择图例来进行转变', side: "left", align: 'start' }},
-    ]
+            {element: '.file-select',
+                popover: {
+                    title: '文件与图像选择区域',
+                    description: '此处选择数据源文件的类型和文件路径，分为四种类型,请在选择正确的类型后选取文件路径，根据需要选择可视化图像',
+                    side: "left",
+                    align: 'start'
+                }
+            },
+            {element: '.file-info',
+                popover: {
+                    title: '文件信息区域',
+                    description: '此处展现当前选择文件的具体信息',
+                    side: "bottom",
+                    align: 'start'
+                }
+            },
+            {element: '.guide',
+                popover: {
+                    title: '帮助按钮',
+                    description: '此按钮用于触发帮助弹窗，可多次点击',
+                    side: "bottom",
+                    align: 'start'
+                }
+            },
+            {element: '.charts',
+                popover: {
+                    title: '可视化区域',
+                    description: '此处展现当前的可视化图像信息，具有缩放、保存、数据视图、图例选择等功能',
+                    side: "bottom",
+                    align: 'start'
+                }
+            },
+            {element: '.statistic-info',
+                popover: {
+                    title: '统计数据',
+                    description: '此处展现当前选中数据因变量的统计信息',
+                    side: "bottom",
+                    align: 'start'
+                }
+            },
+            {element: '.statistic-charts',
+                popover: {
+                    title: '频数直方图',
+                    description: '此处展现当前选中数据因变量的频数直方图，如果有多种数据可以选择图例来进行转变',
+                    side: "left",
+                    align: 'start'
+                }
+            },
+        ]
     }
     console.log(document.querySelector(".charts-selector").innerHTML)
-    if(document.querySelector(".charts-selector").innerHTML != "") {
-        config.steps.splice(2,0,  { element: '.charts-selector', popover: { title: '文件与图像选择区域', description: '此处选择数据源文件的类型和文件路径，分为四种类型,请在选择正确的类型后选取文件路径，根据需要选择可视化图像', side: "left", align: 'start' }})
+    if (document.querySelector(".charts-selector").innerHTML != "") {
+        config.steps.splice(2, 0, {element: '.charts-selector',
+            popover: {
+                title: '文件与图像选择区域',
+                description: '此处选择数据源文件的类型和文件路径，分为四种类型,请在选择正确的类型后选取文件路径，根据需要选择可视化图像',
+                side: "left",
+                align: 'start'
+            }
+        })
     }
 
     let driverObj = driver(config);
@@ -194,15 +239,15 @@ function guide() {
 function clearPosition() {
     let chartDom = echarts.init(document.querySelector("#chart"));
     chartDom.clear()
-     chartDom = echarts.init(document.querySelector("#hisCharts"));
+    chartDom = echarts.init(document.querySelector("#hisCharts"));
     chartDom.clear()
     document.getElementById('data-num').innerHTML = ''
     document.getElementById('data-max').innerHTML = ''
-    document.getElementById('data-min').innerHTML =  ''
-    document.getElementById('data-avg').innerHTML =  ''
-    document.getElementById('data-sdev').innerHTML =   ''
-    document.getElementById('data-var').innerHTML =  ''
-    document.getElementById('data-median').innerHTML =  ''
+    document.getElementById('data-min').innerHTML = ''
+    document.getElementById('data-avg').innerHTML = ''
+    document.getElementById('data-sdev').innerHTML = ''
+    document.getElementById('data-var').innerHTML = ''
+    document.getElementById('data-median').innerHTML = ''
     document.getElementById('data-exe').innerHTML = ''
     serData = []
     legendData = []
@@ -225,7 +270,7 @@ function addPosition() {
                 mdui.alert("此坐标已添加，请勿重复添加")
                 return
             }
-          }
+        }
         legendData.push(positionTitle)
         serData.push({
             name: positionTitle,
@@ -332,8 +377,83 @@ function getBottomListHtml(value1, value2) {
     return `<button id="submit-param" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="DrawPic('` + value2 + `')" style = "margin-left: 1vh"> ${value1} </button>`
 }
 
+
+function removeChild(className) {
+    var child = document.getElementsByClassName(className);
+    child.removeNode = [];
+    if (child.length != undefined) {
+        var len = child.length;
+        for (var i = 0; i < len; i++) {
+            child.removeNode.push({
+                parent: child[i].parentNode,
+                inner: child[i].outerHTML,
+                next: child[i].nextSibling
+            });
+        }
+        for (var i = 0; i < len; i++) {
+            child[0].parentNode.removeChild(child[0]);
+        }
+    } else {
+        child.removeNode.push({
+            parent: child.parentNode,
+            inner: child.outerHTML,
+            next: child.nextSibling
+        });
+        child.parentNode.removeChild(child);
+    }
+}
+
+function getHisFileHtml(hisFile) {
+    let html = ''
+    try {
+        for (let i = 0; i < hisFile.length; i++) {
+            html += `<label class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-content">   
+                <div class="mdui-list-item-title mdui-list-item-two-line">
+                            ${hisFile[i].fileName}
+                            </div> 
+                            <div class="mdui-list-item-text mdui-list-item-one-line">${hisFile[i].fileTime}</div>  
+                            </div>
+                           
+                <div class="mdui-checkbox">
+                    <input type="checkbox"/>
+                    <i class="mdui-checkbox-icon"></i>
+                </div>
+            </label>
+   <div class = "mdui-divider mdui-m-y-0" > </div>
+`
+
+        }
+        return html
+    } catch (e) {
+        mdui.alert(e)
+    }
+}
+
+function deleteHisFile() {
+
+}
+
+
 //获取画图属性目录
 function fetchFileList() {
+    const hisFileList = JSON.parse(funcInjector.getHisFile(params).toString())
+    removeChild("mdui-list-item mdui-ripple")
+    removeChild("mdui-divider mdui-m-y-0")
+    let hisFileHtml = getHisFileHtml(hisFileList)
+    if (hisFileHtml == "") {
+        document.getElementById("empty").style.display = "block";
+        document.getElementById("bar").style.display = "none";
+        let ele = document.querySelector(".hisbar")
+        ele.setAttribute("display", "flex");
+    } else {
+        // document.querySelector(".hisbar")
+        document.getElementById("empty").style.display = "none";
+        document.getElementById("bar").style.display = "flex";
+
+        document.querySelector(".mdui-list").innerHTML += hisFileHtml
+
+    }
 
     let mySelection = document.getElementById("selector")
     let index = mySelection.selectedIndex
@@ -395,13 +515,13 @@ function demonstrateStat(datax, datay) {
     medianValue = ecStat.statistics.median(datay);
     sumValue = datay.length;
     document.getElementById('data-num').innerHTML = sumValue
-    document.getElementById('data-max').innerHTML = (maxValue>0&&maxValue<0.01)?(new Big(maxValue).toExponential(2)):maxValue.toFixed(2)
-    document.getElementById('data-min').innerHTML = (minValue>0&&minValue<0.01)?(new Big(minValue).toExponential(2)):minValue.toFixed(2)
-    document.getElementById('data-avg').innerHTML =  (meanValue>0&&meanValue<0.01)&&meanValue<0.01?(new Big(meanValue).toExponential(2)):meanValue.toFixed(2)
-    document.getElementById('data-sdev').innerHTML =  (sampleDeviation>0&&sampleDeviation<0.01)&&sampleDeviation<0.01?(new Big(sampleDeviation).toExponential(2)):sampleDeviation.toFixed(2)
-    document.getElementById('data-var').innerHTML = (varianceValue>0&&varianceValue<0.01)?(new Big(varianceValue).toExponential(2)):varianceValue.toFixed(2)
-    document.getElementById('data-median').innerHTML = (medianValue>0&&medianValue<0.01)?(new Big(medianValue).toExponential(2)):medianValue.toFixed(2)
-    document.getElementById('data-exe').innerHTML =( (maxValue-minValue)>0&&(maxValue-minValue)<0.01)?(new Big((maxValue-minValue)).toExponential(2)):(maxValue-minValue).toFixed(2)
+    document.getElementById('data-max').innerHTML = (maxValue > 0 && maxValue < 0.01) ? (new Big(maxValue).toExponential(2)) : maxValue.toFixed(2)
+    document.getElementById('data-min').innerHTML = (minValue > 0 && minValue < 0.01) ? (new Big(minValue).toExponential(2)) : minValue.toFixed(2)
+    document.getElementById('data-avg').innerHTML = (meanValue > 0 && meanValue < 0.01) && meanValue < 0.01 ? (new Big(meanValue).toExponential(2)) : meanValue.toFixed(2)
+    document.getElementById('data-sdev').innerHTML = (sampleDeviation > 0 && sampleDeviation < 0.01) && sampleDeviation < 0.01 ? (new Big(sampleDeviation).toExponential(2)) : sampleDeviation.toFixed(2)
+    document.getElementById('data-var').innerHTML = (varianceValue > 0 && varianceValue < 0.01) ? (new Big(varianceValue).toExponential(2)) : varianceValue.toFixed(2)
+    document.getElementById('data-median').innerHTML = (medianValue > 0 && medianValue < 0.01) ? (new Big(medianValue).toExponential(2)) : medianValue.toFixed(2)
+    document.getElementById('data-exe').innerHTML = ((maxValue - minValue) > 0 && (maxValue - minValue) < 0.01) ? (new Big((maxValue - minValue)).toExponential(2)) : (maxValue - minValue).toFixed(2)
     echarts.registerTransform(ecStat.transform.histogram);
     echarts.registerTransform(ecStat.transform.clustering);
     let chartDom = echarts.init(document.querySelector("#hisCharts"));
@@ -431,14 +551,14 @@ function demonstrateStat(datax, datay) {
                     return value
                 }
             },
-            min:function(value){
+            min: function (value) {
                 return value.min
             },
             max: function (value) {
                 return value.max
             },
         },
-        dataZoom:[{ type:"inside"  }],
+        dataZoom: [{type: "inside"}],
         yAxis: {},
         series: [{
             name: '频数',
@@ -583,7 +703,7 @@ function demonstrateStat(datax, datay) {
     // chart.setOption(option);
 }
 
-function deepClone (obj) {
+function deepClone(obj) {
     let objClone = Array.isArray(obj) ? [] : {};
     if (obj && typeof obj === "object") {
         for (var key in obj) {
@@ -605,16 +725,16 @@ function deepClone (obj) {
 function demonstratePositionedStat() {
     let tempData = deepClone(serData)
     let datay = []
-    for(i in tempData) {
+    for (i in tempData) {
         let dataY = []
-        for(j in tempData[i].data) {
+        for (j in tempData[i].data) {
             dataY.push(tempData[i].data[j][1])
             datay.push(tempData[i].data[j][1])
         }
         var bins = ecStat.histogram(dataY);
         tempData[i].type = 'bar'
         tempData[i].barWidth = '99.3%'
-        tempData[i].data =bins.data
+        tempData[i].data = bins.data
     }
     sampleDeviation = ecStat.statistics.deviation(datay);
     varianceValue = ecStat.statistics.sampleVariance(datay);
@@ -679,14 +799,14 @@ function demonstratePositionedStat() {
                     return value
                 }
             },
-            min:function(value){
+            min: function (value) {
                 return value.min
             },
             max: function (value) {
                 return value.max
             },
         },
-        dataZoom:[{ type:"inside"  }],
+        dataZoom: [{type: "inside"}],
         yAxis: {},
         series: tempData
     };
@@ -694,19 +814,19 @@ function demonstratePositionedStat() {
     chartDom.setOption(option);
 }
 
-function demonstrateHeatStat(legendData,seriesData) {
+function demonstrateHeatStat(legendData, seriesData) {
     let tempData = deepClone(seriesData)
     let datay = []
-    for(i in tempData) {
+    for (i in tempData) {
         let dataY = []
-        for(j in tempData[i].data) {
+        for (j in tempData[i].data) {
             dataY.push(Number(tempData[i].data[j][2]))
             datay.push(Number(tempData[i].data[j][2]))
         }
         var bins = ecStat.histogram(dataY);
         tempData[i].type = 'bar'
         tempData[i].barWidth = '99.3%'
-        tempData[i].data =bins.data
+        tempData[i].data = bins.data
     }
     funcInjector.log(datay.toString())
     sampleDeviation = ecStat.statistics.deviation(datay);
@@ -722,7 +842,7 @@ function demonstrateHeatStat(legendData,seriesData) {
     document.getElementById('data-min').innerHTML = Number(minValue).toFixed(2)
     document.getElementById('data-avg').innerHTML = Number(meanValue).toFixed(2)
     document.getElementById('data-sdev').innerHTML = Number(sampleDeviation).toFixed(2)
-    document.getElementById('data-var').innerHTML =Number(varianceValue).toFixed(2)
+    document.getElementById('data-var').innerHTML = Number(varianceValue).toFixed(2)
     document.getElementById('data-median').innerHTML = Number(medianValue).toFixed(2)
     document.getElementById('data-exe').innerHTML = (maxValue - minValue).toFixed(2)
     echarts.registerTransform(ecStat.transform.histogram);
@@ -755,25 +875,29 @@ function demonstrateHeatStat(legendData,seriesData) {
                     return value
                 }
             },
-            min:function(value){
+            min: function (value) {
                 return value.min
             },
             max: function (value) {
                 return value.max
             },
         },
-        dataZoom:[{ type:"inside"  }],
+        dataZoom: [{type: "inside"}],
         yAxis: {},
         series: tempData
     };
 
     chartDom.setOption(option);
 }
+
 //画折线图
 //原始数据 标题 横坐标 纵坐标
 function drawLinearMapData(rawData, title, xname, yname, tagName) {
     demonstrateStat(rawData["x"], rawData["y"])
-    funcInjector.log(sampleDeviation.toString())
+    document.getElementById('table-title').innerHTML = title + "统计数据"
+    let maxValue = ecStat.statistics.max(rawData["y"]);
+    let minValue = ecStat.statistics.min(rawData["y"]);
+
     let option = {
         tooltip: {
             trigger: 'axis',
@@ -785,12 +909,22 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
             left: 'center',
             text: title
         },
+        visualMap: {
+            min: minValue,
+            max: maxValue,
+            calculable: true,
+            realtime: true,
+            formatter: function (value) {                 //标签的格式化工具。
+                return value;                    // 范围标签显示内容。
+            }
+        },
         toolbox: {
             left: 'right',
             top: 'bottom',
             feature: {
                 dataZoom: {
-                    yAxisIndex: 'none',
+                    title: '数据缩放工具',
+                    // yAxisIndex: 'none',
                     title: "缩放"
                 },
 
@@ -805,6 +939,7 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
                 }
             }
         },
+
         xAxis: {
             name: xname,
             type: 'category',
@@ -837,14 +972,26 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
         },
 
         dataZoom: [
+
             {
-                type: 'inside',
-                start: 0,
-                end: 10
+                type: 'slider',
+                xAxisIndex: 0,
+                filterMode: 'none'
             },
             {
-                start: 0,
-                end: 10
+                type: 'slider',
+                yAxisIndex: 0,
+                filterMode: 'none'
+            },
+            {
+                type: 'inside',
+                xAxisIndex: 0,
+                filterMode: 'none'
+            },
+            {
+                type: 'inside',
+                yAxisIndex: 0,
+                filterMode: 'none'
             }
         ],
         series: [
@@ -881,6 +1028,22 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
 
 function drawPositionLinearMapData() {
     demonstratePositionedStat()
+    let tempData = deepClone(serData)
+    let datay = []
+    for (i in tempData) {
+        let dataY = []
+        for (j in tempData[i].data) {
+            dataY.push(tempData[i].data[j][1])
+            datay.push(tempData[i].data[j][1])
+        }
+        var bins = ecStat.histogram(dataY);
+        tempData[i].type = 'bar'
+        tempData[i].barWidth = '99.3%'
+        tempData[i].data = bins.data
+    }
+    let maxValue = ecStat.statistics.max(datay);
+    let minValue = ecStat.statistics.min(datay);
+
     try {
         let option = {
             tooltip: {
@@ -952,14 +1115,24 @@ function drawPositionLinearMapData() {
 
             dataZoom: [
                 {
-                    bottom: "10%",
-                    type: 'inside',
-                    start: 0,
-                    end: 50
+                    type: 'slider',
+                    xAxisIndex: 0,
+                    filterMode: 'none'
                 },
                 {
-                    start: 0,
-                    end: 50
+                    type: 'slider',
+                    yAxisIndex: 0,
+                    filterMode: 'none'
+                },
+                {
+                    type: 'inside',
+                    xAxisIndex: 0,
+                    filterMode: 'none'
+                },
+                {
+                    type: 'inside',
+                    yAxisIndex: 0,
+                    filterMode: 'none'
                 }
             ],
             series: serData
@@ -974,7 +1147,7 @@ function drawPositionLinearMapData() {
 }
 
 function testEchart() {
-    funcInjector.log(getPositionedData(100.0, 5.0)["data"][0].toString())
+    funcInjector.getHisFile(params)
     //  <input type="radio" name="type-selector" value="0" onclick="fetchFileList()"
     // />
     //  <i class="mdui-radio-icon"></i>
@@ -995,10 +1168,10 @@ function testEchart() {
 function drawLinearVerticalMapData(rawData) {
     let seriesData = []
     let legendsData = []
-    let dataX = [],dataY = []
+    let dataX = [], dataY = []
 
     for (let i in rawData) {
-        for(let j in rawData[i]) {
+        for (let j in rawData[i]) {
             dataX.push(rawData[i][j][0])
             dataY.push(rawData[i][j][1])
         }
@@ -1022,7 +1195,9 @@ function drawLinearVerticalMapData(rawData) {
         // legendsData.push(i)
     }
 
-    demonstrateStat(dataY,dataX)
+    demonstrateStat(dataY, dataX)
+    minValue = ecStat.statistics.min(dataX);
+    meanValue = ecStat.statistics.mean(dataX);
     let option = {
         legend: legendsData,
         toolbox: {
@@ -1053,12 +1228,44 @@ function drawLinearVerticalMapData(rawData) {
             trigger: 'axis',
             formatter: '{a} <br/>Temperature(°C):Altitude(km)' + ':' + '{c}'
         },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
+        visualMap: {
+            min: minValue,
+            max: maxValue,
+            dimension: 0,
+            calculable: true,
+            realtime: true,
+            formatter: function (value) {                 //标签的格式化工具。
+                return value;                    // 范围标签显示内容。
+            }
         },
+        dataZoom: [
+            {
+                type: 'slider',
+                xAxisIndex: 0,
+                filterMode: 'none'
+            },
+            {
+                type: 'slider',
+                yAxisIndex: 0,
+                filterMode: 'none'
+            },
+            {
+                type: 'inside',
+                xAxisIndex: 0,
+                filterMode: 'none'
+            },
+            {
+                type: 'inside',
+                yAxisIndex: 0,
+                filterMode: 'none'
+            }
+        ],
+        // grid: {
+        //     left: '3%',
+        //     right: '4%',
+        //     bottom: '3%',
+        //     containLabel: true
+        // },
         xAxis: {
             name: "温度(°C)",
             type: 'value',
@@ -1090,8 +1297,6 @@ function drawLinearVerticalMapData(rawData) {
 }
 
 
-
-
 //热力图
 function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, reverseY, schema) {
     let seriesData = []
@@ -1119,14 +1324,14 @@ function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, revers
     let selectedtime = rawData["legend"][0]
 
     let legendData = {
-            type: 'scroll',
-            // inactiveColor: "#fff",
-            // inactiveBorderColor: "#000",
-            data: rawData["legend"],
+        type: 'scroll',
+        // inactiveColor: "#fff",
+        // inactiveBorderColor: "#000",
+        data: rawData["legend"],
         // selectedMode: 'single',
-            top:"6.5%",
-            selected: {
-                selectedtime :true
+        top: "6.5%",
+        selected: {
+            selectedtime: true
 
         },
         selector: [
@@ -1145,7 +1350,7 @@ function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, revers
         ]
     }
 
-        demonstrateHeatStat(legendData,seriesData)
+    demonstrateHeatStat(legendData, seriesData)
 
 
     let option = {
@@ -1161,6 +1366,30 @@ function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, revers
                     + schema[1] + '：' + value[1] + '<br>'
             }
         },
+        dataZoom: [
+            {
+                type: 'slider',
+                xAxisIndex: 0,
+                height: 12,
+                filterMode: 'none'
+            },
+            {
+                type: 'slider',
+                yAxisIndex: 0,
+                right: "2%",
+                filterMode: 'none'
+            },
+            {
+                type: 'inside',
+                xAxisIndex: 0,
+                filterMode: 'none'
+            },
+            {
+                type: 'inside',
+                yAxisIndex: 0,
+                filterMode: 'none'
+            }
+        ],
         legend: {
             width: "78%",
             type: 'scroll',
