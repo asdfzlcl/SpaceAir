@@ -1,6 +1,7 @@
 package application.app;
 
 
+import com.teamdev.jxbrowser.chromium.JSArray;
 import com.teamdev.jxbrowser.chromium.JSObject;
 import application.app.messages.InputParam;
 import javafx.application.Platform;
@@ -108,6 +109,8 @@ public class FuncInjectorImpl implements FuncInjector {
             FileChannel sourceChannel = new FileInputStream(filePath).getChannel();
             FileChannel destChannel = new FileOutputStream(dest).getChannel();
             destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
+            sourceChannel.close();
+            destChannel.close();
 
         }catch (Exception e){
             e.printStackTrace();
@@ -485,6 +488,22 @@ public class FuncInjectorImpl implements FuncInjector {
     public void log(String info){
 
         System.out.println(info);
+    }
+
+
+    public int deleteHisFile(JSArray fileList){
+        try {
+            for (int i =0;i<fileList.length();i++) {
+                System.out.println(String.valueOf(fileList.get(i)));
+                File file = new File(String.valueOf(fileList.get(i)));
+                System.out.println(file.delete());
+
+            }
+        }  catch (Exception e){
+        e.printStackTrace();
+       return 1;
+    }
+        return 0;
     }
 
 

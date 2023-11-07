@@ -98,6 +98,25 @@ function browserRedirect() {
     return "other";
 }
 
+function  refreshHisList() {
+    const hisFileList = JSON.parse(funcInjector.getHisFile(params).toString())
+    removeChild("mdui-list-item mdui-ripple")
+    removeChild("mdui-divider mdui-m-y-0")
+    let hisFileHtml = getHisFileHtml(hisFileList)
+    if (hisFileHtml == "") {
+        document.getElementById("empty").style.display = "block";
+        document.getElementById("bar").style.display = "none";
+        let ele = document.querySelector(".hisbar")
+        ele.setAttribute("display", "flex");
+    } else {
+        // document.querySelector(".hisbar")
+        document.getElementById("empty").style.display = "none";
+        document.getElementById("bar").style.display = "flex";
+
+        document.querySelector(".mdui-list").innerHTML += hisFileHtml
+
+    }
+}
 function GetFile() {
     fileURL = funcInjector.chooseFile(params)
     document.querySelector(".file-detail").style.display = 'inline'
@@ -109,6 +128,7 @@ function GetFile() {
     params.filename = fileName
     params.filepath = fileURL
     document.querySelector(".file-name").innerHTML = fileName
+    refreshHisList()
 }
 
 function renewEcharts() {
@@ -168,7 +188,8 @@ function guide() {
         prevBtnText: '上一个', // Previous button text for this step 上一步按钮文字
         doneBtnText: '完成',
         steps: [
-            {element: '.file-select',
+            {
+                element: '.file-select',
                 popover: {
                     title: '文件与图像选择区域',
                     description: '此处选择数据源文件的类型和文件路径，分为四种类型,请在选择正确的类型后选取文件路径，根据需要选择可视化图像',
@@ -176,7 +197,8 @@ function guide() {
                     align: 'start'
                 }
             },
-            {element: '.file-info',
+            {
+                element: '.file-info',
                 popover: {
                     title: '文件信息区域',
                     description: '此处展现当前选择文件的具体信息',
@@ -184,7 +206,8 @@ function guide() {
                     align: 'start'
                 }
             },
-            {element: '.guide',
+            {
+                element: '.guide',
                 popover: {
                     title: '帮助按钮',
                     description: '此按钮用于触发帮助弹窗，可多次点击',
@@ -192,7 +215,8 @@ function guide() {
                     align: 'start'
                 }
             },
-            {element: '.charts',
+            {
+                element: '.charts',
                 popover: {
                     title: '可视化区域',
                     description: '此处展现当前的可视化图像信息，具有缩放、保存、数据视图、图例选择等功能',
@@ -200,7 +224,8 @@ function guide() {
                     align: 'start'
                 }
             },
-            {element: '.statistic-info',
+            {
+                element: '.statistic-info',
                 popover: {
                     title: '统计数据',
                     description: '此处展现当前选中数据因变量的统计信息',
@@ -208,7 +233,8 @@ function guide() {
                     align: 'start'
                 }
             },
-            {element: '.statistic-charts',
+            {
+                element: '.statistic-charts',
                 popover: {
                     title: '频数直方图',
                     description: '此处展现当前选中数据因变量的频数直方图，如果有多种数据可以选择图例来进行转变',
@@ -220,7 +246,8 @@ function guide() {
     }
     console.log(document.querySelector(".charts-selector").innerHTML)
     if (document.querySelector(".charts-selector").innerHTML != "") {
-        config.steps.splice(2, 0, {element: '.charts-selector',
+        config.steps.splice(2, 0, {
+            element: '.charts-selector',
             popover: {
                 title: '文件与图像选择区域',
                 description: '此处选择数据源文件的类型和文件路径，分为四种类型,请在选择正确的类型后选取文件路径，根据需要选择可视化图像',
@@ -407,22 +434,20 @@ function getHisFileHtml(hisFile) {
     let html = ''
     try {
         for (let i = 0; i < hisFile.length; i++) {
-            html += `<label class="mdui-list-item mdui-ripple">
+            html +=
+                `<label class="mdui-list-item mdui-ripple">
                 <div class="mdui-list-item-content">   
-                <div class="mdui-list-item-title mdui-list-item-two-line">
-                            ${hisFile[i].fileName}
-                            </div> 
-                            <div class="mdui-list-item-text mdui-list-item-one-line">${hisFile[i].fileTime}</div>  
-                            </div>
-                           
+                    <div class="mdui-list-item-title mdui-list-item-two-line">${hisFile[i].fileName}</div> 
+                    <div class="mdui-list-item-text mdui-list-item-one-line">${hisFile[i].fileTime}</div>  
+                </div>
+                   
                 <div class="mdui-checkbox">
-                    <input type="checkbox"/>
+                    <input type="checkbox" id = "checkbox"/>
                     <i class="mdui-checkbox-icon"></i>
                 </div>
             </label>
    <div class = "mdui-divider mdui-m-y-0" > </div>
 `
-
         }
         return html
     } catch (e) {
@@ -431,6 +456,140 @@ function getHisFileHtml(hisFile) {
 }
 
 function deleteHisFile() {
+    mdui.dialog({
+        title: '请确认是否删除历史文件',
+        buttons: [
+            {
+                text: '取消'
+            },
+            {
+                text: '确认',
+                onClick: function (inst) {
+                    try {
+                        var Splitter = browserRedirect() == "Win" ? '\\' : '/'
+                        let fileList = document.querySelectorAll(".mdui-list-item")
+                        let temp = []
+                        for (let i = 0; i < fileList.length; i++) {
+                            let checkboxDiv = fileList[i].lastElementChild
+                            let checked = checkboxDiv.firstElementChild.checked
+                            if (checked == true) {
+                                let itemContent = fileList[i].firstElementChild
+
+                                let line1 = itemContent.firstElementChild
+                                let line2 = itemContent.lastElementChild
+
+                                let filename = line1.innerHTML.replace("\n","")
+                                let fileTime = line2.innerHTML.replace("\n","")
+
+                                let dest = ""
+                                if (params.type == 0) {
+                                    dest = "." + Splitter + "data" + Splitter + "太阳和地磁指数" + Splitter + fileTime + Splitter + filename ;
+                                } else if (params.type == 1) {
+                                    dest = "." + Splitter + "data" + Splitter + "大气密度变化规律" + Splitter + fileTime + Splitter + filename;
+                                } else if (params.type == 2) {
+                                    dest = "." + Splitter + "data" + Splitter + "电离层参数" + Splitter + fileTime + Splitter + filename;
+                                } else if (params.type == 3) {
+                                    dest = "." + Splitter + "data" + Splitter + "临近空间环境" + Splitter + fileTime + Splitter + filename;
+                                }
+                                temp.push(dest)
+                            }
+                        }
+                        let ret = funcInjector.deleteHisFile(temp)
+                        if(ret == 0) {
+                            mdui.snackbar({
+                                message: '删除成功',
+                                position: 'left-top',
+                            });
+                            fetchFileList()
+                        } else {
+                            mdui.snackbar({
+                                message: '删除失败，请检查文件是否被其他进程占用',
+                                position: 'left-top',
+                            });
+                            fetchFileList()
+                        }
+                    } catch (e) {
+                        mdui.alert(e)
+                    }
+
+                }
+            }
+        ]
+    });
+}
+
+function openHisFile() {
+    let fileList = document.querySelectorAll(".mdui-list-item")
+    let temp = []
+    let count = 0;
+    for (let i = 0; i < fileList.length; i++) {
+        let checkboxDiv = fileList[i].lastElementChild
+        let checked = checkboxDiv.firstElementChild.checked
+        if (checked == true) {
+            count ++
+        }
+    }
+    mdui.alert(count)
+    if (count > 1) {
+        mdui.alert("不可打开一个以上的文件")
+    } else if (count == 0) {
+        mdui.alert("请选择文件")
+    }
+
+    else {
+        mdui.dialog({
+            title: '是否打开此文件' ,
+            buttons: [
+                {
+                    text: '取消'
+                },
+                {
+                    text: '确认',
+                    onClick: function (inst) {
+                        try {
+                            var Splitter = browserRedirect() == "Win" ? '\\' : '/'
+
+                            let temp = []
+                            for (let i = 0; i < fileList.length; i++) {
+                                let checkboxDiv = fileList[i].lastElementChild
+                                let checked = checkboxDiv.firstElementChild.checked
+                                if (checked == true) {
+                                    let itemContent = fileList[i].firstElementChild
+                                    let line1 = itemContent.firstElementChild
+                                    let line2 = itemContent.lastElementChild
+                                    let filename = line1.innerHTML.replace("\n", "")
+                                    let fileTime = line2.innerHTML.replace("\n", "")
+                                    let dest = ""
+                                    if (params.type == 0) {
+                                        dest = "." + Splitter + "data" + Splitter + "太阳和地磁指数" + Splitter + fileTime + Splitter + filename;
+                                    } else if (params.type == 1) {
+                                        dest = "." + Splitter + "data" + Splitter + "大气密度变化规律" + Splitter + fileTime + Splitter + filename;
+                                    } else if (params.type == 2) {
+                                        dest = "." + Splitter + "data" + Splitter + "电离层参数" + Splitter + fileTime + Splitter + filename;
+                                    } else if (params.type == 3) {
+                                        dest = "." + Splitter + "data" + Splitter + "临近空间环境" + Splitter + fileTime + Splitter + filename;
+                                    }
+                                    temp.push(dest)
+                                }
+                            }
+                            let fileURL = temp[0]
+                            document.querySelector(".file-detail").style.display = 'inline'
+                            document.querySelector(".file-path").innerHTML = fileURL
+                            var Splitter = browserRedirect() == "Win" ? '\\' : '/'
+                            last = fileURL.lastIndexOf(Splitter)
+                            fileName = fileURL.substring(last + 1)
+                            params.filename = fileName
+                            params.filepath = fileURL
+                            document.querySelector(".file-name").innerHTML = fileName
+
+                        } catch (e) {
+                            mdui.alert(e)
+                        }
+                    }
+
+                }]
+        });
+    }
 
 }
 
@@ -914,8 +1073,9 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
             max: maxValue,
             calculable: true,
             realtime: true,
-            formatter: function (value) {                 //标签的格式化工具。
-                return value;                    // 范围标签显示内容。
+            formatter: function (value) {
+                let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : value.toFixed(2)
+                return ret;                  // 范围标签显示内容。
             }
         },
         toolbox: {
@@ -965,7 +1125,8 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
             // axisLine: { onZero: false },
             axisLabel: {
                 formatter: function (value) {
-                    return value
+                    let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : value.toFixed(2)
+                    return ret;
                 }
             },
             // boundaryGap: [0, '100%']

@@ -60,6 +60,14 @@
 
     <div class="main-panel">
         <div class="mdui-list">
+            <label class="mdui-list-item mdui-ripple">
+                <div class="mdui-checkbox">
+                    <input type="checkbox" checked/>
+                    <i class="mdui-checkbox-icon"></i>
+                </div>
+                <div class="mdui-list-item-content">Line item selected</div>
+                <i class="mdui-list-item-icon mdui-icon material-icons">chat</i>
+            </label>
             <div class="ant-empty" id="empty">
                 <div class="ant-empty-image">
                     <svg width="184" height="152" viewBox="0 0 184 152" xmlns="http://www.w3.org/2000/svg">
@@ -89,7 +97,7 @@
             </div>
             <div class="hisbar" id = "bar">
                 <button class="mdui-btn" id="delete" onclick="deleteHisFile()">删除</button>
-                <button class="mdui-btn" id="open">打开</button>
+                <button class="mdui-btn" id="open" onclick="openHisFile()">打开</button>
             </div>
         </div>
         <div class='charts' id="chart">
