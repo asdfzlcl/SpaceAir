@@ -216,6 +216,15 @@ function guide() {
                 }
             },
             {
+                element: '.mdui-list',
+                popover: {
+                    title: '历史文件',
+                    description: '此处归档了当前文件类型下的历史文件和历史日期，可以进行选取、打开和删除操作',
+                    side: "bottom",
+                    align: 'start'
+                }
+            },
+            {
                 element: '.charts',
                 popover: {
                     title: '可视化区域',
