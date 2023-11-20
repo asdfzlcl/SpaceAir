@@ -368,5 +368,11 @@ caption {
     font-size: 14px;
     line-height: 22px;
     text-align: center;
-    text-align: center;
+}
+
+.analyser {
+    width: 40vw;
+    align-items: center;
+    justify-content: space-around;
+    display: flex;
 }

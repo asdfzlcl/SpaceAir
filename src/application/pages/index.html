@@ -32,9 +32,9 @@
             <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="setting"
                     onclick="GetFile()">选择文件
             </button>
-            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="test"
-                    onclick="testEchart()"> 作图测试
-            </button>
+<!--            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="test"-->
+<!--                    onclick="testEchart()"> 作图测试-->
+<!--            </button>-->
             <span class="file-list">
 
                 </span>
@@ -53,6 +53,18 @@
             </div>
         </div>
         <div class="charts-selector"></div>
+
+        <div class="analyser" id = "analyser">
+            <text class='file-select-title'> 预测模型:</text>
+        <select class="mdui-select" mdui-select id="model-selector" >
+            <option value='0'>FEDformer</option>
+            <option value='1'>Informer</option>
+            <option value='2'>Autoformer</option>
+        </select>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="predict"
+                onclick="predict30days()">预测分析
+        </button>
+        </div>
         <img class="guide" decoding="async" src="./static/wenhao.png" width="42" height="42"
              title="点击即可触发帮助引导界面" onclick="guide()"/>
     </div>
@@ -66,7 +78,6 @@
                     <i class="mdui-checkbox-icon"></i>
                 </div>
                 <div class="mdui-list-item-content">Line item selected</div>
-                <i class="mdui-list-item-icon mdui-icon material-icons">chat</i>
             </label>
             <div class="ant-empty" id="empty">
                 <div class="ant-empty-image">
@@ -156,6 +167,8 @@
 <script src="js/echarts.min.js"></script>
 <script src="js/big.js"></script>
 <script src="js/driver.js"></script>
+<script src="js/axios.js"></script>
+<script src="js/serviceAPI.js"></script>
 <link rel="stylesheet" href="css/driver.css"/>
 </body>
 

@@ -1,12 +1,21 @@
 // 参数数据
 // 该对象的所有属性getter均被绑定到页面
 
-
 params = {
     type: 0, pictype: 0, filename: "", filepath: ""
 }
 
+predictData = []
 
+predictTimeData =[]
+
+predictTitle = ""
+
+predictXname = ""
+
+predictYname = ""
+
+predictTagname = ""
 // 统计数据
 // 该对象的所有属性setter均被绑定到页面
 statics = {
@@ -191,8 +200,8 @@ function guide() {
             {
                 element: '.file-select',
                 popover: {
-                    title: '文件与图像选择区域',
-                    description: '此处选择数据源文件的类型和文件路径，分为四种类型,请在选择正确的类型后选取文件路径，根据需要选择可视化图像',
+                    title: '文件与数据类型选取模块',
+                    description: '此模块选择数据源文件的类型和文件路径，分为四种类型,请在选择正确的类型后选取文件路径，根据需要选择可视化图像',
                     side: "left",
                     align: 'start'
                 }
@@ -200,8 +209,8 @@ function guide() {
             {
                 element: '.file-info',
                 popover: {
-                    title: '文件信息区域',
-                    description: '此处展现当前选择文件的具体信息',
+                    title: '文件信息模块',
+                    description: '此处展现当前选择文件的具体信息，包括文件名和文件路径',
                     side: "bottom",
                     align: 'start'
                 }
@@ -218,17 +227,17 @@ function guide() {
             {
                 element: '.mdui-list',
                 popover: {
-                    title: '历史文件',
+                    title: '历史文件管理模块',
                     description: '此处归档了当前文件类型下的历史文件和历史日期，可以进行选取、打开和删除操作',
-                    side: "bottom",
+                    side: "bottom", 
                     align: 'start'
                 }
             },
             {
                 element: '.charts',
                 popover: {
-                    title: '可视化区域',
-                    description: '此处展现当前的可视化图像信息，具有缩放、保存、数据视图、图例选择等功能',
+                    title: '数据可视化与检索模块',
+                    description: '此处展现当前的可视化图像信息，具有缩放、保存、数据视图、图例选择等功能，并可根据需要检索指定范围内的数据',
                     side: "bottom",
                     align: 'start'
                 }
@@ -236,7 +245,7 @@ function guide() {
             {
                 element: '.statistic-info',
                 popover: {
-                    title: '统计数据',
+                    title: '数据统计模块',
                     description: '此处展现当前选中数据因变量的统计信息',
                     side: "bottom",
                     align: 'start'
@@ -254,12 +263,24 @@ function guide() {
         ]
     }
     console.log(document.querySelector(".charts-selector").innerHTML)
+    if (  document.getElementById("analyser").style.display != "none") {
+        config.steps.splice(2, 0, {
+            element: '.analyser',
+            popover: {
+                title: '智能分析模块',
+                description: '此处在选择预测模型后，将根据训练的模型对选中数据范围未来三十天的数据进行预测并进行可视化呈现',
+                side: "left",
+                align: 'start'
+            }
+        })
+    }
+
     if (document.querySelector(".charts-selector").innerHTML != "") {
         config.steps.splice(2, 0, {
             element: '.charts-selector',
             popover: {
-                title: '文件与图像选择区域',
-                description: '此处选择数据源文件的类型和文件路径，分为四种类型,请在选择正确的类型后选取文件路径，根据需要选择可视化图像',
+                title: '图标数据选择区域',
+                description: '对于个别类型的图表要进行数据的选取后才能进行绘图，此处用于选取数据范围',
                 side: "left",
                 align: 'start'
             }
@@ -322,6 +343,31 @@ function addPosition() {
 
 }
 
+let mock = {
+    "data": [96,88,18,21,25,8,92,28,25,93,35,43,99,65,41,21,56,74,59,44,99,25,90,57,16,5,43,99,31,46],
+    "date": ["1957-10-1 00:00:00","1957-10-2 00:00:00","1957-10-3 00:00:00","1957-10-4 00:00:00","1957-10-5 00:00:00","1957-10-6 00:00:00","1957-10-7 00:00:00","1957-10-8 00:00:00","1957-10-9 00:00:00","1957-10-10 00:00:00","1957-10-11 00:00:00","1957-10-12 00:00:00","1957-10-13 00:00:00","1957-10-14 00:00:00","1957-10-15 00:00:00","1957-10-16 00:00:00","1957-10-17 00:00:00","1957-10-18 00:00:00","1957-10-19 00:00:00","1957-10-20 00:00:00","1957-10-21 00:00:00","1957-10-22 00:00:00","1957-10-23 00:00:00","1957-10-24 00:00:00","1957-10-25 00:00:00","1957-10-26 00:00:00","1957-10-27 00:00:00","1957-10-28 00:00:00","1957-10-29 00:00:00","1957-10-30 00:00:00"]
+}
+async function predict30days() {
+    if (predictData.length == 0 || predictTimeData.length == 0) {
+        mdui.alert("请先选择文件与数据类型")
+
+    } else {
+        let ret = await pred(predictData, predictTimeData)
+
+        let rawdata ={}
+        // let mySelection = document.getElementById("analyser")
+        // let index = mySelection.selectedIndex
+        // let model = mySelection.options[index].value
+        // mdui.alert(model)
+        // switch (model) {
+        //     case :
+        //
+        // }
+        rawdata["x"] = predictTimeData.concat(mock.date)
+        rawdata["y"] = predictData.concat(mock.data)
+        drawPredictionmap(rawdata,predictTitle,predictXname,predictYname,predictTagname)
+    }
+}
 function getPositionedData(longitude, latitude) {
     rawData = funcInjector.getPositionedData(Number(longitude), Number(latitude), params)
     return JSON.parse(rawData.toString())
@@ -538,7 +584,6 @@ function openHisFile() {
             count ++
         }
     }
-    mdui.alert(count)
     if (count > 1) {
         mdui.alert("不可打开一个以上的文件")
     } else if (count == 0) {
@@ -605,9 +650,12 @@ function openHisFile() {
 
 //获取画图属性目录
 function fetchFileList() {
+    document.querySelector(".charts-selector").innerHTML = ""
     const hisFileList = JSON.parse(funcInjector.getHisFile(params).toString())
     removeChild("mdui-list-item mdui-ripple")
     removeChild("mdui-divider mdui-m-y-0")
+    predictData = []
+    predictTimeData = []
     let hisFileHtml = getHisFileHtml(hisFileList)
     if (hisFileHtml == "") {
         document.getElementById("empty").style.display = "block";
@@ -618,10 +666,15 @@ function fetchFileList() {
         // document.querySelector(".hisbar")
         document.getElementById("empty").style.display = "none";
         document.getElementById("bar").style.display = "flex";
-
         document.querySelector(".mdui-list").innerHTML += hisFileHtml
-
     }
+
+    if (params.type != 0) {
+        document.getElementById("analyser").style.display = "none";
+    } else  {
+        document.getElementById("analyser").style.display = "flex";
+    }
+
 
     let mySelection = document.getElementById("selector")
     let index = mySelection.selectedIndex
@@ -1058,6 +1111,171 @@ function demonstrateHeatStat(legendData, seriesData) {
     chartDom.setOption(option);
 }
 
+function drawPredictionmap(rawData, title, xname, yname, tagName) {
+    try {
+        demonstrateStat(rawData["x"], rawData["y"])
+        document.getElementById('table-title').innerHTML = title + "统计数据"
+        let maxValue = ecStat.statistics.max(rawData["y"]);
+        let minValue = ecStat.statistics.min(rawData["y"]);
+
+        let option = {
+            tooltip: {
+                trigger: 'axis',
+                position: function (pt) {
+                    return [pt[0], '10%'];
+                }
+            },
+            title: {
+                left: 'center',
+                text: title
+            },
+            visualMap: {
+                show: false,
+                dimension: 0,
+                pieces: [
+                    {
+                        lte: 30,
+                        color: 'green'
+                    },
+
+                    {
+                        gt: 30,
+                        lte: 60,
+                        color: 'red'
+                    },
+                    // {
+                    //     gt: 8,
+                    //     lte: 14,
+                    //     color: 'green'
+                    // },
+                    // {
+                    //     gt: 14,
+                    //     lte: 17,
+                    //     color: 'red'
+                    // },
+                    // {
+                    //     gt: 17,
+                    //     color: 'green'
+                    // }
+
+                ],
+                realtime: true,
+                formatter: function (value) {
+                    let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : value.toFixed(2)
+                    return ret;                  // 范围标签显示内容。
+                }
+            },
+            toolbox: {
+                left: 'right',
+                top: 'bottom',
+                feature: {
+                    dataZoom: {
+                        title: '数据缩放工具',
+                        // yAxisIndex: 'none',
+                        title: "缩放"
+                    },
+
+                    dataView: {
+                        title: '数据视图工具',
+                        lang: ['数据视图', '关闭', '刷新'],
+                        backgroundColor: "f2eef9",
+
+                    },
+                    saveAsImage: {
+                        title: '另存为图像'
+                    }
+                }
+            },
+
+            xAxis: {
+                name: xname,
+                type: 'category',
+                boundaryGap: false,
+                data: rawData["x"]
+            },
+            yAxis: {
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#000', // x坐标轴的轴线颜色
+                    }
+                },
+                name: yname,
+                type: 'value',
+                // min:function(value){
+                //     return value.min
+                // },
+                max: function (value) {
+                    return value.max
+                },
+                show: true,
+                // axisLine: { onZero: false },
+                axisLabel: {
+                    formatter: function (value) {
+                        let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : value.toFixed(2)
+                        return ret;
+                    }
+                },
+                // boundaryGap: [0, '100%']
+            },
+
+            dataZoom: [
+
+                {
+                    type: 'slider',
+                    xAxisIndex: 0,
+                    filterMode: 'none'
+                },
+                {
+                    type: 'slider',
+                    yAxisIndex: 0,
+                    filterMode: 'none'
+                },
+                {
+                    type: 'inside',
+                    xAxisIndex: 0,
+                    filterMode: 'none'
+                },
+                {
+                    type: 'inside',
+                    yAxisIndex: 0,
+                    filterMode: 'none'
+                }
+            ],
+            series: [
+                {
+                    name: tagName,
+                    type: 'line',
+                    symbol: 'none',
+                    sampling: 'lttb',
+                    // itemStyle: {
+                    //     color: 'rgb(255, 70, 131)'
+                    // },
+                    // areaStyle: {
+                    //     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    //         {
+                    //             offset: 0,
+                    //             color: 'rgb(255, 158, 68)'
+                    //         },
+                    //         {
+                    //             offset: 1,
+                    //             color: 'rgb(255, 70, 131)'
+                    //         }
+                    //     ])
+                    // },
+                    data: rawData["y"]
+                }
+            ],
+
+        };
+        let chartDom = echarts.init(document.querySelector("#chart"));
+        chartDom.clear()
+        chartDom.setOption(option)
+    } catch (e) {
+        mdui.alert(e)
+    }
+}
+
 //画折线图
 //原始数据 标题 横坐标 纵坐标
 function drawLinearMapData(rawData, title, xname, yname, tagName) {
@@ -1065,6 +1283,12 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
     document.getElementById('table-title').innerHTML = title + "统计数据"
     let maxValue = ecStat.statistics.max(rawData["y"]);
     let minValue = ecStat.statistics.min(rawData["y"]);
+    predictData = rawData["y"].slice(-30)
+    predictTimeData = rawData["x"].slice(-30)
+    predictTitle = title.substring(0, 4) + "预测图";
+    predictXname = xname
+    predictYname = yname
+    predictTagname = tagName
 
     let option = {
         tooltip: {
@@ -1197,6 +1421,7 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
 
 
 function drawPositionLinearMapData() {
+    document.getElementById('table-title').innerHTML = "电离层参数一维图统计数据"
     demonstratePositionedStat()
     let tempData = deepClone(serData)
     let datay = []
@@ -1244,7 +1469,7 @@ function drawPositionLinearMapData() {
             title: {
                 left: 'center',
                 // top: "bottom",
-                text: "电离层参数二维图"
+                text: "电离层参数一维图"
             },
             toolbox: {
                 left: 'right',
@@ -1317,7 +1542,7 @@ function drawPositionLinearMapData() {
 }
 
 function testEchart() {
-    funcInjector.getHisFile(params)
+    pred(params)
     //  <input type="radio" name="type-selector" value="0" onclick="fetchFileList()"
     // />
     //  <i class="mdui-radio-icon"></i>
@@ -1336,6 +1561,7 @@ function testEchart() {
 
 //垂直折线图
 function drawLinearVerticalMapData(rawData) {
+    document.getElementById('table-title').innerHTML = "临近空间环境一维图"
     let seriesData = []
     let legendsData = []
     let dataX = [], dataY = []
@@ -1364,6 +1590,7 @@ function drawLinearVerticalMapData(rawData) {
         seriesData.push(temp)
         // legendsData.push(i)
     }
+
 
     demonstrateStat(dataY, dataX)
     minValue = ecStat.statistics.min(dataX);
@@ -1470,6 +1697,7 @@ function drawLinearVerticalMapData(rawData) {
 //热力图
 function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, reverseY, schema) {
     let seriesData = []
+    document.getElementById('table-title').innerHTML = title + "统计数据"
     for (let i in rawData) {
         funcInjector.log(i.toString())
         if (i != "legend") {

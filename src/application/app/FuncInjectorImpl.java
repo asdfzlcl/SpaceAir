@@ -80,10 +80,10 @@ public class FuncInjectorImpl implements FuncInjector {
                 ADFile sat = (ADFile) readFile(filePath, FileType.ADFile);
                 dest = "." + File.separator+ "data" +File.separator + "大气密度变化规律" +File.separator;
             } else if (Objects.equals(type, "2")) {
-                SEFile sat = (SEFile) readFile(filePath, FileType.SEFile);
+                IPFile sat = (IPFile) readFile(filePath, FileType.IPFile);
                 dest = "." + File.separator+ "data" +File.separator + "电离层参数" +File.separator;
             } else if (Objects.equals(type, "3")) {
-                IPFile sat = (IPFile) readFile(filePath, FileType.IPFile);
+                SEFile sat = (SEFile) readFile(filePath, FileType.SEFile);
                 dest = "." + File.separator+ "data" +File.separator + "临近空间环境" +File.separator;
             }
             SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd") ;
