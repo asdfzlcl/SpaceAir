@@ -12,14 +12,6 @@
 
 <body class="mdui-theme-primary-blue mdui-theme-accent-blue">
 <div class="App">
-    <div class="mdui-dialog" id="confirmDelete">
-        <div class="mdui-dialog-title">Are you sure?</div>
-        <div class="mdui-dialog-content">You'll lose all photos and media!</div>
-        <div class="mdui-dialog-actions">
-            <button class="mdui-btn mdui-ripple">cancel</button>
-            <button class="mdui-btn mdui-ripple">erase</button>
-        </div>
-    </div>
     <div class='header'>
         <div class="file-select">
             <text class='file-select-title'> 文件类型:</text>
@@ -32,11 +24,10 @@
             <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="setting"
                     onclick="GetFile()">选择文件
             </button>
-<!--            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="test"-->
-<!--                    onclick="testEchart()"> 作图测试-->
-<!--            </button>-->
+            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="test"
+                    onclick="getVideo()"> 作图测试
+            </button>
             <span class="file-list">
-
                 </span>
 
         </div>
@@ -54,16 +45,16 @@
         </div>
         <div class="charts-selector"></div>
 
-        <div class="analyser" id = "analyser">
+        <div class="analyser" id="analyser">
             <text class='file-select-title'> 预测模型:</text>
-        <select class="mdui-select" mdui-select id="model-selector" >
-            <option value='0'>FEDformer</option>
-            <option value='1'>Informer</option>
-            <option value='2'>Autoformer</option>
-        </select>
-        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="predict"
-                onclick="predict30days()">预测分析
-        </button>
+            <select class="mdui-select" mdui-select id="model-selector">
+                <option value='0'>FEDformer</option>
+                <option value='1'>Informer</option>
+                <option value='2'>Autoformer</option>
+            </select>
+            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="predict"
+                    onclick="predict30days()">预测分析
+            </button>
         </div>
         <img class="guide" decoding="async" src="./static/wenhao.png" width="42" height="42"
              title="点击即可触发帮助引导界面" onclick="guide()"/>
@@ -106,12 +97,13 @@
                 </div>
                 <p class="ant-empty-description">无历史数据</p>
             </div>
-            <div class="hisbar" id = "bar">
+            <div class="hisbar" id="bar">
                 <button class="mdui-btn" id="delete" onclick="deleteHisFile()">删除</button>
                 <button class="mdui-btn" id="open" onclick="openHisFile()">打开</button>
             </div>
         </div>
         <div class='charts' id="chart">
+            <img src="./static/logo.png" class="main-logo">
         </div>
     </div>
 
@@ -169,6 +161,9 @@
 <script src="js/driver.js"></script>
 <script src="js/axios.js"></script>
 <script src="js/serviceAPI.js"></script>
+<script src="js/world.js"></script>
+<link rel="stylesheet" href="css/spin.css">
+<script src="js/spin.js"></script>
 <link rel="stylesheet" href="css/driver.css"/>
 </body>
 

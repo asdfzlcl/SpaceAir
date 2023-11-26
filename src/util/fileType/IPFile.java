@@ -24,12 +24,16 @@ import java.util.ArrayList;
 public class IPFile extends BaseFile{
 
     private final ArrayList<String> timeSeries;
+
+    private final ArrayList<Double> LongitudeSeries;
+
     private final ArrayList<Double> positionSeries;
 
     private final ArrayList<ArrayList<ArrayList<Double>>> dataSeries;
 
     public IPFile(String fileURL) throws IOException {
         super(fileURL);
+        LongitudeSeries  = new ArrayList<>();
         timeSeries = new ArrayList<>();
         positionSeries = new ArrayList<>();
         dataSeries = new ArrayList<>();
@@ -48,6 +52,7 @@ public class IPFile extends BaseFile{
         boolean startValidation = false;
         boolean isFirstSeries = true;
         boolean isInDataSeries = false;
+        boolean hasCalculatedLongitude = false;
         int countInPositionSeries = -1;
         int countInDateSeries = -1;
         boolean isRSM = false;
@@ -91,6 +96,23 @@ public class IPFile extends BaseFile{
                 if(match.matches("[0-9.\\-]*LAT/LON1/LON2/DLON/H")){
                     isInDataSeries = true;
                     countInPositionSeries ++;
+                    if(!hasCalculatedLongitude) {
+                        String[] splitFromNeg = temp[1].split("-");
+                        Double Dlon = Double.valueOf(temp[3]);
+                        Double Lon1;
+                        if(splitFromNeg.length > 2)
+                            Lon1 = -Double.parseDouble(splitFromNeg[2]);
+                        else
+                             Lon1 = -Double.parseDouble(splitFromNeg[1]);
+                        Double Lon2 = Double.valueOf(temp[2]);
+                        System.out.println(Dlon);
+                        System.out.println(Lon1);
+                        System.out.println(Lon2);
+                        for (Double i = Lon1;i <= Lon2 ;i+=Dlon) {
+                            LongitudeSeries.add((double) i);
+                        }
+                        hasCalculatedLongitude = true;
+                    }
                     if(isFirstSeries){
                         // 此处有负数
                         String[] splitFromNeg = temp[1].split("-");
@@ -132,6 +154,18 @@ public class IPFile extends BaseFile{
         return timeSeries;
     }
 
+
+    /**
+     * 获得当前文件的经度序列
+     * 经度序列默认为-180~180 分辨率为5度
+     * @return positionSeries: ArrayList<Double>
+     * */
+    public ArrayList<Double> getLongitudeSeries() {
+        return LongitudeSeries;
+    }
+
+
+
     /**
      * 获得当前文件的纬度序列
      * 经度序列默认为-180~180 分辨率为5度
@@ -140,6 +174,8 @@ public class IPFile extends BaseFile{
     public ArrayList<Double> getPositionSeries() {
         return positionSeries;
     }
+
+
 
     /**
      * 获得数据序列

@@ -17,10 +17,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -30,6 +28,8 @@ import setting.Setting;
 import util.*;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Objects;
 
 import static java.lang.Thread.sleep;
@@ -172,16 +172,45 @@ public class WebStage extends Application {
 
     }
 
+    private Stage getLogoStage() throws FileNotFoundException {
+        Stage logoStage = new Stage();
+        Pane logoPane = new Pane();
+        logoPane.getChildren().add(new ImageView(new Image("file:" +
+                System.getProperty("user.dir") + File.separator + "op.png")
+        ));
+        Scene logoScene = new Scene(logoPane, 500, 500);
+        logoScene.setFill(Color.TRANSPARENT);
+        logoStage.initStyle(StageStyle.UNDECORATED);
+        logoStage.setScene(logoScene);
+        logoStage.getIcons().add(new Image("file:" +
+                System.getProperty("user.dir") + File.separator + "logo.png"));
+        return logoStage;
+    }
+
+
     @Override
     public void start(Stage primaryStage) throws Exception{
+        // create new temp stage for logo
+        Stage logoStage = getLogoStage();
+        logoStage.show();
         initWebStage();
-        webStage.show();
+        primaryStage = webStage;
+        Stage finalPrimaryStage = primaryStage;
+        Platform.runLater(() ->{
+            try {
+                sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            logoStage.close();
+            finalPrimaryStage.show();
+        });
     }
 
     @Override
     public void stop() throws Exception {
         this.browser.dispose();
-        webStage.close();
+//        webStage.close();
 
     }
 

@@ -2,12 +2,13 @@
 const rootAPI = "http://localhost:8000/"
 
 
-function pred(data,datatime) {
+function pred(model,data,datatime,type) {
     try {
-        axios.post(rootAPI + 'pred', {
-            "model": "FEDformer",// str, enum of ["FEDformer","Informer","Autoformer"]
+        return  axios.post(rootAPI + 'pred', {
+            "model":model,// str, enum of ["FEDformer","Informer","Autoformer"]
             "data": data, //float, length = 30
-            "date": datatime  //str of datetime, length = 30
+            "date": datatime,  //str of datetime, length = 30
+            "type": type
         })
             .then(function (response) {
                 return response.data

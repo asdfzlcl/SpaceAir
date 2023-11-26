@@ -370,6 +370,14 @@ caption {
     text-align: center;
 }
 
+.main-logo {
+    margin-left: 48%;
+    transform: translateX(-50%) translateY(-50%);
+    margin-top: 20%;
+    opacity: 0.4;
+    width: 23%;
+}
+
 .analyser {
     width: 40vw;
     align-items: center;

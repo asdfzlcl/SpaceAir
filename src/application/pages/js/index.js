@@ -26,6 +26,8 @@ data = {}
 
 legendData = []
 
+videoData = []
+
 serData = []
 
 const PicType = {
@@ -44,6 +46,9 @@ window.onerror = function (errorMessage, scriptURI, lineNo, columnNo, error) {
     funcInjector.log('columnNo: ' + columnNo.toString()); // 异常列号
     funcInjector.log('error: ' + error.toString()); // 异常堆栈信息
 };
+
+
+
 
 
 // 异步获取数据，避免UI阻塞
@@ -344,28 +349,305 @@ function addPosition() {
 }
 
 let mock = {
-    "data": [96,88,18,21,25,8,92,28,25,93,35,43,99,65,41,21,56,74,59,44,99,25,90,57,16,5,43,99,31,46],
-    "date": ["1957-10-1 00:00:00","1957-10-2 00:00:00","1957-10-3 00:00:00","1957-10-4 00:00:00","1957-10-5 00:00:00","1957-10-6 00:00:00","1957-10-7 00:00:00","1957-10-8 00:00:00","1957-10-9 00:00:00","1957-10-10 00:00:00","1957-10-11 00:00:00","1957-10-12 00:00:00","1957-10-13 00:00:00","1957-10-14 00:00:00","1957-10-15 00:00:00","1957-10-16 00:00:00","1957-10-17 00:00:00","1957-10-18 00:00:00","1957-10-19 00:00:00","1957-10-20 00:00:00","1957-10-21 00:00:00","1957-10-22 00:00:00","1957-10-23 00:00:00","1957-10-24 00:00:00","1957-10-25 00:00:00","1957-10-26 00:00:00","1957-10-27 00:00:00","1957-10-28 00:00:00","1957-10-29 00:00:00","1957-10-30 00:00:00"]
+    "FEDformer": [
+        121.81098175048828,
+        117.04942321777344,
+        113.26078033447266,
+        111.93792724609375,
+        110.58342742919922,
+        110.67145538330078,
+        111.13829803466797,
+        111.6939468383789,
+        113.59158325195312,
+        112.35370635986328,
+        111.11945343017578,
+        113.97933197021484,
+        114.9580307006836,
+        116.50586700439453,
+        117.62641143798828,
+        119.545654296875,
+        121.38289642333984,
+        122.49871063232422,
+        124.08092498779297,
+        125.06856536865234,
+        125.308349609375,
+        125.63526916503906,
+        126.06436920166016,
+        123.80645751953125,
+        123.51599884033203,
+        122.89732360839844,
+        121.7283706665039,
+        121.13021087646484,
+        120.89152526855469,
+        121.62965393066406
+    ],
+
+    "Autoformer": [
+        125.31439971923828,
+        122.01432037353516,
+        118.16681671142578,
+        116.64823150634766,
+        116.20630645751953,
+        115.32735443115234,
+        115.29231262207031,
+        118.46873474121094,
+        119.74394989013672,
+        117.96725463867188,
+        115.87474822998047,
+        116.8329086303711,
+        117.56797790527344,
+        119.34788513183594,
+        121.7526626586914,
+        123.70939636230469,
+        124.5642318725586,
+        124.59980773925781,
+        124.46920013427734,
+        124.38663482666016,
+        124.7287368774414,
+        124.91915130615234,
+        125.10669708251953,
+        123.56586456298828,
+        123.34343719482422,
+        122.91493225097656,
+        122.53739166259766,
+        122.3756332397461,
+        122.09210205078125,
+        120.42366027832031
+    ],
+
+    "Informer": [
+        126.4120101928711,
+        125.6038818359375,
+        122.48966217041016,
+        122.59757995605469,
+        122.1478042602539,
+        121.94432067871094,
+        121.63142395019531,
+        122.04035949707031,
+        122.94325256347656,
+        120.31517028808594,
+        120.01490783691406,
+        121.71047973632812,
+        122.75785064697266,
+        122.84339141845703,
+        122.8359375,
+        121.71723175048828,
+        122.01856231689453,
+        121.31526184082031,
+        123.51890563964844,
+        124.19255065917969,
+        124.48013305664062,
+        125.1864013671875,
+        124.77354431152344,
+        126.25186920166016,
+        122.7555923461914,
+        121.49923706054688,
+        123.8206787109375,
+        123.85165405273438,
+        123.81967163085938,
+        123.80435180664062
+    ],
+    "FED": [
+        6.848141670227051,
+        6.46260929107666,
+        8.005855560302734,
+        9.338484764099121,
+        11.257184982299805,
+        9.46820068359375,
+        7.4350996017456055,
+        9.109694480895996,
+        8.591089248657227,
+        8.562639236450195,
+        9.04946517944336,
+        8.525562286376953,
+        13.431148529052734,
+        19.154207229614258,
+        21.270130157470703,
+        21.775585174560547,
+        19.552230834960938,
+        17.954952239990234,
+        19.110994338989258,
+        18.11455535888672,
+        16.805612564086914,
+        17.0845947265625,
+        16.163846969604492,
+        11.897706031799316,
+        12.436088562011719,
+        12.312108993530273,
+        13.034724235534668,
+        13.239091873168945,
+        14.298291206359863,
+        14.840378761291504
+    ],
+
+    "Auto": [
+        9.089305877685547,
+        10.940082550048828,
+        12.280512809753418,
+        13.640256881713867,
+        14.14151668548584,
+        14.160468101501465,
+        13.93685245513916,
+        13.45669174194336,
+        14.835762023925781,
+        14.849366188049316,
+        16.195348739624023,
+        15.837538719177246,
+        16.605998992919922,
+        15.806180000305176,
+        17.518308639526367,
+        15.895249366760254,
+        16.189401626586914,
+        17.001487731933594,
+        17.84166145324707,
+        17.972904205322266,
+        16.827857971191406,
+        17.627225875854492,
+        18.223590850830078,
+        18.267826080322266,
+        18.60931968688965,
+        18.62931251525879,
+        18.917850494384766,
+        19.152990341186523,
+        18.590349197387695,
+        11.557642936706543
+    ],
+
+    "In": [
+        11.161011695861816,
+        11.989208221435547,
+        13.345709800720215,
+        12.83635139465332,
+        11.075940132141113,
+        11.511602401733398,
+        11.78509521484375,
+        10.468847274780273,
+        14.459511756896973,
+        14.832328796386719,
+        14.602109909057617,
+        14.410181045532227,
+        17.123991012573242,
+        15.696053504943848,
+        18.599552154541016,
+        15.61136531829834,
+        14.903421401977539,
+        16.324832916259766,
+        15.742531776428223,
+        14.643206596374512,
+        12.275882720947266,
+        13.697108268737793,
+        11.519715309143066,
+        12.094161987304688,
+        12.24470043182373,
+        11.922170639038086,
+        12.709283828735352,
+        12.635740280151367,
+        12.45536994934082,
+        12.571897506713867
+    ],
+    "date": []
 }
-async function predict30days() {
-    if (predictData.length == 0 || predictTimeData.length == 0) {
-        mdui.alert("请先选择文件与数据类型")
 
-    } else {
-        let ret = await pred(predictData, predictTimeData)
 
-        let rawdata ={}
-        // let mySelection = document.getElementById("analyser")
-        // let index = mySelection.selectedIndex
-        // let model = mySelection.options[index].value
-        // mdui.alert(model)
-        // switch (model) {
-        //     case :
-        //
-        // }
-        rawdata["x"] = predictTimeData.concat(mock.date)
-        rawdata["y"] = predictData.concat(mock.data)
-        drawPredictionmap(rawdata,predictTitle,predictXname,predictYname,predictTagname)
+
+function predict30days() {
+    try {
+
+        if (predictData.length == 0 || predictTimeData.length == 0) {
+            mdui.alert("请先选择文件与数据类型")
+        } else {
+            let rawdata = {}
+            let mySelection = document.getElementById("model-selector")
+            let index = mySelection.selectedIndex
+            let model = mySelection.options[index].value
+            let date = []
+            let tempstr= predictTimeData[29].split("-")
+            const lastDay = new Date(tempstr[0],tempstr[1],tempstr[2]);
+            const timestamp = lastDay.getTime(); // 将日期转换为时间戳
+
+            for (let i=0;i<30;i++) {
+                const tempTimestamp = timestamp + 86400000 * i ; // 将时间戳增加1天
+                const newDate = new Date(tempTimestamp);
+                date.push(newDate.getFullYear() + "-" +newDate.getMonth()+ "-" +newDate.getDay())
+            }
+            let ret = {}
+            var myspin1 = new SpinLoading('chart');
+
+            if (params.pictype == 0) {
+                switch (model) {
+                    case "0":
+                        myspin1.show()
+                        pred("FEDformer", predictData, predictTimeData, 1)
+                            .then(function (ret) {
+                                rawdata["x"] = predictTimeData.concat(date)
+                                rawdata["y"] = predictData.concat(ret.data)
+                                drawPredictionmap(rawdata, predictTitle, predictXname, predictYname, predictTagname)
+                                myspin1.close()
+
+                            })
+                        break
+                    case "1":
+                        myspin1.show()
+                        pred("Informer", predictData, predictTimeData, 1)
+                            .then(function (ret) {
+                                rawdata["x"] = predictTimeData.concat(date)
+                                rawdata["y"] = predictData.concat(ret.data)
+                                drawPredictionmap(rawdata, predictTitle, predictXname, predictYname, predictTagname)
+                                myspin1.close()
+                            })
+                        break
+                    case "2":
+                        myspin1.show()
+                        pred("Autoformer", predictData, predictTimeData, 1)
+                            .then(function (ret) {
+                                rawdata["x"] = predictTimeData.concat(date)
+                                rawdata["y"] = predictData.concat(ret.data)
+                                drawPredictionmap(rawdata, predictTitle, predictXname, predictYname, predictTagname)
+                                myspin1.close()
+
+                            })
+                        break
+                }
+            } else {
+                switch (model) {
+                    case "0":
+                        myspin1.show()
+                        pred("FEDformer", predictData, predictTimeData, 2)
+                            .then(function (ret) {
+                                rawdata["x"] = predictTimeData.concat(date)
+                                rawdata["y"] = predictData.concat(ret.data)
+                                drawPredictionmap(rawdata, predictTitle, predictXname, predictYname, predictTagname)
+                                myspin1.close()
+
+                            })
+                        break
+                    case "1":
+                        myspin1.show()
+                        pred("Informer", predictData, predictTimeData, 2)
+                            .then(function (ret) {
+                                rawdata["x"] = predictTimeData.concat(date)
+                                rawdata["y"] = predictData.concat(ret.data)
+                                drawPredictionmap(rawdata, predictTitle, predictXname, predictYname, predictTagname)
+                                myspin1.close()
+
+                            })
+                        break
+                    case "2":
+                        myspin1.show()
+                        pred("Autoformer", predictData, predictTimeData, 2)
+                            .then(function (ret) {
+                                rawdata["x"] = predictTimeData.concat(date)
+                                rawdata["y"] = predictData.concat(ret.data)
+                                drawPredictionmap(rawdata, predictTitle, predictXname, predictYname, predictTagname)
+                                myspin1.close()
+
+                            })
+                        break
+                }
+            }
+        }
+    } catch (e) {
+        mdui.alert(e)
     }
 }
 function getPositionedData(longitude, latitude) {
@@ -409,7 +691,7 @@ function DrawPic(pictype) {
                         mdui.$(".charts-selector").mutation()
                         break
                     case 4:
-                        drawHeatMapData(rawData, 0, 1100, "category", "电离层参数二维图", "Longitude(°)", "Latitude(°)", true, [
+                        drawWorldHeatMapData(rawData, 0, 1100, "category", "电离层参数二维图", "Longitude(°)", "Latitude(°)", true, [
                             "Longitude(°)", "Latitude(°)", "TECU(TECU)"
                         ])
                         break
@@ -449,7 +731,7 @@ function DrawPic(pictype) {
                 mdui.alert(e.toString())
             })
     } catch (e) {
-        mdui.alert(e.toString())
+        mdui.alert(e)
     }
 }
 
@@ -766,6 +1048,8 @@ function demonstrateStat(datax, datay) {
         },
         xAxis: {
             // boundaryGap: '5%',
+            type: 'category',
+            boundaryGap: true,
             scale: true, //这个一定要设，不然barWidth和bins对应不上
             axisLabel: {
                 formatter: function (value) {
@@ -780,12 +1064,19 @@ function demonstrateStat(datax, datay) {
             },
         },
         dataZoom: [{type: "inside"}],
-        yAxis: {},
+        yAxis: {
+            show:true
+            // offset:10,
+            // axisLine: {
+            //     onZero:false
+            //
+            // }
+        },
         series: [{
             name: '频数',
             type: 'bar',
             barWidth: '99.3%',
-            // barCategoryGap: 0,
+            barCategoryGap: 0,
             data: bins.data
         }]
     };
@@ -1013,7 +1304,8 @@ function demonstratePositionedStat() {
             containLabel: true
         },
         xAxis: {
-            // boundaryGap: '5%',
+            type:'category',
+            boundaryGap: true,
             scale: true, //这个一定要设，不然barWidth和bins对应不上
             axisLabel: {
                 formatter: function (value) {
@@ -1089,7 +1381,8 @@ function demonstrateHeatStat(legendData, seriesData) {
             containLabel: true
         },
         xAxis: {
-            // boundaryGap: '5%',
+            type:'category',
+            boundaryGap: true,
             scale: true, //这个一定要设，不然barWidth和bins对应不上
             axisLabel: {
                 formatter: function (value) {
@@ -1182,7 +1475,8 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
 
                     },
                     saveAsImage: {
-                        title: '另存为图像'
+                        title: '另存为图像',
+                        excludeComponents  : ['toolbox','dataZoom']
                     }
                 }
             },
@@ -1306,6 +1600,21 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
             max: maxValue,
             calculable: true,
             realtime: true,
+            inRange: {
+                color: [
+                    '#313695',
+                    '#4575b4',
+                    '#6496b6',
+                    '#97c1ce',
+                    '#a4c2cc',
+                    '#ffffbf',
+                    '#fee090',
+                    '#fdae61',
+                    '#f46d43',
+                    '#d73027',
+                    '#a50026'
+                ]
+            },
             formatter: function (value) {
                 let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : value.toFixed(2)
                 return ret;                  // 范围标签显示内容。
@@ -1328,7 +1637,8 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
 
                 },
                 saveAsImage: {
-                    title: '另存为图像'
+                    title: '另存为图像',
+                    excludeComponents  : ['toolbox','dataZoom']
                 }
             }
         },
@@ -1486,7 +1796,8 @@ function drawPositionLinearMapData() {
 
                     },
                     saveAsImage: {
-                        title: '另存为图像'
+                        title: '另存为图像',
+                        excludeComponents  : ['toolbox','dataZoom']
                     }
                 }
             },
@@ -1541,22 +1852,233 @@ function drawPositionLinearMapData() {
 
 }
 
+
+function shuffle(array) {
+    // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+    var currentIndex = array.length;
+    var temporaryValue;
+    var randomIndex;
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+    return array;
+}
+
+function drawWorldMap() {
+    var chart = echarts.init(document.querySelector("#chart"));
+    chart.setOption({
+        series: [{
+            type: 'map',
+            map: 'world',
+            nameMap:{
+                "Afghanistan": "阿富汗",
+                "Albania": "阿尔巴尼亚",
+                "Algeria": "阿尔及利亚",
+                "Angola": "安哥拉",
+                "Argentina": "阿根廷",
+                "Armenia": "亚美尼亚",
+                "Australia": "澳大利亚",
+                "Austria": "奥地利",
+                "Azerbaijan": "阿塞拜疆",
+                "Bahamas": "巴哈马",
+                "Bahrain": "巴林",
+                "Bangladesh": "孟加拉国",
+                "Belarus": "白俄罗斯",
+                "Belgium": "比利时",
+                "Belize": "伯利兹",
+                "Benin": "贝宁",
+                "Bhutan": "不丹",
+                "Bolivia": "玻利维亚",
+                "Bosnia and Herz.": "波斯尼亚和黑塞哥维那",
+                "Botswana": "博茨瓦纳",
+                "Brazil": "巴西",
+                "British Virgin Islands": "英属维京群岛",
+                "Brunei": "文莱",
+                "Bulgaria": "保加利亚",
+                "Burkina Faso": "布基纳法索",
+                "Burundi": "布隆迪",
+                "Cambodia": "柬埔寨",
+                "Cameroon": "喀麦隆",
+                "Canada": "加拿大",
+                "Cape Verde": "佛得角",
+                "Cayman Islands": "开曼群岛",
+                "Central African Rep.": "中非共和国",
+                "Chad": "乍得",
+                "Chile": "智利",
+                "China": "中国",
+                "Colombia": "哥伦比亚",
+                "Comoros": "科摩罗",
+                "Congo": "刚果",
+                "Costa Rica": "哥斯达黎加",
+                "Croatia": "克罗地亚",
+                "Cuba": "古巴",
+                "Cyprus": "塞浦路斯",
+                "Czech Rep.": "捷克共和国",
+                "Côte d'Ivoire": "科特迪瓦",
+                "Dem. Rep. Congo": "刚果民主共和国",
+                "Dem. Rep. Korea": "朝鲜",
+                "Denmark": "丹麦",
+                "Djibouti": "吉布提",
+                "Dominican Rep.": "多米尼加共和国",
+                "Ecuador": "厄瓜多尔",
+                "Egypt": "埃及",
+                "El Salvador": "萨尔瓦多",
+                "Equatorial Guinea": "赤道几内亚",
+                "Eritrea": "厄立特里亚",
+                "Estonia": "爱沙尼亚",
+                "Ethiopia": "埃塞俄比亚",
+                "Falkland Is.": "福克兰群岛",
+                "Fiji": "斐济",
+                "Finland": "芬兰",
+                "Fr. S. Antarctic Lands": "所罗门群岛",
+                "France": "法国",
+                "Gabon": "加蓬",
+                "Gambia": "冈比亚",
+                "Georgia": "格鲁吉亚",
+                "Germany": "德国",
+                "Ghana": "加纳",
+                "Greece": "希腊",
+                "Greenland": "格陵兰",
+                "Guatemala": "危地马拉",
+                "Guinea": "几内亚",
+                "Guinea-Bissau": "几内亚比绍",
+                "Guyana": "圭亚那",
+                "Haiti": "海地",
+                "Honduras": "洪都拉斯",
+                "Hungary": "匈牙利",
+                "Iceland": "冰岛",
+                "India": "印度",
+                "Indonesia": "印度尼西亚",
+                "Iran": "伊朗",
+                "Iraq": "伊拉克",
+                "Ireland": "爱尔兰",
+                "Isle of Man": "马恩岛",
+                "Israel": "以色列",
+                "Italy": "意大利",
+                "Jamaica": "牙买加",
+                "Japan": "日本",
+                "Jordan": "约旦",
+                "Kazakhstan": "哈萨克斯坦",
+                "Kenya": "肯尼亚",
+                "Korea": "韩国",
+                "Kuwait": "科威特",
+                "Kyrgyzstan": "吉尔吉斯斯坦",
+                "Lao PDR": "老挝",
+                "Latvia": "拉脱维亚",
+                "Lebanon": "黎巴嫩",
+                "Lesotho": "莱索托",
+                "Liberia": "利比里亚",
+                "Libya": "利比亚",
+                "Lithuania": "立陶宛",
+                "Luxembourg": "卢森堡",
+                "Macedonia": "马其顿",
+                "Madagascar": "马达加斯加",
+                "Malawi": "马拉维",
+                "Malaysia": "马来西亚",
+                "Maldives": "马尔代夫",
+                "Mali": "马里",
+                "Malta": "马耳他",
+                "Mauritania": "毛利塔尼亚",
+                "Mauritius": "毛里求斯",
+                "Mexico": "墨西哥",
+                "Moldova": "摩尔多瓦",
+                "Monaco": "摩纳哥",
+                "Mongolia": "蒙古",
+                "Montenegro": "黑山共和国",
+                "Morocco": "摩洛哥",
+                "Mozambique": "莫桑比克",
+                "Myanmar": "缅甸",
+                "Namibia": "纳米比亚",
+                "Nepal": "尼泊尔",
+                "Netherlands": "荷兰",
+                "New Caledonia": "新喀里多尼亚",
+                "New Zealand": "新西兰",
+                "Nicaragua": "尼加拉瓜",
+                "Niger": "尼日尔",
+                "Nigeria": "尼日利亚",
+                "Norway": "挪威",
+                "Oman": "阿曼",
+                "Pakistan": "巴基斯坦",
+                "Panama": "巴拿马",
+                "Papua New Guinea": "巴布亚新几内亚",
+                "Paraguay": "巴拉圭",
+                "Peru": "秘鲁",
+                "Philippines": "菲律宾",
+                "Poland": "波兰",
+                "Portugal": "葡萄牙",
+                "Puerto Rico": "波多黎各",
+                "Qatar": "卡塔尔",
+                "Reunion": "留尼旺",
+                "Romania": "罗马尼亚",
+                "Russia": "俄罗斯",
+                "Rwanda": "卢旺达",
+                "S. Geo. and S. Sandw. Is.": "南乔治亚和南桑威奇群岛",
+                "S. Sudan": "南苏丹",
+                "San Marino": "圣马力诺",
+                "Saudi Arabia": "沙特阿拉伯",
+                "Senegal": "塞内加尔",
+                "Serbia": "塞尔维亚",
+                "Sierra Leone": "塞拉利昂",
+                "Singapore": "新加坡",
+                "Slovakia": "斯洛伐克",
+                "Slovenia": "斯洛文尼亚",
+                "Solomon Is.": "所罗门群岛",
+                "Somalia": "索马里",
+                "South Africa": "南非",
+                "Spain": "西班牙",
+                "Sri Lanka": "斯里兰卡",
+                "Sudan": "苏丹",
+                "Suriname": "苏里南",
+                "Swaziland": "斯威士兰",
+                "Sweden": "瑞典",
+                "Switzerland": "瑞士",
+                "Syria": "叙利亚",
+                "Tajikistan": "塔吉克斯坦",
+                "Tanzania": "坦桑尼亚",
+                "Thailand": "泰国",
+                "Togo": "多哥",
+                "Tonga": "汤加",
+                "Trinidad and Tobago": "特立尼达和多巴哥",
+                "Tunisia": "突尼斯",
+                "Turkey": "土耳其",
+                "Turkmenistan": "土库曼斯坦",
+                "U.S. Virgin Islands": "美属维尔京群岛",
+                "Uganda": "乌干达",
+                "Ukraine": "乌克兰",
+                "United Arab Emirates": "阿拉伯联合酋长国",
+                "United Kingdom": "英国",
+                "United States": "美国",
+                "Uruguay": "乌拉圭",
+                "Uzbekistan": "乌兹别克斯坦",
+                "Vanuatu": "瓦努阿图",
+                "Vatican City": "梵蒂冈城",
+                "Venezuela": "委内瑞拉",
+                "Vietnam": "越南",
+                "W. Sahara": "西撒哈拉",
+                "Yemen": "也门",
+                "Yugoslavia": "南斯拉夫",
+                "Zaire": "扎伊尔",
+                "Zambia": "赞比亚",
+                "Zimbabwe": "津巴布韦"
+            }
+        }]
+    });
+}
+
+
 function testEchart() {
-    pred(params)
-    //  <input type="radio" name="type-selector" value="0" onclick="fetchFileList()"
-    // />
-    //  <i class="mdui-radio-icon"></i>
-    //  1
-    //  </label>
-    //  <label class="mdui-radio">
-    //  <input type="radio" name="type-selector" value="1" onclick="fetchFileList()"
-    // />
-    //  <i class="mdui-radio-icon"></i>
-    //  2
-    //  </label>
-    //  `
-    //  mdui.$("#radio").append(html)
-    //  mdui.$("#radio").mutation()
+    try {
+
+    } catch (e) {
+        mdui.alert(e)
+    }
 }
 
 //垂直折线图
@@ -1605,7 +2127,6 @@ function drawLinearVerticalMapData(rawData) {
                     // yAxisIndex: 'none',
                     title: ""
                 },
-
                 dataView: {
                     title: '数据视图工具',
                     lang: ['数据视图', '关闭', '刷新'],
@@ -1613,7 +2134,8 @@ function drawLinearVerticalMapData(rawData) {
 
                 },
                 saveAsImage: {
-                    title: '另存为图像'
+                    title: '另存为图像',
+                    excludeComponents  : ['toolbox','dataZoom']
                 }
             }
         },
@@ -1693,15 +2215,11 @@ function drawLinearVerticalMapData(rawData) {
     chartDom.setOption(option)
 }
 
-
-//热力图
 function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, reverseY, schema) {
     let seriesData = []
     document.getElementById('table-title').innerHTML = title + "统计数据"
     for (let i in rawData) {
-        funcInjector.log(i.toString())
         if (i != "legend") {
-            funcInjector.log(i.toString())
             let temp = {
                 emphasis: {
                     itemStyle: {
@@ -1709,15 +2227,17 @@ function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, revers
                         borderWidth: 1
                     }
                 },
-                progressive: 1000,
-                animation: false
+                progressive: 500,
+                animation: false,
+                type:'heatmap',
+                name:i,
+                data : rawData[i],
             }
-            temp.name = i
-            temp.type = 'heatmap'
-            temp.data = rawData[i]
             seriesData.push(temp)
         }
     }
+
+    legendData = rawData["legend"]
 
     let selectedtime = rawData["legend"][0]
 
@@ -1749,8 +2269,6 @@ function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, revers
     }
 
     demonstrateHeatStat(legendData, seriesData)
-
-
     let option = {
         tooltip: {
             formatter: function (param) {
@@ -1788,6 +2306,7 @@ function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, revers
                 filterMode: 'none'
             }
         ],
+        //
         legend: {
             width: "78%",
             type: 'scroll',
@@ -1811,7 +2330,8 @@ function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, revers
                     title: ""
                 },
                 saveAsImage: {
-                    title: '另存为图像'
+                    title: '另存为图像',
+                    excludeComponents  : ['toolbox','dataZoom']
                 }
             }
         },
@@ -1856,15 +2376,259 @@ function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, revers
 
     };
     let chartDom = echarts.init(document.querySelector("#chart"));
+//监听地图滚动缩放事件
     chartDom.clear()
     chartDom.setOption(option)
+
 }
 
-function drawTECUData(rawData) {
-    let option = {
-        //Todo:不会等高线
-    };
+
+//热力图
+function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, reverseY, schema) {
+    videoData = rawData["legend"]
+    let seriesData = []
+    document.getElementById('table-title').innerHTML = title + "统计数据"
+    for (let i in rawData) {
+        if (i != "legend") {
+            let temp = {
+                emphasis: {
+                    itemStyle: {
+                        borderColor: '#333',
+                        borderWidth: 1
+                    }
+                },
+                progressive: 3000,
+                animation: false,
+                type:'heatmap',
+                name:i,
+                // zlevel: 99,
+                // coordinateSystem :'geo',
+                data : rawData[i],
+                itemStyle: {
+                    opacity: 0.7
+                }
+            }
+            seriesData.push(temp)
+        }
+    }
+
+    let selectedtime = rawData["legend"][0]
+
+
+    let legendData = {
+        type: 'scroll',
+        // inactiveColor: "#fff",
+        // inactiveBorderColor: "#000",
+        data: rawData["legend"],
+        // selectedMode: 'single',
+        top: "6.5%",
+        selected: {
+            selectedtime: true
+
+        },
+        selector: [
+            {
+                // 全选
+                type: 'all',
+                // 可以是任意你喜欢的标题
+                title: '全选'
+            },
+            {
+                // 反选
+                type: 'inverse',
+                // 可以是任意你喜欢的标题
+                title: '反选'
+            }
+        ]
+    }
+
+    demonstrateHeatStat(legendData, seriesData)
+        let option = {
+            tooltip: {
+                formatter: function (param) {
+                    var value = param.value;
+                    // prettier-ignore
+                    return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
+                        + schema[2] + " " + value[2]
+                        + '</div>'
+                        + param.seriesName + '<br>'
+                        + schema[0] + '：' + value[0] + '<br>'
+                        + schema[1] + '：' + value[1] + '<br>'
+                }
+            },
+            geo: {
+                map: 'world',
+                // left: 0,
+                // right: 0,
+                // top: 0,
+                left: "15%", top: "10%", right: "15%", bottom: "10%",
+                center: [0, 0],
+                // center:undefined,
+                boundingCoords: [
+                    // 定位左上角经纬度
+                    [-180, 90],
+                    // 定位右下角经纬度
+                    [180, -90]
+                ],
+                scaleLimit: {
+                    min:1
+                },
+                aspectScale : 1.5,
+                zoom: 1,
+                silent: true,
+                roam: 'scale',
+//                 layoutCenter: ['50%', '50%'],
+// // 如果宽高比大于 1 则宽度为 100，如果小于 1 则高度为 100，保证了不超过 100x100 的区域
+//                 layoutSize: "200%",
+                itemStyle: {
+                    areaColor: '#323c48',
+                    borderColor: '#111'
+                }
+            },
+            legend: {
+                width: "78%",
+                type: 'scroll',
+                // inactiveColor: "#fff",
+                // inactiveBorderColor: "#000",
+                // selector: ['all', 'inverse'] ,
+                data: rawData["legend"],
+                selectedMode: 'single'
+            },
+            title: {
+                text: title,
+                left: "center",
+                top: "bottom"
+            },
+            toolbox: {
+                left: 'right',
+                top: 'bottom',
+                feature: {
+                    saveAsImage: {
+                        title: '另存为图像',
+                        excludeComponents  : ['toolbox','dataZoom']
+                    }
+                }
+            },
+            xAxis: {
+                name: xTitle,
+                type: 'category',
+                show: true
+            },
+            yAxis: {
+                axisLine: {
+                    show: true,
+
+                },
+                name: yTitle,
+                type: ytype,
+                show: true,
+                inverse: reverseY
+
+            },
+            grid: {
+                show: true,                                 //是否显示图表背景网格
+                left: '15%',                                    //图表距离容器左侧多少距离
+                right: '15%',                                //图表距离容器右侧侧多少距离
+                bottom: '10%',
+                top: '10%',//图表距离容器上面多少距离
+                           //图表距离容器下面多少距离
+            },
+            visualMap: {
+                min: min,
+                max: max,
+                calculable: true,
+                realtime: true,
+                inRange: {
+                    color: [
+                        '#313695',
+                        '#4575b4',
+                        '#74add1',
+                        '#abd9e9',
+                        '#e0f3f8',
+                        '#ffffbf',
+                        '#fee090',
+                        '#fdae61',
+                        '#f46d43',
+                        '#d73027',
+                        '#a50026'
+                    ]
+                }
+            },
+            series: seriesData
+
+        };
+
+    option.geo.center = undefined
     let chartDom = echarts.init(document.querySelector("#chart"));
-    chartDom.clear()
-    chartDom.setOption(option)
+//监听地图滚动缩放事件
+        chartDom.clear()
+    window.addEventListener("resize",function(){
+        chartDom.resize();
+    });
+        chartDom.setOption(option)
+
+}
+
+function base64ToBlob(code) {
+    let parts = code.split(';base64,');
+    let contentType = parts[0].split(':')[1];
+    let raw = window.atob(parts[1]);
+    let rawLength = raw.length;
+
+    let uInt8Array = new Uint8Array(rawLength);
+
+    for (let i = 0; i < rawLength; ++i) {
+        uInt8Array[i] = raw.charCodeAt(i);
+    }
+    return new Blob([uInt8Array], { type: contentType });
+}
+function saveAsImage() {
+    let chartDom = echarts.init(document.querySelector("#chart"));
+
+    let content = chartDom.getDataURL({
+        backgroundColor: '#fff'
+    });
+    return content
+
+    // let aLink = document.createElement('a');
+    // let blob = this.base64ToBlob(content);
+    //
+    // return blob
+    // let evt = document.createEvent("HTMLEvents");
+    // evt.initEvent("click", true, true);
+    // aLink.download = "line.png";
+    // aLink.href = URL.createObjectURL(blob);
+    // aLink.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+}
+
+
+function getVideo() {
+    try {
+        let chartDom = echarts.init(document.querySelector("#chart"));
+        let imageList = []
+        let timeList = []
+        for (let i in videoData) {
+            setTimeout(() => {
+                chartDom.dispatchAction({
+                    type: 'legendSelect',
+                    // 图例名称
+                    name: videoData[i]
+                });
+                setTimeout(() => {
+                    let img = saveAsImage()
+                    imageList.push(img)
+                    let temp = videoData[i].replace(" ","")
+                    temp =temp.replace("-","")
+                    temp =temp.replace(":","")
+                    temp =temp.replace(":","")
+                    timeList.push(temp)
+                },500)
+            }, 600*i)
+        }
+        setTimeout(() => {
+            funcInjector.createVideo(imageList,timeList)
+        }, 600*(videoData.length+2))
+    } catch (e) {
+        mdui.alert(e)
+    }
 }

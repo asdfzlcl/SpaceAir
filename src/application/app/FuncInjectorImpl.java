@@ -1,34 +1,33 @@
 package application.app;
 
 
+import application.app.messages.InputParam;
 import com.teamdev.jxbrowser.chromium.JSArray;
 import com.teamdev.jxbrowser.chromium.JSObject;
-import application.app.messages.InputParam;
 import javafx.application.Platform;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import setting.Setting;
 import util.DialogHelper;
 import util.FileType;
-import org.json.simple.JSONObject;
 import util.fileType.ADFile;
 import util.fileType.IPFile;
 import util.fileType.SATFile;
 import util.fileType.SEFile;
-
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.*;
 import java.util.concurrent.FutureTask;
 
-import static java.lang.Thread.sleep;
 import static util.fileType.BaseFile.readFile;
 
 public class FuncInjectorImpl implements FuncInjector {
@@ -51,6 +50,113 @@ public class FuncInjectorImpl implements FuncInjector {
         });
     }
 
+
+
+    public void Base64ToImage(String base64String,String timeData) {
+        try {
+            Date date = new Date(); SimpleDateFormat dateFormat= new
+                    SimpleDateFormat("yyyyMMddhhmmss");
+            String imagePath = "." + File.separator + "temp" + File.separator + timeData + "-" +dateFormat.format(date)  +  UUID.randomUUID()+ ".png";
+            File file = new File(imagePath);
+            boolean FileExist = false;
+            // 创建文件
+            try {
+                FileExist = file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (FileExist){
+                // 解密
+                Base64.Decoder decoder = Base64.getDecoder();
+                // 去掉base64前缀 data:image/jpeg;base64,
+                base64String = base64String.substring(base64String.indexOf(",", 1) + 1, base64String.length());
+                byte[] b = decoder.decode(base64String);
+                // 处理数据
+                for (int i = 0; i < b.length; ++i) {
+                    if (b[i] < 0) {
+                        b[i] += 256;
+                    }
+                }
+                // 保存图片
+                try {
+                    FileOutputStream out = new FileOutputStream(file);
+                    out.write(b);
+                    out.flush();
+                    out.close();
+                    // 写入成功返回文件路径
+                } catch (FileNotFoundException e) {
+
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void createVideo(JSArray imgList,JSArray timeData) {
+
+        String directoryPath =  "." + File.separator + "temp" + File.separator;
+        String fileSuffix = ".png";
+
+        File directory = new File(directoryPath);
+        File[] files = directory.listFiles();
+        ArrayList<File> imgFiles = new ArrayList<File>();
+
+
+        for (File file: Objects.requireNonNull(directory.listFiles())) {
+            if (!file.isDirectory()) {
+                file.delete();
+            }
+        }
+
+
+        for (int i =0;i<imgList.length();i++) {
+            Base64ToImage(String.valueOf(imgList.get(i)), String.valueOf(timeData.get(i)));
+        }
+
+
+
+        for (File file : files) {
+            System.out.println(file.getName());
+            if (file.getName().endsWith(fileSuffix)) {
+                imgFiles.add(file);
+            }
+        }
+
+        Collections.sort(imgFiles, new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2) {
+                String name1 = o1.getName();
+                String name2 = o2.getName();
+                System.out.println(name1);
+                System.out.println(name2);
+                String[] str1 = name1.split("-");
+                String[] str2 = name2.split("-");
+                Date date1 = new Date(
+                        Integer.parseInt(str1[0].substring(0,4)),
+                        Integer.parseInt(str1[0].substring(4,6)),
+                        Integer.parseInt(str1[1].substring(0,2)),
+                        Integer.parseInt(str1[1].substring(2,4)),
+                        Integer.parseInt(str1[1].substring(4,6)),
+                        Integer.parseInt(str1[1].substring(6,8)));
+                Date date2 = new Date(
+                        Integer.parseInt(str2[0].substring(0,4)),
+                        Integer.parseInt(str2[0].substring(4,6)),
+                        Integer.parseInt(str2[1].substring(0,2)),
+                        Integer.parseInt(str2[1].substring(2,4)),
+                        Integer.parseInt(str2[1].substring(4,6)),
+                        Integer.parseInt(str2[1].substring(6,8)));
+                return date1.compareTo(date2);
+            }
+        });
+
+        
+
+    }
 
 
     public void test() {
@@ -111,7 +217,6 @@ public class FuncInjectorImpl implements FuncInjector {
             destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
             sourceChannel.close();
             destChannel.close();
-
         }catch (Exception e){
             e.printStackTrace();
             if(e.getMessage() == "错误的文件格式！" || e.getMessage() == "0") {
@@ -235,9 +340,7 @@ public class FuncInjectorImpl implements FuncInjector {
         timeSeries = ip.getTimeSeries();
         data = ip.getDataSeries();
         ArrayList<Double> longSeries = new ArrayList<Double>();
-        for (int i = -180;i <= 180 ;i+=5) {
-            longSeries.add((double) i);
-        }
+        longSeries = ip.getLongitudeSeries();
         ArrayList<Double> latiSeries = ip.getPositionSeries();
         HashMap ret = new HashMap();
         for(int i= 0;i< data.size();i++) {
@@ -248,13 +351,11 @@ public class FuncInjectorImpl implements FuncInjector {
                     temp.add(longSeries.get(k));
                     temp.add(latiSeries.get(j));
                     temp.add(data.get(i).get(j).get(k));
-                    System.out.println(temp);
                     dataOfEachTime.add(temp);
                 }
             }
             ret.put(timeSeries.get(i),dataOfEachTime);
         }
-        System.out.println(timeSeries);
         ret.put("legend",timeSeries);
         JSONObject json =  new JSONObject(ret);
         return json;
@@ -287,7 +388,6 @@ public class FuncInjectorImpl implements FuncInjector {
             ret.put(stationSeries.get(i),oneStationdata);
         }
         ret.put("legend",stationSeries);
-        System.out.println(ret);
         JSONObject json =  new JSONObject(ret);
         return json;
     }
@@ -357,8 +457,6 @@ public class FuncInjectorImpl implements FuncInjector {
                     }
                 }
             }
-
-        System.out.println(timeRawData);
         HashMap ret = new HashMap();
         ret.put("timeSeries",timeRawData);
         JSONObject json =  new JSONObject(ret);
@@ -370,14 +468,11 @@ public class FuncInjectorImpl implements FuncInjector {
         System.out.println(inputParam);
         IPFile ip = (IPFile) readFile(inputParam.filepath, FileType.IPFile);
         ArrayList<Double> longSeries = new ArrayList<Double>();
-        for (int i = -180;i <= 180 ;i+=5) {
-            longSeries.add((double) i);
-        }
+        longSeries = ip.getLongitudeSeries();
         ArrayList<Double> latiSeries = ip.getPositionSeries();
         HashMap ret = new HashMap();
         ret.put("longSeries",longSeries);
         ret.put("latiSeries",latiSeries);
-        System.out.println(ret);
         JSONObject json =  new JSONObject(ret);
         return json;
     }
@@ -401,7 +496,6 @@ public class FuncInjectorImpl implements FuncInjector {
                 temp.put("fileName",file.getName());
                 int lastIndex = file.getParent().lastIndexOf(File.separator);
                 temp.put("fileTime",file.getParent().substring(lastIndex+1));
-                System.out.println(temp);
                 hisFile.add(temp);
             }
 
@@ -443,16 +537,11 @@ public class FuncInjectorImpl implements FuncInjector {
         timeSeries = ip.getTimeSeries();
         data = ip.getDataSeries();
         ArrayList<Double> longSeries = new ArrayList<Double>();
-        for (int i = -180;i <= 180 ;i+=5) {
-            longSeries.add((double) i);
-        }
-
+        longSeries = ip.getLongitudeSeries();
         ArrayList<Double> latiSeries = ip.getPositionSeries();
         HashMap ret = new HashMap();
         ArrayList dataOfEachTime = new ArrayList<>();
-        System.out.println(data);
-        System.out.println(data.size());
-        System.out.println(timeSeries);
+
         for(int i= 0;i< data.size();i++) {
             for(int j = 0; j< data.get(i).size(); j++) {
                 for(int k = 0; k< data.get(i).get(j).size(); k++) {
@@ -460,14 +549,12 @@ public class FuncInjectorImpl implements FuncInjector {
                         ArrayList temp = new ArrayList<>();
                         temp.add(timeSeries.get(i));
                         temp.add(data.get(i).get(j).get(k));
-                        System.out.println(temp);
                         dataOfEachTime.add(temp);
                     }
                 }
             }
         }
         ret.put("data",dataOfEachTime);
-        System.out.println(ret);
         JSONObject json =  new JSONObject(ret);
         return json;
     }
