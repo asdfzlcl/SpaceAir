@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.FutureTask;
+import org.jcodec.api.awt.AWTSequenceEncoder;
 
 import static util.fileType.BaseFile.readFile;
 
@@ -99,7 +100,8 @@ public class FuncInjectorImpl implements FuncInjector {
 
     public void createVideo(JSArray imgList,JSArray timeData) {
 
-        String directoryPath =  "." + File.separator + "temp" + File.separator;
+//        String directoryPath =  "." + File.separator + "temp" + File.separator;
+        String directoryPath = "temp" + File.separator;
         String fileSuffix = ".png";
 
         File directory = new File(directoryPath);
@@ -118,7 +120,7 @@ public class FuncInjectorImpl implements FuncInjector {
             Base64ToImage(String.valueOf(imgList.get(i)), String.valueOf(timeData.get(i)));
         }
 
-
+        files = directory.listFiles();
 
         for (File file : files) {
             System.out.println(file.getName());
@@ -154,7 +156,35 @@ public class FuncInjectorImpl implements FuncInjector {
             }
         });
 
-        
+        try {
+            String outputVideoPath = "D:\\GraduateProject\\Project\\空间天气平台\\SpaceAir\\video\\res.mp4";
+            AWTSequenceEncoder encoder = AWTSequenceEncoder.createSequenceEncoder(new File(outputVideoPath), 5);
+
+            for (File imageFile : imgFiles) {
+                System.out.println("imageFile : " + imageFile.getAbsolutePath());
+                BufferedImage image = ImageIO.read(imageFile);
+                int destWidth = image.getWidth();
+                int destHeight = image.getHeight();
+                boolean shouldScale = false;
+                if (image.getWidth() % 2 != 0) {
+                    destWidth++;
+                    shouldScale = true;
+                }
+                if (image.getHeight() % 2 != 0) {
+                    destHeight++;
+                    shouldScale = true;
+                }
+                if (shouldScale) {
+                    BufferedImage destImage = new BufferedImage(destWidth,destHeight,BufferedImage.TYPE_INT_RGB);
+                    destImage.getGraphics().drawImage(image,0,0,destWidth,destHeight,null);
+                    image = destImage;
+                }
+                encoder.encodeImage(image);
+            }
+            encoder.finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
