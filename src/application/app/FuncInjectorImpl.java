@@ -31,14 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-
-
-import org.bytedeco.ffmpeg.global.avcodec;
-import org.bytedeco.ffmpeg.global.avutil;
-import org.bytedeco.javacv.FFmpegFrameRecorder;
-import org.bytedeco.javacv.FrameRecorder;
-import org.bytedeco.javacv.Java2DFrameConverter;
+import org.jcodec.api.awt.AWTSequenceEncoder;
 
 import static util.fileType.BaseFile.readFile;
 
@@ -113,9 +106,13 @@ public class FuncInjectorImpl implements FuncInjector {
             String directoryPath = System.getProperty("user.dir") + File.separator + "temp" + File.separator;
             String fileSuffix = ".png";
 
-            File directory = new File(directoryPath);
-            File[] files = directory.listFiles();
-            ArrayList<File> imgFiles = new ArrayList<File>();
+//        String directoryPath =  "." + File.separator + "temp" + File.separator;
+        String directoryPath = "temp" + File.separator;
+        String fileSuffix = ".png";
+
+        File directory = new File(directoryPath);
+        File[] files = directory.listFiles();
+        ArrayList<File> imgFiles = new ArrayList<File>();
 
 
             for (File file : Objects.requireNonNull(directory.listFiles())) {
@@ -201,75 +198,75 @@ public class FuncInjectorImpl implements FuncInjector {
 //    }
 
 
-    public static BufferedImage convertToType(BufferedImage sourceImage, int targetType) {
+    // public static BufferedImage convertToType(BufferedImage sourceImage, int targetType) {
 
-        BufferedImage image;
+    //     BufferedImage image;
 
-        // if the source image is already the target type, return the source image
+    //     // if the source image is already the target type, return the source image
 
-        if (sourceImage.getType() == targetType) {
+    //     if (sourceImage.getType() == targetType) {
 
-            image = sourceImage;
+    //         image = sourceImage;
 
-        }
+    //     }
 
-        // otherwise create a new image of the target type and draw the new image
+    //     // otherwise create a new image of the target type and draw the new image
 
-        else {
+    //     else {
 
-            image = new BufferedImage(sourceImage.getWidth(),
+    //         image = new BufferedImage(sourceImage.getWidth(),
 
-                    sourceImage.getHeight(), targetType);
+    //                 sourceImage.getHeight(), targetType);
 
-            image.getGraphics().drawImage(sourceImage, 0, 0, null);
+    //         image.getGraphics().drawImage(sourceImage, 0, 0, null);
 
-        }
+    //     }
 
-        return image;
+    //     return image;
 
-    }
+    // }
 
-    public static void generateVideoFromImages(ArrayList<File> files, String outputPath, int fps) throws InterruptedException, IOException {
-        try {
-            IMediaWriter writer = ToolFactory.makeWriter(outputPath);
-            BufferedImage image = ImageIO.read(files.get(0));
-
-
-            // 设置视频尺寸
-
-            writer.addVideoStream(0, 0, ICodec.ID.CODEC_ID_MPEG4, image.getWidth()/2, image.getHeight()/2);
-
-            long startTime = System.nanoTime();
+    // public static void generateVideoFromImages(ArrayList<File> files, String outputPath, int fps) throws InterruptedException, IOException {
+    //     try {
+    //         IMediaWriter writer = ToolFactory.makeWriter(outputPath);
+    //         BufferedImage image = ImageIO.read(files.get(0));
 
 
-            for (int index = 0; index < files.size(); index++) {
+    //         // 设置视频尺寸
+
+    //         writer.addVideoStream(0, 0, ICodec.ID.CODEC_ID_MPEG4, image.getWidth()/2, image.getHeight()/2);
+
+    //         long startTime = System.nanoTime();
 
 
-                BufferedImage convertImage = null;
-                try {
-                    image = ImageIO.read(files.get(index));
-                    convertImage = convertToType(image, BufferedImage.TYPE_3BYTE_BGR);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    //         for (int index = 0; index < files.size(); index++) {
 
-                if (image == null) {
 
-                    continue;
+    //             BufferedImage convertImage = null;
+    //             try {
+    //                 image = ImageIO.read(files.get(index));
+    //                 convertImage = convertToType(image, BufferedImage.TYPE_3BYTE_BGR);
+    //             } catch (IOException e) {
+    //                 e.printStackTrace();
+    //             }
 
-                }
-                long timeStamp = (System.nanoTime() - startTime) / 1000;
-                writer.encodeVideo(0, convertImage, timeStamp, TimeUnit.MICROSECONDS);
-                try {
-                    Thread.sleep((1000 / fps));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    //             if (image == null) {
+
+    //                 continue;
+
+    //             }
+    //             long timeStamp = (System.nanoTime() - startTime) / 1000;
+    //             writer.encodeVideo(0, convertImage, timeStamp, TimeUnit.MICROSECONDS);
+    //             try {
+    //                 Thread.sleep((1000 / fps));
+    //             } catch (InterruptedException e) {
+    //                 e.printStackTrace();
+    //             }
+    //         }
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
     public void mergeTECUFiles(ArrayList<File> Filelist) throws IOException {
         File mergeTemp = new File(System.getProperty("user.dir") + File.separator + "data" + File.separator + "电离层参数合并文件"+File.separator + "temp" + UUID.randomUUID() +".00i");
@@ -290,9 +287,75 @@ public class FuncInjectorImpl implements FuncInjector {
             }
         }
 
-        HashMap
+        for (int i =0;i<imgList.length();i++) {
+            Base64ToImage(String.valueOf(imgList.get(i)), String.valueOf(timeData.get(i)));
+        }
 
-        return mergeTemp.getPath();
+        files = directory.listFiles();
+
+        for (File file : files) {
+            System.out.println(file.getName());
+            if (file.getName().endsWith(fileSuffix)) {
+                imgFiles.add(file);
+            }
+        }
+
+        Collections.sort(imgFiles, new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2) {
+                String name1 = o1.getName();
+                String name2 = o2.getName();
+                System.out.println(name1);
+                System.out.println(name2);
+                String[] str1 = name1.split("-");
+                String[] str2 = name2.split("-");
+                Date date1 = new Date(
+                        Integer.parseInt(str1[0].substring(0,4)),
+                        Integer.parseInt(str1[0].substring(4,6)),
+                        Integer.parseInt(str1[1].substring(0,2)),
+                        Integer.parseInt(str1[1].substring(2,4)),
+                        Integer.parseInt(str1[1].substring(4,6)),
+                        Integer.parseInt(str1[1].substring(6,8)));
+                Date date2 = new Date(
+                        Integer.parseInt(str2[0].substring(0,4)),
+                        Integer.parseInt(str2[0].substring(4,6)),
+                        Integer.parseInt(str2[1].substring(0,2)),
+                        Integer.parseInt(str2[1].substring(2,4)),
+                        Integer.parseInt(str2[1].substring(4,6)),
+                        Integer.parseInt(str2[1].substring(6,8)));
+                return date1.compareTo(date2);
+            }
+        });
+
+        try {
+            String outputVideoPath = "D:\\GraduateProject\\Project\\空间天气平台\\SpaceAir\\video\\res.mp4";
+            AWTSequenceEncoder encoder = AWTSequenceEncoder.createSequenceEncoder(new File(outputVideoPath), 5);
+
+            for (File imageFile : imgFiles) {
+                System.out.println("imageFile : " + imageFile.getAbsolutePath());
+                BufferedImage image = ImageIO.read(imageFile);
+                int destWidth = image.getWidth();
+                int destHeight = image.getHeight();
+                boolean shouldScale = false;
+                if (image.getWidth() % 2 != 0) {
+                    destWidth++;
+                    shouldScale = true;
+                }
+                if (image.getHeight() % 2 != 0) {
+                    destHeight++;
+                    shouldScale = true;
+                }
+                if (shouldScale) {
+                    BufferedImage destImage = new BufferedImage(destWidth,destHeight,BufferedImage.TYPE_INT_RGB);
+                    destImage.getGraphics().drawImage(image,0,0,destWidth,destHeight,null);
+                    image = destImage;
+                }
+                encoder.encodeImage(image);
+            }
+            encoder.finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
