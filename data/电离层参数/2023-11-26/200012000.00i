@@ -1,0 +1,1486 @@
+       1.0            IONOSPHERE MAPS     GNSS                IONEX VERSION / TYPE
+IRIS V2.0           IRIS                20-Mar-16 03:31     PGM / RUN BY / DATE 
+WHU'S GLOBAL IONOSPHERE MAPS FOR DAY 001, 2000              COMMENT             
+Contact address: Cheng Wang, ac@ionosphere.cn               DESCRIPTION         
+Web page:        http://ionosphere.cn                       DESCRIPTION         
+ionosphere                                                  COMMENT             
+GNSS IRIS 2.0                                               COMMENT             
+  2000     1     1     0     0     0                        EPOCH OF FIRST MAP  
+  2000     1     2     0     0     0                        EPOCH OF LAST MAP  
+  7200                                                      INTERVAL            
+    13                                                      # OF MAPS IN FILE   
+  MSLM                                                      MAPPING FUNCTION    
+Two-way carrier phase leveled to code                       OBSERVABLES USED    
+   239                                                      # OF STATIONS       
+    28                                                      # OF SATELLITES     
+  6371.0                                                    BASE RADIUS         
+     2                                                      MAP DIMENSION       
+   450.0 450.0   0.0                                        HGT1 / HGT2 / DHGT  
+    87.5 -87.5  -2.5                                        LAT1 / LAT2 / DLAT  
+  -180.0 180.0   5.0                                        LON1 / LON2 / DLON  
+    -1                                                      EXPONENT            
+TEC/RMS values in 0.1 TECU; 9999, if no value available     COMMENT             
+List of stations:                                           COMMENT             
+acor ade1 ais1 alac albh algo alic amc2 ankr aoa1 aoml arp3 COMMENT             
+artu atwc auck azry azu1 barb barh bay1 bbry bhr1 bill bjfs COMMENT             
+blyt bogo bor1 braz brmu brst brus bshm bucu bzrg cabl cagl COMMENT             
+carr cas1 casa casc cat1 ccjm ccv3 cedu cfag cha1 chb1 chil COMMENT             
+chl1 chum chur chwk cic1 cit1 clar cmp9 coco coso coyq crfp COMMENT             
+cro1 daej darw dgar dhlg drao dubo duck dum1 ebre eil1 eng1 COMMENT             
+eprt fair flin gal1 geno gilb glpt glsv gol2 gope gras graz COMMENT             
+guam hers hflk hnlc hnpt hob2 hofn holb holp hrm1 iisc irkt COMMENT             
+ista jama joen jplm kabr karr kels kely ken1 kerg kir0 kiru COMMENT             
+kit3 kod1 kok1 kokb kosg kouc kyw1 lama lamp lasc lhas lhaz COMMENT             
+lhue lpgs mad2 mag0 mar6 mars mas1 math maui maw1 mcm4 mdo1 COMMENT             
+mdvo medi mem2 mil1 mkea mlf1 mob1 nano neah newl newp nico COMMENT             
+nlib noto npri nrc1 ntus nya1 nyal oat2 onsa osn1 palm parc COMMENT             
+pbl1 pert petp pie1 pin1 plo3 pol2 psu1 pur3 pvep quin red1 COMMENT             
+reyk reyz riga rock sag1 sav1 sch2 scip seat sele sfer shao COMMENT             
+shee shk1 sio3 sni1 sol1 spk1 stjo str1 syog tabl thti thu1 COMMENT             
+thu2 tixi torp toul tow2 trab trak tskb tubi uclp uclu unpg COMMENT             
+upo1 urum usc1 usna usud vaas van1 vene vesl vil0 vill vims COMMENT             
+vis0 vndp vtis wel1 wes2 wgtn whc1 whit widc will wis1 wlsn COMMENT             
+wslr wsrt wtza wtzz wuhn yakz yell yssk zeck zimm zwen      COMMENT             
+DIFFERENTIAL CODE BIASES                                    START OF AUX DATA   
+   G01    -0.608     0.003                                  PRN / BIAS / RMS    
+   G02    -2.141     0.003                                  PRN / BIAS / RMS    
+   G03     0.012     0.004                                  PRN / BIAS / RMS    
+   G04     1.748     0.004                                  PRN / BIAS / RMS    
+   G05    -0.355     0.003                                  PRN / BIAS / RMS    
+   G06     0.618     0.003                                  PRN / BIAS / RMS    
+   G07    -1.854     0.003                                  PRN / BIAS / RMS    
+   G08    -0.032     0.003                                  PRN / BIAS / RMS    
+   G09     0.961     0.004                                  PRN / BIAS / RMS    
+   G10    -1.889     0.004                                  PRN / BIAS / RMS    
+   G11     2.457     0.005                                  PRN / BIAS / RMS    
+   G13     5.202     0.003                                  PRN / BIAS / RMS    
+   G14    -0.982     0.003                                  PRN / BIAS / RMS    
+   G15    -1.677     0.004                                  PRN / BIAS / RMS    
+   G16    -2.853     0.004                                  PRN / BIAS / RMS    
+   G17    -1.813     0.003                                  PRN / BIAS / RMS    
+   G18     0.459     0.003                                  PRN / BIAS / RMS    
+   G19    -0.831     0.003                                  PRN / BIAS / RMS    
+   G21    -1.547     0.003                                  PRN / BIAS / RMS    
+   G22    -0.905     0.004                                  PRN / BIAS / RMS    
+   G23    -1.374     0.003                                  PRN / BIAS / RMS    
+   G24    -1.955     0.003                                  PRN / BIAS / RMS    
+   G25     2.157     0.004                                  PRN / BIAS / RMS    
+   G26     1.929     0.004                                  PRN / BIAS / RMS    
+   G27    -0.160     0.003                                  PRN / BIAS / RMS    
+   G29     1.965     0.003                                  PRN / BIAS / RMS    
+   G30     2.982     0.004                                  PRN / BIAS / RMS    
+   G31     0.486     0.004                                  PRN / BIAS / RMS    
+   G  ACOR                    -3.078     0.011              STATION / BIAS / RMS
+   G  ADE1                    -8.973     0.017              STATION / BIAS / RMS
+   G  AIS1                    -7.500     0.012              STATION / BIAS / RMS
+   G  ALAC                    -8.118     0.011              STATION / BIAS / RMS
+   G  ALBH                    19.311     0.011              STATION / BIAS / RMS
+   G  ALGO                     3.918     0.012              STATION / BIAS / RMS
+   G  ALIC                     2.900     0.015              STATION / BIAS / RMS
+   G  AMC2                     2.039     0.010              STATION / BIAS / RMS
+   G  ANKR                    -5.113     0.011              STATION / BIAS / RMS
+   G  AOA1                     6.256     0.011              STATION / BIAS / RMS
+   G  AOML                     2.738     0.012              STATION / BIAS / RMS
+   G  ARP3                   -17.493     0.014              STATION / BIAS / RMS
+   G  ARTU                   -10.310     0.014              STATION / BIAS / RMS
+   G  ATWC                    -9.936     0.014              STATION / BIAS / RMS
+   G  AUCK                     3.356     0.018              STATION / BIAS / RMS
+   G  AZRY                   -11.923     0.011              STATION / BIAS / RMS
+   G  AZU1                   -11.196     0.011              STATION / BIAS / RMS
+   G  BARB                    -4.184     0.016              STATION / BIAS / RMS
+   G  BARH                    -7.807     0.012              STATION / BIAS / RMS
+   G  BAY1                   -11.608     0.014              STATION / BIAS / RMS
+   G  BBRY                    -9.573     0.011              STATION / BIAS / RMS
+   G  BHR1                    -6.989     0.014              STATION / BIAS / RMS
+   G  BILL                    -4.830     0.011              STATION / BIAS / RMS
+   G  BJFS                   -12.407     0.014              STATION / BIAS / RMS
+   G  BLYT                    -6.872     0.011              STATION / BIAS / RMS
+   G  BOGO                   -10.881     0.011              STATION / BIAS / RMS
+   G  BOR1                     6.114     0.011              STATION / BIAS / RMS
+   G  BRAZ                   -13.852     0.026              STATION / BIAS / RMS
+   G  BRMU                     2.111     0.012              STATION / BIAS / RMS
+   G  BRST                    -5.888     0.011              STATION / BIAS / RMS
+   G  BRUS                     7.423     0.011              STATION / BIAS / RMS
+   G  BSHM                   -11.610     0.012              STATION / BIAS / RMS
+   G  BUCU                   -12.105     0.018              STATION / BIAS / RMS
+   G  BZRG                    30.018     0.011              STATION / BIAS / RMS
+   G  CABL                    -6.209     0.010              STATION / BIAS / RMS
+   G  CAGL                     1.213     0.011              STATION / BIAS / RMS
+   G  CARR                    -9.251     0.011              STATION / BIAS / RMS
+   G  CAS1                     3.944     0.029              STATION / BIAS / RMS
+   G  CASA                     2.978     0.010              STATION / BIAS / RMS
+   G  CASC                    34.116     0.012              STATION / BIAS / RMS
+   G  CAT1                   -10.525     0.011              STATION / BIAS / RMS
+   G  CCJM                   -10.235     0.015              STATION / BIAS / RMS
+   G  CCV3                   -10.425     0.011              STATION / BIAS / RMS
+   G  CEDU                     9.665     0.017              STATION / BIAS / RMS
+   G  CFAG                   -18.656     0.021              STATION / BIAS / RMS
+   G  CHA1                   -22.350     0.011              STATION / BIAS / RMS
+   G  CHB1                   -10.233     0.011              STATION / BIAS / RMS
+   G  CHIL                    -5.979     0.011              STATION / BIAS / RMS
+   G  CHL1                   -14.753     0.011              STATION / BIAS / RMS
+   G  CHUM                     3.012     0.014              STATION / BIAS / RMS
+   G  CHUR                     3.522     0.015              STATION / BIAS / RMS
+   G  CHWK                     7.319     0.011              STATION / BIAS / RMS
+   G  CIC1                     0.184     0.011              STATION / BIAS / RMS
+   G  CIT1                   -13.198     0.011              STATION / BIAS / RMS
+   G  CLAR                   -14.555     0.011              STATION / BIAS / RMS
+   G  CMP9                    -9.273     0.011              STATION / BIAS / RMS
+   G  COCO                    11.936     0.019              STATION / BIAS / RMS
+   G  COSO                    -9.566     0.011              STATION / BIAS / RMS
+   G  COYQ                   -19.955     0.021              STATION / BIAS / RMS
+   G  CRFP                    -6.791     0.011              STATION / BIAS / RMS
+   G  CRO1                    -0.196     0.014              STATION / BIAS / RMS
+   G  DAEJ                    -3.519     0.015              STATION / BIAS / RMS
+   G  DARW                     3.472     0.017              STATION / BIAS / RMS
+   G  DGAR                    -3.414     0.023              STATION / BIAS / RMS
+   G  DHLG                   -15.138     0.011              STATION / BIAS / RMS
+   G  DRAO                    12.601     0.011              STATION / BIAS / RMS
+   G  DUBO                     5.266     0.012              STATION / BIAS / RMS
+   G  DUCK                    -0.587     0.011              STATION / BIAS / RMS
+   G  DUM1                   -10.945     0.030              STATION / BIAS / RMS
+   G  EBRE                    -8.160     0.011              STATION / BIAS / RMS
+   G  EIL1                   -10.111     0.015              STATION / BIAS / RMS
+   G  ENG1                   -16.446     0.011              STATION / BIAS / RMS
+   G  EPRT                    -4.474     0.012              STATION / BIAS / RMS
+   G  FAIR                     6.651     0.015              STATION / BIAS / RMS
+   G  FLIN                     0.158     0.013              STATION / BIAS / RMS
+   G  GAL1                    -7.201     0.011              STATION / BIAS / RMS
+   G  GENO                    -9.087     0.011              STATION / BIAS / RMS
+   G  GILB                   -12.395     0.012              STATION / BIAS / RMS
+   G  GLPT                    -5.648     0.011              STATION / BIAS / RMS
+   G  GLSV                   -12.730     0.014              STATION / BIAS / RMS
+   G  GOL2                    -0.457     0.011              STATION / BIAS / RMS
+   G  GOPE                    -6.742     0.011              STATION / BIAS / RMS
+   G  GRAS                    -4.632     0.011              STATION / BIAS / RMS
+   G  GRAZ                    -0.773     0.011              STATION / BIAS / RMS
+   G  GUAM                     0.766     0.020              STATION / BIAS / RMS
+   G  HERS                   -15.031     0.011              STATION / BIAS / RMS
+   G  HFLK                    -8.666     0.013              STATION / BIAS / RMS
+   G  HNLC                   -10.777     0.017              STATION / BIAS / RMS
+   G  HNPT                    -1.170     0.011              STATION / BIAS / RMS
+   G  HOB2                     5.396     0.018              STATION / BIAS / RMS
+   G  HOFN                    -8.889     0.016              STATION / BIAS / RMS
+   G  HOLB                     3.102     0.012              STATION / BIAS / RMS
+   G  HOLP                   -10.314     0.011              STATION / BIAS / RMS
+   G  HRM1                    -7.195     0.011              STATION / BIAS / RMS
+   G  IISC                     1.392     0.021              STATION / BIAS / RMS
+   G  IRKT                     8.582     0.033              STATION / BIAS / RMS
+   G  ISTA                   -14.717     0.011              STATION / BIAS / RMS
+   G  JAMA                     0.428     0.014              STATION / BIAS / RMS
+   G  JOEN                   -14.562     0.013              STATION / BIAS / RMS
+   G  JPLM                     3.222     0.011              STATION / BIAS / RMS
+   G  KABR                    -9.628     0.012              STATION / BIAS / RMS
+   G  KARR                   -10.090     0.017              STATION / BIAS / RMS
+   G  KELS                     0.855     0.011              STATION / BIAS / RMS
+   G  KELY                    -5.754     0.020              STATION / BIAS / RMS
+   G  KEN1                    -8.190     0.014              STATION / BIAS / RMS
+   G  KERG                    -7.136     0.025              STATION / BIAS / RMS
+   G  KIR0                   -16.957     0.014              STATION / BIAS / RMS
+   G  KIRU                     6.296     0.014              STATION / BIAS / RMS
+   G  KIT3                     2.290     0.013              STATION / BIAS / RMS
+   G  KOD1                   -12.410     0.013              STATION / BIAS / RMS
+   G  KOK1                    -3.688     0.017              STATION / BIAS / RMS
+   G  KOKB                    -1.564     0.017              STATION / BIAS / RMS
+   G  KOSG                     5.855     0.011              STATION / BIAS / RMS
+   G  KOUC                   -17.609     0.018              STATION / BIAS / RMS
+   G  KYW1                   -17.760     0.012              STATION / BIAS / RMS
+   G  LAMA                   -16.703     0.011              STATION / BIAS / RMS
+   G  LAMP                    -3.517     0.011              STATION / BIAS / RMS
+   G  LASC                    -4.184     0.011              STATION / BIAS / RMS
+   G  LHAS                    -1.699     0.015              STATION / BIAS / RMS
+   G  LHAZ                    13.201     0.015              STATION / BIAS / RMS
+   G  LHUE                    -9.861     0.017              STATION / BIAS / RMS
+   G  LPGS                     1.256     0.021              STATION / BIAS / RMS
+   G  MAD2                     3.987     0.011              STATION / BIAS / RMS
+   G  MAG0                    -9.755     0.017              STATION / BIAS / RMS
+   G  MAR6                   -15.364     0.012              STATION / BIAS / RMS
+   G  MARS                    -7.314     0.011              STATION / BIAS / RMS
+   G  MAS1                    -5.214     0.013              STATION / BIAS / RMS
+   G  MATH                     6.644     0.011              STATION / BIAS / RMS
+   G  MAUI                   -11.541     0.017              STATION / BIAS / RMS
+   G  MAW1                    -0.515     0.026              STATION / BIAS / RMS
+   G  MCM4                    -7.563     0.035              STATION / BIAS / RMS
+   G  MDO1                    -0.039     0.011              STATION / BIAS / RMS
+   G  MDVO                    -0.310     0.012              STATION / BIAS / RMS
+   G  MEDI                     1.867     0.011              STATION / BIAS / RMS
+   G  MEM2                   -11.680     0.011              STATION / BIAS / RMS
+   G  MIL1                   -12.140     0.011              STATION / BIAS / RMS
+   G  MKEA                     5.793     0.017              STATION / BIAS / RMS
+   G  MLF1                    -1.342     0.011              STATION / BIAS / RMS
+   G  MOB1                    -0.373     0.011              STATION / BIAS / RMS
+   G  NANO                    -3.300     0.011              STATION / BIAS / RMS
+   G  NEAH                   -10.563     0.011              STATION / BIAS / RMS
+   G  NEWL                    -4.578     0.012              STATION / BIAS / RMS
+   G  NEWP                   -13.262     0.011              STATION / BIAS / RMS
+   G  NICO                     2.781     0.012              STATION / BIAS / RMS
+   G  NLIB                     2.480     0.011              STATION / BIAS / RMS
+   G  NOTO                    -6.035     0.013              STATION / BIAS / RMS
+   G  NPRI                    -6.133     0.012              STATION / BIAS / RMS
+   G  NRC1                    -9.676     0.012              STATION / BIAS / RMS
+   G  NTUS                    -6.723     0.020              STATION / BIAS / RMS
+   G  NYA1                    -1.894     0.019              STATION / BIAS / RMS
+   G  NYAL                     1.703     0.019              STATION / BIAS / RMS
+   G  OAT2                   -15.141     0.011              STATION / BIAS / RMS
+   G  ONSA                   -11.442     0.012              STATION / BIAS / RMS
+   G  OSN1                    -0.039     0.014              STATION / BIAS / RMS
+   G  PALM                   -12.731     0.025              STATION / BIAS / RMS
+   G  PARC                   -21.430     0.022              STATION / BIAS / RMS
+   G  PBL1                   -34.476     0.010              STATION / BIAS / RMS
+   G  PERT                     4.745     0.018              STATION / BIAS / RMS
+   G  PETP                    -6.497     0.016              STATION / BIAS / RMS
+   G  PIE1                    -1.879     0.011              STATION / BIAS / RMS
+   G  PIN1                    -7.281     0.011              STATION / BIAS / RMS
+   G  PLO3                   -11.531     0.011              STATION / BIAS / RMS
+   G  POL2                     1.355     0.014              STATION / BIAS / RMS
+   G  PSU1                   -11.409     0.011              STATION / BIAS / RMS
+   G  PUR3                    -7.377     0.014              STATION / BIAS / RMS
+   G  PVEP                   -11.470     0.011              STATION / BIAS / RMS
+   G  QUIN                    -0.047     0.011              STATION / BIAS / RMS
+   G  RED1                   -16.646     0.012              STATION / BIAS / RMS
+   G  REYK                    -3.659     0.016              STATION / BIAS / RMS
+   G  REYZ                   -12.477     0.017              STATION / BIAS / RMS
+   G  RIGA                     0.086     0.012              STATION / BIAS / RMS
+   G  ROCK                    -9.637     0.011              STATION / BIAS / RMS
+   G  SAG1                   -12.989     0.011              STATION / BIAS / RMS
+   G  SAV1                    -9.412     0.011              STATION / BIAS / RMS
+   G  SCH2                     4.922     0.014              STATION / BIAS / RMS
+   G  SCIP                   -12.471     0.011              STATION / BIAS / RMS
+   G  SEAT                    -7.153     0.011              STATION / BIAS / RMS
+   G  SELE                     2.785     0.014              STATION / BIAS / RMS
+   G  SFER                    -4.250     0.012              STATION / BIAS / RMS
+   G  SHAO                     4.777     0.014              STATION / BIAS / RMS
+   G  SHEE                   -13.002     0.011              STATION / BIAS / RMS
+   G  SHK1                   -18.691     0.012              STATION / BIAS / RMS
+   G  SIO3                   -12.157     0.011              STATION / BIAS / RMS
+   G  SNI1                    -6.654     0.011              STATION / BIAS / RMS
+   G  SOL1                    -1.632     0.011              STATION / BIAS / RMS
+   G  SPK1                    -3.615     0.011              STATION / BIAS / RMS
+   G  STJO                    -7.872     0.013              STATION / BIAS / RMS
+   G  STR1                     3.792     0.017              STATION / BIAS / RMS
+   G  SYOG                   -14.870     0.025              STATION / BIAS / RMS
+   G  TABL                   -13.411     0.011              STATION / BIAS / RMS
+   G  THTI                    -7.167     0.023              STATION / BIAS / RMS
+   G  THU1                    -0.354     0.026              STATION / BIAS / RMS
+   G  THU2                    -4.834     0.026              STATION / BIAS / RMS
+   G  TIXI                   -11.945     0.020              STATION / BIAS / RMS
+   G  TORP                   -12.578     0.011              STATION / BIAS / RMS
+   G  TOUL                    -9.868     0.011              STATION / BIAS / RMS
+   G  TOW2                     2.832     0.017              STATION / BIAS / RMS
+   G  TRAB                   -10.930     0.012              STATION / BIAS / RMS
+   G  TRAK                   -14.303     0.011              STATION / BIAS / RMS
+   G  TSKB                    -2.840     0.014              STATION / BIAS / RMS
+   G  TUBI                    -4.847     0.011              STATION / BIAS / RMS
+   G  UCLP                   -13.987     0.011              STATION / BIAS / RMS
+   G  UCLU                     1.599     0.011              STATION / BIAS / RMS
+   G  UNPG                   -10.402     0.011              STATION / BIAS / RMS
+   G  UPO1                   -16.919     0.017              STATION / BIAS / RMS
+   G  URUM                    -2.773     0.014              STATION / BIAS / RMS
+   G  USC1                   -13.673     0.011              STATION / BIAS / RMS
+   G  USNA                    -0.799     0.011              STATION / BIAS / RMS
+   G  USUD                     6.062     0.014              STATION / BIAS / RMS
+   G  VAAS                   -15.242     0.013              STATION / BIAS / RMS
+   G  VAN1                   -10.554     0.011              STATION / BIAS / RMS
+   G  VENE                     0.894     0.011              STATION / BIAS / RMS
+   G  VESL                    -9.319     0.025              STATION / BIAS / RMS
+   G  VIL0                   -16.358     0.013              STATION / BIAS / RMS
+   G  VILL                     5.174     0.011              STATION / BIAS / RMS
+   G  VIMS                     3.072     0.011              STATION / BIAS / RMS
+   G  VIS0                    -8.759     0.012              STATION / BIAS / RMS
+   G  VNDP                   -12.365     0.011              STATION / BIAS / RMS
+   G  VTIS                    -6.816     0.011              STATION / BIAS / RMS
+   G  WEL1                   -13.795     0.019              STATION / BIAS / RMS
+   G  WES2                     6.459     0.012              STATION / BIAS / RMS
+   G  WGTN                    -5.917     0.019              STATION / BIAS / RMS
+   G  WHC1                   -14.522     0.011              STATION / BIAS / RMS
+   G  WHIT                    -7.372     0.014              STATION / BIAS / RMS
+   G  WIDC                    -7.564     0.011              STATION / BIAS / RMS
+   G  WILL                     9.153     0.012              STATION / BIAS / RMS
+   G  WIS1                   -13.168     0.011              STATION / BIAS / RMS
+   G  WLSN                   -11.391     0.011              STATION / BIAS / RMS
+   G  WSLR                     1.283     0.012              STATION / BIAS / RMS
+   G  WSRT                     1.702     0.011              STATION / BIAS / RMS
+   G  WTZA                    -7.233     0.011              STATION / BIAS / RMS
+   G  WTZZ                   -10.043     0.011              STATION / BIAS / RMS
+   G  WUHN                     3.504     0.015              STATION / BIAS / RMS
+   G  YAKZ                   -11.143     0.017              STATION / BIAS / RMS
+   G  YELL                    -4.007     0.015              STATION / BIAS / RMS
+   G  YSSK                   -14.158     0.015              STATION / BIAS / RMS
+   G  ZECK                     3.123     0.012              STATION / BIAS / RMS
+   G  ZIMM                    -5.918     0.013              STATION / BIAS / RMS
+   G  ZWEN                     6.186     0.012              STATION / BIAS / RMS
+DCB values in ns; zero-mean condition wrt satellite values  COMMENT             
+DIFFERENTIAL CODE BIASES                                    END OF AUX DATA     
+                                                            END OF HEADER       
+   1                                                      START OF TEC MAP    
+  2000     1     1     0     0     0                        EPOCH OF CURRENT MAP
+    87.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+   59   60   61   61   62   63   64   64   65   66   67   67   68   68   69   69
+   69   69   69   69   69   68   68   67   66   66   65   64   63   62   61   61
+   60   59   59   58   58   57   57   56   56   56   56   56   56   56   56   56
+   56   56   56   56   56   56   56   56   56   56   56   56   56   56   56   56
+   56   57   57   57   57   58   58   59   59
+    85.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+   56   57   59   60   62   64   66   68   70   72   74   76   78   79   81   82
+   82   83   83   82   81   80   79   77   75   72   70   68   65   63   61   59
+   57   56   55   54   53   53   53   53   53   53   54   54   55   55   55   56
+   56   56   56   56   56   56   56   56   56   56   56   56   55   55   55   54
+   54   54   54   54   54   54   55   55   56
+    82.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+   54   55   57   60   62   65   69   72   75   79   82   85   88   91   93   95
+   97   98   98   98   97   95   92   89   85   80   76   71   67   62   59   56
+   53   52   51   50   50   51   52   53   54   55   56   56   57   58   58   59
+   59   59   60   60   60   60   60   60   60   59   59   58   58   57   56   55
+   54   54   53   52   52   52   52   53   54
+    80.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+   55   57   59   62   66   70   74   78   82   85   89   93   96   99  103  106
+  108  110  112  112  112  110  107  102   96   90   83   76   69   63   57   53
+   51   49   49   50   51   53   55   57   59   61   62   63   64   64   64   64
+   64   64   64   64   64   64   64   64   64   64   64   64   63   62   61   60
+   59   57   56   55   54   53   53   54   55
+    77.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+   63   65   69   72   76   80   84   88   91   94   96   99  101  103  106  109
+  112  116  119  122  124  124  121  117  110  102   92   82   73   65   58   54
+   51   51   52   54   57   61   64   67   69   71   72   73   73   72   72   71
+   70   69   69   68   68   68   68   68   69   69   70   70   70   70   69   68
+   67   65   64   62   61   60   60   61   63
+    75.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+   79   82   86   90   95   99  102  104  106  106  105  103  102  101  101  103
+  107  112  118  125  130  134  135  132  125  116  104   92   80   70   63   58
+   56   57   60   64   68   73   76   79   81   82   83   82   81   80   78   77
+   75   73   72   71   70   70   71   71   72   73   75   76   77   78   78   78
+   78   77   76   75   74   74   74   76   79
+    72.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  100  105  110  115  119  123  125  126  125  121  116  109  101   95   90   89
+   91   97  107  119  130  139  145  145  141  131  119  104   90   79   70   66
+   65   67   71   76   81   85   88   90   91   91   90   89   87   85   82   80
+   78   76   74   72   72   72   72   73   74   76   78   80   82   84   86   87
+   89   89   90   90   90   91   93   96  100
+    70.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  124  130  136  141  146  149  150  149  146  139  129  116  102   88   77   70
+   69   75   88  104  122  138  150  156  154  146  133  117  101   88   79   75
+   75   78   83   88   92   95   96   95   94   93   91   90   88   86   83   81
+   78   76   74   73   72   72   73   74   75   77   79   81   84   87   91   94
+   97  100  103  105  107  110  114  118  124
+    67.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  145  152  158  163  167  169  170  169  165  157  145  128  108   86   67   52
+   46   50   63   84  107  131  149  160  162  156  143  127  110   96   87   82
+   83   86   91   95   97   97   95   92   89   87   86   85   84   82   81   79
+   76   74   73   72   71   72   73   74   75   76   78   80   83   87   92   97
+  103  108  113  117  121  126  132  138  145
+    65.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  160  167  172  176  178  179  180  180  178  172  161  144  120   92   65   42
+   29   29   40   62   89  117  141  157  163  159  147  131  114   99   90   86
+   87   90   93   95   94   90   85   80   76   74   74   75   76   76   75   74
+   72   70   69   69   70   71   72   74   75   76   77   78   80   84   90   97
+  105  113  120  126  132  138  145  152  160
+    62.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  167  173  176  177  177  176  177  179  182  182  177  163  139  108   74   44
+   23   16   23   42   70   99  125  144  153  152  142  127  111   97   87   84
+   85   87   89   88   84   77   69   63   59   59   61   64   67   68   68   67
+   66   65   64   65   67   69   72   74   76   76   76   75   77   80   87   96
+  106  116  125  133  139  146  152  160  167
+    60.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  168  172  172  169  165  162  163  169  178  187  190  183  164  133   95   59
+   30   16   16   30   53   79  104  122  133  134  127  114  100   87   79   76
+   77   79   80   78   71   61   52   46   43   45   49   55   59   61   62   61
+   59   58   59   61   64   68   72   75   77   77   75   74   74   77   85   96
+  109  121  132  140  146  151  157  162  168
+    57.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  167  168  165  158  150  144  145  153  169  187  201  204  191  162  124   84
+   50   28   21   27   41   60   79   94  104  108  104   95   83   72   65   63
+   65   68   70   66   59   49   40   34   34   38   44   51   55   57   56   55
+   53   53   54   57   61   66   72   76   79   79   77   74   74   77   86  100
+  116  132  144  152  156  159  162  165  167
+    55.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  171  168  161  151  140  131  131  141  162  188  211  222  216  192  155  114
+   77   51   36   33   37   44   54   64   72   77   78   73   64   56   50   50
+   53   58   61   59   53   44   36   33   34   40   47   53   56   56   53   51
+   50   50   53   56   61   67   73   78   81   82   80   77   77   82   93  111
+  131  151  165  172  174  173  172  172  171
+    52.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  183  177  168  155  142  132  130  140  163  192  220  238  237  217  183  144
+  107   79   59   47   40   35   33   36   41   48   53   52   47   41   37   38
+   44   52   58   59   55   49   44   43   46   51   57   61   61   58   54   52
+   51   53   56   60   65   70   75   80   84   85   84   83   84   91  107  129
+  155  179  195  203  203  198  192  188  183
+    50.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  207  199  188  174  161  150  147  155  175  204  232  250  252  234  204  168
+  134  107   86   67   50   33   20   15   18   26   34   38   36   32   30   33
+   41   52   61   66   66   63   61   61   64   69   72   72   69   64   59   57
+   58   62   66   70   74   77   81   85   88   89   90   90   94  105  125  154
+  185  214  234  242  240  233  223  215  207
+    47.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  242  231  219  206  194  184  180  185  199  222  246  261  260  244  216  184
+  155  131  111   89   65   39   17    6    7   16   27   33   34   30   29   34
+   44   58   70   78   81   82   82   83   85   88   88   84   78   72   67   67
+   70   76   81   85   87   88   90   92   94   95   97  100  108  123  148  182
+  219  253  276  286  284  276  264  253  242
+    45.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  285  271  258  246  236  227  222  222  229  244  260  269  265  247  221  193
+  170  151  133  111   83   52   25   10    9   18   31   38   39   36   36   41
+   53   67   81   91   96   99  101  102  104  103  100   95   87   81   79   81
+   86   93   99  103  103  102  102  101  102  104  107  113  125  145  174  212
+  253  290  317  329  329  322  310  298  285
+    42.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  329  312  296  284  275  268  261  256  256  263  273  276  268  249  223  199
+  179  164  150  130  103   71   42   24   22   32   44   51   51   48   48   53
+   64   78   90  100  106  110  113  115  115  113  108  102   96   91   91   96
+  103  111  117  120  120  118  116  114  114  116  121  130  146  169  201  241
+  283  321  350  365  369  365  356  344  329
+    40.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  370  349  329  314  304  296  286  276  272  274  280  281  271  251  226  204
+  187  174  162  146  121   92   64   47   44   52   63   68   66   62   62   67
+   76   86   95  102  108  113  117  119  119  116  112  106  102  101  104  109
+  117  125  130  133  133  132  130  129  129  131  138  151  170  197  229  267
+  306  343  371  389  398  399  396  386  370
+    37.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  404  378  352  332  319  307  293  279  271  273  280  282  274  255  232  211
+  194  182  171  157  138  113   88   72   69   75   82   83   79   75   75   80
+   87   92   95   98  103  109  115  118  118  116  112  109  108  109  114  119
+  126  132  136  139  141  142  143  145  146  150  160  176  199  227  258  291
+  324  355  382  401  414  423  426  420  404
+    35.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  430  401  368  341  321  304  283  265  256  261  274  282  278  263  242  222
+  204  189  177  166  151  132  110   95   91   94   97   95   89   85   87   92
+   95   95   93   92   96  103  111  116  117  115  112  111  112  115  120  124
+  128  131  135  138  142  148  153  158  164  171  184  204  230  259  287  313
+  337  361  383  403  421  436  446  446  430
+    32.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  451  420  382  348  322  297  270  246  237  248  268  283  284  272  254  234
+  214  195  181  172  162  147  128  113  107  108  108  103   95   92   96  102
+  104   99   92   89   92  102  112  119  121  119  115  114  115  119  122  124
+  124  125  127  132  138  147  158  168  179  191  208  232  262  292  316  334
+  348  363  381  400  421  443  460  465  451
+    30.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  472  441  401  365  334  303  269  240  230  244  269  289  292  282  266  246
+  223  200  183  175  170  159  141  125  118  118  117  109  100   99  105  113
+  115  108   99   95  100  111  124  133  134  130  123  118  117  119  120  119
+  117  116  118  123  131  142  157  173  190  208  230  259  292  322  344  355
+  361  368  382  401  423  449  472  482  472
+    27.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  497  471  434  399  369  336  297  263  250  263  288  305  306  294  278  257
+  231  203  184  177  176  167  150  134  127  129  128  119  110  109  118  130
+  133  127  118  115  122  136  150  158  157  148  135  125  119  117  115  113
+  109  108  110  114  122  134  150  171  194  219  247  280  317  349  369  376
+  377  380  392  410  434  461  487  502  497
+    25.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  530  511  482  456  434  405  367  328  309  314  330  337  328  311  292  270
+  239  206  184  179  181  175  158  143  140  147  149  140  129  128  139  154
+  161  157  151  151  160  173  186  192  187  172  151  132  119  114  111  108
+  105  104  106  110  115  124  140  164  193  224  258  295  334  369  391  397
+  397  400  413  434  458  484  510  529  530
+    22.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  570  561  544  533  525  510  477  436  408  399  398  387  363  337  313  287
+  251  211  186  182  187  183  168  157  163  178  186  177  162  158  170  188
+  199  199  197  199  207  218  227  230  219  196  166  138  120  111  109  107
+  105  106  108  109  110  114  128  153  188  225  263  302  343  381  406  417
+  420  428  447  471  495  519  543  563  570
+    20.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  615  615  612  618  632  635  614  575  537  511  487  454  413  376  348  317
+  272  223  191  187  195  195  184  181  199  228  241  231  209  200  211  230
+  244  248  249  252  257  262  265  262  246  217  178  143  120  112  110  111
+  111  112  114  113  108  107  116  143  181  223  264  304  346  386  417  433
+  444  460  487  518  543  563  584  604  615
+    17.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  660  666  675  697  733  760  757  723  676  631  584  530  476  433  401  363
+  306  244  204  197  208  211  207  217  252  294  314  299  268  251  258  277
+  292  298  301  301  300  296  290  282  263  229  186  147  123  116  117  119
+  120  121  121  117  108  102  109  136  177  223  264  303  344  387  422  446
+  465  492  529  567  594  612  628  646  660
+    15.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  698  706  720  754  809  860  876  851  799  738  673  606  547  505  474  429
+  357  278  225  214  225  233  238  263  316  372  395  373  330  303  304  320
+  334  341  342  338  328  313  299  286  266  232  188  149  128  124  129  132
+  131  129  126  120  110  102  108  136  180  227  268  304  343  385  425  456
+  482  517  564  610  641  657  669  684  698
+    12.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  724  729  740  778  844  913  949  934  881  811  738  669  617  586  561  511
+  423  325  257  239  249  261  276  315  384  451  472  439  384  346  340  353
+  365  369  368  358  338  312  290  274  256  226  187  153  136  137  144  146
+  141  134  127  120  112  107  115  144  189  237  276  309  344  386  428  462
+  493  534  587  640  675  691  700  713  724
+    10.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  736  733  734  764  832  912  962  959  909  839  768  711  678  667  653  600
+  498  381  299  272  280  294  316  366  446  516  531  485  417  371  360  369
+  377  379  375  361  333  299  271  254  240  216  185  158  149  154  162  161
+  150  136  125  119  115  116  128  159  205  252  290  319  351  392  433  467
+  497  538  594  651  690  708  718  729  736
+     7.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  735  723  708  722  780  860  919  925  883  820  762  726  721  736  737  685
+  573  442  347  313  316  330  355  410  491  555  558  498  420  370  358  365
+  371  371  367  352  321  282  251  234  224  208  186  168  165  174  180  174
+  156  136  122  118  120  129  147  180  225  270  306  333  364  402  440  470
+  495  532  586  644  687  709  721  732  735
+     5.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  726  704  672  664  704  776  835  849  817  767  728  718  743  784  801  752
+  636  499  399  359  358  367  389  439  511  559  545  473  391  343  334  342
+  348  351  350  340  313  274  241  225  218  208  193  183  185  194  198  187
+  163  137  121  119  128  144  168  201  244  286  321  349  379  415  450  473
+  489  517  565  622  668  694  711  725  726
+     2.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  714  686  640  610  629  685  740  757  737  702  683  698  747  807  835  793
+  680  546  449  409  404  406  417  452  503  527  493  412  333  294  294  308
+  318  326  336  337  318  283  251  233  226  219  209  204  208  215  214  198
+  170  142  124  123  137  160  187  220  258  297  331  361  392  428  458  474
+  480  497  537  591  638  669  692  711  714
+     0.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  704  677  623  577  575  614  660  680  670  650  648  679  740  808  840  803
+  701  581  495  460  452  444  438  450  470  465  411  326  257  235  249  271
+  289  308  333  351  345  316  284  262  250  242  234  231  232  234  228  209
+  180  151  133  131  147  173  201  231  264  300  334  366  400  436  463  471
+  469  477  509  559  607  641  670  695  704
+    -2.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  699  680  628  575  558  582  619  640  640  633  641  676  734  795  822  789
+  703  604  537  511  500  481  455  438  423  386  315  233  182  180  211  244
+  272  306  349  385  393  372  337  308  288  275  266  260  257  252  240  219
+  192  165  145  141  155  180  206  233  261  293  327  363  400  436  460  465
+  457  459  487  533  580  617  650  682  699
+    -5.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  701  695  654  605  582  595  625  649  657  660  671  698  739  778  792  761
+  692  619  573  558  547  517  472  424  375  309  227  154  125  146  193  237
+  276  324  385  438  458  441  402  363  333  313  299  290  281  268  250  228
+  204  179  158  149  158  180  204  227  251  279  313  351  390  426  449  453
+  445  447  473  518  564  601  636  674  701
+    -7.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  705  716  693  657  636  645  673  700  717  727  735  746  759  770  764  732
+  680  630  606  601  590  552  490  417  339  253  166  108  102  144  204  256
+  303  362  436  500  527  510  465  415  374  346  329  316  302  281  257  234
+  213  190  167  153  155  173  196  217  238  263  296  332  371  406  429  436
+  433  440  468  514  559  595  629  669  705
+   -10.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  709  735  733  715  704  715  742  774  800  815  819  811  794  774  749  714
+  675  644  634  636  626  585  514  426  329  231  148  107  122  179  246  300
+  351  415  494  560  586  564  512  452  403  370  350  336  316  290  261  237
+  217  195  170  150  147  163  186  208  228  250  279  312  347  379  403  416
+  422  437  472  519  563  596  627  666  709
+   -12.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  705  743  761  762  764  779  808  844  877  898  899  875  835  791  750  713
+  682  662  658  662  653  614  544  452  349  250  177  153  184  248  313  363
+  410  472  546  604  621  591  531  466  413  378  359  345  324  293  261  235
+  215  193  165  142  137  153  180  205  225  244  266  292  321  349  374  393
+  411  437  479  529  572  602  627  661  705
+   -15.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  691  735  766  784  797  816  846  885  924  950  950  920  868  812  764  727
+  699  680  674  675  668  637  578  494  397  307  248  238  277  338  393  432
+  469  520  579  622  624  584  520  454  402  370  354  342  322  291  257  229
+  208  184  156  133  130  150  183  212  232  247  260  277  296  320  345  371
+  399  436  485  537  579  604  623  650  691
+   -17.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  664  706  745  772  792  813  842  879  919  949  954  926  876  823  779  745
+  717  694  679  673  668  651  610  545  465  390  345  344  382  432  470  492
+  513  547  586  607  592  543  479  418  372  346  336  329  313  284  250  221
+  198  174  147  128  131  158  197  230  249  257  260  266  276  294  319  350
+  387  431  484  537  577  599  611  630  664
+   -20.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  623  660  698  729  750  769  792  823  861  892  902  885  850  812  782  756
+  727  694  667  653  653  653  636  596  537  480  447  449  479  510  527  529
+  533  547  562  560  530  477  418  368  333  314  309  307  296  272  241  212
+  188  165  143  132  144  178  221  255  270  270  263  258  259  272  297  331
+  372  420  473  524  561  580  588  599  623
+   -22.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  572  600  633  662  681  693  707  728  757  786  801  799  785  771  761  746
+  716  675  636  617  622  640  649  634  597  556  531  532  547  557  551  535
+  521  517  512  491  451  400  352  315  292  281  279  281  275  257  231  205
+  182  163  148  147  169  209  253  283  290  280  264  250  246  255  279  313
+  355  401  449  495  530  547  551  556  572
+   -25.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  515  535  560  583  597  603  605  614  630  651  669  680  689  700  710  707
+  679  632  586  566  579  613  643  650  632  603  582  575  574  564  539  508
+  481  463  443  411  368  325  292  271  259  253  252  254  252  241  221  200
+  181  167  162  172  202  246  285  306  303  284  259  240  233  241  263  295
+  333  373  413  452  482  499  504  506  515
+   -27.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  455  469  489  507  516  515  508  503  506  516  531  549  575  606  633  640
+  617  569  523  505  526  573  618  639  632  610  588  572  556  530  493  453
+  420  395  368  334  296  266  251  245  241  236  232  231  230  224  212  196
+  182  175  180  201  237  279  311  320  305  277  248  227  221  229  249  277
+  307  337  368  398  424  440  447  449  455
+   -30.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  398  409  425  441  448  445  432  417  406  403  410  429  462  503  540  554
+  535  492  452  441  470  524  575  601  598  577  552  528  502  466  423  383
+  351  326  300  271  245  231  232  237  237  230  220  213  211  209  202  192
+  183  183  197  226  265  302  323  319  294  260  230  213  209  218  236  257
+  278  298  317  339  360  377  387  392  398
+   -32.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  345  357  373  389  398  396  382  362  342  327  325  337  367  409  446  462
+  448  414  383  382  416  470  519  542  537  513  484  456  424  387  347  312
+  286  268  250  231  219  221  233  245  246  232  214  201  196  195  192  185
+  181  187  207  240  279  310  320  305  273  238  211  198  199  209  223  238
+  249  258  267  281  298  315  328  337  345
+   -35.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  300  313  330  348  362  365  356  337  314  293  281  284  304  336  366  379
+  369  344  326  333  369  418  458  472  459  432  402  373  343  311  279  254
+  238  229  221  215  216  229  248  262  258  238  213  194  185  183  181  177
+  175  183  205  239  275  300  302  281  248  216  196  189  194  204  214  220
+  222  222  223  230  244  261  276  289  300
+   -37.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  262  277  295  316  334  345  344  332  312  290  273  266  274  292  310  316
+  308  292  285  299  333  373  399  401  381  351  322  297  275  253  233  219
+  214  214  215  219  229  247  266  276  267  241  210  188  177  174  171  166
+  164  171  192  224  257  276  275  254  225  200  188  189  196  204  208  207
+  201  193  189  192  203  219  235  249  262
+   -40.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  233  247  265  286  307  324  333  331  320  303  286  275  272  276  280  279
+  271  262  264  281  310  338  350  341  316  286  261  244  231  221  212  210
+  212  219  226  235  247  264  278  280  264  235  204  181  171  168  164  158
+  152  156  173  201  229  246  245  230  210  195  192  197  205  210  207  198
+  186  174  167  168  177  191  207  221  233
+   -42.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  214  225  239  256  277  296  312  320  321  315  304  293  285  278  272  265
+  256  252  258  276  299  315  316  299  272  245  227  218  216  216  217  222
+  229  238  246  254  262  271  275  268  248  219  191  173  167  166  163  155
+  146  145  156  178  202  218  221  214  205  201  205  214  220  219  210  195
+  178  164  157  157  165  178  192  204  214
+   -45.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  204  210  217  228  243  260  278  295  306  312  312  307  298  288  277  266
+  258  256  264  280  296  304  297  277  251  230  219  218  224  231  239  246
+  254  261  265  267  268  265  258  242  219  193  174  165  166  170  169  161
+  150  144  149  164  183  199  207  209  210  215  224  233  236  229  214  195
+  175  161  155  156  164  176  188  197  204
+   -47.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  203  203  203  204  210  221  237  256  275  291  302  305  302  294  283  272
+  265  266  274  288  299  301  292  272  251  236  232  237  246  257  265  272
+  277  279  277  271  261  247  228  206  183  164  155  158  170  181  185  179
+  167  157  156  163  177  192  203  212  220  230  241  248  247  235  216  194
+  174  161  157  161  170  182  193  200  203
+   -50.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  210  206  199  191  186  187  196  212  233  255  274  287  291  289  282  274
+  271  274  283  295  303  304  295  280  265  255  254  261  270  279  286  289
+  289  286  277  263  244  220  194  168  147  136  139  155  177  198  208  206
+  196  184  176  177  185  195  206  217  229  240  250  253  248  233  212  189
+  171  161  159  165  177  190  202  209  210
+   -52.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  223  218  207  192  178  168  168  176  194  216  238  256  267  271  270  269
+  270  275  286  298  306  309  303  293  283  277  276  280  286  291  292  291
+  287  279  265  246  221  192  162  136  120  117  130  156  188  216  234  237
+  229  217  205  199  199  204  211  220  230  239  245  245  237  221  200  179
+  164  156  158  167  181  197  211  221  223
+   -55.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  239  236  225  207  187  169  158  157  166  183  203  222  236  245  251  255
+  261  271  283  296  307  311  310  304  297  292  289  288  287  286  282  277
+  270  260  245  224  199  169  140  117  105  108  128  161  199  233  255  263
+  259  246  232  220  212  209  210  213  219  224  226  223  214  199  181  164
+  152  148  152  164  181  201  219  232  239
+   -57.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  253  256  249  232  210  188  170  159  159  166  179  194  208  220  229  238
+  248  261  276  291  303  311  312  309  303  296  289  281  274  266  258  250
+  243  233  221  203  180  154  130  111  103  111  133  167  206  241  266  277
+  275  263  247  230  216  205  199  196  196  197  196  192  184  172  159  147
+  139  138  145  158  178  200  222  241  253
+   -60.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  264  273  272  261  241  219  197  179  170  168  172  180  189  200  210  221
+  234  250  266  283  296  305  308  306  299  289  276  263  249  237  226  218
+  212  206  197  185  168  149  130  116  112  120  141  171  206  237  260  271
+  270  259  242  222  204  188  177  169  165  164  162  159  154  147  139  132
+  128  129  137  152  172  197  222  246  264
+   -62.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  269  284  289  284  270  251  229  208  192  182  178  178  182  189  198  209
+  223  239  256  272  286  295  298  295  285  272  255  237  220  206  194  187
+  184  181  178  172  163  150  137  128  125  131  146  169  195  219  237  245
+  244  233  217  197  178  161  148  139  134  132  132  132  131  129  127  124
+  124  127  135  149  169  193  220  246  269
+   -65.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  266  284  295  296  288  274  255  235  216  202  191  185  184  187  193  203
+  215  230  246  261  273  280  281  276  265  250  231  212  193  179  168  163
+  162  163  165  164  160  154  146  139  135  137  146  159  175  189  200  204
+  200  191  176  160  143  129  118  111  109  110  114  118  122  125  127  128
+  130  134  141  153  170  192  217  243  266
+   -67.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  258  276  288  292  290  280  266  249  231  216  203  193  188  188  191  198
+  209  221  234  246  255  260  260  254  242  226  208  189  173  159  151  148
+  148  152  156  159  158  155  150  144  139  137  138  141  147  152  155  155
+  151  142  132  120  109  100   95   94   96  102  110  119  128  135  140  144
+  147  150  156  164  177  194  215  237  258
+   -70.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  245  259  270  275  275  269  259  246  232  217  205  195  189  186  187  192
+  200  209  218  227  234  236  235  228  217  204  188  172  158  148  142  140
+  141  145  150  153  154  152  148  142  135  129  124  120  118  116  114  110
+  106  100   94   88   84   83   85   90   99  110  122  135  147  156  164  168
+  172  174  177  182  189  200  214  230  245
+   -72.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  231  239  245  248  248  244  237  228  217  206  196  187  181  178  178  181
+  186  192  198  204  208  209  207  202  193  182  171  159  149  142  137  136
+  137  140  143  146  146  144  140  133  125  117  108  101   94   88   84   79
+   76   73   72   72   75   81   89  100  114  129  144  159  173  183  191  196
+  199  200  200  201  204  208  214  222  231
+   -75.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  217  218  219  219  217  213  207  200  192  184  177  170  166  163  163  164
+  167  171  175  178  180  181  179  175  170  163  155  148  141  137  134  133
+  133  135  136  137  136  133  128  122  114  105   97   88   81   75   70   67
+   66   66   69   75   83   93  106  120  137  153  169  185  198  208  215  220
+  221  221  219  217  215  214  214  215  217
+   -77.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  203  200  196  193  188  183  178  172  165  160  154  150  146  144  144  144
+  146  148  150  152  153  153  153  151  148  144  140  136  133  131  129  128
+  128  128  128  127  125  122  118  112  106   99   92   86   80   76   74   73
+   74   78   84   92  102  115  129  144  159  175  190  203  214  223  229  233
+  233  232  229  225  220  216  211  207  203
+   -80.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  191  185  179  173  167  161  155  150  144  140  135  132  129  128  127  126
+  127  128  129  130  131  131  131  131  130  128  127  126  124  123  122  122
+  121  121  120  119  117  115  112  108  104  100   96   93   91   90   90   91
+   95  100  107  116  126  137  150  162  175  188  199  210  218  225  229  231
+  231  230  226  222  216  210  204  197  191
+   -82.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  179  173  166  160  154  148  143  138  133  129  126  123  120  118  117  116
+  116  116  116  116  117  117  117  117  117  117  117  117  117  117  117  116
+  116  116  115  115  114  113  112  110  109  108  107  107  107  109  111  114
+  118  123  130  137  145  153  162  171  180  189  196  203  208  212  215  216
+  216  214  211  207  203  197  191  185  179
+   -85.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  166  161  157  152  148  143  139  135  132  128  125  123  121  119  117  116
+  115  114  114  114  113  113  114  114  114  114  114  115  115  115  115  116
+  116  116  116  117  117  117  118  118  119  119  121  122  124  126  129  132
+  135  139  144  148  153  158  163  168  173  178  182  185  188  190  191  191
+  191  190  188  185  182  179  175  170  166
+   -87.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  152  150  148  146  143  141  139  137  135  133  132  130  128  127  126  125
+  124  123  122  122  122  121  121  121  121  121  121  121  121  122  122  122
+  123  123  124  125  125  126  127  128  129  130  132  133  135  136  138  140
+  142  144  146  148  150  152  154  156  157  159  160  161  162  163  163  163
+  163  162  161  160  159  157  156  154  152
+     1                                                      END OF TEC MAP      
+       1.0            IONOSPHERE MAPS     GNSS                IONEX VERSION / TYPE
+IRIS V2.0           IRIS                20-Mar-16 03:31     PGM / RUN BY / DATE 
+WHU'S GLOBAL IONOSPHERE MAPS FOR DAY 001, 2000              COMMENT             
+Contact address: Cheng Wang, ac@ionosphere.cn               DESCRIPTION         
+Web page:        http://ionosphere.cn                       DESCRIPTION         
+ionosphere                                                  COMMENT             
+GNSS IRIS 2.0                                               COMMENT             
+  2000     1     1     0     0     0                        EPOCH OF FIRST MAP  
+  2000     1     2     0     0     0                        EPOCH OF LAST MAP  
+  7200                                                      INTERVAL            
+    13                                                      # OF MAPS IN FILE   
+  MSLM                                                      MAPPING FUNCTION    
+Two-way carrier phase leveled to code                       OBSERVABLES USED    
+   239                                                      # OF STATIONS       
+    28                                                      # OF SATELLITES     
+  6371.0                                                    BASE RADIUS         
+     2                                                      MAP DIMENSION       
+   450.0 450.0   0.0                                        HGT1 / HGT2 / DHGT  
+    87.5 -87.5  -2.5                                        LAT1 / LAT2 / DLAT  
+  -180.0 180.0   5.0                                        LON1 / LON2 / DLON  
+    -1                                                      EXPONENT            
+TEC/RMS values in 0.1 TECU; 9999, if no value available     COMMENT             
+List of stations:                                           COMMENT             
+acor ade1 ais1 alac albh algo alic amc2 ankr aoa1 aoml arp3 COMMENT             
+artu atwc auck azry azu1 barb barh bay1 bbry bhr1 bill bjfs COMMENT             
+blyt bogo bor1 braz brmu brst brus bshm bucu bzrg cabl cagl COMMENT             
+carr cas1 casa casc cat1 ccjm ccv3 cedu cfag cha1 chb1 chil COMMENT             
+chl1 chum chur chwk cic1 cit1 clar cmp9 coco coso coyq crfp COMMENT             
+cro1 daej darw dgar dhlg drao dubo duck dum1 ebre eil1 eng1 COMMENT             
+eprt fair flin gal1 geno gilb glpt glsv gol2 gope gras graz COMMENT             
+guam hers hflk hnlc hnpt hob2 hofn holb holp hrm1 iisc irkt COMMENT             
+ista jama joen jplm kabr karr kels kely ken1 kerg kir0 kiru COMMENT             
+kit3 kod1 kok1 kokb kosg kouc kyw1 lama lamp lasc lhas lhaz COMMENT             
+lhue lpgs mad2 mag0 mar6 mars mas1 math maui maw1 mcm4 mdo1 COMMENT             
+mdvo medi mem2 mil1 mkea mlf1 mob1 nano neah newl newp nico COMMENT             
+nlib noto npri nrc1 ntus nya1 nyal oat2 onsa osn1 palm parc COMMENT             
+pbl1 pert petp pie1 pin1 plo3 pol2 psu1 pur3 pvep quin red1 COMMENT             
+reyk reyz riga rock sag1 sav1 sch2 scip seat sele sfer shao COMMENT             
+shee shk1 sio3 sni1 sol1 spk1 stjo str1 syog tabl thti thu1 COMMENT             
+thu2 tixi torp toul tow2 trab trak tskb tubi uclp uclu unpg COMMENT             
+upo1 urum usc1 usna usud vaas van1 vene vesl vil0 vill vims COMMENT             
+vis0 vndp vtis wel1 wes2 wgtn whc1 whit widc will wis1 wlsn COMMENT             
+wslr wsrt wtza wtzz wuhn yakz yell yssk zeck zimm zwen      COMMENT             
+DIFFERENTIAL CODE BIASES                                    START OF AUX DATA   
+   G01    -0.608     0.003                                  PRN / BIAS / RMS    
+   G02    -2.141     0.003                                  PRN / BIAS / RMS    
+   G03     0.012     0.004                                  PRN / BIAS / RMS    
+   G04     1.748     0.004                                  PRN / BIAS / RMS    
+   G05    -0.355     0.003                                  PRN / BIAS / RMS    
+   G06     0.618     0.003                                  PRN / BIAS / RMS    
+   G07    -1.854     0.003                                  PRN / BIAS / RMS    
+   G08    -0.032     0.003                                  PRN / BIAS / RMS    
+   G09     0.961     0.004                                  PRN / BIAS / RMS    
+   G10    -1.889     0.004                                  PRN / BIAS / RMS    
+   G11     2.457     0.005                                  PRN / BIAS / RMS    
+   G13     5.202     0.003                                  PRN / BIAS / RMS    
+   G14    -0.982     0.003                                  PRN / BIAS / RMS    
+   G15    -1.677     0.004                                  PRN / BIAS / RMS    
+   G16    -2.853     0.004                                  PRN / BIAS / RMS    
+   G17    -1.813     0.003                                  PRN / BIAS / RMS    
+   G18     0.459     0.003                                  PRN / BIAS / RMS    
+   G19    -0.831     0.003                                  PRN / BIAS / RMS    
+   G21    -1.547     0.003                                  PRN / BIAS / RMS    
+   G22    -0.905     0.004                                  PRN / BIAS / RMS    
+   G23    -1.374     0.003                                  PRN / BIAS / RMS    
+   G24    -1.955     0.003                                  PRN / BIAS / RMS    
+   G25     2.157     0.004                                  PRN / BIAS / RMS    
+   G26     1.929     0.004                                  PRN / BIAS / RMS    
+   G27    -0.160     0.003                                  PRN / BIAS / RMS    
+   G29     1.965     0.003                                  PRN / BIAS / RMS    
+   G30     2.982     0.004                                  PRN / BIAS / RMS    
+   G31     0.486     0.004                                  PRN / BIAS / RMS    
+   G  ACOR                    -3.078     0.011              STATION / BIAS / RMS
+   G  ADE1                    -8.973     0.017              STATION / BIAS / RMS
+   G  AIS1                    -7.500     0.012              STATION / BIAS / RMS
+   G  ALAC                    -8.118     0.011              STATION / BIAS / RMS
+   G  ALBH                    19.311     0.011              STATION / BIAS / RMS
+   G  ALGO                     3.918     0.012              STATION / BIAS / RMS
+   G  ALIC                     2.900     0.015              STATION / BIAS / RMS
+   G  AMC2                     2.039     0.010              STATION / BIAS / RMS
+   G  ANKR                    -5.113     0.011              STATION / BIAS / RMS
+   G  AOA1                     6.256     0.011              STATION / BIAS / RMS
+   G  AOML                     2.738     0.012              STATION / BIAS / RMS
+   G  ARP3                   -17.493     0.014              STATION / BIAS / RMS
+   G  ARTU                   -10.310     0.014              STATION / BIAS / RMS
+   G  ATWC                    -9.936     0.014              STATION / BIAS / RMS
+   G  AUCK                     3.356     0.018              STATION / BIAS / RMS
+   G  AZRY                   -11.923     0.011              STATION / BIAS / RMS
+   G  AZU1                   -11.196     0.011              STATION / BIAS / RMS
+   G  BARB                    -4.184     0.016              STATION / BIAS / RMS
+   G  BARH                    -7.807     0.012              STATION / BIAS / RMS
+   G  BAY1                   -11.608     0.014              STATION / BIAS / RMS
+   G  BBRY                    -9.573     0.011              STATION / BIAS / RMS
+   G  BHR1                    -6.989     0.014              STATION / BIAS / RMS
+   G  BILL                    -4.830     0.011              STATION / BIAS / RMS
+   G  BJFS                   -12.407     0.014              STATION / BIAS / RMS
+   G  BLYT                    -6.872     0.011              STATION / BIAS / RMS
+   G  BOGO                   -10.881     0.011              STATION / BIAS / RMS
+   G  BOR1                     6.114     0.011              STATION / BIAS / RMS
+   G  BRAZ                   -13.852     0.026              STATION / BIAS / RMS
+   G  BRMU                     2.111     0.012              STATION / BIAS / RMS
+   G  BRST                    -5.888     0.011              STATION / BIAS / RMS
+   G  BRUS                     7.423     0.011              STATION / BIAS / RMS
+   G  BSHM                   -11.610     0.012              STATION / BIAS / RMS
+   G  BUCU                   -12.105     0.018              STATION / BIAS / RMS
+   G  BZRG                    30.018     0.011              STATION / BIAS / RMS
+   G  CABL                    -6.209     0.010              STATION / BIAS / RMS
+   G  CAGL                     1.213     0.011              STATION / BIAS / RMS
+   G  CARR                    -9.251     0.011              STATION / BIAS / RMS
+   G  CAS1                     3.944     0.029              STATION / BIAS / RMS
+   G  CASA                     2.978     0.010              STATION / BIAS / RMS
+   G  CASC                    34.116     0.012              STATION / BIAS / RMS
+   G  CAT1                   -10.525     0.011              STATION / BIAS / RMS
+   G  CCJM                   -10.235     0.015              STATION / BIAS / RMS
+   G  CCV3                   -10.425     0.011              STATION / BIAS / RMS
+   G  CEDU                     9.665     0.017              STATION / BIAS / RMS
+   G  CFAG                   -18.656     0.021              STATION / BIAS / RMS
+   G  CHA1                   -22.350     0.011              STATION / BIAS / RMS
+   G  CHB1                   -10.233     0.011              STATION / BIAS / RMS
+   G  CHIL                    -5.979     0.011              STATION / BIAS / RMS
+   G  CHL1                   -14.753     0.011              STATION / BIAS / RMS
+   G  CHUM                     3.012     0.014              STATION / BIAS / RMS
+   G  CHUR                     3.522     0.015              STATION / BIAS / RMS
+   G  CHWK                     7.319     0.011              STATION / BIAS / RMS
+   G  CIC1                     0.184     0.011              STATION / BIAS / RMS
+   G  CIT1                   -13.198     0.011              STATION / BIAS / RMS
+   G  CLAR                   -14.555     0.011              STATION / BIAS / RMS
+   G  CMP9                    -9.273     0.011              STATION / BIAS / RMS
+   G  COCO                    11.936     0.019              STATION / BIAS / RMS
+   G  COSO                    -9.566     0.011              STATION / BIAS / RMS
+   G  COYQ                   -19.955     0.021              STATION / BIAS / RMS
+   G  CRFP                    -6.791     0.011              STATION / BIAS / RMS
+   G  CRO1                    -0.196     0.014              STATION / BIAS / RMS
+   G  DAEJ                    -3.519     0.015              STATION / BIAS / RMS
+   G  DARW                     3.472     0.017              STATION / BIAS / RMS
+   G  DGAR                    -3.414     0.023              STATION / BIAS / RMS
+   G  DHLG                   -15.138     0.011              STATION / BIAS / RMS
+   G  DRAO                    12.601     0.011              STATION / BIAS / RMS
+   G  DUBO                     5.266     0.012              STATION / BIAS / RMS
+   G  DUCK                    -0.587     0.011              STATION / BIAS / RMS
+   G  DUM1                   -10.945     0.030              STATION / BIAS / RMS
+   G  EBRE                    -8.160     0.011              STATION / BIAS / RMS
+   G  EIL1                   -10.111     0.015              STATION / BIAS / RMS
+   G  ENG1                   -16.446     0.011              STATION / BIAS / RMS
+   G  EPRT                    -4.474     0.012              STATION / BIAS / RMS
+   G  FAIR                     6.651     0.015              STATION / BIAS / RMS
+   G  FLIN                     0.158     0.013              STATION / BIAS / RMS
+   G  GAL1                    -7.201     0.011              STATION / BIAS / RMS
+   G  GENO                    -9.087     0.011              STATION / BIAS / RMS
+   G  GILB                   -12.395     0.012              STATION / BIAS / RMS
+   G  GLPT                    -5.648     0.011              STATION / BIAS / RMS
+   G  GLSV                   -12.730     0.014              STATION / BIAS / RMS
+   G  GOL2                    -0.457     0.011              STATION / BIAS / RMS
+   G  GOPE                    -6.742     0.011              STATION / BIAS / RMS
+   G  GRAS                    -4.632     0.011              STATION / BIAS / RMS
+   G  GRAZ                    -0.773     0.011              STATION / BIAS / RMS
+   G  GUAM                     0.766     0.020              STATION / BIAS / RMS
+   G  HERS                   -15.031     0.011              STATION / BIAS / RMS
+   G  HFLK                    -8.666     0.013              STATION / BIAS / RMS
+   G  HNLC                   -10.777     0.017              STATION / BIAS / RMS
+   G  HNPT                    -1.170     0.011              STATION / BIAS / RMS
+   G  HOB2                     5.396     0.018              STATION / BIAS / RMS
+   G  HOFN                    -8.889     0.016              STATION / BIAS / RMS
+   G  HOLB                     3.102     0.012              STATION / BIAS / RMS
+   G  HOLP                   -10.314     0.011              STATION / BIAS / RMS
+   G  HRM1                    -7.195     0.011              STATION / BIAS / RMS
+   G  IISC                     1.392     0.021              STATION / BIAS / RMS
+   G  IRKT                     8.582     0.033              STATION / BIAS / RMS
+   G  ISTA                   -14.717     0.011              STATION / BIAS / RMS
+   G  JAMA                     0.428     0.014              STATION / BIAS / RMS
+   G  JOEN                   -14.562     0.013              STATION / BIAS / RMS
+   G  JPLM                     3.222     0.011              STATION / BIAS / RMS
+   G  KABR                    -9.628     0.012              STATION / BIAS / RMS
+   G  KARR                   -10.090     0.017              STATION / BIAS / RMS
+   G  KELS                     0.855     0.011              STATION / BIAS / RMS
+   G  KELY                    -5.754     0.020              STATION / BIAS / RMS
+   G  KEN1                    -8.190     0.014              STATION / BIAS / RMS
+   G  KERG                    -7.136     0.025              STATION / BIAS / RMS
+   G  KIR0                   -16.957     0.014              STATION / BIAS / RMS
+   G  KIRU                     6.296     0.014              STATION / BIAS / RMS
+   G  KIT3                     2.290     0.013              STATION / BIAS / RMS
+   G  KOD1                   -12.410     0.013              STATION / BIAS / RMS
+   G  KOK1                    -3.688     0.017              STATION / BIAS / RMS
+   G  KOKB                    -1.564     0.017              STATION / BIAS / RMS
+   G  KOSG                     5.855     0.011              STATION / BIAS / RMS
+   G  KOUC                   -17.609     0.018              STATION / BIAS / RMS
+   G  KYW1                   -17.760     0.012              STATION / BIAS / RMS
+   G  LAMA                   -16.703     0.011              STATION / BIAS / RMS
+   G  LAMP                    -3.517     0.011              STATION / BIAS / RMS
+   G  LASC                    -4.184     0.011              STATION / BIAS / RMS
+   G  LHAS                    -1.699     0.015              STATION / BIAS / RMS
+   G  LHAZ                    13.201     0.015              STATION / BIAS / RMS
+   G  LHUE                    -9.861     0.017              STATION / BIAS / RMS
+   G  LPGS                     1.256     0.021              STATION / BIAS / RMS
+   G  MAD2                     3.987     0.011              STATION / BIAS / RMS
+   G  MAG0                    -9.755     0.017              STATION / BIAS / RMS
+   G  MAR6                   -15.364     0.012              STATION / BIAS / RMS
+   G  MARS                    -7.314     0.011              STATION / BIAS / RMS
+   G  MAS1                    -5.214     0.013              STATION / BIAS / RMS
+   G  MATH                     6.644     0.011              STATION / BIAS / RMS
+   G  MAUI                   -11.541     0.017              STATION / BIAS / RMS
+   G  MAW1                    -0.515     0.026              STATION / BIAS / RMS
+   G  MCM4                    -7.563     0.035              STATION / BIAS / RMS
+   G  MDO1                    -0.039     0.011              STATION / BIAS / RMS
+   G  MDVO                    -0.310     0.012              STATION / BIAS / RMS
+   G  MEDI                     1.867     0.011              STATION / BIAS / RMS
+   G  MEM2                   -11.680     0.011              STATION / BIAS / RMS
+   G  MIL1                   -12.140     0.011              STATION / BIAS / RMS
+   G  MKEA                     5.793     0.017              STATION / BIAS / RMS
+   G  MLF1                    -1.342     0.011              STATION / BIAS / RMS
+   G  MOB1                    -0.373     0.011              STATION / BIAS / RMS
+   G  NANO                    -3.300     0.011              STATION / BIAS / RMS
+   G  NEAH                   -10.563     0.011              STATION / BIAS / RMS
+   G  NEWL                    -4.578     0.012              STATION / BIAS / RMS
+   G  NEWP                   -13.262     0.011              STATION / BIAS / RMS
+   G  NICO                     2.781     0.012              STATION / BIAS / RMS
+   G  NLIB                     2.480     0.011              STATION / BIAS / RMS
+   G  NOTO                    -6.035     0.013              STATION / BIAS / RMS
+   G  NPRI                    -6.133     0.012              STATION / BIAS / RMS
+   G  NRC1                    -9.676     0.012              STATION / BIAS / RMS
+   G  NTUS                    -6.723     0.020              STATION / BIAS / RMS
+   G  NYA1                    -1.894     0.019              STATION / BIAS / RMS
+   G  NYAL                     1.703     0.019              STATION / BIAS / RMS
+   G  OAT2                   -15.141     0.011              STATION / BIAS / RMS
+   G  ONSA                   -11.442     0.012              STATION / BIAS / RMS
+   G  OSN1                    -0.039     0.014              STATION / BIAS / RMS
+   G  PALM                   -12.731     0.025              STATION / BIAS / RMS
+   G  PARC                   -21.430     0.022              STATION / BIAS / RMS
+   G  PBL1                   -34.476     0.010              STATION / BIAS / RMS
+   G  PERT                     4.745     0.018              STATION / BIAS / RMS
+   G  PETP                    -6.497     0.016              STATION / BIAS / RMS
+   G  PIE1                    -1.879     0.011              STATION / BIAS / RMS
+   G  PIN1                    -7.281     0.011              STATION / BIAS / RMS
+   G  PLO3                   -11.531     0.011              STATION / BIAS / RMS
+   G  POL2                     1.355     0.014              STATION / BIAS / RMS
+   G  PSU1                   -11.409     0.011              STATION / BIAS / RMS
+   G  PUR3                    -7.377     0.014              STATION / BIAS / RMS
+   G  PVEP                   -11.470     0.011              STATION / BIAS / RMS
+   G  QUIN                    -0.047     0.011              STATION / BIAS / RMS
+   G  RED1                   -16.646     0.012              STATION / BIAS / RMS
+   G  REYK                    -3.659     0.016              STATION / BIAS / RMS
+   G  REYZ                   -12.477     0.017              STATION / BIAS / RMS
+   G  RIGA                     0.086     0.012              STATION / BIAS / RMS
+   G  ROCK                    -9.637     0.011              STATION / BIAS / RMS
+   G  SAG1                   -12.989     0.011              STATION / BIAS / RMS
+   G  SAV1                    -9.412     0.011              STATION / BIAS / RMS
+   G  SCH2                     4.922     0.014              STATION / BIAS / RMS
+   G  SCIP                   -12.471     0.011              STATION / BIAS / RMS
+   G  SEAT                    -7.153     0.011              STATION / BIAS / RMS
+   G  SELE                     2.785     0.014              STATION / BIAS / RMS
+   G  SFER                    -4.250     0.012              STATION / BIAS / RMS
+   G  SHAO                     4.777     0.014              STATION / BIAS / RMS
+   G  SHEE                   -13.002     0.011              STATION / BIAS / RMS
+   G  SHK1                   -18.691     0.012              STATION / BIAS / RMS
+   G  SIO3                   -12.157     0.011              STATION / BIAS / RMS
+   G  SNI1                    -6.654     0.011              STATION / BIAS / RMS
+   G  SOL1                    -1.632     0.011              STATION / BIAS / RMS
+   G  SPK1                    -3.615     0.011              STATION / BIAS / RMS
+   G  STJO                    -7.872     0.013              STATION / BIAS / RMS
+   G  STR1                     3.792     0.017              STATION / BIAS / RMS
+   G  SYOG                   -14.870     0.025              STATION / BIAS / RMS
+   G  TABL                   -13.411     0.011              STATION / BIAS / RMS
+   G  THTI                    -7.167     0.023              STATION / BIAS / RMS
+   G  THU1                    -0.354     0.026              STATION / BIAS / RMS
+   G  THU2                    -4.834     0.026              STATION / BIAS / RMS
+   G  TIXI                   -11.945     0.020              STATION / BIAS / RMS
+   G  TORP                   -12.578     0.011              STATION / BIAS / RMS
+   G  TOUL                    -9.868     0.011              STATION / BIAS / RMS
+   G  TOW2                     2.832     0.017              STATION / BIAS / RMS
+   G  TRAB                   -10.930     0.012              STATION / BIAS / RMS
+   G  TRAK                   -14.303     0.011              STATION / BIAS / RMS
+   G  TSKB                    -2.840     0.014              STATION / BIAS / RMS
+   G  TUBI                    -4.847     0.011              STATION / BIAS / RMS
+   G  UCLP                   -13.987     0.011              STATION / BIAS / RMS
+   G  UCLU                     1.599     0.011              STATION / BIAS / RMS
+   G  UNPG                   -10.402     0.011              STATION / BIAS / RMS
+   G  UPO1                   -16.919     0.017              STATION / BIAS / RMS
+   G  URUM                    -2.773     0.014              STATION / BIAS / RMS
+   G  USC1                   -13.673     0.011              STATION / BIAS / RMS
+   G  USNA                    -0.799     0.011              STATION / BIAS / RMS
+   G  USUD                     6.062     0.014              STATION / BIAS / RMS
+   G  VAAS                   -15.242     0.013              STATION / BIAS / RMS
+   G  VAN1                   -10.554     0.011              STATION / BIAS / RMS
+   G  VENE                     0.894     0.011              STATION / BIAS / RMS
+   G  VESL                    -9.319     0.025              STATION / BIAS / RMS
+   G  VIL0                   -16.358     0.013              STATION / BIAS / RMS
+   G  VILL                     5.174     0.011              STATION / BIAS / RMS
+   G  VIMS                     3.072     0.011              STATION / BIAS / RMS
+   G  VIS0                    -8.759     0.012              STATION / BIAS / RMS
+   G  VNDP                   -12.365     0.011              STATION / BIAS / RMS
+   G  VTIS                    -6.816     0.011              STATION / BIAS / RMS
+   G  WEL1                   -13.795     0.019              STATION / BIAS / RMS
+   G  WES2                     6.459     0.012              STATION / BIAS / RMS
+   G  WGTN                    -5.917     0.019              STATION / BIAS / RMS
+   G  WHC1                   -14.522     0.011              STATION / BIAS / RMS
+   G  WHIT                    -7.372     0.014              STATION / BIAS / RMS
+   G  WIDC                    -7.564     0.011              STATION / BIAS / RMS
+   G  WILL                     9.153     0.012              STATION / BIAS / RMS
+   G  WIS1                   -13.168     0.011              STATION / BIAS / RMS
+   G  WLSN                   -11.391     0.011              STATION / BIAS / RMS
+   G  WSLR                     1.283     0.012              STATION / BIAS / RMS
+   G  WSRT                     1.702     0.011              STATION / BIAS / RMS
+   G  WTZA                    -7.233     0.011              STATION / BIAS / RMS
+   G  WTZZ                   -10.043     0.011              STATION / BIAS / RMS
+   G  WUHN                     3.504     0.015              STATION / BIAS / RMS
+   G  YAKZ                   -11.143     0.017              STATION / BIAS / RMS
+   G  YELL                    -4.007     0.015              STATION / BIAS / RMS
+   G  YSSK                   -14.158     0.015              STATION / BIAS / RMS
+   G  ZECK                     3.123     0.012              STATION / BIAS / RMS
+   G  ZIMM                    -5.918     0.013              STATION / BIAS / RMS
+   G  ZWEN                     6.186     0.012              STATION / BIAS / RMS
+DCB values in ns; zero-mean condition wrt satellite values  COMMENT             
+DIFFERENTIAL CODE BIASES                                    END OF AUX DATA     
+                                                            END OF HEADER       
+   1                                                      START OF TEC MAP    
+  2000     1     1     0     0     0                        EPOCH OF CURRENT MAP
+    87.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+   59   60   61   61   62   63   64   64   65   66   67   67   68   68   69   69
+   69   69   69   69   69   68   68   67   66   66   65   64   63   62   61   61
+   60   59   59   58   58   57   57   56   56   56   56   56   56   56   56   56
+   56   56   56   56   56   56   56   56   56   56   56   56   56   56   56   56
+   56   57   57   57   57   58   58   59   59
+    85.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+   56   57   59   60   62   64   66   68   70   72   74   76   78   79   81   82
+   82   83   83   82   81   80   79   77   75   72   70   68   65   63   61   59
+   57   56   55   54   53   53   53   53   53   53   54   54   55   55   55   56
+   56   56   56   56   56   56   56   56   56   56   56   56   55   55   55   54
+   54   54   54   54   54   54   55   55   56
+    82.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+   54   55   57   60   62   65   69   72   75   79   82   85   88   91   93   95
+   97   98   98   98   97   95   92   89   85   80   76   71   67   62   59   56
+   53   52   51   50   50   51   52   53   54   55   56   56   57   58   58   59
+   59   59   60   60   60   60   60   60   60   59   59   58   58   57   56   55
+   54   54   53   52   52   52   52   53   54
+    80.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+   55   57   59   62   66   70   74   78   82   85   89   93   96   99  103  106
+  108  110  112  112  112  110  107  102   96   90   83   76   69   63   57   53
+   51   49   49   50   51   53   55   57   59   61   62   63   64   64   64   64
+   64   64   64   64   64   64   64   64   64   64   64   64   63   62   61   60
+   59   57   56   55   54   53   53   54   55
+    77.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+   63   65   69   72   76   80   84   88   91   94   96   99  101  103  106  109
+  112  116  119  122  124  124  121  117  110  102   92   82   73   65   58   54
+   51   51   52   54   57   61   64   67   69   71   72   73   73   72   72   71
+   70   69   69   68   68   68   68   68   69   69   70   70   70   70   69   68
+   67   65   64   62   61   60   60   61   63
+    75.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+   79   82   86   90   95   99  102  104  106  106  105  103  102  101  101  103
+  107  112  118  125  130  134  135  132  125  116  104   92   80   70   63   58
+   56   57   60   64   68   73   76   79   81   82   83   82   81   80   78   77
+   75   73   72   71   70   70   71   71   72   73   75   76   77   78   78   78
+   78   77   76   75   74   74   74   76   79
+    72.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  100  105  110  115  119  123  125  126  125  121  116  109  101   95   90   89
+   91   97  107  119  130  139  145  145  141  131  119  104   90   79   70   66
+   65   67   71   76   81   85   88   90   91   91   90   89   87   85   82   80
+   78   76   74   72   72   72   72   73   74   76   78   80   82   84   86   87
+   89   89   90   90   90   91   93   96  100
+    70.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  124  130  136  141  146  149  150  149  146  139  129  116  102   88   77   70
+   69   75   88  104  122  138  150  156  154  146  133  117  101   88   79   75
+   75   78   83   88   92   95   96   95   94   93   91   90   88   86   83   81
+   78   76   74   73   72   72   73   74   75   77   79   81   84   87   91   94
+   97  100  103  105  107  110  114  118  124
+    67.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  145  152  158  163  167  169  170  169  165  157  145  128  108   86   67   52
+   46   50   63   84  107  131  149  160  162  156  143  127  110   96   87   82
+   83   86   91   95   97   97   95   92   89   87   86   85   84   82   81   79
+   76   74   73   72   71   72   73   74   75   76   78   80   83   87   92   97
+  103  108  113  117  121  126  132  138  145
+    65.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  160  167  172  176  178  179  180  180  178  172  161  144  120   92   65   42
+   29   29   40   62   89  117  141  157  163  159  147  131  114   99   90   86
+   87   90   93   95   94   90   85   80   76   74   74   75   76   76   75   74
+   72   70   69   69   70   71   72   74   75   76   77   78   80   84   90   97
+  105  113  120  126  132  138  145  152  160
+    62.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  167  173  176  177  177  176  177  179  182  182  177  163  139  108   74   44
+   23   16   23   42   70   99  125  144  153  152  142  127  111   97   87   84
+   85   87   89   88   84   77   69   63   59   59   61   64   67   68   68   67
+   66   65   64   65   67   69   72   74   76   76   76   75   77   80   87   96
+  106  116  125  133  139  146  152  160  167
+    60.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  168  172  172  169  165  162  163  169  178  187  190  183  164  133   95   59
+   30   16   16   30   53   79  104  122  133  134  127  114  100   87   79   76
+   77   79   80   78   71   61   52   46   43   45   49   55   59   61   62   61
+   59   58   59   61   64   68   72   75   77   77   75   74   74   77   85   96
+  109  121  132  140  146  151  157  162  168
+    57.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  167  168  165  158  150  144  145  153  169  187  201  204  191  162  124   84
+   50   28   21   27   41   60   79   94  104  108  104   95   83   72   65   63
+   65   68   70   66   59   49   40   34   34   38   44   51   55   57   56   55
+   53   53   54   57   61   66   72   76   79   79   77   74   74   77   86  100
+  116  132  144  152  156  159  162  165  167
+    55.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  171  168  161  151  140  131  131  141  162  188  211  222  216  192  155  114
+   77   51   36   33   37   44   54   64   72   77   78   73   64   56   50   50
+   53   58   61   59   53   44   36   33   34   40   47   53   56   56   53   51
+   50   50   53   56   61   67   73   78   81   82   80   77   77   82   93  111
+  131  151  165  172  174  173  172  172  171
+    52.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  183  177  168  155  142  132  130  140  163  192  220  238  237  217  183  144
+  107   79   59   47   40   35   33   36   41   48   53   52   47   41   37   38
+   44   52   58   59   55   49   44   43   46   51   57   61   61   58   54   52
+   51   53   56   60   65   70   75   80   84   85   84   83   84   91  107  129
+  155  179  195  203  203  198  192  188  183
+    50.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  207  199  188  174  161  150  147  155  175  204  232  250  252  234  204  168
+  134  107   86   67   50   33   20   15   18   26   34   38   36   32   30   33
+   41   52   61   66   66   63   61   61   64   69   72   72   69   64   59   57
+   58   62   66   70   74   77   81   85   88   89   90   90   94  105  125  154
+  185  214  234  242  240  233  223  215  207
+    47.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  242  231  219  206  194  184  180  185  199  222  246  261  260  244  216  184
+  155  131  111   89   65   39   17    6    7   16   27   33   34   30   29   34
+   44   58   70   78   81   82   82   83   85   88   88   84   78   72   67   67
+   70   76   81   85   87   88   90   92   94   95   97  100  108  123  148  182
+  219  253  276  286  284  276  264  253  242
+    45.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  285  271  258  246  236  227  222  222  229  244  260  269  265  247  221  193
+  170  151  133  111   83   52   25   10    9   18   31   38   39   36   36   41
+   53   67   81   91   96   99  101  102  104  103  100   95   87   81   79   81
+   86   93   99  103  103  102  102  101  102  104  107  113  125  145  174  212
+  253  290  317  329  329  322  310  298  285
+    42.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  329  312  296  284  275  268  261  256  256  263  273  276  268  249  223  199
+  179  164  150  130  103   71   42   24   22   32   44   51   51   48   48   53
+   64   78   90  100  106  110  113  115  115  113  108  102   96   91   91   96
+  103  111  117  120  120  118  116  114  114  116  121  130  146  169  201  241
+  283  321  350  365  369  365  356  344  329
+    40.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  370  349  329  314  304  296  286  276  272  274  280  281  271  251  226  204
+  187  174  162  146  121   92   64   47   44   52   63   68   66   62   62   67
+   76   86   95  102  108  113  117  119  119  116  112  106  102  101  104  109
+  117  125  130  133  133  132  130  129  129  131  138  151  170  197  229  267
+  306  343  371  389  398  399  396  386  370
+    37.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  404  378  352  332  319  307  293  279  271  273  280  282  274  255  232  211
+  194  182  171  157  138  113   88   72   69   75   82   83   79   75   75   80
+   87   92   95   98  103  109  115  118  118  116  112  109  108  109  114  119
+  126  132  136  139  141  142  143  145  146  150  160  176  199  227  258  291
+  324  355  382  401  414  423  426  420  404
+    35.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  430  401  368  341  321  304  283  265  256  261  274  282  278  263  242  222
+  204  189  177  166  151  132  110   95   91   94   97   95   89   85   87   92
+   95   95   93   92   96  103  111  116  117  115  112  111  112  115  120  124
+  128  131  135  138  142  148  153  158  164  171  184  204  230  259  287  313
+  337  361  383  403  421  436  446  446  430
+    32.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  451  420  382  348  322  297  270  246  237  248  268  283  284  272  254  234
+  214  195  181  172  162  147  128  113  107  108  108  103   95   92   96  102
+  104   99   92   89   92  102  112  119  121  119  115  114  115  119  122  124
+  124  125  127  132  138  147  158  168  179  191  208  232  262  292  316  334
+  348  363  381  400  421  443  460  465  451
+    30.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  472  441  401  365  334  303  269  240  230  244  269  289  292  282  266  246
+  223  200  183  175  170  159  141  125  118  118  117  109  100   99  105  113
+  115  108   99   95  100  111  124  133  134  130  123  118  117  119  120  119
+  117  116  118  123  131  142  157  173  190  208  230  259  292  322  344  355
+  361  368  382  401  423  449  472  482  472
+    27.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  497  471  434  399  369  336  297  263  250  263  288  305  306  294  278  257
+  231  203  184  177  176  167  150  134  127  129  128  119  110  109  118  130
+  133  127  118  115  122  136  150  158  157  148  135  125  119  117  115  113
+  109  108  110  114  122  134  150  171  194  219  247  280  317  349  369  376
+  377  380  392  410  434  461  487  502  497
+    25.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  530  511  482  456  434  405  367  328  309  314  330  337  328  311  292  270
+  239  206  184  179  181  175  158  143  140  147  149  140  129  128  139  154
+  161  157  151  151  160  173  186  192  187  172  151  132  119  114  111  108
+  105  104  106  110  115  124  140  164  193  224  258  295  334  369  391  397
+  397  400  413  434  458  484  510  529  530
+    22.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  570  561  544  533  525  510  477  436  408  399  398  387  363  337  313  287
+  251  211  186  182  187  183  168  157  163  178  186  177  162  158  170  188
+  199  199  197  199  207  218  227  230  219  196  166  138  120  111  109  107
+  105  106  108  109  110  114  128  153  188  225  263  302  343  381  406  417
+  420  428  447  471  495  519  543  563  570
+    20.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  615  615  612  618  632  635  614  575  537  511  487  454  413  376  348  317
+  272  223  191  187  195  195  184  181  199  228  241  231  209  200  211  230
+  244  248  249  252  257  262  265  262  246  217  178  143  120  112  110  111
+  111  112  114  113  108  107  116  143  181  223  264  304  346  386  417  433
+  444  460  487  518  543  563  584  604  615
+    17.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  660  666  675  697  733  760  757  723  676  631  584  530  476  433  401  363
+  306  244  204  197  208  211  207  217  252  294  314  299  268  251  258  277
+  292  298  301  301  300  296  290  282  263  229  186  147  123  116  117  119
+  120  121  121  117  108  102  109  136  177  223  264  303  344  387  422  446
+  465  492  529  567  594  612  628  646  660
+    15.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  698  706  720  754  809  860  876  851  799  738  673  606  547  505  474  429
+  357  278  225  214  225  233  238  263  316  372  395  373  330  303  304  320
+  334  341  342  338  328  313  299  286  266  232  188  149  128  124  129  132
+  131  129  126  120  110  102  108  136  180  227  268  304  343  385  425  456
+  482  517  564  610  641  657  669  684  698
+    12.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  724  729  740  778  844  913  949  934  881  811  738  669  617  586  561  511
+  423  325  257  239  249  261  276  315  384  451  472  439  384  346  340  353
+  365  369  368  358  338  312  290  274  256  226  187  153  136  137  144  146
+  141  134  127  120  112  107  115  144  189  237  276  309  344  386  428  462
+  493  534  587  640  675  691  700  713  724
+    10.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  736  733  734  764  832  912  962  959  909  839  768  711  678  667  653  600
+  498  381  299  272  280  294  316  366  446  516  531  485  417  371  360  369
+  377  379  375  361  333  299  271  254  240  216  185  158  149  154  162  161
+  150  136  125  119  115  116  128  159  205  252  290  319  351  392  433  467
+  497  538  594  651  690  708  718  729  736
+     7.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  735  723  708  722  780  860  919  925  883  820  762  726  721  736  737  685
+  573  442  347  313  316  330  355  410  491  555  558  498  420  370  358  365
+  371  371  367  352  321  282  251  234  224  208  186  168  165  174  180  174
+  156  136  122  118  120  129  147  180  225  270  306  333  364  402  440  470
+  495  532  586  644  687  709  721  732  735
+     5.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  726  704  672  664  704  776  835  849  817  767  728  718  743  784  801  752
+  636  499  399  359  358  367  389  439  511  559  545  473  391  343  334  342
+  348  351  350  340  313  274  241  225  218  208  193  183  185  194  198  187
+  163  137  121  119  128  144  168  201  244  286  321  349  379  415  450  473
+  489  517  565  622  668  694  711  725  726
+     2.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  714  686  640  610  629  685  740  757  737  702  683  698  747  807  835  793
+  680  546  449  409  404  406  417  452  503  527  493  412  333  294  294  308
+  318  326  336  337  318  283  251  233  226  219  209  204  208  215  214  198
+  170  142  124  123  137  160  187  220  258  297  331  361  392  428  458  474
+  480  497  537  591  638  669  692  711  714
+     0.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  704  677  623  577  575  614  660  680  670  650  648  679  740  808  840  803
+  701  581  495  460  452  444  438  450  470  465  411  326  257  235  249  271
+  289  308  333  351  345  316  284  262  250  242  234  231  232  234  228  209
+  180  151  133  131  147  173  201  231  264  300  334  366  400  436  463  471
+  469  477  509  559  607  641  670  695  704
+    -2.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  699  680  628  575  558  582  619  640  640  633  641  676  734  795  822  789
+  703  604  537  511  500  481  455  438  423  386  315  233  182  180  211  244
+  272  306  349  385  393  372  337  308  288  275  266  260  257  252  240  219
+  192  165  145  141  155  180  206  233  261  293  327  363  400  436  460  465
+  457  459  487  533  580  617  650  682  699
+    -5.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  701  695  654  605  582  595  625  649  657  660  671  698  739  778  792  761
+  692  619  573  558  547  517  472  424  375  309  227  154  125  146  193  237
+  276  324  385  438  458  441  402  363  333  313  299  290  281  268  250  228
+  204  179  158  149  158  180  204  227  251  279  313  351  390  426  449  453
+  445  447  473  518  564  601  636  674  701
+    -7.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  705  716  693  657  636  645  673  700  717  727  735  746  759  770  764  732
+  680  630  606  601  590  552  490  417  339  253  166  108  102  144  204  256
+  303  362  436  500  527  510  465  415  374  346  329  316  302  281  257  234
+  213  190  167  153  155  173  196  217  238  263  296  332  371  406  429  436
+  433  440  468  514  559  595  629  669  705
+   -10.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  709  735  733  715  704  715  742  774  800  815  819  811  794  774  749  714
+  675  644  634  636  626  585  514  426  329  231  148  107  122  179  246  300
+  351  415  494  560  586  564  512  452  403  370  350  336  316  290  261  237
+  217  195  170  150  147  163  186  208  228  250  279  312  347  379  403  416
+  422  437  472  519  563  596  627  666  709
+   -12.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  705  743  761  762  764  779  808  844  877  898  899  875  835  791  750  713
+  682  662  658  662  653  614  544  452  349  250  177  153  184  248  313  363
+  410  472  546  604  621  591  531  466  413  378  359  345  324  293  261  235
+  215  193  165  142  137  153  180  205  225  244  266  292  321  349  374  393
+  411  437  479  529  572  602  627  661  705
+   -15.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  691  735  766  784  797  816  846  885  924  950  950  920  868  812  764  727
+  699  680  674  675  668  637  578  494  397  307  248  238  277  338  393  432
+  469  520  579  622  624  584  520  454  402  370  354  342  322  291  257  229
+  208  184  156  133  130  150  183  212  232  247  260  277  296  320  345  371
+  399  436  485  537  579  604  623  650  691
+   -17.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  664  706  745  772  792  813  842  879  919  949  954  926  876  823  779  745
+  717  694  679  673  668  651  610  545  465  390  345  344  382  432  470  492
+  513  547  586  607  592  543  479  418  372  346  336  329  313  284  250  221
+  198  174  147  128  131  158  197  230  249  257  260  266  276  294  319  350
+  387  431  484  537  577  599  611  630  664
+   -20.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  623  660  698  729  750  769  792  823  861  892  902  885  850  812  782  756
+  727  694  667  653  653  653  636  596  537  480  447  449  479  510  527  529
+  533  547  562  560  530  477  418  368  333  314  309  307  296  272  241  212
+  188  165  143  132  144  178  221  255  270  270  263  258  259  272  297  331
+  372  420  473  524  561  580  588  599  623
+   -22.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  572  600  633  662  681  693  707  728  757  786  801  799  785  771  761  746
+  716  675  636  617  622  640  649  634  597  556  531  532  547  557  551  535
+  521  517  512  491  451  400  352  315  292  281  279  281  275  257  231  205
+  182  163  148  147  169  209  253  283  290  280  264  250  246  255  279  313
+  355  401  449  495  530  547  551  556  572
+   -25.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  515  535  560  583  597  603  605  614  630  651  669  680  689  700  710  707
+  679  632  586  566  579  613  643  650  632  603  582  575  574  564  539  508
+  481  463  443  411  368  325  292  271  259  253  252  254  252  241  221  200
+  181  167  162  172  202  246  285  306  303  284  259  240  233  241  263  295
+  333  373  413  452  482  499  504  506  515
+   -27.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  455  469  489  507  516  515  508  503  506  516  531  549  575  606  633  640
+  617  569  523  505  526  573  618  639  632  610  588  572  556  530  493  453
+  420  395  368  334  296  266  251  245  241  236  232  231  230  224  212  196
+  182  175  180  201  237  279  311  320  305  277  248  227  221  229  249  277
+  307  337  368  398  424  440  447  449  455
+   -30.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  398  409  425  441  448  445  432  417  406  403  410  429  462  503  540  554
+  535  492  452  441  470  524  575  601  598  577  552  528  502  466  423  383
+  351  326  300  271  245  231  232  237  237  230  220  213  211  209  202  192
+  183  183  197  226  265  302  323  319  294  260  230  213  209  218  236  257
+  278  298  317  339  360  377  387  392  398
+   -32.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  345  357  373  389  398  396  382  362  342  327  325  337  367  409  446  462
+  448  414  383  382  416  470  519  542  537  513  484  456  424  387  347  312
+  286  268  250  231  219  221  233  245  246  232  214  201  196  195  192  185
+  181  187  207  240  279  310  320  305  273  238  211  198  199  209  223  238
+  249  258  267  281  298  315  328  337  345
+   -35.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  300  313  330  348  362  365  356  337  314  293  281  284  304  336  366  379
+  369  344  326  333  369  418  458  472  459  432  402  373  343  311  279  254
+  238  229  221  215  216  229  248  262  258  238  213  194  185  183  181  177
+  175  183  205  239  275  300  302  281  248  216  196  189  194  204  214  220
+  222  222  223  230  244  261  276  289  300
+   -37.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  262  277  295  316  334  345  344  332  312  290  273  266  274  292  310  316
+  308  292  285  299  333  373  399  401  381  351  322  297  275  253  233  219
+  214  214  215  219  229  247  266  276  267  241  210  188  177  174  171  166
+  164  171  192  224  257  276  275  254  225  200  188  189  196  204  208  207
+  201  193  189  192  203  219  235  249  262
+   -40.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  233  247  265  286  307  324  333  331  320  303  286  275  272  276  280  279
+  271  262  264  281  310  338  350  341  316  286  261  244  231  221  212  210
+  212  219  226  235  247  264  278  280  264  235  204  181  171  168  164  158
+  152  156  173  201  229  246  245  230  210  195  192  197  205  210  207  198
+  186  174  167  168  177  191  207  221  233
+   -42.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  214  225  239  256  277  296  312  320  321  315  304  293  285  278  272  265
+  256  252  258  276  299  315  316  299  272  245  227  218  216  216  217  222
+  229  238  246  254  262  271  275  268  248  219  191  173  167  166  163  155
+  146  145  156  178  202  218  221  214  205  201  205  214  220  219  210  195
+  178  164  157  157  165  178  192  204  214
+   -45.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  204  210  217  228  243  260  278  295  306  312  312  307  298  288  277  266
+  258  256  264  280  296  304  297  277  251  230  219  218  224  231  239  246
+  254  261  265  267  268  265  258  242  219  193  174  165  166  170  169  161
+  150  144  149  164  183  199  207  209  210  215  224  233  236  229  214  195
+  175  161  155  156  164  176  188  197  204
+   -47.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  203  203  203  204  210  221  237  256  275  291  302  305  302  294  283  272
+  265  266  274  288  299  301  292  272  251  236  232  237  246  257  265  272
+  277  279  277  271  261  247  228  206  183  164  155  158  170  181  185  179
+  167  157  156  163  177  192  203  212  220  230  241  248  247  235  216  194
+  174  161  157  161  170  182  193  200  203
+   -50.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  210  206  199  191  186  187  196  212  233  255  274  287  291  289  282  274
+  271  274  283  295  303  304  295  280  265  255  254  261  270  279  286  289
+  289  286  277  263  244  220  194  168  147  136  139  155  177  198  208  206
+  196  184  176  177  185  195  206  217  229  240  250  253  248  233  212  189
+  171  161  159  165  177  190  202  209  210
+   -52.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  223  218  207  192  178  168  168  176  194  216  238  256  267  271  270  269
+  270  275  286  298  306  309  303  293  283  277  276  280  286  291  292  291
+  287  279  265  246  221  192  162  136  120  117  130  156  188  216  234  237
+  229  217  205  199  199  204  211  220  230  239  245  245  237  221  200  179
+  164  156  158  167  181  197  211  221  223
+   -55.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  239  236  225  207  187  169  158  157  166  183  203  222  236  245  251  255
+  261  271  283  296  307  311  310  304  297  292  289  288  287  286  282  277
+  270  260  245  224  199  169  140  117  105  108  128  161  199  233  255  263
+  259  246  232  220  212  209  210  213  219  224  226  223  214  199  181  164
+  152  148  152  164  181  201  219  232  239
+   -57.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  253  256  249  232  210  188  170  159  159  166  179  194  208  220  229  238
+  248  261  276  291  303  311  312  309  303  296  289  281  274  266  258  250
+  243  233  221  203  180  154  130  111  103  111  133  167  206  241  266  277
+  275  263  247  230  216  205  199  196  196  197  196  192  184  172  159  147
+  139  138  145  158  178  200  222  241  253
+   -60.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  264  273  272  261  241  219  197  179  170  168  172  180  189  200  210  221
+  234  250  266  283  296  305  308  306  299  289  276  263  249  237  226  218
+  212  206  197  185  168  149  130  116  112  120  141  171  206  237  260  271
+  270  259  242  222  204  188  177  169  165  164  162  159  154  147  139  132
+  128  129  137  152  172  197  222  246  264
+   -62.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  269  284  289  284  270  251  229  208  192  182  178  178  182  189  198  209
+  223  239  256  272  286  295  298  295  285  272  255  237  220  206  194  187
+  184  181  178  172  163  150  137  128  125  131  146  169  195  219  237  245
+  244  233  217  197  178  161  148  139  134  132  132  132  131  129  127  124
+  124  127  135  149  169  193  220  246  269
+   -65.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  266  284  295  296  288  274  255  235  216  202  191  185  184  187  193  203
+  215  230  246  261  273  280  281  276  265  250  231  212  193  179  168  163
+  162  163  165  164  160  154  146  139  135  137  146  159  175  189  200  204
+  200  191  176  160  143  129  118  111  109  110  114  118  122  125  127  128
+  130  134  141  153  170  192  217  243  266
+   -67.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  258  276  288  292  290  280  266  249  231  216  203  193  188  188  191  198
+  209  221  234  246  255  260  260  254  242  226  208  189  173  159  151  148
+  148  152  156  159  158  155  150  144  139  137  138  141  147  152  155  155
+  151  142  132  120  109  100   95   94   96  102  110  119  128  135  140  144
+  147  150  156  164  177  194  215  237  258
+   -70.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  245  259  270  275  275  269  259  246  232  217  205  195  189  186  187  192
+  200  209  218  227  234  236  235  228  217  204  188  172  158  148  142  140
+  141  145  150  153  154  152  148  142  135  129  124  120  118  116  114  110
+  106  100   94   88   84   83   85   90   99  110  122  135  147  156  164  168
+  172  174  177  182  189  200  214  230  245
+   -72.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  231  239  245  248  248  244  237  228  217  206  196  187  181  178  178  181
+  186  192  198  204  208  209  207  202  193  182  171  159  149  142  137  136
+  137  140  143  146  146  144  140  133  125  117  108  101   94   88   84   79
+   76   73   72   72   75   81   89  100  114  129  144  159  173  183  191  196
+  199  200  200  201  204  208  214  222  231
+   -75.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  217  218  219  219  217  213  207  200  192  184  177  170  166  163  163  164
+  167  171  175  178  180  181  179  175  170  163  155  148  141  137  134  133
+  133  135  136  137  136  133  128  122  114  105   97   88   81   75   70   67
+   66   66   69   75   83   93  106  120  137  153  169  185  198  208  215  220
+  221  221  219  217  215  214  214  215  217
+   -77.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  203  200  196  193  188  183  178  172  165  160  154  150  146  144  144  144
+  146  148  150  152  153  153  153  151  148  144  140  136  133  131  129  128
+  128  128  128  127  125  122  118  112  106   99   92   86   80   76   74   73
+   74   78   84   92  102  115  129  144  159  175  190  203  214  223  229  233
+  233  232  229  225  220  216  211  207  203
+   -80.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  191  185  179  173  167  161  155  150  144  140  135  132  129  128  127  126
+  127  128  129  130  131  131  131  131  130  128  127  126  124  123  122  122
+  121  121  120  119  117  115  112  108  104  100   96   93   91   90   90   91
+   95  100  107  116  126  137  150  162  175  188  199  210  218  225  229  231
+  231  230  226  222  216  210  204  197  191
+   -82.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  179  173  166  160  154  148  143  138  133  129  126  123  120  118  117  116
+  116  116  116  116  117  117  117  117  117  117  117  117  117  117  117  116
+  116  116  115  115  114  113  112  110  109  108  107  107  107  109  111  114
+  118  123  130  137  145  153  162  171  180  189  196  203  208  212  215  216
+  216  214  211  207  203  197  191  185  179
+   -85.0-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  166  161  157  152  148  143  139  135  132  128  125  123  121  119  117  116
+  115  114  114  114  113  113  114  114  114  114  114  115  115  115  115  116
+  116  116  116  117  117  117  118  118  119  119  121  122  124  126  129  132
+  135  139  144  148  153  158  163  168  173  178  182  185  188  190  191  191
+  191  190  188  185  182  179  175  170  166
+   -87.5-180.0 180.0   5.0 450.0                            LAT/LON1/LON2/DLON/H
+  152  150  148  146  143  141  139  137  135  133  132  130  128  127  126  125
+  124  123  122  122  122  121  121  121  121  121  121  121  121  122  122  122
+  123  123  124  125  125  126  127  128  129  130  132  133  135  136  138  140
+  142  144  146  148  150  152  154  156  157  159  160  161  162  163  163  163
+  163  162  161  160  159  157  156  154  152
+     1                                                      END OF TEC MAP      

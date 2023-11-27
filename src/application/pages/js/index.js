@@ -164,6 +164,7 @@ function renewEcharts() {
 
 
 function getSelectorHTML(data) {
+
     let html = ' <select class="charts-selector"  id="chartselector" onchange="renewEcharts()">'
     for (let i = 0; i < data.length; i += 1) {
         let temp = data[i]
@@ -193,6 +194,16 @@ function getPositionSelectorHTML(latitude, longitude) {
 
 
 function guide() {
+    // try {
+    //     var myChart = echarts.init(document.querySelector("#chart"));
+    //     myChart.on('legendscroll', function (params) {
+    //         mdui.alert(params.legendId);
+    //         mdui.alert(params.scrollDataIndex);
+    //
+    //     });
+    // }catch (e) {
+    //     mdui.alert(e)
+    // }
     const driver = window.driver.js.driver;
 
     let config = {
@@ -691,6 +702,7 @@ function DrawPic(pictype) {
                         mdui.$(".charts-selector").mutation()
                         break
                     case 4:
+
                         drawWorldHeatMapData(rawData, 0, 1100, "category", "电离层参数二维图", "Longitude(°)", "Latitude(°)", true, [
                             "Longitude(°)", "Latitude(°)", "TECU(TECU)"
                         ])
@@ -866,13 +878,12 @@ function openHisFile() {
             count ++
         }
     }
-    if (count > 1) {
+    if (params.type != 2  && count > 1 ) {
         mdui.alert("不可打开一个以上的文件")
     } else if (count == 0) {
         mdui.alert("请选择文件")
     }
-
-    else {
+    else if (params.type != 2){
         mdui.dialog({
             title: '是否打开此文件' ,
             buttons: [
@@ -925,6 +936,60 @@ function openHisFile() {
 
                 }]
         });
+    } else if(params.type == 2) {
+        mdui.dialog({
+            title: '是否合并以上文件并打开合并文件' ,
+            buttons: [
+                {
+                    text: '取消'
+                },
+                {
+                    text: '确认',
+                    onClick: function (inst) {
+                        try {
+                            var Splitter = browserRedirect() == "Win" ? '\\' : '/'
+
+                            let temp = []
+                            for (let i = 0; i < fileList.length; i++) {
+                                let checkboxDiv = fileList[i].lastElementChild
+                                let checked = checkboxDiv.firstElementChild.checked
+                                if (checked == true) {
+                                    let itemContent = fileList[i].firstElementChild
+                                    let line1 = itemContent.firstElementChild
+                                    let line2 = itemContent.lastElementChild
+                                    let filename = line1.innerHTML.replace("\n", "")
+                                    let fileTime = line2.innerHTML.replace("\n", "")
+                                    let dest = ""
+                                    if (params.type == 0) {
+                                        dest = "." + Splitter + "data" + Splitter + "太阳和地磁指数" + Splitter + fileTime + Splitter + filename;
+                                    } else if (params.type == 1) {
+                                        dest = "." + Splitter + "data" + Splitter + "大气密度变化规律" + Splitter + fileTime + Splitter + filename;
+                                    } else if (params.type == 2) {
+                                        dest = "." + Splitter + "data" + Splitter + "电离层参数" + Splitter + fileTime + Splitter + filename;
+                                    } else if (params.type == 3) {
+                                        dest = "." + Splitter + "data" + Splitter + "临近空间环境" + Splitter + fileTime + Splitter + filename;
+                                    }
+                                    temp.push(dest)
+                                }
+                            }
+                            let fileURL = temp[0]
+                            document.querySelector(".file-detail").style.display = 'inline'
+                            document.querySelector(".file-path").innerHTML = fileURL
+                            var Splitter = browserRedirect() == "Win" ? '\\' : '/'
+                            last = fileURL.lastIndexOf(Splitter)
+                            fileName = fileURL.substring(last + 1)
+                            params.filename = fileName
+                            params.filepath = fileURL
+                            document.querySelector(".file-name").innerHTML = fileName
+
+                        } catch (e) {
+                            mdui.alert(e)
+                        }
+                    }
+
+                }]
+        });
+
     }
 
 }
@@ -2387,6 +2452,12 @@ function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, revers
 function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, reverseY, schema) {
     videoData = rawData["legend"]
     let seriesData = []
+
+    let element = `<button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="test"
+                          onclick="getVideo()"> 动态展示 </button>`
+    mdui.$(".charts-selector").append(element)
+    mdui.$(".charts-selector").mutation()
+
     document.getElementById('table-title').innerHTML = title + "统计数据"
     for (let i in rawData) {
         if (i != "legend") {
@@ -2487,7 +2558,8 @@ function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, r
             },
             legend: {
                 width: "78%",
-                type: 'scroll',
+                // type: 'scroll',
+                id : 'series00',
                 // inactiveColor: "#fff",
                 // inactiveBorderColor: "#000",
                 // selector: ['all', 'inverse'] ,
@@ -2601,12 +2673,23 @@ function saveAsImage() {
     // aLink.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
 }
 
-
 function getVideo() {
+
     try {
         let chartDom = echarts.init(document.querySelector("#chart"));
         let imageList = []
         let timeList = []
+        const element = document.getElementById('chart');
+
+
+   // const mask = document.createElement('div');
+   //      mask.style.position = 'absolute';
+   //      mask.style.top = '0';
+   //      mask.style.left = '0';
+   //      mask.style.width = '100%';
+   //      mask.style.height = '100%';
+   //      mask.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // 设置遮罩层的颜色和透明度
+   //      element.appendChild(mask);
         for (let i in videoData) {
             setTimeout(() => {
                 chartDom.dispatchAction({
@@ -2614,20 +2697,12 @@ function getVideo() {
                     // 图例名称
                     name: videoData[i]
                 });
-                setTimeout(() => {
-                    let img = saveAsImage()
-                    imageList.push(img)
-                    let temp = videoData[i].replace(" ","")
-                    temp =temp.replace("-","")
-                    temp =temp.replace(":","")
-                    temp =temp.replace(":","")
-                    timeList.push(temp)
-                },500)
-            }, 600*i)
+            }, 1000*i)
         }
-        setTimeout(() => {
-            funcInjector.createVideo(imageList,timeList)
-        }, 600*(videoData.length+2))
+        // setTimeout(() => {
+        //     mask.remove()
+        //     // funcInjector.createVideo(imageList,timeList)
+        // }, 1000*(videoData.length+1))
     } catch (e) {
         mdui.alert(e)
     }
