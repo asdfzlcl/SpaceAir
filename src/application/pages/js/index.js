@@ -194,16 +194,16 @@ function getPositionSelectorHTML(latitude, longitude) {
 
 
 function guide() {
-    // try {
-    //     var myChart = echarts.init(document.querySelector("#chart"));
-    //     myChart.on('legendscroll', function (params) {
-    //         mdui.alert(params.legendId);
-    //         mdui.alert(params.scrollDataIndex);
-    //
-    //     });
-    // }catch (e) {
-    //     mdui.alert(e)
-    // }
+    try {
+        var myChart = echarts.init(document.querySelector("#chart"));
+        myChart.on('legendscroll', function (params) {
+            mdui.alert(params.legendId);
+            mdui.alert(params.scrollDataIndex);
+
+        });
+    }catch (e) {
+        mdui.alert(e)
+    }
     const driver = window.driver.js.driver;
 
     let config = {
@@ -883,7 +883,7 @@ function openHisFile() {
     } else if (count == 0) {
         mdui.alert("请选择文件")
     }
-    else if (params.type != 2){
+    else if (count == 1){
         mdui.dialog({
             title: '是否打开此文件' ,
             buttons: [
@@ -936,7 +936,7 @@ function openHisFile() {
 
                 }]
         });
-    } else if(params.type == 2) {
+    } else if(params.type == 2 && count > 1 ) {
         mdui.dialog({
             title: '是否合并以上文件并打开合并文件' ,
             buttons: [
@@ -972,7 +972,7 @@ function openHisFile() {
                                     temp.push(dest)
                                 }
                             }
-                            let fileURL = temp[0]
+                            let fileURL =  funcInjector.mergeTECUFiles(temp)
                             document.querySelector(".file-detail").style.display = 'inline'
                             document.querySelector(".file-path").innerHTML = fileURL
                             var Splitter = browserRedirect() == "Win" ? '\\' : '/'
@@ -981,7 +981,7 @@ function openHisFile() {
                             params.filename = fileName
                             params.filepath = fileURL
                             document.querySelector(".file-name").innerHTML = fileName
-
+                            refreshHisList()
                         } catch (e) {
                             mdui.alert(e)
                         }
@@ -2451,10 +2451,29 @@ function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, revers
 //热力图
 function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, reverseY, schema) {
     videoData = rawData["legend"]
+    try {
+        videoData.sort((a, b) => {
+
+            let date1 = new Date(a);
+            let date2 = new Date(b);
+
+            if (date1 > date2) {
+                return 1;
+            } else  if(date1 == date2) {
+                return 0
+            } else  {
+                return -1
+            }
+        })
+    } catch (e) {
+        mdui.alert(e)
+    }
     let seriesData = []
 
-    let element = `<button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="test"
-                          onclick="getVideo()"> 动态展示 </button>`
+    let element = `<button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"
+                          onclick="dynamicDisplay()"  style = "margin-left: 1vh"> 动态展示 </button>`
+    element += `<button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" 
+                          onclick="getVideo()"  style = "margin-left: 1vh"> 生成视频 </button>`
     mdui.$(".charts-selector").append(element)
     mdui.$(".charts-selector").mutation()
 
@@ -2558,12 +2577,12 @@ function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, r
             },
             legend: {
                 width: "78%",
-                // type: 'scroll',
-                id : 'series00',
+                type: 'scroll',
+                id : 'worldLegend',
                 // inactiveColor: "#fff",
                 // inactiveBorderColor: "#000",
                 // selector: ['all', 'inverse'] ,
-                data: rawData["legend"],
+                data: videoData,
                 selectedMode: 'single'
             },
             title: {
@@ -2674,7 +2693,6 @@ function saveAsImage() {
 }
 
 function getVideo() {
-
     try {
         let chartDom = echarts.init(document.querySelector("#chart"));
         let imageList = []
@@ -2682,14 +2700,14 @@ function getVideo() {
         const element = document.getElementById('chart');
 
 
-   // const mask = document.createElement('div');
-   //      mask.style.position = 'absolute';
-   //      mask.style.top = '0';
-   //      mask.style.left = '0';
-   //      mask.style.width = '100%';
-   //      mask.style.height = '100%';
-   //      mask.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // 设置遮罩层的颜色和透明度
-   //      element.appendChild(mask);
+        const mask = document.createElement('div');
+             mask.style.position = 'absolute';
+             mask.style.top = '0';
+             mask.style.left = '0';
+             mask.style.width = '100%';
+             mask.style.height = '100%';
+             mask.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // 设置遮罩层的颜色和透明度
+             element.appendChild(mask);
         for (let i in videoData) {
             setTimeout(() => {
                 chartDom.dispatchAction({
@@ -2697,12 +2715,47 @@ function getVideo() {
                     // 图例名称
                     name: videoData[i]
                 });
+                setTimeout(() => {
+                    let img = saveAsImage()
+                    imageList.push(img)
+                    let temp = videoData[i].replace(" ","")
+                    temp =temp.replace("-","")
+                    temp =temp.replace(":","")
+                    temp =temp.replace(":","")
+                    timeList.push(temp)
+                },500)
+            }, 600*i)
+        }
+        setTimeout(() => {
+            mask.remove()
+            funcInjector.createVideo(imageList,timeList)
+        }, 1000*(videoData.length+2))
+    } catch (e) {
+        mdui.alert(e)
+    }
+}
+
+
+function dynamicDisplay() {
+
+    try {
+        let chartDom = echarts.init(document.querySelector("#chart"));
+
+        for (let i in videoData) {
+            setTimeout(() => {
+                chartDom.dispatchAction({
+                    type: 'legendSelect',
+                    // 图例名称
+                    name: videoData[i]
+                });
+                chartDom.dispatchAction({
+                    type: 'legendScroll',
+                    // 图例名称
+                    scrollDataIndex: Number(i),
+                    legendId: "worldLegend"
+                });
             }, 1000*i)
         }
-        // setTimeout(() => {
-        //     mask.remove()
-        //     // funcInjector.createVideo(imageList,timeList)
-        // }, 1000*(videoData.length+1))
     } catch (e) {
         mdui.alert(e)
     }

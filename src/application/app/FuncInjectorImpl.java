@@ -4,14 +4,11 @@ package application.app;
 import application.app.messages.InputParam;
 import com.teamdev.jxbrowser.chromium.JSArray;
 import com.teamdev.jxbrowser.chromium.JSObject;
-import com.xuggle.mediatool.IMediaWriter;
-import com.xuggle.mediatool.ToolFactory;
-import com.xuggle.xuggler.ICodec;
-import com.xuggle.xuggler.IRational;
 import javafx.application.Platform;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import setting.Setting;
@@ -21,17 +18,15 @@ import util.fileType.ADFile;
 import util.fileType.IPFile;
 import util.fileType.SATFile;
 import util.fileType.SEFile;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.*;
 import java.util.concurrent.FutureTask;
-import org.jcodec.api.awt.AWTSequenceEncoder;
 
 import static util.fileType.BaseFile.readFile;
 
@@ -106,13 +101,9 @@ public class FuncInjectorImpl implements FuncInjector {
             String directoryPath = System.getProperty("user.dir") + File.separator + "temp" + File.separator;
             String fileSuffix = ".png";
 
-//        String directoryPath =  "." + File.separator + "temp" + File.separator;
-        String directoryPath = "temp" + File.separator;
-        String fileSuffix = ".png";
-
-        File directory = new File(directoryPath);
-        File[] files = directory.listFiles();
-        ArrayList<File> imgFiles = new ArrayList<File>();
+             File directory = new File(directoryPath);
+             File[] files = directory.listFiles();
+             ArrayList<File> imgFiles = new ArrayList<File>();
 
 
             for (File file : Objects.requireNonNull(directory.listFiles())) {
@@ -157,206 +148,66 @@ public class FuncInjectorImpl implements FuncInjector {
                     return date1.compareTo(date2);
                 }
             });
-            generateVideoFromImages(imgFiles,directoryPath + "video.mp4",1);
+
+            try {
+                String outputVideoPath = System.getProperty("user.dir") + File.separator + "data" + File.separator + "video.mp4";
+                        AWTSequenceEncoder encoder = AWTSequenceEncoder.createSequenceEncoder(new File(outputVideoPath), 5);
+
+                for (File imageFile : imgFiles) {
+                    System.out.println("imageFile : " + imageFile.getAbsolutePath());
+                    BufferedImage image = ImageIO.read(imageFile);
+                    int destWidth = image.getWidth();
+                    int destHeight = image.getHeight();
+                    boolean shouldScale = false;
+                    if (image.getWidth() % 2 != 0) {
+                        destWidth++;
+                        shouldScale = true;
+                    }
+                    if (image.getHeight() % 2 != 0) {
+                        destHeight++;
+                        shouldScale = true;
+                    }
+                    if (shouldScale) {
+                        BufferedImage destImage = new BufferedImage(destWidth,destHeight,BufferedImage.TYPE_INT_RGB);
+                        destImage.getGraphics().drawImage(image,0,0,destWidth,destHeight,null);
+                        image = destImage;
+                    }
+                    encoder.encodeImage(image);
+                }
+                encoder.finish();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-//    public  void createMp4(String mp4SavePath, ArrayList<File> imgMap)  {
-//        try {
-//            BufferedImage image = ImageIO.read(imgMap.get(0));
-//            FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(mp4SavePath, image.getWidth(), image.getHeight());
-//            //设置视频编码层模式     import org.bytedeco.ffmpeg.global.avcodec;可能需要手动复制添加
-//            recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
-//            //设置视频为25帧每秒
-//            recorder.setFrameRate(2);
-//            //设置视频图像数据格式    import org.bytedeco.ffmpeg.global.avutil;可能需要手动复制添加
-//            recorder.setPixelFormat(avutil.AV_PIX_FMT_YUV420P);
-//
-//            recorder.setFormat("mp4");
-//            try {
-//                recorder.start();
-//                Java2DFrameConverter converter = new Java2DFrameConverter();
-//                for (int i = 0; i < imgMap.size(); i++) {
-//                    BufferedImage read = ImageIO.read(imgMap.get(i));
-//                    //一秒是25帧 所以要记录25次
-//                    for (int j = 0; j < 2; j++) {
-//                        recorder.record(converter.getFrame(read));
-//                    }
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            } finally {
-//                //最后一定要结束并释放资源
-//                recorder.stop();
-//                recorder.release();
-//            }
-//        } catch (Exception e)  {
-//            e.printStackTrace();
-//        }
-//    }
 
 
-    // public static BufferedImage convertToType(BufferedImage sourceImage, int targetType) {
 
-    //     BufferedImage image;
-
-    //     // if the source image is already the target type, return the source image
-
-    //     if (sourceImage.getType() == targetType) {
-
-    //         image = sourceImage;
-
-    //     }
-
-    //     // otherwise create a new image of the target type and draw the new image
-
-    //     else {
-
-    //         image = new BufferedImage(sourceImage.getWidth(),
-
-    //                 sourceImage.getHeight(), targetType);
-
-    //         image.getGraphics().drawImage(sourceImage, 0, 0, null);
-
-    //     }
-
-    //     return image;
-
-    // }
-
-    // public static void generateVideoFromImages(ArrayList<File> files, String outputPath, int fps) throws InterruptedException, IOException {
-    //     try {
-    //         IMediaWriter writer = ToolFactory.makeWriter(outputPath);
-    //         BufferedImage image = ImageIO.read(files.get(0));
-
-
-    //         // 设置视频尺寸
-
-    //         writer.addVideoStream(0, 0, ICodec.ID.CODEC_ID_MPEG4, image.getWidth()/2, image.getHeight()/2);
-
-    //         long startTime = System.nanoTime();
-
-
-    //         for (int index = 0; index < files.size(); index++) {
-
-
-    //             BufferedImage convertImage = null;
-    //             try {
-    //                 image = ImageIO.read(files.get(index));
-    //                 convertImage = convertToType(image, BufferedImage.TYPE_3BYTE_BGR);
-    //             } catch (IOException e) {
-    //                 e.printStackTrace();
-    //             }
-
-    //             if (image == null) {
-
-    //                 continue;
-
-    //             }
-    //             long timeStamp = (System.nanoTime() - startTime) / 1000;
-    //             writer.encodeVideo(0, convertImage, timeStamp, TimeUnit.MICROSECONDS);
-    //             try {
-    //                 Thread.sleep((1000 / fps));
-    //             } catch (InterruptedException e) {
-    //                 e.printStackTrace();
-    //             }
-    //         }
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
-
-    public void mergeTECUFiles(ArrayList<File> Filelist) throws IOException {
-        File mergeTemp = new File(System.getProperty("user.dir") + File.separator + "data" + File.separator + "电离层参数合并文件"+File.separator + "temp" + UUID.randomUUID() +".00i");
-        //2.有一个目标文件
-
-        for (int i = 0;i<Filelist.size();i++) {
-            File f2 =Filelist.get(i);
-            //3.搞一个输入的管，怼到源文件上
-            FileReader fr = new FileReader(mergeTemp);
-            //4.搞一个输出的管，怼到目标文件上
-            FileWriter fw = new FileWriter(f2);
-
-            int n = fr.read();
-            while (n != -1) {
-                System.out.println(n);
-                fw.write(n);
-                n = fr.read();
+    public String mergeTECUFiles(JSArray FileList) throws IOException {
+        String directory = System.getProperty("user.dir") + File.separator + "data" + File.separator + "电离层参数"+ File.separator;
+        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd") ;
+        SimpleDateFormat sdf2= new SimpleDateFormat("yyyyMMdd-HHmmss") ;
+        directory +=sdf.format(System.currentTimeMillis())+ File.separator;
+        File dir = new File(directory);
+        if(!dir.exists()) {
+            dir.mkdirs();
+        }
+        File mergeTemp = new File(directory+ "合并文件" +sdf2.format(System.currentTimeMillis())+   ".txt");
+        mergeTemp.createNewFile();
+        for (int i = 0;i< FileList.length();i++) {
+            File f2 =new File(String.valueOf(FileList.get(i)));
+            BufferedReader currentBR = new BufferedReader(new FileReader(f2));
+            PrintWriter pw = new PrintWriter(new FileWriter(mergeTemp,true));
+            String temp = "";
+            while((temp = currentBR.readLine())!=null){
+                pw.println(temp);
+                pw.flush();
             }
         }
-
-        for (int i =0;i<imgList.length();i++) {
-            Base64ToImage(String.valueOf(imgList.get(i)), String.valueOf(timeData.get(i)));
-        }
-
-        files = directory.listFiles();
-
-        for (File file : files) {
-            System.out.println(file.getName());
-            if (file.getName().endsWith(fileSuffix)) {
-                imgFiles.add(file);
-            }
-        }
-
-        Collections.sort(imgFiles, new Comparator<File>() {
-            @Override
-            public int compare(File o1, File o2) {
-                String name1 = o1.getName();
-                String name2 = o2.getName();
-                System.out.println(name1);
-                System.out.println(name2);
-                String[] str1 = name1.split("-");
-                String[] str2 = name2.split("-");
-                Date date1 = new Date(
-                        Integer.parseInt(str1[0].substring(0,4)),
-                        Integer.parseInt(str1[0].substring(4,6)),
-                        Integer.parseInt(str1[1].substring(0,2)),
-                        Integer.parseInt(str1[1].substring(2,4)),
-                        Integer.parseInt(str1[1].substring(4,6)),
-                        Integer.parseInt(str1[1].substring(6,8)));
-                Date date2 = new Date(
-                        Integer.parseInt(str2[0].substring(0,4)),
-                        Integer.parseInt(str2[0].substring(4,6)),
-                        Integer.parseInt(str2[1].substring(0,2)),
-                        Integer.parseInt(str2[1].substring(2,4)),
-                        Integer.parseInt(str2[1].substring(4,6)),
-                        Integer.parseInt(str2[1].substring(6,8)));
-                return date1.compareTo(date2);
-            }
-        });
-
-        try {
-            String outputVideoPath = "D:\\GraduateProject\\Project\\空间天气平台\\SpaceAir\\video\\res.mp4";
-            AWTSequenceEncoder encoder = AWTSequenceEncoder.createSequenceEncoder(new File(outputVideoPath), 5);
-
-            for (File imageFile : imgFiles) {
-                System.out.println("imageFile : " + imageFile.getAbsolutePath());
-                BufferedImage image = ImageIO.read(imageFile);
-                int destWidth = image.getWidth();
-                int destHeight = image.getHeight();
-                boolean shouldScale = false;
-                if (image.getWidth() % 2 != 0) {
-                    destWidth++;
-                    shouldScale = true;
-                }
-                if (image.getHeight() % 2 != 0) {
-                    destHeight++;
-                    shouldScale = true;
-                }
-                if (shouldScale) {
-                    BufferedImage destImage = new BufferedImage(destWidth,destHeight,BufferedImage.TYPE_INT_RGB);
-                    destImage.getGraphics().drawImage(image,0,0,destWidth,destHeight,null);
-                    image = destImage;
-                }
-                encoder.encodeImage(image);
-            }
-            encoder.finish();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        return mergeTemp.getPath();
     }
 
 
