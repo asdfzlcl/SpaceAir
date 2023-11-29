@@ -536,7 +536,7 @@ public class FuncInjectorImpl implements FuncInjector {
         if (dir == null && !dir.exists() || dir.isFile()) {
             return;
         }
-        hisFile = new JSONArray();
+
 
         // 读取出该目录下的所有文件
         File[] files = dir.listFiles();
@@ -562,6 +562,7 @@ public class FuncInjectorImpl implements FuncInjector {
 
 
     public ArrayList getHisFile(JSObject params) throws IOException {
+        hisFile = new JSONArray();
         InputParam inputParam = new InputParam(params);
         String type = inputParam.getType();
         String dest = new String();
@@ -575,7 +576,6 @@ public class FuncInjectorImpl implements FuncInjector {
             dest = "." + File.separator+ "data" +File.separator + "临近空间环境" +File.separator;
         }
         traverse(new File(dest));
-
         return hisFile;
     }
 
