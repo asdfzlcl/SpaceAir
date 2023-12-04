@@ -138,7 +138,7 @@ public class IPFile extends BaseFile{
                 }
             }
         }
-
+        currentBR.close();
         if(this.timeSeries.isEmpty() || this.positionSeries.isEmpty() || this.dataSeries.isEmpty()){
             throw new IOException("错误的文件格式！");
         }

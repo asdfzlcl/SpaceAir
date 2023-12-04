@@ -95,6 +95,7 @@ public class SEFile extends BaseFile{
             dataSeries.get(currentStationIndex).get(currentDateIndex).add(new Pair<>(attitude, temperature));
         }
 
+        currentBR.close();
         if(this.timeSeries.isEmpty() || this.stationSeries.isEmpty() || this.dataSeries.isEmpty()){
             throw new IOException("错误的文件格式！");
         }

@@ -150,8 +150,10 @@ public class FuncInjectorImpl implements FuncInjector {
             });
 
             try {
+
+
                 String outputVideoPath = System.getProperty("user.dir") + File.separator + "data" + File.separator + "video.mp4";
-                        AWTSequenceEncoder encoder = AWTSequenceEncoder.createSequenceEncoder(new File(outputVideoPath), 5);
+                        AWTSequenceEncoder encoder = AWTSequenceEncoder.createSequenceEncoder(new File(outputVideoPath), 1);
 
                 for (File imageFile : imgFiles) {
                     System.out.println("imageFile : " + imageFile.getAbsolutePath());

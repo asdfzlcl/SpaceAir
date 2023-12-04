@@ -72,7 +72,7 @@ public class ADFile extends BaseFile{
             specDataSeries.add(Math.pow(10, logMsis));
             densDataSeries.add(ratio * Math.pow(10, logMsis));
         }
-
+        currentBR.close();
         if(this.densDataSeries.isEmpty() || this.specDataSeries.isEmpty() || this.modelDataSeries.isEmpty() || this.timeSeries.isEmpty()){
             throw new IOException("错误的文件格式！");
         }

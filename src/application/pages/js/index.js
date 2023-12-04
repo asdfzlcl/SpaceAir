@@ -304,6 +304,8 @@ function clearPosition() {
     chartDom.clear()
     chartDom = echarts.init(document.querySelector("#hisCharts"));
     chartDom.clear()
+    // let mainLogo =`<img src="./static/logo.png" className="main-logo"  style=>`
+
     document.getElementById('data-num').innerHTML = ''
     document.getElementById('data-max').innerHTML = ''
     document.getElementById('data-min').innerHTML = ''
@@ -348,208 +350,6 @@ function addPosition() {
     }
 
 }
-
-let mock = {
-    "FEDformer": [
-        121.81098175048828,
-        117.04942321777344,
-        113.26078033447266,
-        111.93792724609375,
-        110.58342742919922,
-        110.67145538330078,
-        111.13829803466797,
-        111.6939468383789,
-        113.59158325195312,
-        112.35370635986328,
-        111.11945343017578,
-        113.97933197021484,
-        114.9580307006836,
-        116.50586700439453,
-        117.62641143798828,
-        119.545654296875,
-        121.38289642333984,
-        122.49871063232422,
-        124.08092498779297,
-        125.06856536865234,
-        125.308349609375,
-        125.63526916503906,
-        126.06436920166016,
-        123.80645751953125,
-        123.51599884033203,
-        122.89732360839844,
-        121.7283706665039,
-        121.13021087646484,
-        120.89152526855469,
-        121.62965393066406
-    ],
-
-    "Autoformer": [
-        125.31439971923828,
-        122.01432037353516,
-        118.16681671142578,
-        116.64823150634766,
-        116.20630645751953,
-        115.32735443115234,
-        115.29231262207031,
-        118.46873474121094,
-        119.74394989013672,
-        117.96725463867188,
-        115.87474822998047,
-        116.8329086303711,
-        117.56797790527344,
-        119.34788513183594,
-        121.7526626586914,
-        123.70939636230469,
-        124.5642318725586,
-        124.59980773925781,
-        124.46920013427734,
-        124.38663482666016,
-        124.7287368774414,
-        124.91915130615234,
-        125.10669708251953,
-        123.56586456298828,
-        123.34343719482422,
-        122.91493225097656,
-        122.53739166259766,
-        122.3756332397461,
-        122.09210205078125,
-        120.42366027832031
-    ],
-
-    "Informer": [
-        126.4120101928711,
-        125.6038818359375,
-        122.48966217041016,
-        122.59757995605469,
-        122.1478042602539,
-        121.94432067871094,
-        121.63142395019531,
-        122.04035949707031,
-        122.94325256347656,
-        120.31517028808594,
-        120.01490783691406,
-        121.71047973632812,
-        122.75785064697266,
-        122.84339141845703,
-        122.8359375,
-        121.71723175048828,
-        122.01856231689453,
-        121.31526184082031,
-        123.51890563964844,
-        124.19255065917969,
-        124.48013305664062,
-        125.1864013671875,
-        124.77354431152344,
-        126.25186920166016,
-        122.7555923461914,
-        121.49923706054688,
-        123.8206787109375,
-        123.85165405273438,
-        123.81967163085938,
-        123.80435180664062
-    ],
-    "FED": [
-        6.848141670227051,
-        6.46260929107666,
-        8.005855560302734,
-        9.338484764099121,
-        11.257184982299805,
-        9.46820068359375,
-        7.4350996017456055,
-        9.109694480895996,
-        8.591089248657227,
-        8.562639236450195,
-        9.04946517944336,
-        8.525562286376953,
-        13.431148529052734,
-        19.154207229614258,
-        21.270130157470703,
-        21.775585174560547,
-        19.552230834960938,
-        17.954952239990234,
-        19.110994338989258,
-        18.11455535888672,
-        16.805612564086914,
-        17.0845947265625,
-        16.163846969604492,
-        11.897706031799316,
-        12.436088562011719,
-        12.312108993530273,
-        13.034724235534668,
-        13.239091873168945,
-        14.298291206359863,
-        14.840378761291504
-    ],
-
-    "Auto": [
-        9.089305877685547,
-        10.940082550048828,
-        12.280512809753418,
-        13.640256881713867,
-        14.14151668548584,
-        14.160468101501465,
-        13.93685245513916,
-        13.45669174194336,
-        14.835762023925781,
-        14.849366188049316,
-        16.195348739624023,
-        15.837538719177246,
-        16.605998992919922,
-        15.806180000305176,
-        17.518308639526367,
-        15.895249366760254,
-        16.189401626586914,
-        17.001487731933594,
-        17.84166145324707,
-        17.972904205322266,
-        16.827857971191406,
-        17.627225875854492,
-        18.223590850830078,
-        18.267826080322266,
-        18.60931968688965,
-        18.62931251525879,
-        18.917850494384766,
-        19.152990341186523,
-        18.590349197387695,
-        11.557642936706543
-    ],
-
-    "In": [
-        11.161011695861816,
-        11.989208221435547,
-        13.345709800720215,
-        12.83635139465332,
-        11.075940132141113,
-        11.511602401733398,
-        11.78509521484375,
-        10.468847274780273,
-        14.459511756896973,
-        14.832328796386719,
-        14.602109909057617,
-        14.410181045532227,
-        17.123991012573242,
-        15.696053504943848,
-        18.599552154541016,
-        15.61136531829834,
-        14.903421401977539,
-        16.324832916259766,
-        15.742531776428223,
-        14.643206596374512,
-        12.275882720947266,
-        13.697108268737793,
-        11.519715309143066,
-        12.094161987304688,
-        12.24470043182373,
-        11.922170639038086,
-        12.709283828735352,
-        12.635740280151367,
-        12.45536994934082,
-        12.571897506713867
-    ],
-    "date": []
-}
-
-
 
 function predict30days() {
     try {
@@ -884,6 +684,22 @@ function openHisFile() {
                     text: '确认',
                     onClick: function (inst) {
                         try {
+                            clearPosition()
+                            // var img = document.createElement("img");
+                            // // margin-left: 48%;
+                            // // transform: translateX(-50%) translateY(-50%);
+                            // // margin-top: 20%;
+                            // // opacity: 0.4;
+                            // // width: 23%;
+                            //
+                            // img.style.marginLeft = "48%"
+                            // img.style.marginTop = "-22%"
+                            // img.className = "main-logo"
+                            // img.src = "./static/logo.png"
+                            // let chart =document.querySelector("#chart");
+                            // removeChild(chart)
+                            // chart.appendChild(img)
+
                             var Splitter = browserRedirect() == "Win" ? '\\' : '/'
 
                             let temp = []
@@ -918,7 +734,6 @@ function openHisFile() {
                             params.filename = fileName
                             params.filepath = fileURL
                             document.querySelector(".file-name").innerHTML = fileName
-
                         } catch (e) {
                             mdui.alert(e)
                         }
@@ -1088,14 +903,16 @@ function demonstrateStat( datay) {
     var option = {
         tooltip: {
             show: true
+
         },
+
         title: {
             text: "频数直方图",
-            left: "center"
+            left: "center",
         },
         color: ['rgb(25, 183, 207)'],
         grid: {
-            top: '10%',
+            top: '13%',
             left: '3%',
             right: '3%',
             bottom: '3%',
@@ -1349,7 +1166,7 @@ function demonstratePositionedStat(params,maxValue) {
         legend: {
             type: 'scroll',
             data: legendData,
-            top: "7%",
+            top: "8%",
             selector: [
                 {
                     // 全选
@@ -1371,7 +1188,7 @@ function demonstratePositionedStat(params,maxValue) {
         },
         color: ['rgb(25, 183, 207)'],
         grid: {
-            top: '15%',
+            top: '20%',
             left: '3%',
             right: '3%',
             bottom: '3%',
@@ -1452,7 +1269,7 @@ function  demonstrateHeatStat(legendData, seriesData, name) {
         },
         color: ['rgb(25, 183, 207)'],
         grid: {
-            top: '16%',
+            top: '20%',
             left: '3%',
             right: '3%',
             bottom: '3%',
@@ -1486,6 +1303,7 @@ function  demonstrateHeatStat(legendData, seriesData, name) {
 function drawPredictionmap(rawData, title, xname, yname, tagName) {
     try {
         demonstrateStat( rawData["y"])
+        clearListener()
         document.getElementById('table-title').innerHTML = title + "统计数据"
         let maxValue = ecStat.statistics.max(rawData["y"]);
         let minValue = ecStat.statistics.min(rawData["y"]);
@@ -1644,9 +1462,63 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
         let chartDom = echarts.init(document.querySelector("#chart"));
         chartDom.clear()
         chartDom.setOption(option)
+        chartDom.on('dataZoom', function (params) {
+            try {
+                funcInjector.log(JSON.stringify(params))
+                if (params.batch && params.batch[1].start != null) {
+                    let datay = rawData["y"]
+                    starty =Math.round((params.batch[0].start * datay.length)/100);
+                    endy =Math.round( (params.batch[0].end * datay.length)/100) + 1;
+                    funcInjector.log(endy.toString())
+                    datay = datay.slice(starty, endy)
+                    let max = Math.ceil((maxValue *params.batch[1].end) /100)
+                    let min =Math.floor((maxValue *params.batch[1].start) /100)
+                    datay = datay.filter(num => num>=min && num <= max)
+                    demonstrateStat(datay)
+                } else if (params.batch && params.batch[0].start != null) {
+                    let datay = rawData["y"]
+                    demonstrateStat(datay)
+                } else if (params.batch && params.batch[0].startValue != null) {
+                    let datay = rawData["y"].slice(params.batch[0].startValue, params.batch[0].endValue)
+                    datay = datay.filter(num => num>=params.batch[1].startValue && num <= params.batch[1].endValue)
+                    demonstrateStat(datay)
+                } else {
+                    if (params.dataZoomId == "xSlider") {
+                        starty =Math.round((params.start * rawData["x"].length )/100)
+                        endy =Math.round( (params.end * rawData["x"].length)/100) +1
+                        funcInjector.log(starty.toString())
+                        funcInjector.log(endy.toString())
+                        demonstrateStat( rawData["y"].slice(starty, endy))
+                    }
+                    // else if(params.dataZoomId == "ySlider") {
+                    //     let max = (maxValue *params.end) /100
+                    //     let min = (maxValue *params.start) /100
+                    //     let datay = rawData["y"]
+                    //
+                    //     starty =Math.round((params.start * datay.length )/100);
+                    //     endy =Math.round( (params.end * datay.length)/100) +1 ;
+                    //     demonstrateStat(datay.slice(starty, endy))
+                    // }
+                }
+
+            } catch (e) {
+            }
+        });
     } catch (e) {
         mdui.alert(e)
     }
+}
+
+function transferToNumber(inputNumber) {
+    if (isNaN(inputNumber)) {
+        return inputNumber
+    }
+    inputNumber = '' + inputNumber
+    inputNumber = parseFloat(inputNumber)
+    let eformat = inputNumber.toExponential() // 转换为标准的科学计数法形式（字符串）
+    let tmpArray = eformat.match(/\d(?:\.(\d*))?e([+-]\d+)/) // 分离出小数值和指数值
+    let number = inputNumber.toFixed(Math.max(0, (tmpArray[1] || '').length - tmpArray[2]))
+    return number
 }
 
 //画折线图
@@ -1670,6 +1542,18 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
             trigger: 'axis',
             position: function (pt) {
                 return [pt[0], '10%'];
+            },
+            formatter(params) {
+                var relVal = params[0].name;
+
+
+                for (var i = 0, l = params.length; i < l; i++) {
+                    let value = params[i].value
+                    let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : value.toFixed(2)
+                    //遍历出来的值一般是字符串，需要转换成数字，再进项tiFixed四舍五入
+                    relVal += '<br/>' + params[i].marker + params[i].seriesName + ' : ' + Number(ret)
+                }
+                return relVal;
             }
         },
         title: {
@@ -1764,12 +1648,6 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
                 filterMode: 'none',
                 id:"xSlider"
             },
-            // {
-            //     type: 'slider',
-            //     yAxisIndex: 0,
-            //     filterMode: 'none',
-            //     id:"ySlider"
-            // },
             {
                 type: 'inside',
                 xAxisIndex: 0,
@@ -1883,7 +1761,6 @@ function drawPositionLinearMapData() {
         let option = {
             tooltip: {
                 trigger: 'axis',
-
             },
             legend: {
                 type: 'scroll',
@@ -2301,12 +2178,13 @@ function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, revers
             // inactiveBorderColor: "#000",
             // selector: ['all', 'inverse'] ,
             data: rawData["legend"],
-            selectedMode: 'single'
+            selectedMode: 'single',
+            top:"5%"
         },
-        title: {
-            text: title,
-            left: "center",
-            top: "bottom"
+            title: {
+                text: title,
+                left: "center",
+
         },
         toolbox: {
             left: 'right',
@@ -2440,7 +2318,7 @@ function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, r
         data: rawData["legend"],
         animation:false,
         // selectedMode: 'single',
-        top: "6.5%",
+        top: "7%",
         selected: {
             selectedtime: true
 
@@ -2511,12 +2389,13 @@ function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, r
                 // inactiveBorderColor: "#000",
                 // selector: ['all', 'inverse'] ,
                 data: videoData,
-                selectedMode: 'single'
+                selectedMode: 'single',
+                top:"3%"
             },
             title: {
                 text: title,
                 left: "center",
-                top: "bottom"
+
             },
             toolbox: {
                 left: 'right',
@@ -2541,7 +2420,8 @@ function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, r
                 name: yTitle,
                 type: ytype,
                 show: true,
-                inverse: reverseY
+                inverse: reverseY,
+                nameLocation: "start"
 
             },
             grid: {
@@ -2663,6 +2543,12 @@ function getVideo() {
                     type: 'legendSelect',
                     // 图例名称
                     name: videoData[i]
+                });
+                chartDom.dispatchAction({
+                    type: 'legendScroll',
+                    // 图例名称
+                    scrollDataIndex: Number(i),
+                    legendId: "worldLegend"
                 });
                 setTimeout(() => {
                     let img = saveAsImage()
