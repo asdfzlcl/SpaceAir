@@ -114,6 +114,7 @@ function browserRedirect() {
 
 function  refreshHisList() {
     const hisFileList = JSON.parse(funcInjector.getHisFile(params).toString())
+    hisFileList.sort()
     removeChild("mdui-list-item mdui-ripple")
     removeChild("mdui-divider mdui-m-y-0")
     let hisFileHtml = getHisFileHtml(hisFileList)
@@ -195,7 +196,6 @@ function getPositionSelectorHTML(latitude, longitude) {
 
 function guide() {
     const driver = window.driver.js.driver;
-
     let config = {
         showProgress: true,
         closeBtnText: '关闭', // Text on the close button for this step 关闭按钮的文字
@@ -294,8 +294,6 @@ function guide() {
     }
 
     let driverObj = driver(config);
-
-
     driverObj.drive();
 }
 
@@ -320,7 +318,6 @@ function clearPosition() {
 
 function addPosition() {
     try {
-
         let latitudeSelector = document.getElementById("latitudeselector")
         let index = latitudeSelector.selectedIndex
         let latitude = latitudeSelector.options[index].value
@@ -348,12 +345,10 @@ function addPosition() {
     } catch (e) {
         mdui.alert(e)
     }
-
 }
 
 function predict30days() {
     try {
-
         if (predictData.length == 0 || predictTimeData.length == 0) {
             mdui.alert("请先选择文件与数据类型")
         } else {
@@ -441,7 +436,6 @@ function predict30days() {
                                 rawdata["y"] = predictData.concat(ret.data)
                                 drawPredictionmap(rawdata, predictTitle, predictXname, predictYname, predictTagname)
                                 myspin1.close()
-
                             })
                         break
                 }
@@ -803,7 +797,8 @@ function openHisFile() {
 //获取画图属性目录
 function fetchFileList() {
     document.querySelector(".charts-selector").innerHTML = ""
-    const hisFileList = JSON.parse(funcInjector.getHisFile(params).toString())
+    let hisFileList = JSON.parse(funcInjector.getHisFile(params).toString())
+    hisFileList= hisFileList.reverse()
     removeChild("mdui-list-item mdui-ripple")
     removeChild("mdui-divider mdui-m-y-0")
     predictData = []
@@ -1121,12 +1116,16 @@ function demonstratePositionedStat(params,maxValue) {
         tempData[i].data = bins.data
     }
     funcInjector.log(JSON.stringify(params))
+    let chart = echarts.init(document.querySelector("#chart"));
+    let rangeY = chart.getModel().getComponent('yAxis').axis.scale._extent // 获取y轴刻度最值
+    let min = rangeY[0]
+    let max = rangeY[1]
     if (params.batch && params.batch[1].start != null) {
         starty =Math.round((params.batch[0].start * datay.length)/100);
         endy =Math.round( (params.batch[0].end * datay.length)/100) + 1;
         datay = datay.slice(starty, endy)
-        let max = Math.ceil((maxValue *params.batch[1].end) /100)
-        let min =Math.floor((maxValue *params.batch[1].start) /100)
+        // let max = Math.ceil((maxValue *params.batch[1].end) /100)
+        // let min =Math.floor((maxValue *params.batch[1].start) /100)
         datay = datay.filter(num => num>=min && num <= max)
     } else if (params.batch && params.batch[0].start != null) {
     } else if (params.batch && params.batch[0].startValue != null) {
@@ -1218,7 +1217,7 @@ function demonstratePositionedStat(params,maxValue) {
     chartDom.setOption(option);
 }
 
-function  demonstrateHeatStat(legendData, seriesData, name) {
+function  demonstrateWorldStat(legendData, seriesData, name) {
     let tempData = deepClone(seriesData)
     let datay = []
     for (i in tempData) {
@@ -1228,16 +1227,12 @@ function  demonstrateHeatStat(legendData, seriesData, name) {
                 datay.push(Number(tempData[i].data[j][2]))
             }
             hisdata.push(Number(tempData[i].data[j][2]))
-            // hisdata.push(Number(tempData[i].data[j][2]))
         }
         var bins = ecStat.histogram(hisdata);
         tempData[i].type = 'bar'
         tempData[i].barWidth = '99.3%'
         tempData[i].data = bins.data
     }
-
-
-
     sampleDeviation = ecStat.statistics.deviation(datay);
     varianceValue = ecStat.statistics.sampleVariance(datay);
     maxValue = ecStat.statistics.max(datay);
@@ -1299,6 +1294,85 @@ function  demonstrateHeatStat(legendData, seriesData, name) {
 
     chartDom.setOption(option);
 }
+
+function  demonstrateHeatStat(legendData, seriesData, name,rangeX,rangeY) {
+    let tempData = deepClone(seriesData)
+    let datay = []
+    for (i in tempData) {
+        let hisdata = []
+        for (j in tempData[i].data) {
+            if(tempData[i].name == name) {
+                datay.push(Number(tempData[i].data[j][2]))
+            }
+            hisdata.push(Number(tempData[i].data[j][2]))
+        }
+        var bins = ecStat.histogram(hisdata);
+        tempData[i].type = 'bar'
+        tempData[i].barWidth = '99.3%'
+        tempData[i].data = bins.data
+    }
+    sampleDeviation = ecStat.statistics.deviation(datay);
+    varianceValue = ecStat.statistics.sampleVariance(datay);
+    maxValue = ecStat.statistics.max(datay);
+    minValue = ecStat.statistics.min(datay);
+    meanValue = ecStat.statistics.mean(datay);
+    medianValue = ecStat.statistics.median(datay);
+    sumValue = datay.length;
+    document.getElementById('data-num').innerHTML = sumValue
+    document.getElementById('data-max').innerHTML = Number(maxValue).toFixed(2)
+    document.getElementById('data-min').innerHTML = Number(minValue).toFixed(2)
+    document.getElementById('data-avg').innerHTML = Number(meanValue).toFixed(2)
+    document.getElementById('data-sdev').innerHTML = Number(sampleDeviation).toFixed(2)
+    document.getElementById('data-var').innerHTML = Number(varianceValue).toFixed(2)
+    document.getElementById('data-median').innerHTML = Number(medianValue).toFixed(2)
+    document.getElementById('data-exe').innerHTML = (maxValue - minValue).toFixed(2)
+    echarts.registerTransform(ecStat.transform.histogram);
+    echarts.registerTransform(ecStat.transform.clustering);
+    let chartDom = echarts.init(document.querySelector("#hisCharts"));
+    chartDom.clear()
+    // var bins = ecStat.histogram(datay);
+    var option = {
+        tooltip: {
+            show: true
+        },
+        legend: legendData,
+        title: {
+            text: "频数直方图",
+            left: "center"
+        },
+        color: ['rgb(25, 183, 207)'],
+        grid: {
+            top: '20%',
+            left: '3%',
+            right: '3%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type:'category',
+            animation:false,
+            boundaryGap: true,
+            scale: true, //这个一定要设，不然barWidth和bins对应不上
+            axisLabel: {
+                formatter: function (value) {
+                    return value
+                }
+            },
+            min: function (value) {
+                return value.min
+            },
+            max: function (value) {
+                return value.max
+            },
+        },
+        dataZoom: [{type: "inside"}],
+        yAxis: {},
+        series: tempData
+    };
+
+    chartDom.setOption(option);
+}
+
 
 function drawPredictionmap(rawData, title, xname, yname, tagName) {
     try {
@@ -1396,9 +1470,9 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
                 // min:function(value){
                 //     return value.min
                 // },
-                max: function (value) {
-                    return value.max
-                },
+                // max: function (value) {
+                //     return value.max
+                // },
                 show: true,
                 // axisLine: { onZero: false },
                 axisLabel: {
@@ -1415,11 +1489,6 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
                 {
                     type: 'slider',
                     xAxisIndex: 0,
-                    filterMode: 'none'
-                },
-                {
-                    type: 'slider',
-                    yAxisIndex: 0,
                     filterMode: 'none'
                 },
                 {
@@ -1464,15 +1533,20 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
         chartDom.setOption(option)
         chartDom.on('dataZoom', function (params) {
             try {
+
                 funcInjector.log(JSON.stringify(params))
+                let chart = echarts.init(document.querySelector("#chart"));
+                let rangeY = chart.getModel().getComponent('yAxis').axis.scale._extent // 获取y轴刻度最值
+                let min = rangeY[0]
+                let max = rangeY[1]
                 if (params.batch && params.batch[1].start != null) {
                     let datay = rawData["y"]
                     starty =Math.round((params.batch[0].start * datay.length)/100);
                     endy =Math.round( (params.batch[0].end * datay.length)/100) + 1;
                     funcInjector.log(endy.toString())
                     datay = datay.slice(starty, endy)
-                    let max = Math.ceil((maxValue *params.batch[1].end) /100)
-                    let min =Math.floor((maxValue *params.batch[1].start) /100)
+                    // let max = Math.ceil((maxValue *params.batch[1].end) /100)
+                    // let min =Math.floor((maxValue *params.batch[1].start) /100)
                     datay = datay.filter(num => num>=min && num <= max)
                     demonstrateStat(datay)
                 } else if (params.batch && params.batch[0].start != null) {
@@ -1545,8 +1619,6 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
             },
             formatter(params) {
                 var relVal = params[0].name;
-
-
                 for (var i = 0, l = params.length; i < l; i++) {
                     let value = params[i].value
                     let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : value.toFixed(2)
@@ -1691,14 +1763,17 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
     chartDom.on('dataZoom', function (params) {
         try {
             funcInjector.log(JSON.stringify(params))
+            let rangeY =  chartDom.getModel().getComponent('yAxis').axis.scale._extent // 获取y轴刻度最值
+            let min = rangeY[0]
+            let max = rangeY[1]
             if (params.batch && params.batch[1].start != null) {
                 let datay = rawData["y"]
                 starty =Math.round((params.batch[0].start * datay.length)/100);
                 endy =Math.round( (params.batch[0].end * datay.length)/100) + 1;
                 funcInjector.log(endy.toString())
                 datay = datay.slice(starty, endy)
-                let max = Math.ceil((maxValue *params.batch[1].end) /100)
-                let min =Math.floor((maxValue *params.batch[1].start) /100)
+                // let max = Math.ceil((maxValue *params.batch[1].end) /100)
+                // let min =Math.floor((maxValue *params.batch[1].start) /100)
                 datay = datay.filter(num => num>=min && num <= max)
                 demonstrateStat(datay)
             } else if (params.batch && params.batch[0].start != null) {
@@ -1738,9 +1813,7 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
 
 function drawPositionLinearMapData() {
     let chartDom = echarts.init(document.querySelector("#chart"));
-  
     document.getElementById('table-title').innerHTML = "电离层参数一维图统计数据"
-
     let tempData = deepClone(serData)
     let datay = []
     for (i in tempData) {
@@ -1755,8 +1828,7 @@ function drawPositionLinearMapData() {
         tempData[i].data = bins.data
     }
     let maxValue = ecStat.statistics.max(datay);
-    let minValue = ecStat.statistics.min(datay);
-    demonstratePositionedStat({},maxValue)
+
     try {
         let option = {
             tooltip: {
@@ -1849,14 +1921,17 @@ function drawPositionLinearMapData() {
             ],
             series: serData
         };
+
+
+        chartDom.clear()
+        chartDom.setOption(option)
+        demonstratePositionedStat({},maxValue)
         chartDom.on('dataZoom', function (params) {
             try {
                 demonstratePositionedStat(params,maxValue)
             } catch (e) {
             }
         });
-        chartDom.clear()
-        chartDom.setOption(option)
     } catch (e) {
         mdui.alert(e)
     }
@@ -1968,7 +2043,22 @@ function drawLinearVerticalMapData(rawData) {
             realtime: true,
             formatter: function (value) {                 //标签的格式化工具。
                 return value;                    // 范围标签显示内容。
-            }
+            },
+            inRange: {
+                color: [
+                    '#313695',
+                    '#4575b4',
+                    '#6496b6',
+                    '#97c1ce',
+                    '#a4c2cc',
+                    '#ffffbf',
+                    '#fee090',
+                    '#fdae61',
+                    '#f46d43',
+                    '#d73027',
+                    '#a50026'
+                ]
+            },
         },
         dataZoom: [
             {
@@ -2002,12 +2092,6 @@ function drawLinearVerticalMapData(rawData) {
             axisLine: {
                 show: true,
             },
-            // max: function (value) {
-            //     return value.max
-            // },
-            // min: function (value) {
-            //     return value.min
-            // },
         },
         yAxis: {
             axisLine: {
@@ -2028,6 +2112,11 @@ function drawLinearVerticalMapData(rawData) {
     chartDom.on('dataZoom', function (params) {
         try {
             funcInjector.log(JSON.stringify(params))
+            let rangeX =  chartDom.getModel().getComponent('xAxis').axis.scale._extent // 获取y轴刻度最值
+            let min = rangeX[0]
+            let max = rangeX[1]
+            funcInjector.log(JSON.stringify(min))
+            funcInjector.log(JSON.stringify(max))
             if (params.batch && params.batch[1].start != null) {
                 let datay = dataX
                 starty =Math.round((params.batch[1].start * datay.length)/100);
@@ -2035,10 +2124,10 @@ function drawLinearVerticalMapData(rawData) {
                 // funcInjector.log(starty.toString())
                 // funcInjector.log(endy.toString())
                 datay = dataX.slice(starty, endy)
-                let max = Math.ceil(maxValue - (((maxValue-minValue)*params.batch[0].start) /100))
-                let min =Math.floor(maxValue -(((maxValue-minValue)*params.batch[0].end) /100))
-                funcInjector.log(max.toString())
-                funcInjector.log(min.toString())
+                // let max = Math.ceil(maxValue - (((maxValue-minValue)*params.batch[0].start) /100))
+                // let min =Math.floor(maxValue -(((maxValue-minValue)*params.batch[0].end) /100))
+                // funcInjector.log(max.toString())
+                // funcInjector.log(min.toString())
                 datay = datay.filter(num => num>=min && num <= max)
                 demonstrateStat(datay)
 
@@ -2078,8 +2167,7 @@ function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, revers
     let chartDom = echarts.init(document.querySelector("#chart"));
    clearListener()
     chartDom.on('legendselectchanged', function (params) {
-        // mdui.alert("here")
-        demonstrateHeatStat(legendData,seriesData,params.name)
+        demonstrateWorldStat(legendData,seriesData,params.name)
     });
     let seriesData = []
     document.getElementById('table-title').innerHTML = title + "统计数据"
@@ -2132,7 +2220,7 @@ function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, revers
         ]
     }
 
-    demonstrateHeatStat(legendData, seriesData,selectedtime)
+    demonstrateWorldStat(legendData, seriesData,selectedtime)
     let option = {
         tooltip: {
             formatter: function (param) {
@@ -2242,7 +2330,6 @@ function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, revers
 //监听地图滚动缩放事件
     chartDom.clear()
     chartDom.setOption(option)
-
 }
 
 function clearListener() {
@@ -2338,7 +2425,7 @@ function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, r
             }
         ]
     }
-    demonstrateHeatStat(legendData, seriesData,selectedtime)
+    demonstrateWorldStat(legendData, seriesData,selectedtime)
         let option = {
             tooltip: {
                 formatter: function (param) {
@@ -2465,11 +2552,11 @@ function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, r
         chartDom.setOption(option)
     chartDom.on('legendselectchanged', function (params) {
         // mdui.alert("here")
-        demonstrateHeatStat(legendData,seriesData,params.name)
+        demonstrateWorldStat(legendData,seriesData,params.name)
     });
     chartDom.on('legendselected', function (params) {
         // mdui.alert("here")
-        demonstrateHeatStat(legendData,seriesData,params.name)
+        demonstrateWorldStat(legendData,seriesData,params.name)
         let chartDom = echarts.init(document.querySelector("#hisCharts"));
         chartDom.dispatchAction({
             type: 'legendInverseSelect',
@@ -2563,7 +2650,21 @@ function getVideo() {
         }
         setTimeout(() => {
             mask.remove()
-            funcInjector.createVideo(imageList,timeList)
+            try {
+               let p = new Promise((resolve) => {
+                    let path = funcInjector.createVideo(imageList, timeList)
+                    resolve(path)
+                })
+                p.then(path => {
+                    mdui.snackbar({
+                        message: '生成视频成功，路径为' + path,
+                        position: 'left-top',
+                    });
+                })
+            } catch (e) {
+                mdui.alert(e)
+            }
+
         }, 1000*(videoData.length+2))
     } catch (e) {
         mdui.alert(e)

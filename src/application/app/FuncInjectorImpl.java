@@ -96,7 +96,7 @@ public class FuncInjectorImpl implements FuncInjector {
 
     }
 
-    public void createVideo(JSArray imgList,JSArray timeData) throws InterruptedException, IOException {
+    public String createVideo(JSArray imgList, JSArray timeData) throws InterruptedException, IOException {
         try {
             String directoryPath = System.getProperty("user.dir") + File.separator + "temp" + File.separator;
             String fileSuffix = ".png";
@@ -150,11 +150,19 @@ public class FuncInjectorImpl implements FuncInjector {
             });
 
             try {
+                Date date = new Date(); SimpleDateFormat dateFormat= new
+                        SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+                String dirPath = System.getProperty("user.dir") + File.separator + "data" + File.separator + "电离层参数视频" + File.separator + dateFormat.format(date) + File.separator ;
+                File file = new File(dirPath);
+                if (!file.exists()) {
+                    file.mkdir();
+                }
+                int length = imgFiles.size() -1;
+                String startTime = imgFiles.get(0).getName().split("-")[0].concat(imgFiles.get(0).getName().split("-")[1]);
+                String endTime = imgFiles.get(length).getName().split("-")[0].concat(imgFiles.get(length).getName().split("-")[1]);
+                String outputVideoPath = dirPath + startTime+"-"+endTime+".mp4";
 
-
-                String outputVideoPath = System.getProperty("user.dir") + File.separator + "data" + File.separator + "video.mp4";
-                        AWTSequenceEncoder encoder = AWTSequenceEncoder.createSequenceEncoder(new File(outputVideoPath), 1);
-
+                AWTSequenceEncoder encoder = AWTSequenceEncoder.createSequenceEncoder(new File(outputVideoPath), 1);
                 for (File imageFile : imgFiles) {
                     System.out.println("imageFile : " + imageFile.getAbsolutePath());
                     BufferedImage image = ImageIO.read(imageFile);
@@ -177,12 +185,14 @@ public class FuncInjectorImpl implements FuncInjector {
                     encoder.encodeImage(image);
                 }
                 encoder.finish();
+                return outputVideoPath ;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 
@@ -246,13 +256,14 @@ public class FuncInjectorImpl implements FuncInjector {
                 SEFile sat = (SEFile) readFile(filePath, FileType.SEFile);
                 dest = "." + File.separator+ "data" +File.separator + "临近空间环境" +File.separator;
             }
+            String temp = dest;
             SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd") ;
             dest +=sdf.format(System.currentTimeMillis())+ File.separator;
             File file;
             file = new File(filePath);
             String fileName = file.getName();
             file = new File(dest);
-
+            traverseDelete(new File(temp),fileName);
             if (file.exists()) {
                 System.out.println("路径已存在");
             } else {
@@ -266,6 +277,7 @@ public class FuncInjectorImpl implements FuncInjector {
             }
 
             dest += fileName;
+
             FileChannel sourceChannel = new FileInputStream(filePath).getChannel();
             FileChannel destChannel = new FileOutputStream(dest).getChannel();
             destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
@@ -560,7 +572,33 @@ public class FuncInjectorImpl implements FuncInjector {
         }
     }
 
+    public static void traverseDelete(File dir,String filename) {
+        if (dir == null && !dir.exists() || dir.isFile()) {
+            return;
+        }
 
+
+        // 读取出该目录下的所有文件
+        File[] files = dir.listFiles();
+
+        for (File file : files) {
+            // 如果是文件，加入到文件集合中否则加入到文件夹集合中
+
+
+            if (file.isFile()) {
+                if(file.getName().equals(filename)) {
+                    file.delete();
+                    String parentDirectory = file.getParent();
+                    File parent = new File(parentDirectory);
+                    parent.delete();
+                }
+            }
+
+            if (file.isDirectory()) {
+                traverseDelete(file,filename);
+            }
+        }
+    }
 
 
     public ArrayList getHisFile(JSObject params) throws IOException {
@@ -578,6 +616,7 @@ public class FuncInjectorImpl implements FuncInjector {
             dest = "." + File.separator+ "data" +File.separator + "临近空间环境" +File.separator;
         }
         traverse(new File(dest));
+
         return hisFile;
     }
 
