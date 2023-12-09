@@ -115,6 +115,9 @@ public class WebStage extends Application {
 
 
         Scene scene = new Scene(pane, 1900, 1032);
+
+        webStage.setMinHeight(1000);
+        webStage.setMinWidth(1900);
         webStage.setScene(scene);
         webStage.setTitle(NameHelper.softwareName);
         webStage.getIcons().add(new Image("file:" +

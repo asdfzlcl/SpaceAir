@@ -14,7 +14,7 @@
 
   SpinLoading.prototype = {
     constructor: this,
-    _initial: function (elem, opt) {
+    _initial: function (elem, text, opt) {
       // 默认参数
       var def = {
         text: '正在预测中...'
@@ -22,6 +22,7 @@
       if (!opt) opt = {}
       this.def = extend(def, opt, true) //配置参数
       this.spinStatus = false
+      this.def.text = text
       this.hostDiv = document.getElementById(elem)
       this.spinContainer = this._generateTemplate()
       if (this.def && this.def.autoShow) {

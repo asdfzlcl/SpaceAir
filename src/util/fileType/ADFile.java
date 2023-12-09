@@ -48,6 +48,11 @@ public class ADFile extends BaseFile{
         File currentFile = new File(this.fileURL);
         BufferedReader currentBR = new BufferedReader(new FileReader(currentFile));
         String currentLine;
+        currentLine = currentBR.readLine();
+        System.out.println(currentLine);
+        if(!currentLine.equals("Neutral density data from satellite drag studies using ~5000 objects were") ) {
+            throw new IOException("错误的文件格式！");
+        }
         while((currentLine = currentBR.readLine()) != null){
             String[] temp = currentLine.split("\\s+");
             String year;
@@ -73,6 +78,10 @@ public class ADFile extends BaseFile{
             densDataSeries.add(ratio * Math.pow(10, logMsis));
         }
         currentBR.close();
+        System.out.println(this.densDataSeries);
+        System.out.println(this.specDataSeries);
+        System.out.println(this.modelDataSeries);
+        System.out.println(this.timeSeries);
         if(this.densDataSeries.isEmpty() || this.specDataSeries.isEmpty() || this.modelDataSeries.isEmpty() || this.timeSeries.isEmpty()){
             throw new IOException("错误的文件格式！");
         }
