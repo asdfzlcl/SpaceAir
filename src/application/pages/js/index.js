@@ -2368,8 +2368,6 @@ function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, r
     let chartDom = echarts.init(document.querySelector("#chart"));
     clearListener()
     let temp = rawData["legend"]
-    let  videoData = []
-
     temp.forEach((item) => {
         // 空数组newList2 不包含item为false ,取反为true 执行数组添加操作
         // 如果数组包含了 item为true 取反为false 不执行数组添加操作
@@ -2616,7 +2614,6 @@ function base64ToBlob(code) {
     let contentType = parts[0].split(':')[1];
     let raw = window.atob(parts[1]);
     let rawLength = raw.length;
-
     let uInt8Array = new Uint8Array(rawLength);
 
     for (let i = 0; i < rawLength; ++i) {
@@ -2711,10 +2708,8 @@ function getVideo() {
 
 
 function dynamicDisplay() {
-
     try {
         let chartDom = echarts.init(document.querySelector("#chart"));
-
         for (let i in videoData) {
             setTimeout(() => {
                 chartDom.dispatchAction({
