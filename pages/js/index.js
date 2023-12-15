@@ -134,7 +134,6 @@ function  refreshHisList() {
 }
 function GetFile() {
     fileURL = funcInjector.chooseFile(params)
-    clearPosition()
     document.querySelector(".file-detail").style.display = 'inline'
     document.querySelector(".file-path").innerHTML = fileURL
     var Splitter = browserRedirect() == "Win" ? '\\' : '/'
@@ -145,9 +144,6 @@ function GetFile() {
     params.filepath = fileURL
     document.querySelector(".file-name").innerHTML = fileName
     refreshHisList()
-    if(params.pictype == PicType.Time_Density) {
-        DrawPic( PicType.Time_Density)
-    }
 }
 
 function renewEcharts() {
@@ -338,29 +334,12 @@ function addPosition() {
             }
         }
         legendData.push(positionTitle)
-        let temp = getPositionedData(longitude, latitude)["data"]
-        let temp1 = []
-        temp.forEach((item) => {
-            // 空数组newList2 不包含item为false ,取反为true 执行数组添加操作
-            // 如果数组包含了 item为true 取反为false 不执行数组添加操作
-            let included = false
-            for (let i = 0;i<temp1.length;i++) {
-                if (temp1[i][0] == item[0]) {
-                    included = true
-                }
-            }
-            if (!included) {
-                temp1.push(item)
-            }
-        })
-
         serData.push({
             name: positionTitle,
             type: 'line',
             symbol: 'none',
             sampling: 'lttb',
-            data: temp1,
-            roam:false,
+            data: getPositionedData(longitude, latitude)["data"]
         })
         drawPositionLinearMapData()
     } catch (e) {
@@ -388,7 +367,7 @@ function predict30days() {
                 date.push(newDate.getFullYear() + "-" +newDate.getMonth()+ "-" +newDate.getDay())
             }
             let ret = {}
-            var myspin1 = new SpinLoading('chart','正在预测中...');
+            var myspin1 = new SpinLoading('chart');
 
             if (params.pictype == 0) {
                 switch (model) {
@@ -1149,14 +1128,6 @@ function demonstratePositionedStat(params,maxValue) {
         // let min =Math.floor((maxValue *params.batch[1].start) /100)
         datay = datay.filter(num => num>=min && num <= max)
     } else if (params.batch && params.batch[0].start != null) {
-        // if(params.batch[0].dataZoomId == "xInsider") {
-        //     starty = Math.round((params.batch[0].start * datay.length) / 100)
-        //     endy = Math.round((params.batch[0].end * datay.length) / 100) + 1
-        //     funcInjector.log(starty.toString())
-        //     funcInjector.log(endy.toString())
-        //     demonstrateStat(datay.slice(starty, endy))
-        // }
-        demonstrateStat(datay)
     } else if (params.batch && params.batch[0].startValue != null) {
         datay = datay.slice(params.batch[0].startValue, params.batch[0].endValue)
         datay = datay.filter(num => num>=params.batch[1].startValue && num <= params.batch[1].endValue)
@@ -1453,10 +1424,10 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
 
                 ],
                 realtime: true,
-                // formatter: function (value) {
-                //     let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : new Big(value).toFixed(2)
-                //     return ret;                  // 范围标签显示内容。
-                // }
+                formatter: function (value) {
+                    let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : value.toFixed(2)
+                    return ret;                  // 范围标签显示内容。
+                }
             },
             toolbox: {
                 left: 'right',
@@ -1506,7 +1477,7 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
                 // axisLine: { onZero: false },
                 axisLabel: {
                     formatter: function (value) {
-                        let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : new Big(value).toFixed(2)
+                        let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : value.toFixed(2)
                         return ret;
                     }
                 },
@@ -1523,14 +1494,12 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
                 {
                     type: 'inside',
                     xAxisIndex: 0,
-                    filterMode: 'none',
-                    moveOnMouseMove:false
+                    filterMode: 'none'
                 },
                 {
                     type: 'inside',
                     yAxisIndex: 0,
-                    filterMode: 'none',
-                    moveOnMouseMove:false
+                    filterMode: 'none'
                 }
             ],
             series: [
@@ -1539,7 +1508,6 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
                     type: 'line',
                     symbol: 'none',
                     sampling: 'lttb',
-                    roam:false,
                     // itemStyle: {
                     //     color: 'rgb(255, 70, 131)'
                     // },
@@ -1583,14 +1551,6 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
                     demonstrateStat(datay)
                 } else if (params.batch && params.batch[0].start != null) {
                     let datay = rawData["y"]
-                    // if(params.batch[0].dataZoomId == "xInsider") {
-                    //     starty = Math.round((params.batch[0].start * datay.length) / 100)
-                    //     endy = Math.round((params.batch[0].end * datay.length) / 100) + 1
-                    //     funcInjector.log(starty.toString())
-                    //     funcInjector.log(endy.toString())
-                    //     demonstrateStat(datay.slice(starty, endy))
-                    // }
-                    // demonstrateStat(datay)
                     demonstrateStat(datay)
                 } else if (params.batch && params.batch[0].startValue != null) {
                     let datay = rawData["y"].slice(params.batch[0].startValue, params.batch[0].endValue)
@@ -1638,229 +1598,216 @@ function transferToNumber(inputNumber) {
 //画折线图
 //原始数据 标题 横坐标 纵坐标
 function drawLinearMapData(rawData, title, xname, yname, tagName) {
-    try {
-        let chartDom = echarts.init(document.querySelector("#chart"));
-        clearListener()
-        demonstrateStat(rawData["y"])
-        document.getElementById('table-title').innerHTML = title + "统计数据"
-        let maxValue = ecStat.statistics.max(rawData["y"]);
-        let minValue = ecStat.statistics.min(rawData["y"]);
-        predictData = rawData["y"].slice(-30)
-        predictTimeData = rawData["x"].slice(-30)
-        predictTitle = title.substring(0, 4) + "预测图";
-        predictXname = xname
-        predictYname = yname
-        predictTagname = tagName
+    let chartDom = echarts.init(document.querySelector("#chart"));
+   clearListener()
+    demonstrateStat( rawData["y"])
+    document.getElementById('table-title').innerHTML = title + "统计数据"
+    let maxValue = ecStat.statistics.max(rawData["y"]);
+    let minValue = ecStat.statistics.min(rawData["y"]);
+    predictData = rawData["y"].slice(-30)
+    predictTimeData = rawData["x"].slice(-30)
+    predictTitle = title.substring(0, 4) + "预测图";
+    predictXname = xname
+    predictYname = yname
+    predictTagname = tagName
 
-        let option = {
-            tooltip: {
-                trigger: 'axis',
-                position: function (pt) {
-                    return [pt[0], '10%'];
-                },
-                formatter(params) {
-                    try {
-                        var relVal = params[0].name;
-                        for (var i = 0, l = params.length; i < l; i++) {
-                            let value = params[i].value
-                            let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : new Big(value).toFixed(2)
-                            //遍历出来的值一般是字符串，需要转换成数字，再进项tiFixed四舍五入
-                            relVal += '<br/>' + params[i].marker + params[i].seriesName + ' : ' + Number(ret)
-                        }
-                        return relVal;
-                    } catch (e) {
-                        mdui.alert(e)
-                    }
-                }
+    let option = {
+        tooltip: {
+            trigger: 'axis',
+            position: function (pt) {
+                return [pt[0], '10%'];
             },
-            title: {
-                left: 'center',
-                text: title
-            },
-            visualMap: {
-                min: minValue,
-                max: maxValue,
-                calculable: true,
-                realtime: true,
-                inRange: {
-                    color: [
-                        '#313695',
-                        '#4575b4',
-                        '#6496b6',
-                        '#97c1ce',
-                        '#a4c2cc',
-                        '#ffffbf',
-                        '#fee090',
-                        '#fdae61',
-                        '#f46d43',
-                        '#d73027',
-                        '#a50026'
-                    ]
-                },
-                formatter: function (value) {
-                    let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : new Big(value).toFixed(2)
-                    return ret;                  // 范围标签显示内容。
+            formatter(params) {
+                var relVal = params[0].name;
+                for (var i = 0, l = params.length; i < l; i++) {
+                    let value = params[i].value
+                    let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : value.toFixed(2)
+                    //遍历出来的值一般是字符串，需要转换成数字，再进项tiFixed四舍五入
+                    relVal += '<br/>' + params[i].marker + params[i].seriesName + ' : ' + Number(ret)
                 }
-            },
-            toolbox: {
-                left: 'right',
-                top: 'bottom',
-                feature: {
-                    dataZoom: {
-                        title: '数据缩放工具',
-                        // yAxisIndex: 'none',
-                        title: "缩放"
-                    },
-
-                    dataView: {
-                        title: '数据视图工具',
-                        lang: ['数据视图', '关闭', '刷新'],
-                        backgroundColor: "f2eef9",
-                    },
-                    saveAsImage: {
-                        title: '另存为图像',
-                        excludeComponents: ['toolbox', 'dataZoom']
-                    }
-                }
-            },
-
-            xAxis: {
-                name: xname,
-                type: 'category',
-                boundaryGap: false,
-                data: rawData["x"]
-            },
-            yAxis: {
-                axisLine: {
-                    show: true,
-                    lineStyle: {
-                        color: '#000', // x坐标轴的轴线颜色
-                    }
-                },
-                name: yname,
-                type: 'value',
-                // min:function(value){
-                //     return value.min
-                // },
-                max: function (value) {
-                    return value.max
-                },
-                show: true,
-                // axisLine: { onZero: false },
-                axisLabel: {
-                    formatter: function (value) {
-                        let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : new Big(value).toFixed(2)
-                        return ret;
-                    }
-                },
-                // boundaryGap: [0, '100%']
-            },
-            dataZoom: [
-                {
-                    type: 'slider',
-                    xAxisIndex: 0,
-                    filterMode: 'none',
-                    id: "xSlider"
-                },
-                {
-                    type: 'inside',
-                    xAxisIndex: 0,
-                    filterMode: 'none',
-                    id: "xInsider",
-                    moveOnMouseMove:false
-                },
-                {
-                    type: 'inside',
-                    yAxisIndex: 0,
-                    filterMode: 'none',
-                    id: "yInsider",
-                    moveOnMouseMove:false
-                }
-            ],
-            series: [
-                {
-                    name: tagName,
-                    type: 'line',
-                    symbol: 'none',
-                    sampling: 'lttb',
-                    roam: false,
-                    // itemStyle: {
-                    //     color: 'rgb(255, 70, 131)'
-                    // },
-                    // areaStyle: {
-                    //     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    //         {
-                    //             offset: 0,
-                    //             color: 'rgb(255, 158, 68)'
-                    //         },
-                    //         {
-                    //             offset: 1,
-                    //             color: 'rgb(255, 70, 131)'
-                    //         }
-                    //     ])
-                    // },
-                    data: rawData["y"]
-                }
-            ],
-        };
-        chartDom.on('dataZoom', function (params) {
-            try {
-                funcInjector.log(JSON.stringify(params))
-                let rangeY = chartDom.getModel().getComponent('yAxis').axis.scale._extent // 获取y轴刻度最值
-                let min = rangeY[0]
-                let max = rangeY[1]
-                if (params.batch && params.batch[1].start != null) {
-                    let datay = rawData["y"]
-                    starty = Math.round((params.batch[0].start * datay.length) / 100);
-                    endy = Math.round((params.batch[0].end * datay.length) / 100) + 1;
-                    funcInjector.log(endy.toString())
-                    datay = datay.slice(starty, endy)
-                    // let max = Math.ceil((maxValue *params.batch[1].end) /100)
-                    // let min =Math.floor((maxValue *params.batch[1].start) /100)
-                    datay = datay.filter(num => num >= min && num <= max)
-                    demonstrateStat(datay)
-                } else if (params.batch && params.batch[0].start != null) {
-                    let datay = rawData["y"]
-                    // if(params.batch[0].dataZoomId == "xInsider") {
-                    //     starty = Math.round((params.batch[0].start * datay.length) / 100)
-                    //     endy = Math.round((params.batch[0].end * datay.length) / 100) + 1
-                    //     funcInjector.log(starty.toString())
-                    //     funcInjector.log(endy.toString())
-                    //     demonstrateStat(datay.slice(starty, endy))
-                    //     }
-                    demonstrateStat(datay)
-                } else if (params.batch && params.batch[0].startValue != null) {
-                    let datay = rawData["y"].slice(params.batch[0].startValue, params.batch[0].endValue)
-                    datay = datay.filter(num => num >= params.batch[1].startValue && num <= params.batch[1].endValue)
-                    demonstrateStat(datay)
-                } else {
-                    if (params.dataZoomId == "xSlider") {
-                        starty = Math.round((params.start * rawData["x"].length) / 100)
-                        endy = Math.round((params.end * rawData["x"].length) / 100) + 1
-                        funcInjector.log(starty.toString())
-                        funcInjector.log(endy.toString())
-                        demonstrateStat(rawData["y"].slice(starty, endy))
-                    }
-                    // else if(params.dataZoomId == "ySlider") {
-                    //     let max = (maxValue *params.end) /100
-                    //     let min = (maxValue *params.start) /100
-                    //     let datay = rawData["y"]
-                    //
-                    //     starty =Math.round((params.start * datay.length )/100);
-                    //     endy =Math.round( (params.end * datay.length)/100) +1 ;
-                    //     demonstrateStat(datay.slice(starty, endy))
-                    // }
-                }
-
-            } catch (e) {
+                return relVal;
             }
-        });
+        },
+        title: {
+            left: 'center',
+            text: title
+        },
+        visualMap: {
+            min: minValue,
+            max: maxValue,
+            calculable: true,
+            realtime: true,
+            inRange: {
+                color: [
+                    '#313695',
+                    '#4575b4',
+                    '#6496b6',
+                    '#97c1ce',
+                    '#a4c2cc',
+                    '#ffffbf',
+                    '#fee090',
+                    '#fdae61',
+                    '#f46d43',
+                    '#d73027',
+                    '#a50026'
+                ]
+            },
+            formatter: function (value) {
+                let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : value.toFixed(2)
+                return ret;                  // 范围标签显示内容。
+            }
+        },
+        toolbox: {
+            left: 'right',
+            top: 'bottom',
+            feature: {
+                dataZoom: {
+                    title: '数据缩放工具',
+                    // yAxisIndex: 'none',
+                    title: "缩放"
+                },
 
-        chartDom.clear()
-        chartDom.setOption(option)
-    } catch (e) {
-        mdui.alert(e)
-    }
+                dataView: {
+                    title: '数据视图工具',
+                    lang: ['数据视图', '关闭', '刷新'],
+                    backgroundColor: "f2eef9",
+
+                },
+                saveAsImage: {
+                    title: '另存为图像',
+                    excludeComponents  : ['toolbox','dataZoom']
+                }
+            }
+        },
+
+        xAxis: {
+            name: xname,
+            type: 'category',
+            boundaryGap: false,
+            data: rawData["x"]
+        },
+        yAxis: {
+            axisLine: {
+                show: true,
+                lineStyle: {
+                    color: '#000', // x坐标轴的轴线颜色
+                }
+            },
+            name: yname,
+            type: 'value',
+            // min:function(value){
+            //     return value.min
+            // },
+            max: function (value) {
+                return value.max
+            },
+            show: true,
+            // axisLine: { onZero: false },
+            axisLabel: {
+                formatter: function (value) {
+                    let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : value.toFixed(2)
+                    return ret;
+                }
+            },
+            // boundaryGap: [0, '100%']
+        },
+
+        dataZoom: [
+
+            {
+                type: 'slider',
+                xAxisIndex: 0,
+                filterMode: 'none',
+                id:"xSlider"
+            },
+            {
+                type: 'inside',
+                xAxisIndex: 0,
+                filterMode: 'none',
+                id:"xInsider"
+            },
+            {
+                type: 'inside',
+                yAxisIndex: 0,
+                filterMode: 'none',
+                id:"yInsider"
+            }
+        ],
+        series: [
+            {
+                name: tagName,
+                type: 'line',
+                symbol: 'none',
+                sampling: 'lttb',
+                // itemStyle: {
+                //     color: 'rgb(255, 70, 131)'
+                // },
+                // areaStyle: {
+                //     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                //         {
+                //             offset: 0,
+                //             color: 'rgb(255, 158, 68)'
+                //         },
+                //         {
+                //             offset: 1,
+                //             color: 'rgb(255, 70, 131)'
+                //         }
+                //     ])
+                // },
+                data: rawData["y"]
+            }
+        ],
+
+    };
+
+    chartDom.on('dataZoom', function (params) {
+        try {
+            funcInjector.log(JSON.stringify(params))
+            let rangeY =  chartDom.getModel().getComponent('yAxis').axis.scale._extent // 获取y轴刻度最值
+            let min = rangeY[0]
+            let max = rangeY[1]
+            if (params.batch && params.batch[1].start != null) {
+                let datay = rawData["y"]
+                starty =Math.round((params.batch[0].start * datay.length)/100);
+                endy =Math.round( (params.batch[0].end * datay.length)/100) + 1;
+                funcInjector.log(endy.toString())
+                datay = datay.slice(starty, endy)
+                // let max = Math.ceil((maxValue *params.batch[1].end) /100)
+                // let min =Math.floor((maxValue *params.batch[1].start) /100)
+                datay = datay.filter(num => num>=min && num <= max)
+                demonstrateStat(datay)
+            } else if (params.batch && params.batch[0].start != null) {
+                let datay = rawData["y"]
+                demonstrateStat(datay)
+            } else if (params.batch && params.batch[0].startValue != null) {
+                let datay = rawData["y"].slice(params.batch[0].startValue, params.batch[0].endValue)
+                datay = datay.filter(num => num>=params.batch[1].startValue && num <= params.batch[1].endValue)
+                demonstrateStat(datay)
+            } else {
+                if (params.dataZoomId == "xSlider") {
+                    starty =Math.round((params.start * rawData["x"].length )/100)
+                    endy =Math.round( (params.end * rawData["x"].length)/100) +1
+                    funcInjector.log(starty.toString())
+                    funcInjector.log(endy.toString())
+                    demonstrateStat( rawData["y"].slice(starty, endy))
+                }
+                // else if(params.dataZoomId == "ySlider") {
+                //     let max = (maxValue *params.end) /100
+                //     let min = (maxValue *params.start) /100
+                //     let datay = rawData["y"]
+                //
+                //     starty =Math.round((params.start * datay.length )/100);
+                //     endy =Math.round( (params.end * datay.length)/100) +1 ;
+                //     demonstrateStat(datay.slice(starty, endy))
+                // }
+            }
+
+        } catch (e) {
+        }
+    });
+
+    chartDom.clear()
+    chartDom.setOption(option)
 }
 
 
@@ -1964,14 +1911,12 @@ function drawPositionLinearMapData() {
                 {
                     type: 'inside',
                     xAxisIndex: 0,
-                    filterMode: 'none',
-                    moveOnMouseMove:false
+                    filterMode: 'none'
                 },
                 {
                     type: 'inside',
                     yAxisIndex: 0,
-                    filterMode: 'none',
-                    moveOnMouseMove:false
+                    filterMode: 'none'
                 }
             ],
             series: serData
@@ -2041,7 +1986,6 @@ function drawLinearVerticalMapData(rawData) {
             symbolSize: 10,
             symbol: 'circle',
             smooth: true,
-            roam:false,
             lineStyle: {
                 width: 3,
                 shadowColor: 'rgba(0,0,0,0.3)',
@@ -2126,16 +2070,12 @@ function drawLinearVerticalMapData(rawData) {
             {
                 type: 'inside',
                 xAxisIndex: 0,
-                filterMode: 'none',
-                moveOnMouseMove:false
-
+                filterMode: 'none'
             },
             {
                 type: 'inside',
                 yAxisIndex: 0,
-                filterMode: 'none',
-                moveOnMouseMove:false
-
+                filterMode: 'none'
             }
         ],
         // grid: {
@@ -2193,14 +2133,6 @@ function drawLinearVerticalMapData(rawData) {
 
             } else if (params.batch && params.batch[0].end != null) {
                 let datay = dataX
-                // if(params.batch[0].dataZoomId == "xInsider") {
-                //     starty = Math.round((params.batch[0].start * datay.length) / 100)
-                //     endy = Math.round((params.batch[0].end * datay.length) / 100) + 1
-                //     funcInjector.log(starty.toString())
-                //     funcInjector.log(endy.toString())
-                //     demonstrateStat(datay.slice(starty, endy))
-                // }
-                // demonstrateStat(datay)
                 demonstrateStat(datay)
             } else if (params.batch && params.batch[0].startValue != null) {
                 let datay = dataX.slice(params.batch[1].startValue, params.batch[1].endValue+1)
@@ -2411,16 +2343,7 @@ function clearListener() {
 function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, reverseY, schema) {
     let chartDom = echarts.init(document.querySelector("#chart"));
     clearListener()
-    let temp = rawData["legend"]
-    temp.forEach((item) => {
-        // 空数组newList2 不包含item为false ,取反为true 执行数组添加操作
-        // 如果数组包含了 item为true 取反为false 不执行数组添加操作
-        if (!videoData.includes(item)) {
-            videoData.push(item)
-        }
-    })
-
-    funcInjector.log(JSON.stringify(videoData))
+    videoData = rawData["legend"]
     try {
         videoData.sort((a, b) => {
 
@@ -2658,6 +2581,7 @@ function base64ToBlob(code) {
     let contentType = parts[0].split(':')[1];
     let raw = window.atob(parts[1]);
     let rawLength = raw.length;
+
     let uInt8Array = new Uint8Array(rawLength);
 
     for (let i = 0; i < rawLength; ++i) {
@@ -2700,8 +2624,6 @@ function getVideo() {
              mask.style.height = '100%';
              mask.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // 设置遮罩层的颜色和透明度
              element.appendChild(mask);
-        var myspin1 = new SpinLoading('chart','正在生成视频中...');
-        myspin1.show()
         for (let i in videoData) {
             setTimeout(() => {
                 chartDom.dispatchAction({
@@ -2734,7 +2656,6 @@ function getVideo() {
                     resolve(path)
                 })
                 p.then(path => {
-                    myspin1.close()
                     mdui.snackbar({
                         message: '生成视频成功，路径为' + path,
                         position: 'left-top',
@@ -2752,8 +2673,10 @@ function getVideo() {
 
 
 function dynamicDisplay() {
+
     try {
         let chartDom = echarts.init(document.querySelector("#chart"));
+
         for (let i in videoData) {
             setTimeout(() => {
                 chartDom.dispatchAction({

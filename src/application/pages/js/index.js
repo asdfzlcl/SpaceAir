@@ -144,8 +144,10 @@ function GetFile() {
     params.filename = fileName
     params.filepath = fileURL
     document.querySelector(".file-name").innerHTML = fileName
-
     refreshHisList()
+    if(params.pictype == PicType.Time_Density) {
+        DrawPic( PicType.Time_Density)
+    }
 }
 
 function renewEcharts() {
@@ -352,15 +354,13 @@ function addPosition() {
             }
         })
 
-
-
-        funcInjector.log(JSON.stringify(temp1))
         serData.push({
             name: positionTitle,
             type: 'line',
             symbol: 'none',
             sampling: 'lttb',
-            data: temp1
+            data: temp1,
+            roam:false,
         })
         drawPositionLinearMapData()
     } catch (e) {
@@ -1149,6 +1149,14 @@ function demonstratePositionedStat(params,maxValue) {
         // let min =Math.floor((maxValue *params.batch[1].start) /100)
         datay = datay.filter(num => num>=min && num <= max)
     } else if (params.batch && params.batch[0].start != null) {
+        // if(params.batch[0].dataZoomId == "xInsider") {
+        //     starty = Math.round((params.batch[0].start * datay.length) / 100)
+        //     endy = Math.round((params.batch[0].end * datay.length) / 100) + 1
+        //     funcInjector.log(starty.toString())
+        //     funcInjector.log(endy.toString())
+        //     demonstrateStat(datay.slice(starty, endy))
+        // }
+        demonstrateStat(datay)
     } else if (params.batch && params.batch[0].startValue != null) {
         datay = datay.slice(params.batch[0].startValue, params.batch[0].endValue)
         datay = datay.filter(num => num>=params.batch[1].startValue && num <= params.batch[1].endValue)
@@ -1445,10 +1453,10 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
 
                 ],
                 realtime: true,
-                formatter: function (value) {
-                    let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : new Big(value).toFixed(2)
-                    return ret;                  // 范围标签显示内容。
-                }
+                // formatter: function (value) {
+                //     let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : new Big(value).toFixed(2)
+                //     return ret;                  // 范围标签显示内容。
+                // }
             },
             toolbox: {
                 left: 'right',
@@ -1515,12 +1523,14 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
                 {
                     type: 'inside',
                     xAxisIndex: 0,
-                    filterMode: 'none'
+                    filterMode: 'none',
+                    moveOnMouseMove:false
                 },
                 {
                     type: 'inside',
                     yAxisIndex: 0,
-                    filterMode: 'none'
+                    filterMode: 'none',
+                    moveOnMouseMove:false
                 }
             ],
             series: [
@@ -1529,6 +1539,7 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
                     type: 'line',
                     symbol: 'none',
                     sampling: 'lttb',
+                    roam:false,
                     // itemStyle: {
                     //     color: 'rgb(255, 70, 131)'
                     // },
@@ -1572,6 +1583,14 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
                     demonstrateStat(datay)
                 } else if (params.batch && params.batch[0].start != null) {
                     let datay = rawData["y"]
+                    // if(params.batch[0].dataZoomId == "xInsider") {
+                    //     starty = Math.round((params.batch[0].start * datay.length) / 100)
+                    //     endy = Math.round((params.batch[0].end * datay.length) / 100) + 1
+                    //     funcInjector.log(starty.toString())
+                    //     funcInjector.log(endy.toString())
+                    //     demonstrateStat(datay.slice(starty, endy))
+                    // }
+                    // demonstrateStat(datay)
                     demonstrateStat(datay)
                 } else if (params.batch && params.batch[0].startValue != null) {
                     let datay = rawData["y"].slice(params.batch[0].startValue, params.batch[0].endValue)
@@ -1747,13 +1766,15 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
                     type: 'inside',
                     xAxisIndex: 0,
                     filterMode: 'none',
-                    id: "xInsider"
+                    id: "xInsider",
+                    moveOnMouseMove:false
                 },
                 {
                     type: 'inside',
                     yAxisIndex: 0,
                     filterMode: 'none',
-                    id: "yInsider"
+                    id: "yInsider",
+                    moveOnMouseMove:false
                 }
             ],
             series: [
@@ -1762,6 +1783,7 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
                     type: 'line',
                     symbol: 'none',
                     sampling: 'lttb',
+                    roam: false,
                     // itemStyle: {
                     //     color: 'rgb(255, 70, 131)'
                     // },
@@ -1799,6 +1821,13 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
                     demonstrateStat(datay)
                 } else if (params.batch && params.batch[0].start != null) {
                     let datay = rawData["y"]
+                    // if(params.batch[0].dataZoomId == "xInsider") {
+                    //     starty = Math.round((params.batch[0].start * datay.length) / 100)
+                    //     endy = Math.round((params.batch[0].end * datay.length) / 100) + 1
+                    //     funcInjector.log(starty.toString())
+                    //     funcInjector.log(endy.toString())
+                    //     demonstrateStat(datay.slice(starty, endy))
+                    //     }
                     demonstrateStat(datay)
                 } else if (params.batch && params.batch[0].startValue != null) {
                     let datay = rawData["y"].slice(params.batch[0].startValue, params.batch[0].endValue)
@@ -1935,12 +1964,14 @@ function drawPositionLinearMapData() {
                 {
                     type: 'inside',
                     xAxisIndex: 0,
-                    filterMode: 'none'
+                    filterMode: 'none',
+                    moveOnMouseMove:false
                 },
                 {
                     type: 'inside',
                     yAxisIndex: 0,
-                    filterMode: 'none'
+                    filterMode: 'none',
+                    moveOnMouseMove:false
                 }
             ],
             series: serData
@@ -2010,6 +2041,7 @@ function drawLinearVerticalMapData(rawData) {
             symbolSize: 10,
             symbol: 'circle',
             smooth: true,
+            roam:false,
             lineStyle: {
                 width: 3,
                 shadowColor: 'rgba(0,0,0,0.3)',
@@ -2094,12 +2126,16 @@ function drawLinearVerticalMapData(rawData) {
             {
                 type: 'inside',
                 xAxisIndex: 0,
-                filterMode: 'none'
+                filterMode: 'none',
+                moveOnMouseMove:false
+
             },
             {
                 type: 'inside',
                 yAxisIndex: 0,
-                filterMode: 'none'
+                filterMode: 'none',
+                moveOnMouseMove:false
+
             }
         ],
         // grid: {
@@ -2157,6 +2193,14 @@ function drawLinearVerticalMapData(rawData) {
 
             } else if (params.batch && params.batch[0].end != null) {
                 let datay = dataX
+                // if(params.batch[0].dataZoomId == "xInsider") {
+                //     starty = Math.round((params.batch[0].start * datay.length) / 100)
+                //     endy = Math.round((params.batch[0].end * datay.length) / 100) + 1
+                //     funcInjector.log(starty.toString())
+                //     funcInjector.log(endy.toString())
+                //     demonstrateStat(datay.slice(starty, endy))
+                // }
+                // demonstrateStat(datay)
                 demonstrateStat(datay)
             } else if (params.batch && params.batch[0].startValue != null) {
                 let datay = dataX.slice(params.batch[1].startValue, params.batch[1].endValue+1)
