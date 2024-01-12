@@ -385,7 +385,7 @@ function predict30days() {
             for (let i=0;i<30;i++) {
                 const tempTimestamp = timestamp + 86400000 * i ; // 将时间戳增加1天
                 const newDate = new Date(tempTimestamp);
-                date.push(newDate.getFullYear() + "-" +newDate.getMonth()+ "-" +newDate.getDay())
+                date.push(newDate.getFullYear() + "-" +newDate.getMonth()+ "-" +newDate.getDate())
             }
             let ret = {}
             var myspin1 = new SpinLoading('chart','正在预测中...');
@@ -588,11 +588,14 @@ function getHisFileHtml(hisFile) {
     let html = ''
     try {
         for (let i = 0; i < hisFile.length; i++) {
-            html +=
-                `<label class="mdui-list-item mdui-ripple">
+            let reg = /.[^-]*-.[^-]*-.[^-]*.txt/gm;
+
+            if(!reg.test(hisFile[i].fileName)) {
+                html +=
+                    `<label class="mdui-list-item mdui-ripple">
                 <div class="mdui-list-item-content">   
                     <div class="mdui-list-item-title mdui-list-item-two-line">${hisFile[i].fileName}</div> 
-                    <div class="mdui-list-item-text mdui-list-item-one-line">${hisFile[i].fileTime}</div>  
+                    <div class="mdui-list-item-text mdui-list-item-one-line">${"最后打开日期"+ hisFile[i].fileTime}</div>  
                 </div>
                    
                 <div class="mdui-checkbox">
@@ -601,7 +604,25 @@ function getHisFileHtml(hisFile) {
                 </div>
             </label>
    <div class = "mdui-divider mdui-m-y-0" > </div>
-`
+   `
+            } else {
+                funcInjector.log(hisFile[i].fileName)
+                funcInjector.log( reg.test(hisFile[i].fileName).toString() );
+                html +=
+                    `<label class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-content">   
+                    <div class="mdui-list-item-title mdui-list-item-two-line">${hisFile[i].fileName.split("-")[0]}</div> 
+                    <div class="mdui-list-item-text mdui-list-item-one-line">${hisFile[i].fileName.split("-")[1] + "-"+hisFile[i].fileName.split("-")[2].substring(0, 11)}</div>  
+                </div>
+                   
+                <div class="mdui-checkbox">
+                    <input type="checkbox" id = "checkbox"/>
+                    <i class="mdui-checkbox-icon"></i>
+                </div>
+            </label>
+   <div class = "mdui-divider mdui-m-y-0" > </div>
+   `
+            }
         }
         return html
     } catch (e) {

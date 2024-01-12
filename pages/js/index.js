@@ -364,7 +364,7 @@ function predict30days() {
             for (let i=0;i<30;i++) {
                 const tempTimestamp = timestamp + 86400000 * i ; // 将时间戳增加1天
                 const newDate = new Date(tempTimestamp);
-                date.push(newDate.getFullYear() + "-" +newDate.getMonth()+ "-" +newDate.getDay())
+                date.push(newDate.getFullYear() + "-" +newDate.getMonth()+ "-" +newDate.getDate())
             }
             let ret = {}
             var myspin1 = new SpinLoading('chart');
