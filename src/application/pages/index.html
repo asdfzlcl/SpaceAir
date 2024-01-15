@@ -12,6 +12,7 @@
 
 <body class="mdui-theme-primary-blue mdui-theme-accent-blue">
 <div class="App">
+    <div id="overlay"></div>
     <div class='header'>
         <div class="file-select">
             <text class='file-select-title'> 文件类型:</text>
@@ -52,11 +53,14 @@
                 <option value='1'>Informer</option>
                 <option value='2'>Autoformer</option>
             </select>
-            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="predict"
-                    onclick="predict30days()">预测分析
+            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="predict"  style = "margin-left: 1vh"
+                    onclick="predict27days()">预测分析
+            </button>
+            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="compare"  style = "margin-left: 1vh"
+                    onclick="compare27days()">实证对比
             </button>
         </div>
-        <img class="guide" decoding="async" src="./static/wenhao.png" width="42" height="42"
+        <img class="guide" decoding="async" src="./static/wenhao.png" width="42" height="42" style = "margin-left: 1vh"
              title="点击即可触发帮助引导界面" onclick="guide()"/>
     </div>
 

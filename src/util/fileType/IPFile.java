@@ -46,101 +46,104 @@ public class IPFile extends BaseFile{
      * */
     @Override
     protected void readFile() throws IOException {
-        File currentFile = new File(this.fileURL);
-        BufferedReader currentBR = new BufferedReader(new FileReader(currentFile));
-        String currentLine;
-        boolean startValidation = false;
-        boolean isFirstSeries = true;
-        boolean isInDataSeries = false;
-        boolean hasCalculatedLongitude = false;
-        int countInPositionSeries = -1;
-        int countInDateSeries = -1;
-        boolean isRSM = false;
-        int count = 0;
-        while((currentLine = currentBR.readLine()) != null){
-            if(!startValidation){
-                // 去除多余的空格与tab
-                String temp = currentLine.replace("\t", "");
-                temp = temp.replace(" ", "");
-                if(temp.equals("ENDOFHEADER"))
-                    startValidation = true;
-                count++;
-            }else{
-                count++;
-                // 首先将这行按照空格分离
-                String match = currentLine.replace("\t", "");
-                match = match.replace(" ", "");
-                String[] temp = currentLine.split("\\s+");
-                if(isRSM == true && ! match.matches("[0-9]*ENDOFRMSMAP")  ) {
-                    continue;
-                } else  {
-                    isRSM = false;
-                }
-                if(match.matches("[0-9]*STARTOFTECMAP")) {
-                    continue;
-                }
-                if(match.matches("[0-9]*STARTOFRMSMAP")) {
-                    isRSM = true;
-                    continue;
-                }
-                if(match.matches("[0-9]*EPOCHOFCURRENTMAP")){
-                    System.out.println(count);
-                    timeSeries.add(new DateTime(Integer.parseInt(temp[1]), Integer.parseInt(temp[2]),
-                            Integer.parseInt(temp[3]), Integer.parseInt(temp[4]), Integer.parseInt(temp[5]), Integer.parseInt(temp[6])).toString("yyyy-MM-dd HH:mm:ss"));
-                    dataSeries.add(new ArrayList<>());
-                    countInPositionSeries = -1;
-                    countInDateSeries ++;
-                    continue;
-                }
-                // 说明是经纬度行
-                if(match.matches("[0-9.\\-]*LAT/LON1/LON2/DLON/H")){
-                    isInDataSeries = true;
-                    countInPositionSeries ++;
-                    if(!hasCalculatedLongitude) {
-                        String[] splitFromNeg = temp[1].split("-");
-                        Double Dlon = Double.valueOf(temp[3]);
-                        Double Lon1;
-                        if(splitFromNeg.length > 2)
-                            Lon1 = -Double.parseDouble(splitFromNeg[2]);
-                        else
-                             Lon1 = -Double.parseDouble(splitFromNeg[1]);
-                        Double Lon2 = Double.valueOf(temp[2]);
-                        System.out.println(Dlon);
-                        System.out.println(Lon1);
-                        System.out.println(Lon2);
-                        for (Double i = Lon1;i <= Lon2 ;i+=Dlon) {
-                            LongitudeSeries.add((double) i);
+        try {
+            File currentFile = new File(this.fileURL);
+            BufferedReader currentBR = new BufferedReader(new FileReader(currentFile));
+            String currentLine;
+            boolean startValidation = false;
+            boolean isFirstSeries = true;
+            boolean isInDataSeries = false;
+            boolean hasCalculatedLongitude = false;
+            int countInPositionSeries = -1;
+            int countInDateSeries = -1;
+            boolean isRSM = false;
+            int count = 0;
+            while ((currentLine = currentBR.readLine()) != null) {
+                if (!startValidation) {
+                    // 去除多余的空格与tab
+                    String temp = currentLine.replace("\t", "");
+                    temp = temp.replace(" ", "");
+                    if (temp.equals("ENDOFHEADER"))
+                        startValidation = true;
+                    count++;
+                } else {
+                    count++;
+                    // 首先将这行按照空格分离
+                    String match = currentLine.replace("\t", "");
+                    match = match.replace(" ", "");
+                    String[] temp = currentLine.split("\\s+");
+                    if (isRSM == true && !match.matches("[0-9]*ENDOFRMSMAP")) {
+                        continue;
+                    } else {
+                        isRSM = false;
+                    }
+                    if (match.matches("[0-9]*STARTOFTECMAP")) {
+                        continue;
+                    }
+                    if (match.matches("[0-9]*STARTOFRMSMAP")) {
+                        isRSM = true;
+                        continue;
+                    }
+                    if (match.matches("[0-9]*EPOCHOFCURRENTMAP")) {
+                        timeSeries.add(new DateTime(Integer.parseInt(temp[1]), Integer.parseInt(temp[2]),
+                                Integer.parseInt(temp[3]), Integer.parseInt(temp[4]), Integer.parseInt(temp[5]), Integer.parseInt(temp[6])).toString("yyyy-MM-dd HH:mm:ss"));
+                        dataSeries.add(new ArrayList<>());
+                        countInPositionSeries = -1;
+                        countInDateSeries++;
+                        continue;
+                    }
+                    // 说明是经纬度行
+                    if (match.matches("[0-9.\\-]*LAT/LON1/LON2/DLON/H")) {
+                        isInDataSeries = true;
+                        countInPositionSeries++;
+                        if (!hasCalculatedLongitude) {
+                            String[] splitFromNeg = temp[1].split("-");
+                            Double Dlon = Double.valueOf(temp[3]);
+                            Double Lon1;
+                            if (splitFromNeg.length > 2)
+                                Lon1 = -Double.parseDouble(splitFromNeg[2]);
+                            else
+                                Lon1 = -Double.parseDouble(splitFromNeg[1]);
+                            Double Lon2 = Double.valueOf(temp[2]);
+
+                            for (Double i = Lon1; i <= Lon2; i += Dlon) {
+                                LongitudeSeries.add((double) i);
+                            }
+
+                            hasCalculatedLongitude = true;
                         }
-                        hasCalculatedLongitude = true;
+                        if (isFirstSeries) {
+                            // 此处有负数
+                            String[] splitFromNeg = temp[1].split("-");
+                            if (splitFromNeg.length > 2)
+                                positionSeries.add(-Double.parseDouble(splitFromNeg[1]));
+                            else
+                                positionSeries.add(Double.parseDouble(splitFromNeg[0]));
+                        }
+                        dataSeries.get(countInDateSeries).add(new ArrayList<>());
+                        continue;
                     }
-                    if(isFirstSeries){
-                        // 此处有负数
-                        String[] splitFromNeg = temp[1].split("-");
-                        if(splitFromNeg.length > 2)
-                            positionSeries.add(-Double.parseDouble(splitFromNeg[1]));
-                        else
-                            positionSeries.add(Double.parseDouble(splitFromNeg[0]));
+                    if (isInDataSeries && temp[temp.length - 1].matches("[0-9]*")) {
+                        for (String i : temp) {
+                            if (i.isEmpty())
+                                continue;
+                            double tempData = Double.parseDouble(i);
+                            dataSeries.get(countInDateSeries).get(countInPositionSeries).add(tempData);
+                        }
+                        continue;
                     }
-                    dataSeries.get(countInDateSeries).add(new ArrayList<>());
-                    continue;
-                }
-                if(isInDataSeries && temp[temp.length - 1].matches("[0-9]*")){
-                    for(String i: temp){
-                        if(i.isEmpty())
-                            continue;
-                        double tempData = Double.parseDouble(i);
-                        dataSeries.get(countInDateSeries).get(countInPositionSeries).add(tempData);
+                    if (match.matches("[0-9]*ENDOFTECMAP")) {
+                        isFirstSeries = false;
                     }
-                    continue;
-                }
-                if(match.matches("[0-9]*ENDOFTECMAP")){
-                    isFirstSeries = false;
                 }
             }
-        }
-        currentBR.close();
-        if(this.timeSeries.isEmpty() || this.positionSeries.isEmpty() || this.dataSeries.isEmpty()){
-            throw new IOException("错误的文件格式！");
+            currentBR.close();
+
+            if (this.timeSeries.isEmpty() || this.positionSeries.isEmpty() || this.dataSeries.isEmpty()) {
+                throw new IOException("错误的文件格式！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

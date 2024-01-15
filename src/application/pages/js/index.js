@@ -9,6 +9,10 @@ predictData = []
 
 predictTimeData =[]
 
+compareData = []
+
+compareTimeData = []
+
 predictTitle = ""
 
 predictXname = ""
@@ -31,7 +35,7 @@ videoData = []
 serData = []
 
 const PicType = {
-    Time_F10: 0, Time_Ap: 1, Time_Density: 2, TIME_TECU: 3, Location_TECU: 4, Temp_Height: 5, Time_Altitude: 6
+    Time_F10: 0, Time_Ap: 1, Time_Density: 2, TIME_TECU: 3, Location_TECU: 4, Temp_Height: 5, Time_Altitude: 6,ChooseDirectory:7
 }
 
 // window.addEventListener("error",(e) => {
@@ -170,6 +174,19 @@ function renewEcharts() {
 
 function getSelectorHTML(data) {
 
+    data.sort((a, b) => {
+        funcInjector.log(JSON.stringify(data))
+        let date1 = new Date(a.substring(0, 10));
+        let date2 = new Date(b.substring(0, 10));
+
+        if (date1 > date2) {
+            return 1;
+        } else  if(date1 == date2) {
+            return 0
+        } else  {
+            return -1
+        }
+    })
     let html = ' <select class="charts-selector"  id="chartselector" onchange="renewEcharts()">'
     for (let i = 0; i < data.length; i += 1) {
         let temp = data[i]
@@ -368,7 +385,7 @@ function addPosition() {
     }
 }
 
-function predict30days() {
+function predict27days() {
     try {
         if (predictData.length == 0 || predictTimeData.length == 0) {
             mdui.alert("请先选择文件与数据类型")
@@ -378,11 +395,11 @@ function predict30days() {
             let index = mySelection.selectedIndex
             let model = mySelection.options[index].value
             let date = []
-            let tempstr= predictTimeData[29].split("-")
+            let tempstr= predictTimeData[26].split("-")
             const lastDay = new Date(tempstr[0],tempstr[1],tempstr[2]);
             const timestamp = lastDay.getTime(); // 将日期转换为时间戳
 
-            for (let i=0;i<30;i++) {
+            for (let i=0;i<27;i++) {
                 const tempTimestamp = timestamp + 86400000 * i ; // 将时间戳增加1天
                 const newDate = new Date(tempTimestamp);
                 date.push(newDate.getFullYear() + "-" +newDate.getMonth()+ "-" +newDate.getDate())
@@ -394,6 +411,9 @@ function predict30days() {
                 switch (model) {
                     case "0":
                         myspin1.show()
+                        funcInjector.log(predictData.toString())
+                        funcInjector.log(predictTimeData.toString())
+
                         pred("FEDformer", predictData, predictTimeData, 1)
                             .then(function (ret) {
                                 rawdata["x"] = predictTimeData.concat(date)
@@ -466,6 +486,103 @@ function predict30days() {
         mdui.alert(e)
     }
 }
+
+function compare27days() {
+    try {
+        if (compareData.length == 0 || compareTimeData.length == 0) {
+            mdui.alert("请先选择文件与数据类型")
+        } else {
+            let rawdata = {}
+            let mySelection = document.getElementById("model-selector")
+            let index = mySelection.selectedIndex
+            let model = mySelection.options[index].value
+            let date = []
+            let tempstr= compareTimeData[26].split("-")
+            const lastDay = new Date(tempstr[0],tempstr[1],tempstr[2]);
+            const timestamp = lastDay.getTime(); // 将日期转换为时间戳
+            for (let i=0;i<27;i++) {
+                const tempTimestamp = timestamp + 86400000 * i ; // 将时间戳增加1天
+                const newDate = new Date(tempTimestamp);
+                date.push(newDate.getFullYear() + "-" +newDate.getMonth()+ "-" +newDate.getDate())
+            }
+            let ret = {}
+            var myspin1 = new SpinLoading('chart','正在预测中...');
+
+            if (params.pictype == 0) {
+                switch (model) {
+                    case "0":
+                        myspin1.show()
+                        pred("FEDformer", compareData, compareTimeData, 1)
+                            .then(function (ret) {
+                                rawdata["x"] = date
+                                rawdata["y"] = ret.data
+                                drawComparemap(rawdata, predictTitle, predictXname, predictYname, predictTagname)
+                                myspin1.close()
+                            })
+                        break
+                    case "1":
+                        myspin1.show()
+                        pred("Informer", compareData, compareTimeData, 1)
+                            .then(function (ret) {
+                                rawdata["x"] = date
+                                rawdata["y"] = ret.data
+                                drawComparemap(rawdata, predictTitle, predictXname, predictYname, predictTagname)
+                                myspin1.close()
+                            })
+                        break
+                    case "2":
+                        myspin1.show()
+                        pred("Autoformer", compareData, compareTimeData, 1)
+                            .then(function (ret) {
+                                rawdata["x"] = date
+                                rawdata["y"] = ret.data
+                                drawComparemap(rawdata, predictTitle, predictXname, predictYname, predictTagname)
+                                myspin1.close()
+
+                            })
+                        break
+                }
+            } else {
+                switch (model) {
+                    case "0":
+                        myspin1.show()
+                        pred("FEDformer", compareData, compareTimeData, 2)
+                            .then(function (ret) {
+                                rawdata["x"] = date
+                                rawdata["y"] = ret.data
+                                drawComparemap(rawdata, predictTitle, predictXname, predictYname, predictTagname)
+                                myspin1.close()
+
+                            })
+                        break
+                    case "1":
+                        myspin1.show()
+                        pred("Informer", compareData, compareTimeData, 2)
+                            .then(function (ret) {
+                                rawdata["x"] = date
+                                rawdata["y"] = ret.data
+                                drawComparemap(rawdata, predictTitle, predictXname, predictYname, predictTagname)
+                                myspin1.close()
+
+                            })
+                        break
+                    case "2":
+                        myspin1.show()
+                        pred("Autoformer", compareData, compareTimeData, 2)
+                            .then(function (ret) {
+                                rawdata["x"] = date
+                                rawdata["y"] = ret.data
+                                drawComparemap(rawdata, predictTitle, predictXname, predictYname, predictTagname)
+                                myspin1.close()
+                            })
+                        break
+                }
+            }
+        }
+    } catch (e) {
+        mdui.alert(e)
+    }
+}
 function getPositionedData(longitude, latitude) {
     rawData = funcInjector.getPositionedData(Number(longitude), Number(latitude), params)
     return JSON.parse(rawData.toString())
@@ -476,11 +593,71 @@ function DrawPic(pictype) {
         //更新图片属性
         params.pictype = Number(pictype)
         funcInjector.log('pictype: ' + Number(pictype));
+
         //错误检查
+        if(pictype == PicType.ChooseDirectory) {
+
+
+                try {
+                    let p = new Promise((resolve) => {
+                        var myspin1 = new SpinLoading('chart','正在取样每日14点的电离层数据生成数据文件...');
+                        myspin1.show()
+                        funcInjector.chooseDirectory()
+                        resolve()
+                    })
+                    p.then(() => {
+                        setTimeout(() => {
+                        let q = new Promise((resolve) => {
+                            let path = funcInjector.createMergeFile()
+                            resolve(path)
+                        })
+                        q.then(path => {
+                            clearPosition()
+                            document.querySelector(".file-detail").style.display = 'inline'
+                            document.querySelector(".file-path").innerHTML = path
+                            var Splitter = browserRedirect() == "Win" ? '\\' : '/'
+                            last = path.lastIndexOf(Splitter)
+                            fileName = path.substring(last + 1)
+                            params.filename = fileName
+                            params.filepath = path
+                            document.querySelector(".file-name").innerHTML = fileName
+                            mdui.snackbar({
+                                message: '生成数据文件成功，路径为' + path+",已载入系统",
+                                position: 'left-top',
+                            });
+                            refreshHisList()
+                            myspin1.close()
+
+                        })
+                        clearPosition()
+                        document.querySelector(".file-detail").style.display = 'inline'
+                        document.querySelector(".file-path").innerHTML = path
+                        var Splitter = browserRedirect() == "Win" ? '\\' : '/'
+                        last = path.lastIndexOf(Splitter)
+// 截取文件名称和后缀
+                        fileName = path.substring(last + 1)
+                        params.filename = fileName
+                        params.filepath = path
+                        document.querySelector(".file-name").innerHTML = fileName
+                        refreshHisList()
+                        myspin1.close()
+                        mdui.snackbar({
+                            message: '生成数据文件成功，路径为' + path+",已载入系统",
+                            position: 'left-top',
+                        });
+                    },100)})
+                } catch (e) {
+                    mdui.alert(e)
+                }
+            return;
+
+        }
+
         if (params.filename == "") {
             mdui.alert("请选择文件")
             return
         }
+
         //绘制图像
         getData()
             .then(rawData => {
@@ -507,10 +684,24 @@ function DrawPic(pictype) {
                         mdui.$(".charts-selector").mutation()
                         break
                     case 4:
+                        var myspin1 = new SpinLoading('chart','请稍等，正在绘图');
+                        myspin1.show()
+                        setTimeout(() => {
+                            try {
+                                let p = new Promise((resolve) => {
+                                    drawWorldHeatMapData(rawData, 0, 1100, "category", "电离层参数二维图", "Longitude(°)", "Latitude(°)", true, [
+                                        "Longitude(°)", "Latitude(°)", "TECU(TECU)"
+                                    ])
+                                    resolve()
+                                })
+                                p.then(path => {
+                                    myspin1.close()
+                                })
+                            } catch (e) {
+                                mdui.alert(e)
+                            }
+                        },100)
 
-                        drawWorldHeatMapData(rawData, 0, 1100, "category", "电离层参数二维图", "Longitude(°)", "Latitude(°)", true, [
-                            "Longitude(°)", "Latitude(°)", "TECU(TECU)"
-                        ])
                         break
 
                     case 5:
@@ -588,14 +779,14 @@ function getHisFileHtml(hisFile) {
     let html = ''
     try {
         for (let i = 0; i < hisFile.length; i++) {
-            let reg = /.[^-]*-.[^-]*-.[^-]*.txt/gm;
+            let reg = /.[^-]*-.[^-]*-.[^-]*.*/gm;
 
             if(!reg.test(hisFile[i].fileName)) {
                 html +=
                     `<label class="mdui-list-item mdui-ripple">
                 <div class="mdui-list-item-content">   
                     <div class="mdui-list-item-title mdui-list-item-two-line">${hisFile[i].fileName}</div> 
-                    <div class="mdui-list-item-text mdui-list-item-one-line">${"最后打开日期"+ hisFile[i].fileTime}</div>  
+                    <div class="mdui-list-item-text mdui-list-item-one-line">${"最后打开日期:"+ hisFile[i].fileTime}</div>  
                 </div>
                    
                 <div class="mdui-checkbox">
@@ -606,13 +797,14 @@ function getHisFileHtml(hisFile) {
    <div class = "mdui-divider mdui-m-y-0" > </div>
    `
             } else {
-                funcInjector.log(hisFile[i].fileName)
+                funcInjector.log(hisFile[i].fileName.split("-")[2])
                 funcInjector.log( reg.test(hisFile[i].fileName).toString() );
                 html +=
                     `<label class="mdui-list-item mdui-ripple">
                 <div class="mdui-list-item-content">   
-                    <div class="mdui-list-item-title mdui-list-item-two-line">${hisFile[i].fileName.split("-")[0]}</div> 
-                    <div class="mdui-list-item-text mdui-list-item-one-line">${hisFile[i].fileName.split("-")[1] + "-"+hisFile[i].fileName.split("-")[2].substring(0, 11)}</div>  
+                    <div class="mdui-list-item-title mdui-list-item-one-line">${hisFile[i].fileName.split("-")[0] + " " + hisFile[i].fileName.split("-")[2].substring(11) +"文件"}</div> 
+                    <div class="mdui-list-item-text mdui-list-item-one-line">${hisFile[i].fileName.split("-")[1] + "-"+hisFile[i].fileName.split("-")[2].substring(0, 10)}</div>  
+                    <div class="mdui-list-item-text mdui-list-item-one-line">${"最后打开日期:"+ hisFile[i].fileTime}</div>  
                 </div>
                    
                 <div class="mdui-checkbox">
@@ -647,24 +839,40 @@ function deleteHisFile() {
                         for (let i = 0; i < fileList.length; i++) {
                             let checkboxDiv = fileList[i].lastElementChild
                             let checked = checkboxDiv.firstElementChild.checked
+
+
+
+
                             if (checked == true) {
                                 let itemContent = fileList[i].firstElementChild
-
                                 let line1 = itemContent.firstElementChild
-                                let line2 = itemContent.lastElementChild
-
-                                let filename = line1.innerHTML.replace("\n","")
-                                let fileTime = line2.innerHTML.replace("\n","")
-
+                                let line2 = line1.nextElementSibling
+                                let line3 = line2.nextElementSibling
+                                let filename = line1.innerHTML.replace("\n", "")
+                                let datatimeRange = line2.innerHTML.replace("\n", "")
+                                let fileTime = line3 == null?line2.innerHTML.replace("\n", "").replace("最后打开日期:",""):line3.innerHTML.replace("\n", "").replace("最后打开日期:","")
                                 let dest = ""
-                                if (params.type == 0) {
-                                    dest = "." + Splitter + "data" + Splitter + "太阳和地磁指数" + Splitter + fileTime + Splitter + filename ;
-                                } else if (params.type == 1) {
-                                    dest = "." + Splitter + "data" + Splitter + "大气密度变化规律" + Splitter + fileTime + Splitter + filename;
-                                } else if (params.type == 2) {
-                                    dest = "." + Splitter + "data" + Splitter + "电离层参数" + Splitter + fileTime + Splitter + filename;
-                                } else if (params.type == 3) {
-                                    dest = "." + Splitter + "data" + Splitter + "临近空间环境" + Splitter + fileTime + Splitter + filename;
+                                if(line3 == null) {
+                                    if (params.type == 0) {
+                                        dest = "." + Splitter + "data" + Splitter + "太阳和地磁指数" + Splitter + fileTime + Splitter + filename;
+                                    } else if (params.type == 1) {
+                                        dest = "." + Splitter + "data" + Splitter + "大气密度变化规律" + Splitter + fileTime + Splitter + filename;
+                                    } else if (params.type == 2) {
+                                        dest = "." + Splitter + "data" + Splitter + "电离层参数" + Splitter + fileTime + Splitter + filename;
+                                    } else if (params.type == 3) {
+                                        dest = "." + Splitter + "data" + Splitter + "临近空间环境" + Splitter + fileTime + Splitter + filename;
+                                    }
+                                } else {
+                                    if (params.type == 0) {
+                                        funcInjector.log(filename)
+                                        dest = "." + Splitter + "data" + Splitter + "太阳和地磁指数" + Splitter + fileTime + Splitter + filename.split(" ")[0] +"-"+ datatimeRange  + "."+filename.split(" ")[1].replace("文件","");
+                                    } else if (params.type == 1) {
+                                        dest = "." + Splitter + "data" + Splitter + "大气密度变化规律" + Splitter + fileTime + Splitter+ filename.split(" ")[0] +"-"+ datatimeRange + "." + filename.split(" ")[1].replace("文件","");
+                                    } else if (params.type == 2) {
+                                        dest = "." + Splitter + "data" + Splitter + "电离层参数" + Splitter + fileTime + Splitter+ filename.split(" ")[0] +"-"+ datatimeRange + "." + filename.split(" ")[1].replace("文件","");
+                                    } else if (params.type == 3) {
+                                        dest = "." + Splitter + "data" + Splitter + "临近空间环境" + Splitter + fileTime + Splitter + filename.split(" ")[0] +"-"+ datatimeRange + "." + filename.split(" ")[1].replace("文件","");
+                                    }
                                 }
                                 temp.push(dest)
                             }
@@ -745,18 +953,35 @@ function openHisFile() {
                                 if (checked == true) {
                                     let itemContent = fileList[i].firstElementChild
                                     let line1 = itemContent.firstElementChild
-                                    let line2 = itemContent.lastElementChild
+                                    let line2 = line1.nextElementSibling
+                                    let line3 = line2.nextElementSibling
                                     let filename = line1.innerHTML.replace("\n", "")
-                                    let fileTime = line2.innerHTML.replace("\n", "")
+                                    let datatimeRange = line2.innerHTML.replace("\n", "")
+                                    let fileTime = line3 == null?line2.innerHTML.replace("\n", "").replace("最后打开日期:",""):line3.innerHTML.replace("\n", "").replace("最后打开日期:","")
                                     let dest = ""
-                                    if (params.type == 0) {
-                                        dest = "." + Splitter + "data" + Splitter + "太阳和地磁指数" + Splitter + fileTime + Splitter + filename;
-                                    } else if (params.type == 1) {
-                                        dest = "." + Splitter + "data" + Splitter + "大气密度变化规律" + Splitter + fileTime + Splitter + filename;
-                                    } else if (params.type == 2) {
-                                        dest = "." + Splitter + "data" + Splitter + "电离层参数" + Splitter + fileTime + Splitter + filename;
-                                    } else if (params.type == 3) {
-                                        dest = "." + Splitter + "data" + Splitter + "临近空间环境" + Splitter + fileTime + Splitter + filename;
+                                    var projectPath = funcInjector.getRoot()
+
+                                    if(line3 == null) {
+                                        if (params.type == 0) {
+                                            dest = projectPath + Splitter + "data" + Splitter + "太阳和地磁指数" + Splitter + fileTime + Splitter + filename;
+                                        } else if (params.type == 1) {
+                                            dest = projectPath + Splitter + "data" + Splitter + "大气密度变化规律" + Splitter + fileTime + Splitter + filename;
+                                        } else if (params.type == 2) {
+                                            dest = projectPath + Splitter + "data" + Splitter + "电离层参数" + Splitter + fileTime + Splitter + filename;
+                                        } else if (params.type == 3) {
+                                            dest = projectPath + Splitter + "data" + Splitter + "临近空间环境" + Splitter + fileTime + Splitter + filename;
+                                        }
+                                    } else {
+                                        if (params.type == 0) {
+                                            funcInjector.log(filename)
+                                            dest = projectPath + Splitter + "data" + Splitter + "太阳和地磁指数" + Splitter + fileTime + Splitter + filename.split(" ")[0] +"-"+ datatimeRange  + "."+filename.split(" ")[1].replace("文件","");
+                                        } else if (params.type == 1) {
+                                            dest = projectPath + Splitter + "data" + Splitter + "大气密度变化规律" + Splitter + fileTime + Splitter+ filename.split(" ")[0] +"-"+ datatimeRange + "." + filename.split(" ")[1].replace("文件","");
+                                        } else if (params.type == 2) {
+                                            dest = projectPath + Splitter + "data" + Splitter + "电离层参数" + Splitter + fileTime + Splitter+ filename.split(" ")[0] +"-"+ datatimeRange + "." + filename.split(" ")[1].replace("文件","");
+                                        } else if (params.type == 3) {
+                                            dest = projectPath + Splitter + "data" + Splitter + "临近空间环境" + Splitter + fileTime + Splitter + filename.split(" ")[0] +"-"+ datatimeRange + "." + filename.split(" ")[1].replace("文件","");
+                                        }
                                     }
                                     temp.push(dest)
                                 }
@@ -794,24 +1019,65 @@ function openHisFile() {
                             for (let i = 0; i < fileList.length; i++) {
                                 let checkboxDiv = fileList[i].lastElementChild
                                 let checked = checkboxDiv.firstElementChild.checked
+
                                 if (checked == true) {
                                     let itemContent = fileList[i].firstElementChild
                                     let line1 = itemContent.firstElementChild
-                                    let line2 = itemContent.lastElementChild
+                                    let line2 = line1.nextElementSibling
+                                    let line3 = line2.nextElementSibling
                                     let filename = line1.innerHTML.replace("\n", "")
-                                    let fileTime = line2.innerHTML.replace("\n", "")
+                                    let datatimeRange = line2.innerHTML.replace("\n", "")
+                                    let fileTime = line3 == null?line2.innerHTML.replace("\n", "").replace("最后打开日期:",""):line3.innerHTML.replace("\n", "").replace("最后打开日期:","")
                                     let dest = ""
-                                    if (params.type == 0) {
-                                        dest = "." + Splitter + "data" + Splitter + "太阳和地磁指数" + Splitter + fileTime + Splitter + filename;
-                                    } else if (params.type == 1) {
-                                        dest = "." + Splitter + "data" + Splitter + "大气密度变化规律" + Splitter + fileTime + Splitter + filename;
-                                    } else if (params.type == 2) {
-                                        dest = "." + Splitter + "data" + Splitter + "电离层参数" + Splitter + fileTime + Splitter + filename;
-                                    } else if (params.type == 3) {
-                                        dest = "." + Splitter + "data" + Splitter + "临近空间环境" + Splitter + fileTime + Splitter + filename;
+                                    if(line3 == null) {
+                                        if (params.type == 0) {
+                                            dest = "." + Splitter + "data" + Splitter + "太阳和地磁指数" + Splitter + fileTime + Splitter + filename;
+                                        } else if (params.type == 1) {
+                                            dest = "." + Splitter + "data" + Splitter + "大气密度变化规律" + Splitter + fileTime + Splitter + filename;
+                                        } else if (params.type == 2) {
+                                            dest = "." + Splitter + "data" + Splitter + "电离层参数" + Splitter + fileTime + Splitter + filename;
+                                        } else if (params.type == 3) {
+                                            dest = "." + Splitter + "data" + Splitter + "临近空间环境" + Splitter + fileTime + Splitter + filename;
+                                        }
+                                    } else {
+                                        if (params.type == 0) {
+                                            funcInjector.log(filename)
+                                            dest = "." + Splitter + "data" + Splitter + "太阳和地磁指数" + Splitter + fileTime + Splitter + filename.split(" ")[0] +"-"+ datatimeRange +"." + filename.split(" ")[1].replace("文件","");
+                                        } else if (params.type == 1) {
+                                            dest = "." + Splitter + "data" + Splitter + "大气密度变化规律" + Splitter + fileTime + Splitter+ filename.split(" ")[0] +"-"+ datatimeRange +"." + filename.split(" ")[1].replace("文件","");
+                                        } else if (params.type == 2) {
+                                            dest = "." + Splitter + "data" + Splitter + "电离层参数" + Splitter + fileTime + Splitter+ filename.split(" ")[0] +"-"+ datatimeRange +"." + filename.split(" ")[1].replace("文件","");
+                                        } else if (params.type == 3) {
+                                            dest = "." + Splitter + "data" + Splitter + "临近空间环境" + Splitter + fileTime + Splitter + filename.split(" ")[0] +"-"+ datatimeRange +"." + filename.split(" ")[1].replace("文件","");
+                                        }
                                     }
                                     temp.push(dest)
                                 }
+
+
+                                // if (checked == true) {
+                                //     let itemContent = fileList[i].firstElementChild
+                                //     let line1 = itemContent.firstElementChild
+                                //     let line2 = line1.nextElementSibling
+                                //     let line3 = line2.nextElementSibling
+                                //     funcInjector.log(line3.innerHTML)
+                                //     let filename = line1.innerHTML.replace("\n", "")
+                                //     let fileTime = lastopenTime.innerHTML.replace("\n", "")
+                                //     if(line3 == null) {
+                                //         funcInjector.log(filename)
+                                //     }
+                                //     let dest = ""
+                                //     if (params.type == 0) {
+                                //         dest = "." + Splitter + "data" + Splitter + "太阳和地磁指数" + Splitter + fileTime + Splitter + filename;
+                                //     } else if (params.type == 1) {
+                                //         dest = "." + Splitter + "data" + Splitter + "大气密度变化规律" + Splitter + fileTime + Splitter + filename;
+                                //     } else if (params.type == 2) {
+                                //         dest = "." + Splitter + "data" + Splitter + "电离层参数" + Splitter + fileTime + Splitter + filename;
+                                //     } else if (params.type == 3) {
+                                //         dest = "." + Splitter + "data" + Splitter + "临近空间环境" + Splitter + fileTime + Splitter + filename;
+                                //     }
+                                //     temp.push(dest)
+                                // }
                             }
                             let fileURL =  funcInjector.mergeTECUFiles(temp)
                             document.querySelector(".file-detail").style.display = 'inline'
@@ -957,10 +1223,14 @@ function demonstrateStat( datay) {
         },
         xAxis: {
             // boundaryGap: '5%',
-            type: 'category',
+            axisLabel: {
+               // 这里的 [xOffset, yOffset] 为 [-10, 0]，表示向左偏移 10px
+            },
+            type: 'value',
             boundaryGap: true,
             scale: true, //这个一定要设，不然barWidth和bins对应不上
             axisLabel: {
+                offset: [-100, 0],
                 formatter: function (value) {
                     return value
                 }
@@ -974,7 +1244,7 @@ function demonstrateStat( datay) {
         },
         dataZoom: [{type: "inside"}],
         yAxis: {
-            show:true
+            show:false
             // offset:10,
             // axisLine: {
             //     onZero:false
@@ -1152,11 +1422,12 @@ function demonstratePositionedStat(params,maxValue) {
             dataY.push(tempData[i].data[j][1])
             datay.push(tempData[i].data[j][1])
         }
-        var bins = ecStat.histogram(dataY);
+        var bins = ecStat.histogram(dataY,'freedmanDiaconis');
         tempData[i].type = 'bar'
         tempData[i].barWidth = '99.3%'
         tempData[i].data = bins.data
     }
+
     funcInjector.log(JSON.stringify(params))
     let chart = echarts.init(document.querySelector("#chart"));
     let rangeY = chart.getModel().getComponent('yAxis').axis.scale._extent // 获取y轴刻度最值
@@ -1244,7 +1515,7 @@ function demonstratePositionedStat(params,maxValue) {
             containLabel: true
         },
         xAxis: {
-            type:'category',
+            type:'value',
             boundaryGap: true,
             scale: true, //这个一定要设，不然barWidth和bins对应不上
             axisLabel: {
@@ -1253,19 +1524,48 @@ function demonstratePositionedStat(params,maxValue) {
                 }
             },
             min: function (value) {
-                return value.min
+                return 0
             },
             max: function (value) {
-                return value.max
+                return value.max+50
             },
         },
         dataZoom: [{type: "inside"}],
-        yAxis: {},
+        yAxis: {
+            show:false
+        },
         series: tempData
     };
 
     chartDom.setOption(option);
 }
+
+function renewWordStat(legendData, seriesData, name) {
+    let datay = []
+    for (i in seriesData) {
+        for (j in seriesData[i].data) {
+            if(seriesData[i].name == name) {
+                datay.push(Number(seriesData[i].data[j][2]))
+            }
+        }
+    }
+    sampleDeviation = ecStat.statistics.deviation(datay);
+    varianceValue = ecStat.statistics.sampleVariance(datay);
+    maxValue = ecStat.statistics.max(datay);
+    minValue = ecStat.statistics.min(datay);
+    meanValue = ecStat.statistics.mean(datay);
+    medianValue = ecStat.statistics.median(datay);
+    sumValue = datay.length;
+    document.getElementById('data-num').innerHTML = sumValue
+    document.getElementById('data-max').innerHTML = Number(maxValue).toFixed(2)
+    document.getElementById('data-min').innerHTML = Number(minValue).toFixed(2)
+    document.getElementById('data-avg').innerHTML = Number(meanValue).toFixed(2)
+    document.getElementById('data-sdev').innerHTML = Number(sampleDeviation).toFixed(2)
+    document.getElementById('data-var').innerHTML = Number(varianceValue).toFixed(2)
+    document.getElementById('data-median').innerHTML = Number(medianValue).toFixed(2)
+    document.getElementById('data-exe').innerHTML = (maxValue - minValue).toFixed(2)
+}
+
 
 function  demonstrateWorldStat(legendData, seriesData, name) {
     let tempData = deepClone(seriesData)
@@ -1321,7 +1621,7 @@ function  demonstrateWorldStat(legendData, seriesData, name) {
             containLabel: true
         },
         xAxis: {
-            type:'category',
+            type:'value',
             animation:false,
             boundaryGap: true,
             scale: true, //这个一定要设，不然barWidth和bins对应不上
@@ -1338,7 +1638,9 @@ function  demonstrateWorldStat(legendData, seriesData, name) {
             },
         },
         dataZoom: [{type: "inside"}],
-        yAxis: {},
+        yAxis: {
+            show:false
+        },
         series: tempData
     };
 
@@ -1437,6 +1739,20 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
                 trigger: 'axis',
                 position: function (pt) {
                     return [pt[0], '10%'];
+                },
+                formatter(params) {
+                    try {
+                        var relVal = params[0].name;
+                        for (var i = 0, l = params.length; i < l; i++) {
+                            let value = params[i].value
+                            let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : new Big(value).toFixed(2)
+                            //遍历出来的值一般是字符串，需要转换成数字，再进项tiFixed四舍五入
+                            relVal += '<br/>' + params[i].marker + params[i].seriesName + ' : ' + Number(ret)
+                        }
+                        return relVal;
+                    } catch (e) {
+                        mdui.alert(e)
+                    }
                 }
             },
             title: {
@@ -1448,13 +1764,13 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
                 dimension: 0,
                 pieces: [
                     {
-                        lte: 30,
+                        lte: 27,
                         color: 'green'
                     },
 
                     {
-                        gt: 30,
-                        lte: 60,
+                        gt: 27,
+                        lte: 54,
                         color: 'red'
                     },
                     // {
@@ -1644,6 +1960,198 @@ function drawPredictionmap(rawData, title, xname, yname, tagName) {
     }
 }
 
+function drawComparemap(rawData, title, xname, yname, tagName) {
+    try {
+        demonstrateStat( rawData["y"])
+        clearListener()
+        document.getElementById('table-title').innerHTML = title + "统计数据"
+        let maxValue = ecStat.statistics.max(rawData["y"]);
+        let minValue = ecStat.statistics.min(rawData["y"]);
+
+        let option = {
+            tooltip: {
+                trigger: 'axis',
+                position: function (pt) {
+                    return [pt[0], '10%'];
+                },
+                formatter(params) {
+                    try {
+                        var relVal = params[0].name;
+                        for (var i = 0, l = params.length; i < l; i++) {
+                            let value = params[i].value
+                            let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : new Big(value).toFixed(2)
+                            //遍历出来的值一般是字符串，需要转换成数字，再进项tiFixed四舍五入
+                            relVal += '<br/>' + params[i].marker + params[i].seriesName + ' : ' + Number(ret)
+                        }
+                        return relVal;
+                    } catch (e) {
+                        mdui.alert(e)
+                    }
+                }
+            },
+            legend: {
+                data: ['预测值', '真实值'],
+                top:"6%",
+            },
+            title: {
+                left: 'center',
+                text: title
+            },
+
+            toolbox: {
+                left: 'right',
+                top: 'bottom',
+                feature: {
+                    dataZoom: {
+                        title: '数据缩放工具',
+                        // yAxisIndex: 'none',
+                        title: "缩放"
+                    },
+
+                    dataView: {
+                        title: '数据视图工具',
+                        lang: ['数据视图', '关闭', '刷新'],
+                        backgroundColor: "f2eef9",
+                    },
+                    saveAsImage: {
+                        title: '另存为图像',
+                        excludeComponents  : ['toolbox','dataZoom']
+                    }
+                }
+            },
+
+            xAxis: {
+                name: xname,
+                type: 'category',
+                boundaryGap: false,
+                data: rawData["x"]
+            },
+            yAxis: {
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#000', // x坐标轴的轴线颜色
+                    }
+                },
+                name: yname,
+                type: 'value',
+                // min:function(value){
+                //     return value.min
+                // },
+                // max: function (value) {
+                //     return value.max
+                // },
+                show: true,
+                // axisLine: { onZero: false },
+                axisLabel: {
+                    formatter: function (value) {
+                        let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : new Big(value).toFixed(2)
+                        return ret;
+                    }
+                },
+                // boundaryGap: [0, '100%']
+            },
+
+            dataZoom: [
+
+                {
+                    type: 'slider',
+                    xAxisIndex: 0,
+                    filterMode: 'none'
+                },
+                {
+                    type: 'inside',
+                    xAxisIndex: 0,
+                    filterMode: 'none',
+                    moveOnMouseMove:false
+                },
+                {
+                    type: 'inside',
+                    yAxisIndex: 0,
+                    filterMode: 'none',
+                    moveOnMouseMove:false
+                }
+            ],
+            series: [
+                {
+                    name: "预测值",
+                    type: 'line',
+                    sampling: 'lttb',
+                    roam:false,
+                    data: rawData["y"]
+                },
+                {
+                    name: "真实值",
+                    type: 'line',
+                    sampling: 'lttb',
+                    roam:false,
+                    data: predictData
+                },
+            ],
+
+        };
+        let chartDom = echarts.init(document.querySelector("#chart"));
+        chartDom.clear()
+        chartDom.setOption(option)
+        chartDom.on('dataZoom', function (params) {
+            try {
+                funcInjector.log(JSON.stringify(params))
+                let chart = echarts.init(document.querySelector("#chart"));
+                let rangeY = chart.getModel().getComponent('yAxis').axis.scale._extent // 获取y轴刻度最值
+                let min = rangeY[0]
+                let max = rangeY[1]
+                if (params.batch && params.batch[1].start != null) {
+                    let datay = rawData["y"]
+                    starty =Math.round((params.batch[0].start * datay.length)/100);
+                    endy =Math.round( (params.batch[0].end * datay.length)/100) + 1;
+                    funcInjector.log(endy.toString())
+                    datay = datay.slice(starty, endy)
+                    // let max = Math.ceil((maxValue *params.batch[1].end) /100)
+                    // let min =Math.floor((maxValue *params.batch[1].start) /100)
+                    datay = datay.filter(num => num>=min && num <= max)
+                    demonstrateStat(datay)
+                } else if (params.batch && params.batch[0].start != null) {
+                    let datay = rawData["y"]
+                    // if(params.batch[0].dataZoomId == "xInsider") {
+                    //     starty = Math.round((params.batch[0].start * datay.length) / 100)
+                    //     endy = Math.round((params.batch[0].end * datay.length) / 100) + 1
+                    //     funcInjector.log(starty.toString())
+                    //     funcInjector.log(endy.toString())
+                    //     demonstrateStat(datay.slice(starty, endy))
+                    // }
+                    // demonstrateStat(datay)
+                    demonstrateStat(datay)
+                } else if (params.batch && params.batch[0].startValue != null) {
+                    let datay = rawData["y"].slice(params.batch[0].startValue, params.batch[0].endValue)
+                    datay = datay.filter(num => num>=params.batch[1].startValue && num <= params.batch[1].endValue)
+                    demonstrateStat(datay)
+                } else {
+                    if (params.dataZoomId == "xSlider") {
+                        starty =Math.round((params.start * rawData["x"].length )/100)
+                        endy =Math.round( (params.end * rawData["x"].length)/100) +1
+                        funcInjector.log(starty.toString())
+                        funcInjector.log(endy.toString())
+                        demonstrateStat( rawData["y"].slice(starty, endy))
+                    }
+                    // else if(params.dataZoomId == "ySlider") {
+                    //     let max = (maxValue *params.end) /100
+                    //     let min = (maxValue *params.start) /100
+                    //     let datay = rawData["y"]
+                    //
+                    //     starty =Math.round((params.start * datay.length )/100);
+                    //     endy =Math.round( (params.end * datay.length)/100) +1 ;
+                    //     demonstrateStat(datay.slice(starty, endy))
+                    // }
+                }
+
+            } catch (e) {
+            }
+        });
+    } catch (e) {
+        mdui.alert(e)
+    }
+}
+
 function transferToNumber(inputNumber) {
     if (isNaN(inputNumber)) {
         return inputNumber
@@ -1666,8 +2174,10 @@ function drawLinearMapData(rawData, title, xname, yname, tagName) {
         document.getElementById('table-title').innerHTML = title + "统计数据"
         let maxValue = ecStat.statistics.max(rawData["y"]);
         let minValue = ecStat.statistics.min(rawData["y"]);
-        predictData = rawData["y"].slice(-30)
-        predictTimeData = rawData["x"].slice(-30)
+        predictData = rawData["y"].slice(-27)
+        compareData = rawData["y"].slice(-54,-27)
+        predictTimeData = rawData["x"].slice(-27)
+        compareTimeData = rawData["x"].slice(-54,-27)
         predictTitle = title.substring(0, 4) + "预测图";
         predictXname = xname
         predictYname = yname
@@ -1902,7 +2412,19 @@ function drawPositionLinearMapData() {
         tempData[i].data = bins.data
     }
     let maxValue = ecStat.statistics.max(datay);
+    legendData.sort((a, b) => {
 
+        let date1 = new Date(a);
+        let date2 = new Date(b);
+
+        if (date1 > date2) {
+            return 1;
+        } else  if(date1 == date2) {
+            return 0
+        } else  {
+            return -1
+        }
+    })
     try {
         let option = {
             tooltip: {
@@ -2262,6 +2784,20 @@ function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, revers
     document.getElementById('table-title').innerHTML = title + "统计数据"
     for (let i in rawData) {
         if (i != "legend") {
+            let tmp = rawData[i].sort((a, b) => {
+
+                let date1 = new Date(a[0]);
+                let date2 = new Date(b[0]);
+
+                if (date1 > date2) {
+                    return 1;
+                } else  if(date1 == date2) {
+                    return 0
+                } else  {
+                    return -1
+                }
+            })
+            funcInjector.log(JSON.stringify(rawData[i]))
             let temp = {
                 emphasis: {
                     itemStyle: {
@@ -2273,14 +2809,21 @@ function drawHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, revers
                 animation: false,
                 type:'heatmap',
                 name:i,
-                data : rawData[i],
+                data : tmp,
             }
+
             seriesData.push(temp)
         }
     }
+    var temp = seriesData[0];
+    seriesData[0] = seriesData[seriesData.length - 1];
+    seriesData[seriesData.length - 1] = temp;
 
 
     let selectedtime = rawData["legend"][0]
+
+
+
 
     let legendData = {
         type: 'scroll',
@@ -2457,7 +3000,7 @@ function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, r
             }
         })
     } catch (e) {
-        mdui.alert(e)
+        // mdui.alert(e)
     }
     let seriesData = []
 
@@ -2487,7 +3030,8 @@ function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, r
                 data : rawData[i],
                 itemStyle: {
                     opacity: 0.7
-                }
+                },
+                large:true,
             }
             seriesData.push(temp)
         }
@@ -2508,6 +3052,7 @@ function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, r
             selectedtime: true
 
         },
+        // selectedMode: 'single',
         selector: [
             {
                 // 全选
@@ -2650,22 +3195,80 @@ function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, r
         chartDom.setOption(option)
     chartDom.on('legendselectchanged', function (params) {
         // mdui.alert("here")
-        demonstrateWorldStat(legendData,seriesData,params.name)
+        // demonstrateWorldStat(legendData,seriesData,params.name)
+        renewWordStat(legendData,seriesData,params.name)
+        let hisChart = echarts.init(document.querySelector("#hisCharts"));
+        let option = hisChart.getOption();
+        try {
+            option.legend[0].selected = {selectedtime:true}
+            for (let series of option.legend[0].data) {
+                option.legend[0].selected[series] = false;
+            }
+            option.legend[0].selected[params.name] = true;
+            funcInjector.log(JSON.stringify(option.legend[0].selected))
+            hisChart.setOption(option);
+        } catch (e) {
+            mdui.alert(e)
+        }
+
+
+
+        hisChart.dispatchAction({
+            type: 'legendScroll',
+            // 图例名称
+            scrollDataIndex: Number(rawData["legend"].indexOf(params.name)),
+        });
+        // chartDom.dispatchAction({
+        //     type: 'legendInverseSelect',
+        //     // 图例名称
+        // });
+        // chartDom.dispatchAction({
+        //     type: 'legendSelect',
+        //     // 图例名称
+        //     name: params.name
+        // });
     });
+
     chartDom.on('legendselected', function (params) {
-        // mdui.alert("here")
-        demonstrateWorldStat(legendData,seriesData,params.name)
-        let chartDom = echarts.init(document.querySelector("#hisCharts"));
-        chartDom.dispatchAction({
-            type: 'legendInverseSelect',
-            // 图例名称
-        });
-        chartDom.dispatchAction({
-            type: 'legendSelect',
-            // 图例名称
-            name: params.name
-        });
-        chartDom.dispatchAction({
+        renewWordStat(legendData,seriesData,params.name)
+        // let chartDom = echarts.init(document.querySelector("#hisCharts"));
+        // chartDom.dispatchAction({
+        //     type: 'legendInverseSelect',
+        //     // 图例名称
+        // });
+        // chartDom.dispatchAction({
+        //     type: 'legendSelect',
+        //     // 图例名称
+        //     name: params.name
+        // });
+        // chartDom.on('legendselectchanged', function (params) {
+        //     // 处理单选逻辑，仅选中当前点击的系列，其他系列取消选中
+        //
+        //     for (var seriesName in params.selected) {
+        //         if (params.selected.hasOwnProperty(seriesName)) {
+        //             option.legend.selected[seriesName] = seriesName === params.name;
+        //         }
+        //     }
+        //
+        //     // 更新图表配置项
+        //     chartDom.setOption(option, true);
+        // });
+        let hisChart = echarts.init(document.querySelector("#hisCharts"));
+        let hisOption = hisChart.getOption();
+        try {
+            hisOption.legend[0].selected = {selectedtime:true}
+            for (let series of hisOption.legend[0].data) {
+                hisOption.legend[0].selected[series] = false;
+            }
+            hisOption.legend[0].selected[params.name] = true;
+            funcInjector.log(JSON.stringify(hisOption.legend[0].selected))
+            hisChart.setOption(hisOption);
+        } catch (e) {
+            mdui.alert(e)
+        }
+
+
+        hisChart.dispatchAction({
             type: 'legendScroll',
             // 图例名称
             scrollDataIndex: Number(rawData["legend"].indexOf(params.name)),
@@ -2707,6 +3310,25 @@ function saveAsImage() {
 
 function getVideo() {
     try {
+
+        document.getElementById('overlay').addEventListener('click', function () {
+            // 清除所有的 setTimeout
+            for (var i = 1; i < 10000; i++) {
+                clearTimeout(i);
+            }
+            mask.remove()
+            myspin1.close()
+            // 隐藏蒙层
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('overlay').style.zIndex = '9999';
+        });
+        mdui.snackbar({
+            message: '任意点击区域可终止取消生成视频',
+            position: 'left-top',
+        });
+        document.getElementById('overlay').style.display = 'block';
+
+
         let chartDom = echarts.init(document.querySelector("#chart"));
         let imageList = []
         let timeList = []
@@ -2744,8 +3366,8 @@ function getVideo() {
                     temp =temp.replace(":","")
                     temp =temp.replace(":","")
                     timeList.push(temp)
-                },500)
-            }, 600*i)
+                },600)
+            }, 700*i)
         }
         setTimeout(() => {
             mask.remove()
@@ -2775,6 +3397,19 @@ function getVideo() {
 function dynamicDisplay() {
     try {
         let chartDom = echarts.init(document.querySelector("#chart"));
+        document.getElementById('overlay').addEventListener('click', function () {
+            // 清除所有的 setTimeout
+            for (var i = 1; i < 10000; i++) {
+                clearTimeout(i);
+            }
+            // 隐藏蒙层
+            document.getElementById('overlay').style.display = 'none';
+        });
+        mdui.snackbar({
+            message: '点击上方文件区域可暂停动态展示',
+            position: 'left-top',
+        });
+        document.getElementById('overlay').style.display = 'block';
         for (let i in videoData) {
             setTimeout(() => {
                 chartDom.dispatchAction({

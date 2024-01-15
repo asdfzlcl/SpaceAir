@@ -49,17 +49,13 @@ public class ADFile extends BaseFile{
         BufferedReader currentBR = new BufferedReader(new FileReader(currentFile));
         String currentLine;
         currentLine = currentBR.readLine();
-        System.out.println(currentLine);
-        if(!currentLine.equals("Neutral density data from satellite drag studies using ~5000 objects were") ) {
-            throw new IOException("错误的文件格式！");
-        }
         while((currentLine = currentBR.readLine()) != null){
             String[] temp = currentLine.split("\\s+");
             String year;
             String day;
             double ratio;
             double logMsis;
-            double logDrag;
+            String logDrag;
             try{
                 int index = 0;
                 while (temp[index].isEmpty())
@@ -67,13 +63,21 @@ public class ADFile extends BaseFile{
                 year = temp[index];
                 day = temp[index + 1];
                 ratio = Double.parseDouble(temp[index + 3]);
+                if (ratio == -9.999) {
+                    ratio = 0;
+                }
                 logMsis = Double.parseDouble(temp[index + 5]);
-                logDrag = Double.parseDouble(temp[index + 6]);
+
             }catch (Exception e){
                 continue;
             }
+            System.out.println(year + '-' + day);
+//            System.out.println(Math.pow(10, logDrag));
+            System.out.println(Math.pow(10, logMsis));
+            System.out.println(ratio * Math.pow(10, logMsis));
+
             timeSeries.add(year + '-' + day);
-            modelDataSeries.add(Math.pow(10, logDrag));
+//            modelDataSeries.add(Math.pow(10, logDrag));
             specDataSeries.add(Math.pow(10, logMsis));
             densDataSeries.add(ratio * Math.pow(10, logMsis));
         }
@@ -82,7 +86,7 @@ public class ADFile extends BaseFile{
         System.out.println(this.specDataSeries);
         System.out.println(this.modelDataSeries);
         System.out.println(this.timeSeries);
-        if(this.densDataSeries.isEmpty() || this.specDataSeries.isEmpty() || this.modelDataSeries.isEmpty() || this.timeSeries.isEmpty()){
+        if(this.densDataSeries.isEmpty() || this.specDataSeries.isEmpty()  || this.timeSeries.isEmpty()){
             throw new IOException("错误的文件格式！");
         }
     }
