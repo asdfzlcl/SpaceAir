@@ -270,6 +270,7 @@ public class FuncInjectorImpl implements FuncInjector {
             traverseDelete(new File(temp), fileName);
             if (file.exists()) {
                 System.out.println("路径已存在");
+
             } else {
                 System.out.println("路径不存在");
                 boolean created = file.mkdirs();
@@ -348,8 +349,8 @@ public class FuncInjectorImpl implements FuncInjector {
                 } else {
 
                     String magicNumber = getMagicNumber(file.getAbsolutePath());
-                    if (!isTextFile(file.getAbsolutePath())) {
-                        System.out.println(file.getAbsolutePath());
+                    if (!isTextFile(file.getAbsolutePath()) || file.getName().equalsIgnoreCase("desktop.ini")) {
+                         continue;
                     }
                     // 读取文件开头的字节
                     files.add(file);
@@ -398,16 +399,16 @@ public class FuncInjectorImpl implements FuncInjector {
     }
 
     public String createMergeFile() throws IOException {
-
         String dest = new String();
 
         dest = "." + File.separator + "data" + File.separator + "电离层参数" + File.separator;
-
         String temp = dest;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         dest += sdf.format(System.currentTimeMillis()) + File.separator;
         File file;
+        System.out.println(fileList.get(0).getName());
         String filePath = dest + "TECU" + "-" + fileList.get(0).getName().split("-")[1] + "-" + fileList.get(fileList.size()-1).getName().split("-")[2];
+        System.out.println(filePath);
         file = new File(filePath);
         String fileName = file.getName();
         file = new File(dest);
@@ -415,6 +416,7 @@ public class FuncInjectorImpl implements FuncInjector {
         if (file.exists()) {
             file.delete();
             System.out.println("路径已存在");
+            file.delete();
         } else {
             System.out.println("路径不存在");
             boolean created = file.mkdirs();
@@ -430,6 +432,10 @@ public class FuncInjectorImpl implements FuncInjector {
         writer.newLine();
 
         for (int i = 0; i < fileList.size(); i++) {
+            if (!isTextFile(fileList.get(i).getAbsolutePath())) {
+                continue;
+            }
+
             File currentFile = new File(fileList.get(i).getAbsolutePath());
             BufferedReader currentBR = new BufferedReader(new FileReader(currentFile));
             String currentLine;
@@ -439,6 +445,7 @@ public class FuncInjectorImpl implements FuncInjector {
             String currentTime = "";
             try {
                 while ((currentLine = currentBR.readLine()) != null) {
+
                     String trimmedString = currentLine.replaceAll("\\s", "");
                     String[] tmp = currentLine.split("\\s+");
                     // 判断是否包含 "1400" 和 "EPOCHOFCURRENTMAP"
@@ -877,9 +884,9 @@ public class FuncInjectorImpl implements FuncInjector {
     public int deleteHisFile(JSArray fileList) {
         try {
             for (int i = 0; i < fileList.length(); i++) {
-                System.out.println(String.valueOf(fileList.get(i)));
+
                 File file = new File(String.valueOf(fileList.get(i)));
-                System.out.println(file.delete());
+                file.delete();
 
             }
         } catch (Exception e) {

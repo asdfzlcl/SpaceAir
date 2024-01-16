@@ -396,13 +396,14 @@ function predict27days() {
             let model = mySelection.options[index].value
             let date = []
             let tempstr= predictTimeData[26].split("-")
-            const lastDay = new Date(tempstr[0],tempstr[1],tempstr[2]);
+            const lastDay = new Date(tempstr[0],Number(tempstr[1]) -1,tempstr[2]);
             const timestamp = lastDay.getTime(); // 将日期转换为时间戳
 
             for (let i=0;i<27;i++) {
                 const tempTimestamp = timestamp + 86400000 * i ; // 将时间戳增加1天
                 const newDate = new Date(tempTimestamp);
-                date.push(newDate.getFullYear() + "-" +newDate.getMonth()+ "-" +newDate.getDate())
+                let month = newDate.getMonth() + 1
+                date.push(newDate.getFullYear() + "-" +month+ "-" +newDate.getDate())
             }
             let ret = {}
             var myspin1 = new SpinLoading('chart','正在预测中...');
@@ -498,12 +499,17 @@ function compare27days() {
             let model = mySelection.options[index].value
             let date = []
             let tempstr= compareTimeData[26].split("-")
-            const lastDay = new Date(tempstr[0],tempstr[1],tempstr[2]);
+            funcInjector.log(tempstr[0].toString())
+            funcInjector.log(tempstr[1].toString())
+            funcInjector.log(tempstr[2].toString())
+            const lastDay = new Date(tempstr[0],Number(tempstr[1]) -1,tempstr[2]);
+            funcInjector.log(lastDay.toString())
             const timestamp = lastDay.getTime(); // 将日期转换为时间戳
             for (let i=0;i<27;i++) {
                 const tempTimestamp = timestamp + 86400000 * i ; // 将时间戳增加1天
                 const newDate = new Date(tempTimestamp);
-                date.push(newDate.getFullYear() + "-" +newDate.getMonth()+ "-" +newDate.getDate())
+                let month = newDate.getMonth() + 1
+                date.push(newDate.getFullYear() + "-" +month+ "-" +newDate.getDate())
             }
             let ret = {}
             var myspin1 = new SpinLoading('chart','正在预测中...');
@@ -596,8 +602,6 @@ function DrawPic(pictype) {
 
         //错误检查
         if(pictype == PicType.ChooseDirectory) {
-
-
                 try {
                     let p = new Promise((resolve) => {
                         var myspin1 = new SpinLoading('chart','正在取样每日14点的电离层数据生成数据文件...');
@@ -608,49 +612,34 @@ function DrawPic(pictype) {
                     p.then(() => {
                         setTimeout(() => {
                         let q = new Promise((resolve) => {
+                            funcInjector.log('here: ' );
                             let path = funcInjector.createMergeFile()
                             resolve(path)
                         })
                         q.then(path => {
+
                             clearPosition()
                             document.querySelector(".file-detail").style.display = 'inline'
                             document.querySelector(".file-path").innerHTML = path
                             var Splitter = browserRedirect() == "Win" ? '\\' : '/'
+                            mdui.snackbar({
+                                message: '生成数据文件成功，路径为' + path+",已载入系统",
+                                position: 'left-top',
+                            });
                             last = path.lastIndexOf(Splitter)
                             fileName = path.substring(last + 1)
                             params.filename = fileName
                             params.filepath = path
                             document.querySelector(".file-name").innerHTML = fileName
-                            mdui.snackbar({
-                                message: '生成数据文件成功，路径为' + path+",已载入系统",
-                                position: 'left-top',
-                            });
                             refreshHisList()
                             myspin1.close()
 
                         })
-                        clearPosition()
-                        document.querySelector(".file-detail").style.display = 'inline'
-                        document.querySelector(".file-path").innerHTML = path
-                        var Splitter = browserRedirect() == "Win" ? '\\' : '/'
-                        last = path.lastIndexOf(Splitter)
-// 截取文件名称和后缀
-                        fileName = path.substring(last + 1)
-                        params.filename = fileName
-                        params.filepath = path
-                        document.querySelector(".file-name").innerHTML = fileName
-                        refreshHisList()
-                        myspin1.close()
-                        mdui.snackbar({
-                            message: '生成数据文件成功，路径为' + path+",已载入系统",
-                            position: 'left-top',
-                        });
                     },100)})
                 } catch (e) {
                     mdui.alert(e)
                 }
             return;
-
         }
 
         if (params.filename == "") {
@@ -689,6 +678,7 @@ function DrawPic(pictype) {
                         setTimeout(() => {
                             try {
                                 let p = new Promise((resolve) => {
+
                                     drawWorldHeatMapData(rawData, 0, 1100, "category", "电离层参数二维图", "Longitude(°)", "Latitude(°)", true, [
                                         "Longitude(°)", "Latitude(°)", "TECU(TECU)"
                                     ])
@@ -1976,13 +1966,17 @@ function drawComparemap(rawData, title, xname, yname, tagName) {
                 },
                 formatter(params) {
                     try {
+                        let retArrau = []
+
                         var relVal = params[0].name;
                         for (var i = 0, l = params.length; i < l; i++) {
                             let value = params[i].value
                             let ret = (value > 0 && value < 0.01) ? (new Big(value).toExponential(2)) : new Big(value).toFixed(2)
                             //遍历出来的值一般是字符串，需要转换成数字，再进项tiFixed四舍五入
                             relVal += '<br/>' + params[i].marker + params[i].seriesName + ' : ' + Number(ret)
+                            retArrau.push(Number(ret))
                         }
+                        relVal += '<br/>' + '差值: ' + Math.abs(Number(retArrau[0]) - Number(retArrau[1])).toFixed(2)
                         return relVal;
                     } catch (e) {
                         mdui.alert(e)
@@ -3012,7 +3006,12 @@ function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, r
     mdui.$(".charts-selector").mutation()
 
     document.getElementById('table-title').innerHTML = title + "统计数据"
+    let maxValue = 0;
     for (let i in rawData) {
+            for (j in rawData[i]) {
+                if(maxValue < rawData[i][j][2] )
+                    maxValue = rawData[i][j][2];
+            }
         if (i != "legend") {
             let temp = {
                 emphasis: {
@@ -3164,7 +3163,7 @@ function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, r
             },
             visualMap: {
                 min: min,
-                max: max,
+                max: maxValue,
                 calculable: true,
                 realtime: true,
                 inRange: {
