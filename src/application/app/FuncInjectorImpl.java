@@ -9,7 +9,6 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -280,14 +279,14 @@ public class FuncInjectorImpl implements FuncInjector {
                     System.out.println("路径创建失败");
                 }
             }
-
             dest += fileName;
-
             FileChannel sourceChannel = new FileInputStream(filePath).getChannel();
             FileChannel destChannel = new FileOutputStream(dest).getChannel();
             destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
             sourceChannel.close();
             destChannel.close();
+
+
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage() == "错误的文件格式！" || e.getMessage() == "0") {
@@ -377,7 +376,7 @@ public class FuncInjectorImpl implements FuncInjector {
     }
 
     public List<File> fileList;
-    public Void chooseDirectory() {
+    public boolean chooseDirectory() {
 
         final FutureTask popChooseFile = new FutureTask(() -> new DirectoryChooser().showDialog(new Stage()).getAbsolutePath());
         Platform.runLater(popChooseFile);
@@ -386,7 +385,7 @@ public class FuncInjectorImpl implements FuncInjector {
             folderPath = (String) popChooseFile.get();
             fileList = new ArrayList<>();
             fileList = traverseDirectory(folderPath);
-            return null;
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage() == "错误的文件格式！" || e.getMessage() == "0") {
@@ -395,7 +394,7 @@ public class FuncInjectorImpl implements FuncInjector {
                 DialogHelper.popErrorDialog("未选择文件！");
             }
         }
-        return null;
+        return false;
     }
 
     public String createMergeFile() throws IOException {
@@ -407,7 +406,7 @@ public class FuncInjectorImpl implements FuncInjector {
         dest += sdf.format(System.currentTimeMillis()) + File.separator;
         File file;
         System.out.println(fileList.get(0).getName());
-        String filePath = dest + "TECU" + "-" + fileList.get(0).getName().split("-")[1] + "-" + fileList.get(fileList.size()-1).getName().split("-")[2];
+        String filePath = dest + "TEC" + "-" + fileList.get(0).getName().split("-")[1] + "-" + fileList.get(fileList.size()-1).getName().split("-")[2];
         System.out.println(filePath);
         file = new File(filePath);
         String fileName = file.getName();
@@ -533,7 +532,7 @@ public class FuncInjectorImpl implements FuncInjector {
             return Arrays.asList("大气密度", "大气密度变化", "2");
         }
         if (Objects.equals(type, "2")) {//电离层参数
-            return Arrays.asList("电离层参数", "选择批量文件目录", "7", "一维图", "3", "二维图", "4");
+            return Arrays.asList("电离层参数", "选择批量文件", "7", "一维图", "3", "二维图", "4");
         }
         if (Objects.equals(type, "3")) {//临近空间环境
             return Arrays.asList("临近空间环境", "一维图", "5", "二维图", "6");

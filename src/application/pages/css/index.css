@@ -132,7 +132,7 @@
     position: fixed;
     height: 4vh;
     display: none;
-    width: 13vw;
+    width: 16vw;
     bottom: 28vh;
     /*display: flex;*/
     z-index: 4;
@@ -146,7 +146,7 @@
     overflow-x: hidden;
     height: 60vh;
     padding-bottom: 5vh;
-    width: 15vw
+    width: 19vw
 
 }
 
@@ -227,10 +227,12 @@ ul#file-list{
     display: flex;
     align-items: center;
     justify-content: space-around;
+    font-size: 0.8rem;
 }
 
 .file-path {
     display: inline;
+
 }
 
 .file-detail {
@@ -261,11 +263,11 @@ ul#file-list{
 }
 
 .statistic-charts {
-    height: 22vh;
+    height: 20vh;
     width: 40vw;
     background:#f0f0f0;
     display: flex;
-    padding: 12px 16px 11px 16px;
+    padding: 3px 16px 11px 16px;
     overflow: hidden;
     box-shadow: inset -1px -1px 1px 0 rgba(255, 255, 255, 0.8);
     box-shadow: inset 1px 1px 1px 0 rgba(40, 49, 85, 0.4);
@@ -299,7 +301,7 @@ ul#file-list{
     flex-direction: row;
     font-family:Arial,"Microsoft Yahe","微软雅黑";
     align-items: center;
-    font-size: calc(10px + 2vmin);
+
     color: white;
 }
 
@@ -334,6 +336,7 @@ table {
     border: 2px solid rgb(200,200,200);
     letter-spacing: 1px;
     font-size: 1rem;
+    white-space: nowrap;
     box-shadow: inset -1px -1px 1px 0 rgba(255, 255, 255, 0.8);
     box-shadow: inset 1px 1px 1px 0 rgba(40, 49, 85, 0.4);
     background-color: #fff;
@@ -346,7 +349,7 @@ thead {
 
 td, th {
     border: 1px solid rgb(190,190,190);
-    padding: 10px 20px;
+    padding: 7px 14px;
 }
 
 td {

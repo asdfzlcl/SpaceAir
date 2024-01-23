@@ -604,10 +604,16 @@ function DrawPic(pictype) {
         if(pictype == PicType.ChooseDirectory) {
                 try {
                     let p = new Promise((resolve) => {
+
                         var myspin1 = new SpinLoading('chart','正在取样每日14点的电离层数据生成数据文件...');
-                        myspin1.show()
-                        funcInjector.chooseDirectory()
-                        resolve()
+                        let ret = funcInjector.chooseDirectory()
+                        if(ret) {
+                            mdui.snackbar({
+                                message: '正在取样每日14点的电离层数据生成数据文件，请稍等',
+                                position: 'left-top',
+                            });
+                            resolve()
+                        }
                     })
                     p.then(() => {
                         setTimeout(() => {
@@ -622,17 +628,23 @@ function DrawPic(pictype) {
                             document.querySelector(".file-detail").style.display = 'inline'
                             document.querySelector(".file-path").innerHTML = path
                             var Splitter = browserRedirect() == "Win" ? '\\' : '/'
-                            mdui.snackbar({
-                                message: '生成数据文件成功，路径为' + path+",已载入系统",
-                                position: 'left-top',
-                            });
+                            if(path != undefined) {
+                                mdui.snackbar({
+                                    message: '生成数据文件成功，路径为' + path + ",已载入系统",
+                                    position: 'left-top',
+                                });
+
+                            }
+
                             last = path.lastIndexOf(Splitter)
                             fileName = path.substring(last + 1)
                             params.filename = fileName
                             params.filepath = path
                             document.querySelector(".file-name").innerHTML = fileName
+
                             refreshHisList()
-                            myspin1.close()
+
+
 
                         })
                     },100)})
@@ -680,7 +692,7 @@ function DrawPic(pictype) {
                                 let p = new Promise((resolve) => {
 
                                     drawWorldHeatMapData(rawData, 0, 1100, "category", "电离层参数二维图", "Longitude(°)", "Latitude(°)", true, [
-                                        "Longitude(°)", "Latitude(°)", "TECU(TECU)"
+                                        "Longitude(°)", "Latitude(°)", "TEC(TECU)"
                                     ])
                                     resolve()
                                 })
@@ -2483,7 +2495,7 @@ function drawPositionLinearMapData() {
                 axisLine: {
                     show: true,
                 },
-                name: "TECU",
+                name: "TEC(TECU)",
                 type: 'value',
                 boundaryGap: [0, '100%'],
                 max: function (value) {
@@ -2999,7 +3011,7 @@ function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, r
     let seriesData = []
 
     let element = `<button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"
-                          onclick="dynamicDisplay()"  style = "margin-left: 1vh"> 动态展示 </button>`
+                          onclick="dynamicDisplay(0)"  style = "margin-left: 1vh"> 动态展示 </button>`
     element += `<button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" 
                           onclick="getVideo()"  style = "margin-left: 1vh"> 生成视频 </button>`
     mdui.$(".charts-selector").append(element)
@@ -3150,8 +3162,8 @@ function drawWorldHeatMapData(rawData, min, max, ytype, title, xTitle, yTitle, r
                 type: ytype,
                 show: true,
                 inverse: reverseY,
-                nameLocation: "start"
-
+                nameLocation: "start",
+                nameGap:2
             },
             grid: {
                 show: true,                                 //是否显示图表背景网格
@@ -3393,7 +3405,7 @@ function getVideo() {
 }
 
 
-function dynamicDisplay() {
+function dynamicDisplay(start) {
     try {
         let chartDom = echarts.init(document.querySelector("#chart"));
         document.getElementById('overlay').addEventListener('click', function () {
@@ -3409,8 +3421,11 @@ function dynamicDisplay() {
             position: 'left-top',
         });
         document.getElementById('overlay').style.display = 'block';
-        for (let i in videoData) {
+        for (let i = start;i<videoData.length;i++) {
+            funcInjector.log(i.toString())
+
             setTimeout(() => {
+
                 chartDom.dispatchAction({
                     type: 'legendSelect',
                     // 图例名称
@@ -3422,7 +3437,7 @@ function dynamicDisplay() {
                     scrollDataIndex: Number(i),
                     legendId: "worldLegend"
                 });
-            }, 1000*i)
+            }, 1000*(i-start))
         }
     } catch (e) {
         mdui.alert(e)
